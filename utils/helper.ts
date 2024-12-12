@@ -88,7 +88,7 @@ export const prepareNodesPayload = (
       dependencies: dependencies,
       parameters: updatedValue,
       name: node.data.label || "",
-      description: node.data.descriptions || "",
+      description: node.data.description || "",
       type: node.type,
     };
 

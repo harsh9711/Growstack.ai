@@ -267,7 +267,8 @@ export const resolveWorkflowNodes = (nodes?: WorkflowNodeState[]) => {
         dynamicParams: (node.nodeMasterId as any)?.dynamicParams || [],
         functionToExecute: (node.nodeMasterId as any)?.functionToExecute,
         label: (node.nodeMasterId as any)?.name,
-        description: (node.nodeMasterId as any)?.description,
+        // description: (node.nodeMasterId as any)?.description,
+        description: node?.description || "",
         icon: (node.nodeMasterId as any)?.logoUrl,
         dependencies: node.dependencies || [],
         // node?.dependencies?.map(item => ({

@@ -10,6 +10,7 @@ import {
   removeNodeDependency,
   updateNodeById,
   updateNodeDependency,
+  updateNodeDescription,
   updateNodeParameter,
 } from "@/lib/features/workflow/node.slice";
 import { extractParameterValues } from "@/utils/dataResolver";
@@ -41,7 +42,6 @@ const LlmNodes = memo(
     const [isEdit, setIsEdit] = useState(true);
     const [shake, setShake] = useState(false);
     const [variableNames, setVariableNames] = useState<VariableNameProps[]>([]);
-    const [description, setDescription] = useState(data?.descriptions || "");
     const [dependencies, setDependencies] = useState<
       { key: string; nodeId: string }[]
     >([]);
@@ -50,20 +50,20 @@ const LlmNodes = memo(
     const [isActionModalShow, setIsActionModalShow] = useState(false);
     const dropdownRef = useRef<HTMLDivElement | null>(null);
 
-    useEffect(() => {
-      if (parentId) {
-        setDependencies(prevDependencies => {
-          const newDependency = { key: "parent", nodeId: parentId };
-          const exists = prevDependencies.some(dep => dep.nodeId === parentId);
-          if (exists) {
-            return prevDependencies;
-          }
-          return [...prevDependencies, newDependency];
-        });
-      }
+    // useEffect(() => {
+    //   if (parentId) {
+    //     setDependencies(prevDependencies => {
+    //       const newDependency = { key: "parent", nodeId: parentId };
+    //       const exists = prevDependencies.some(dep => dep.nodeId === parentId);
+    //       if (exists) {
+    //         return prevDependencies;
+    //       }
+    //       return [...prevDependencies, newDependency];
+    //     });
+    //   }
 
-      return () => { };
-    }, [parentId]);
+    //   return () => { };
+    // }, [parentId]);
 
     const handleToggleAdvancedOptions = () => {
       setShowAdvancedOptions(!showAdvancedOptions);
@@ -127,7 +127,6 @@ const LlmNodes = memo(
     //   [dispatch, id, nodes, dependencies, variableNames, isEdit, shake]
     // );
 
-
     const handleInputChange = useCallback(
       (key: any, type: any, value: any, dependency: any) => {
         if (!isEdit) {
@@ -168,26 +167,11 @@ const LlmNodes = memo(
             )
           );
         } else {
-          // dispatch(removeNodeDependency({ nodeId: id, key }));
-          // setDependencies(pre => pre.filter(dep => dep.key !== key));
           setVariableNames([]);
         }
-        // if (dependency) {
-        //   // dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
-        //   setDependencies(prevDependencies => {
-        //     const newDependency = { key, nodeId: dependency };
-        //     const uniqueDependencies = new Set([
-        //       ...prevDependencies,
-        //       newDependency,
-        //     ]);
-        //     return Array.from(uniqueDependencies);
-        //   });
-        // }
       },
       [dispatch, id, nodes, variableNames, isEdit, shake]
     );
-
-
 
     // const handleInputChange = useCallback(
     //   (key: any, type: any, value: any, dependency: any) => {
@@ -242,9 +226,6 @@ const LlmNodes = memo(
     //   },
     //   [dispatch, id, nodes, dependencies, variableNames, isEdit, shake]
     // );
-
-
-
 
     const handleNextClick = async () => {
       if (!node?.data?.parameters) return;
@@ -331,7 +312,6 @@ const LlmNodes = memo(
       setIsActionModalShow(!isActionModalShow);
     };
 
-    // ON OUTSIDE CLICK CLOSE ACTION MODAL
     const handleOutsideClick = (e: MouseEvent) => {
       const modal = document.getElementById("node-action-modal");
       if (modal && !modal.contains(e.target as Node)) {
@@ -349,7 +329,6 @@ const LlmNodes = memo(
       return () => document.removeEventListener("click", handleOutsideClick);
     }, [isActionModalShow]);
 
-    //ONCLICK OPEN DELETE CONFIRMATION MODAL
     const [openDeleteConfirmationModal, setOpenDeleteConfirmationModal] =
       React.useState(false);
 
@@ -359,12 +338,6 @@ const LlmNodes = memo(
     const handleOpenDeleteConfirmationModal = () => {
       setOpenDeleteConfirmationModal(true);
       setIsActionModalShow(false);
-    };
-
-    const handleChange = (event: {
-      target: { value: React.SetStateAction<string> };
-    }) => {
-      setDescription(event.target.value);
     };
 
     const handleInput = (event: { target: any }) => {
@@ -383,12 +356,19 @@ const LlmNodes = memo(
               </h4>
 
               <textarea
-                value={description}
-                onChange={handleChange}
+                value={node?.data?.description || ""}
                 onInput={handleInput}
                 className="resize-none text-xs text-center font-medium text-[#14171B] bg-transparent border-transparent focus:border-transparent focus:ring-0 focus:outline-none"
                 placeholder="Enter description"
                 rows={1}
+                onChange={e => {
+                  dispatch(
+                    updateNodeDescription({
+                      nodeId: id,
+                      value: e.target.value,
+                    })
+                  );
+                }}
               />
             </div>
 

@@ -11,6 +11,7 @@ import {
   removeNodeDependency,
   updateNodeById,
   updateNodeDependency,
+  updateNodeDescription,
   updateNodeParameter,
 } from "@/lib/features/workflow/node.slice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -102,20 +103,20 @@ const GmailNode = memo(
         setIsActionModalShow(false);
       }
     };
-    useEffect(() => {
-      if (parentId) {
-        setDependencies(prevDependencies => {
-          const newDependency = { key: "parent", nodeId: parentId };
-          const exists = prevDependencies.some(dep => dep.nodeId === parentId);
-          if (exists) {
-            return prevDependencies;
-          }
-          return [...prevDependencies, newDependency];
-        });
-      }
+    // useEffect(() => {
+    //   if (parentId) {
+    //     setDependencies(prevDependencies => {
+    //       const newDependency = { key: "parent", nodeId: parentId };
+    //       const exists = prevDependencies.some(dep => dep.nodeId === parentId);
+    //       if (exists) {
+    //         return prevDependencies;
+    //       }
+    //       return [...prevDependencies, newDependency];
+    //     });
+    //   }
 
-      return () => { };
-    }, [parentId]);
+    //   return () => { };
+    // }, [parentId]);
 
     useEffect(() => {
       if (isActionModalShow) {
@@ -304,11 +305,7 @@ const GmailNode = memo(
       success(`The ${data?.label} node has been successfully deleted`);
     };
 
-    const handleChange = (event: {
-      target: { value: React.SetStateAction<string> };
-    }) => {
-      setDescription(event.target.value);
-    };
+
 
     const handleInput = (event: { target: any }) => {
       const textarea = event.target;
@@ -372,12 +369,19 @@ const GmailNode = memo(
               <h4 className="text-sm font-medium text-[#2DA771]">Gmail</h4>
 
               <textarea
-                value={description}
-                onChange={handleChange}
+                value={node?.data?.description || ""}
                 onInput={handleInput}
                 className="resize-none text-xs text-center font-medium text-[#14171B] bg-transparent border-transparent focus:border-transparent focus:ring-0 focus:outline-none"
                 placeholder="Enter description"
                 rows={1}
+                onChange={e => {
+                  dispatch(
+                    updateNodeDescription({
+                      nodeId: id,
+                      value: e.target.value,
+                    })
+                  );
+                }}
               />
             </div>
 

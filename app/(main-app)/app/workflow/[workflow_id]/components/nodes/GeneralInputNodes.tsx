@@ -9,6 +9,7 @@ import {
   deleteNodeById,
   removeNodeById,
   updateNodeById,
+  updateNodeDescription,
   updateNodeParameter,
 } from "@/lib/features/workflow/node.slice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -162,12 +163,6 @@ const GeneralInputNodes = memo(
       success(`The ${data?.label} node has been successfully deleted`);
     };
 
-    //DESCRIPTION FIELD DYNAMIC
-    const handleChange = (event: {
-      target: { value: React.SetStateAction<string> };
-    }) => {
-      setDescription(event.target.value);
-    };
 
     const handleInput = (event: { target: any }) => {
       const textarea = event.target;
@@ -208,6 +203,9 @@ const GeneralInputNodes = memo(
       setIsActionModalShow(false);
     };
 
+
+    console.log("node-->", node);
+
     return (
       <div>
         <section className="node-box relative">
@@ -218,12 +216,19 @@ const GeneralInputNodes = memo(
               </h4>
 
               <textarea
-                value={description}
-                onChange={handleChange}
+                value={node?.data?.description || ""}
                 onInput={handleInput}
                 className="resize-none text-xs text-center font-medium text-[#14171B] bg-transparent border-transparent focus:border-transparent focus:ring-0 focus:outline-none"
                 placeholder="Enter description"
                 rows={1}
+                onChange={e => {
+                  dispatch(
+                    updateNodeDescription({
+                      nodeId: id,
+                      value: e.target.value,
+                    })
+                  );
+                }}
               />
             </div>
 

@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect, useRef, useCallback } from "react";
+import React, { memo, useState, useEffect, useCallback } from "react";
 import { Handle, Position, type NodeProps, useReactFlow } from "@xyflow/react";
 import { GeneralJoinerNodeProps } from "./types";
 import DynamicInput from "../DynamicInputs";
@@ -7,9 +7,8 @@ import { extractParameterValues } from "@/utils/dataResolver";
 import {
   deleteNodeById,
   removeNodeById,
-  removeNodeDependency,
   updateNodeById,
-  updateNodeDependency,
+  updateNodeDescription,
   updateNodeParameter,
 } from "@/lib/features/workflow/node.slice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -36,19 +35,14 @@ const GeneralJoinerNodes = memo(
     const { workFlowData } = useAppSelector(state => state.workflows);
     const { isLoading, nodes } = useAppSelector(state => state.nodes);
     const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
-    const [description, setDescription] = useState(data?.descriptions || "");
     const [isEdit, setIsEdit] = useState(true);
     const [shake, setShake] = useState(false);
     const [openDeleteConfirmationModal, setOpenDeleteConfirmationModal] =
       useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isActionModalShow, setIsActionModalShow] = useState(false);
-
     const [variableNames, setVariableNames] = useState<VariableNameProps[]>([]);
     const [focusedInputKey, setFocusedInputKey] = useState<string | null>(null);
-    const [dependencies, setDependencies] = useState<
-      { key: string; nodeId: string }[]
-    >([]);
 
     const handleOutsideClick = (e: MouseEvent) => {
       const modal = document.getElementById("node-action-modal");
@@ -180,7 +174,6 @@ const GeneralJoinerNodes = memo(
       [dispatch, id, nodes, variableNames, isEdit, shake]
     );
 
-
     const handleNextClick = async () => {
       if (!node?.data?.parameters) return;
 
@@ -249,12 +242,6 @@ const GeneralJoinerNodes = memo(
       success(`The ${data?.label} node has been successfully deleted`);
     };
 
-    const handleChange = (event: {
-      target: { value: React.SetStateAction<string> };
-    }) => {
-      setDescription(event.target.value);
-    };
-
     const handleInput = (event: { target: any }) => {
       const textarea = event.target;
       textarea.style.height = "auto";
@@ -288,12 +275,19 @@ const GeneralJoinerNodes = memo(
               </h4>
 
               <textarea
-                value={description}
-                onChange={handleChange}
+                value={node?.data?.description || ""}
                 onInput={handleInput}
                 className="resize-none text-xs text-center font-medium text-[#14171B] bg-transparent border-transparent focus:border-transparent focus:ring-0 focus:outline-none"
                 placeholder="Enter description"
                 rows={1}
+                onChange={e => {
+                  dispatch(
+                    updateNodeDescription({
+                      nodeId: id,
+                      value: e.target.value,
+                    })
+                  );
+                }}
               />
             </div>
 

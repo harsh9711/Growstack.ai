@@ -60,8 +60,6 @@ const TopRightPanel2nd = ({
     setOpenPublishConfirmationModal(true);
   };
 
-
-
   const handleSaveWorkFlow = async () => {
     try {
       const bodyPayload = {
@@ -89,17 +87,21 @@ const TopRightPanel2nd = ({
 
   const handlePublishWorkFlow = async () => {
     try {
-
+      if (nodes.length === 0) {
+        setOpenPublishConfirmationModal(false);
+        error("Please add at least one node to publish the workflow");
+        return;
+      }
 
       const isValidNode = validateNodes(nodes);
 
       if (!isValidNode) {
         setOpenPublishConfirmationModal(false);
-        error("Please fill all the required fields of Node, before publishing the Workflow");
+        error(
+          "Please fill all the required fields of Node, before publishing the Workflow"
+        );
         return;
       }
-
-      console.log('----validateNode---', isValidNode);
 
       const bodyPayload = {
         name: workFlowData?.name,
@@ -133,7 +135,7 @@ const TopRightPanel2nd = ({
             <button
               className="back-btn bg-white h-[40px] w-[50px] shadow-md rounded-[5px] flex items-center justify-center"
               onClick={() => {
-                localStorage.setItem('activeTab', "workflows")
+                localStorage.setItem("activeTab", "workflows");
                 route.push("/app/dashboard");
               }}
             >
@@ -198,7 +200,9 @@ const TopRightPanel2nd = ({
                 : "text-black bg-transparent"
                 } shadow-lg disabled:opacity-60 disabled:cursor-not-allowed`}
               onClick={() => handleClick(index)}
-              disabled={workFlowData?.status !== "published" && item?.text !== "Build" }
+              disabled={
+                workFlowData?.status !== "published" && item?.text !== "Build"
+              }
             >
               {item.text}
             </button>
@@ -230,7 +234,6 @@ const TopRightPanel2nd = ({
         }
         onPublishNode={handlePublishWorkFlow}
       />
-
     </div>
   );
 };

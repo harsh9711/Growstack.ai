@@ -9,6 +9,7 @@ import {
   removeNodeDependency,
   updateNodeById,
   updateNodeDependency,
+  updateNodeDescription,
   updateNodeParameter,
 } from "@/lib/features/workflow/node.slice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -35,14 +36,13 @@ const ToolsNodes = memo(
 
     const { setNodes } = useReactFlow();
     const dispatch = useAppDispatch();
-    const { variables, isLoading, nodes } = useAppSelector(
+    const { isLoading, nodes } = useAppSelector(
       state => state.nodes
     );
     const { workFlowData } = useAppSelector(state => state.workflows);
     const [isEdit, setIsEdit] = useState(true);
     const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [description, setDescription] = useState(data?.descriptions || "");
     const [shake, setShake] = useState(false);
     const [variableNames, setVariableNames] = useState<VariableNameProps[]>([]);
     const [dependencies, setDependencies] = useState<
@@ -52,20 +52,20 @@ const ToolsNodes = memo(
     const [focusedInputKey, setFocusedInputKey] = useState<string | null>(null);
 
     // added a code to add parent node id in dependencies
-    useEffect(() => {
-      if (parentId) {
-        setDependencies(prevDependencies => {
-          const newDependency = { key: "parent", nodeId: parentId };
-          const exists = prevDependencies.some(dep => dep.nodeId === parentId);
-          if (exists) {
-            return prevDependencies;
-          }
-          return [...prevDependencies, newDependency];
-        });
-      }
+    // useEffect(() => {
+    //   if (parentId) {
+    //     setDependencies(prevDependencies => {
+    //       const newDependency = { key: "parent", nodeId: parentId };
+    //       const exists = prevDependencies.some(dep => dep.nodeId === parentId);
+    //       if (exists) {
+    //         return prevDependencies;
+    //       }
+    //       return [...prevDependencies, newDependency];
+    //     });
+    //   }
 
-      return () => { };
-    }, [parentId]);
+    //   return () => { };
+    // }, [parentId]);
 
     const handleToggleAdvancedOptions = () => {
       setShowAdvancedOptions(!showAdvancedOptions);
@@ -77,7 +77,6 @@ const ToolsNodes = memo(
 
     // const handleInputChange = useCallback(
     //   (key: any, type: any, value: any, dependency?: string) => {
-
 
     //     if (!isEdit) {
     //       setShake(true);
@@ -193,7 +192,6 @@ const ToolsNodes = memo(
       [dispatch, id, nodes, variableNames, isEdit, shake]
     );
 
-
     const handleNextClick = async () => {
       if (!node?.data?.parameters) return;
 
@@ -265,12 +263,6 @@ const ToolsNodes = memo(
       }
     };
 
-    const handleChange = (event: {
-      target: { value: React.SetStateAction<string> };
-    }) => {
-      setDescription(event.target.value);
-    };
-
     const handleInput = (event: { target: any }) => {
       const textarea = event.target;
       textarea.style.height = "auto";
@@ -335,14 +327,20 @@ const ToolsNodes = memo(
                 {" "}
                 {data?.label || ""}
               </h4>
-
               <textarea
-                value={description}
-                onChange={handleChange}
+                value={node?.data?.description || ""}
                 onInput={handleInput}
                 className="resize-none text-xs text-center font-medium text-[#14171B] bg-transparent border-transparent focus:border-transparent focus:ring-0 focus:outline-none"
                 placeholder="Enter description"
                 rows={1}
+                onChange={e => {
+                  dispatch(
+                    updateNodeDescription({
+                      nodeId: id,
+                      value: e.target.value,
+                    })
+                  );
+                }}
               />
             </div>
 

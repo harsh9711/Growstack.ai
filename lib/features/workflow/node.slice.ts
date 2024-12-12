@@ -91,6 +91,17 @@ const nodeSlice = createSlice({
       state.nodes.push(action.payload);
     },
 
+    updateNodeDescription: (
+      state,
+      action: PayloadAction<{ nodeId: string; value: string }>
+    ) => {
+      const { nodeId, value } = action.payload;
+      const nodeResult = state.nodes.find(nds => nds.id === nodeId);
+      if (nodeResult) {
+        nodeResult.data.description = value;
+      }
+    },
+
     updateNodeDependency: (
       state,
       action: PayloadAction<{
@@ -108,10 +119,10 @@ const nodeSlice = createSlice({
         nodeResult.data.dependencies = [
           ...Array.from(new Set(nodeResult.data.dependencies)),
         ];
-        console.log(
-          "----nodeResultAdd---->",
-          JSON.stringify(nodeResult, null, 2)
-        );
+        // console.log(
+        //   "----nodeResultAdd---->",
+        //   JSON.stringify(nodeResult, null, 2)
+        // );
       }
     },
 
@@ -129,10 +140,10 @@ const nodeSlice = createSlice({
         nodeResult.data.dependencies = nodeResult.data.dependencies.filter(
           dep => dep !== sourceId
         );
-        console.log(
-          "----nodeResultRemove---->",
-          JSON.stringify(nodeResult, null, 2)
-        );
+        // console.log(
+        //   "----nodeResultRemove---->",
+        //   JSON.stringify(nodeResult, null, 2)
+        // );
       }
     },
 
@@ -535,4 +546,5 @@ export const {
   updateSubNodeParameter,
   resetSubNodeParameter,
   addDynamicParameterToNode,
+  updateNodeDescription,
 } = nodeSlice.actions;

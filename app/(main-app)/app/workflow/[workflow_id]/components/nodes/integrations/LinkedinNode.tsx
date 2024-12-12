@@ -15,6 +15,7 @@ import {
   removeNodeDependency,
   updateNodeById,
   updateNodeDependency,
+  updateNodeDescription,
   updateNodeParameter,
 } from "@/lib/features/workflow/node.slice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -63,8 +64,6 @@ const LinkedinNode = memo(
 
     const [isActionModalShow, setIsActionModalShow] = useState(false);
 
-    const [description, setDescription] = useState(data?.descriptions || "");
-
     const [connectionLoading, setConnectionLoading] = useState(false);
     const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
 
@@ -89,22 +88,20 @@ const LinkedinNode = memo(
         setIsActionModalShow(false);
       }
     };
-    useEffect(() => {
-      if (parentId) {
-        setDependencies(prevDependencies => {
-          const newDependency = { key: "parent", nodeId: parentId };
-          const exists = prevDependencies.some(dep => dep.nodeId === parentId);
-          if (exists) {
-            return prevDependencies;
-          }
-          return [...prevDependencies, newDependency];
-        });
-      }
+    // useEffect(() => {
+    //   if (parentId) {
+    //     setDependencies(prevDependencies => {
+    //       const newDependency = { key: "parent", nodeId: parentId };
+    //       const exists = prevDependencies.some(dep => dep.nodeId === parentId);
+    //       if (exists) {
+    //         return prevDependencies;
+    //       }
+    //       return [...prevDependencies, newDependency];
+    //     });
+    //   }
 
-      return () => { };
-    }, [parentId]);
-
-
+    //   return () => {};
+    // }, [parentId]);
 
     useEffect(() => {
       if (isActionModalShow) {
@@ -171,7 +168,6 @@ const LinkedinNode = memo(
     //   },
     //   [dispatch, id, nodes, dependencies, variableNames]
     // );
-
 
     const handleInputChange = useCallback(
       (key: any, type: any, value: any, dependency: any) => {
@@ -240,7 +236,6 @@ const LinkedinNode = memo(
         const updatedValue = extractParameterValues(node.data.parameters);
         console.log("updatedValue-->", updatedValue);
 
-        console.log("Matching Node IDs:", dependencies);
         try {
           const bodyPayload = {
             workflowId: workFlowData._id,
@@ -293,12 +288,6 @@ const LinkedinNode = memo(
       dispatch(deleteNodeById(id));
       // success("The node has been successfully deleted");
       success(`The ${data?.label} node has been successfully deleted`);
-    };
-
-    const handleChange = (event: {
-      target: { value: React.SetStateAction<string> };
-    }) => {
-      setDescription(event.target.value);
     };
 
     const handleInput = (event: { target: any }) => {
@@ -364,12 +353,19 @@ const LinkedinNode = memo(
               <h4 className="text-sm font-medium text-[#2DA771]">Linkedin</h4>
 
               <textarea
-                value={description}
-                onChange={handleChange}
+                value={node?.data?.description || ""}
                 onInput={handleInput}
                 className="resize-none text-xs text-center font-medium text-[#14171B] bg-transparent border-transparent focus:border-transparent focus:ring-0 focus:outline-none"
                 placeholder="Enter description"
                 rows={1}
+                onChange={e => {
+                  dispatch(
+                    updateNodeDescription({
+                      nodeId: id,
+                      value: e.target.value,
+                    })
+                  );
+                }}
               />
             </div>
 
