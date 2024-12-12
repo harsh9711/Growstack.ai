@@ -68,10 +68,10 @@ export const extractParameterValues = (parameters: { [key: string]: any }) => {
   const result: { [key: string]: string } = {};
 
   Object?.entries(parameters).forEach(([key, param]) => {
-    // if (param.vale) {
-    //   result[key] = param.value;
-    // }
-    result[key] = param.value;
+    if (key !== "nextParameter") {
+      result[key] = param.value;
+    }
+    // result[key] = param.value;
   });
 
   return result;

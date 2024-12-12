@@ -4,13 +4,14 @@ import Image from "next/image";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { prepareNodesPayload } from "@/utils/helper";
+import { prepareNodesPayload, validateNodes } from "@/utils/helper";
 import { useEdges } from "@xyflow/react";
 import PublishConfirmationModal from "../modals/publishmodal/PublishModal";
 import SaveFormModal from "../modals/saveformmodal/SaveFormModal";
 import {
   onChangeWorkFlowData,
   updateWorkFlowById,
+  updateWorkflowStatus,
 } from "@/lib/features/workflow/workflow.slice";
 import { useSnackbar } from "../snackbar/SnackbarContext";
 
@@ -27,7 +28,6 @@ const TopRightPanel2nd = ({
   const { success, error } = useSnackbar();
   const [openPublishConfirmationModal, setOpenPublishConfirmationModal] =
     useState(false);
-  const [openSaveFormModal, setOpenSaveFormModal] = useState(false);
 
   const handleClick = (index: number) => {
     setActiveTab(index);
@@ -60,20 +60,13 @@ const TopRightPanel2nd = ({
     setOpenPublishConfirmationModal(true);
   };
 
-  const handleCloseSaveFormModal = () => {
-    setOpenSaveFormModal(false);
-  };
 
-  const handleOpenSaveFormModal = () => {
-    setOpenSaveFormModal(true);
-  };
 
   const handleSaveWorkFlow = async () => {
     try {
       const bodyPayload = {
         name: workFlowData?.name,
         description: workFlowData?.description || "",
-        // userId: workFlowData?.userId,
         nodes: prepareNodesPayload(nodes, workFlowData._id || ""),
         edges: edges,
       };
@@ -88,7 +81,6 @@ const TopRightPanel2nd = ({
         })
       );
       success("Workflow saved successfully");
-      setOpenSaveFormModal(false);
     } catch (e: any) {
       console.log("----error---", e?.message);
       error("Failed to save workflow" + e?.message);
@@ -97,10 +89,21 @@ const TopRightPanel2nd = ({
 
   const handlePublishWorkFlow = async () => {
     try {
+
+
+      const isValidNode = validateNodes(nodes);
+
+      if (!isValidNode) {
+        setOpenPublishConfirmationModal(false);
+        error("Please fill all the required fields of Node, before publishing the Workflow");
+        return;
+      }
+
+      console.log('----validateNode---', isValidNode);
+
       const bodyPayload = {
         name: workFlowData?.name,
         description: workFlowData?.description || "",
-        // userId: workFlowData?.userId,
         nodes: prepareNodesPayload(nodes, workFlowData._id || ""),
         edges: edges,
         status: "published",
@@ -113,8 +116,9 @@ const TopRightPanel2nd = ({
           data: bodyPayload,
         })
       );
-      success("Workflow published successfully");
+      dispatch(updateWorkflowStatus("published"));
       setOpenPublishConfirmationModal(false);
+      success("Workflow published successfully");
     } catch (e: any) {
       console.log("----error---", e?.message);
       error("Failed to save workflow" + e?.message);
@@ -226,11 +230,6 @@ const TopRightPanel2nd = ({
         onPublishNode={handlePublishWorkFlow}
       />
 
-      <SaveFormModal
-        openSaveFormModal={openSaveFormModal}
-        onCloseSaveFormModal={() => handleCloseSaveFormModal()}
-        onHandleSave={() => { }} // onSaveFormNode={handleDeleteNode}
-      />
     </div>
   );
 };

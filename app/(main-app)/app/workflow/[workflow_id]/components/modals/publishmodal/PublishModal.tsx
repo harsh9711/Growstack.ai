@@ -5,6 +5,8 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
+import { onChangeWorkFlowData } from "@/lib/features/workflow/workflow.slice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
 interface PublishConfirmationModalProps {
   openPublishConfirmationModal: boolean;
@@ -17,6 +19,9 @@ const PublishConfirmationModal: React.FC<PublishConfirmationModalProps> = ({
   onClosePublishConfirmationModal,
   onPublishNode,
 }) => {
+  const dispatch = useAppDispatch();
+  const { workFlowData, isLoading } = useAppSelector(state => state.workflows);
+
   return (
     <div>
       <Dialog
@@ -36,6 +41,57 @@ const PublishConfirmationModal: React.FC<PublishConfirmationModalProps> = ({
               className="relative transform overflow-hidden rounded-[20px] bg-white text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-lg data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
             >
               <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+
+                <div className="input-box mb-3">
+                  <div className="label-box mb-1">
+                    <label className="font-medium text-[#14171B] text-[14px]">
+                      Title
+                    </label>
+                  </div>
+
+                  <div className="input-group">
+                    <input
+                      type="text"
+                      placeholder="Enter Title"
+                      value={workFlowData?.name || ""}
+                      className="nopan nodrag form-control shadow-none w-full p-3 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-sm font-medium focus:outline-none"
+                      onChange={e => {
+                        dispatch(
+                          onChangeWorkFlowData({
+                            key: "name",
+                            value: e.target.value,
+                          })
+                        );
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <div className="input-box mb-3">
+                  <div className="label-box mb-1">
+                    <label className="font-medium text-[#14171B] text-[14px]">
+                      Description
+                    </label>
+                  </div>
+
+                  <div className="input-group">
+                    <textarea
+                      value={workFlowData?.description || ""}
+                      placeholder="Enter Description"
+                      className="nopan nodrag form-control shadow-none w-full p-3 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-sm font-medium focus:outline-none"
+                      rows={5}
+                      onChange={e => {
+                        dispatch(
+                          onChangeWorkFlowData({
+                            key: "description",
+                            value: e.target.value,
+                          })
+                        );
+                      }}
+                    />
+                  </div>
+                </div>
+
                 <div className="text-center">
                   <div className="publish_icon_image">
                     <img
@@ -74,6 +130,7 @@ const PublishConfirmationModal: React.FC<PublishConfirmationModalProps> = ({
                   type="button"
                   className="inline-flex items-center w-[180px] h-[45px] justify-center rounded-[10px] bg-[#2DA771] text-sm font-medium text-white"
                   onClick={onPublishNode}
+                  disabled={isLoading}
                 >
                   Publish
                 </button>

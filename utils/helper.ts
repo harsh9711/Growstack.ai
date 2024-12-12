@@ -154,3 +154,18 @@ export const isValidEdges = (
 
   return checkDependencies(sourceId);
 };
+
+export const validateNodes = (nodes: NodeState[]): boolean => {
+  for (const node of nodes) {
+    const requiredParams = Object.entries(node.data.parameters)
+      .filter(([key, param]) => key !== "nextParameter" && param.required)
+      .map(([key, param]) => param);
+
+    const allRequiredParamsFilled = requiredParams.every(param => param?.value);
+
+    if (!allRequiredParamsFilled) {
+      return false;
+    }
+  }
+  return true;
+};
