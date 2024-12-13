@@ -238,31 +238,62 @@ const Run: React.FC<any> = ({
       // );
       setRunSummaryData(getWorkFlowExecData?.data);
       const status = getWorkFlowExecData?.data?.status;
-      const outputDetails = getWorkFlowExecData?.data?.nodeExecutions?.map(
+      const outputDetails = getWorkFlowExecData?.data?.nodeExecutions?.flatMap(
         (nodeExecution: any) => {
-          const nodeId = nodeExecution?.nodeId;
-          const variableName = nodeExecution?.parameters?.variableName;
-          const nodeMasterId = nodeId?._id;
-          const nodeExecutionId = nodeExecution?._id;
-          const value =
-            getWorkFlowExecData?.data?.variables[variableName] || "";
-          const approvalStatus = nodeExecution?.approvalStatus;
-          const approvalRequired = nodeExecution?.parameters?.approvalRequired;
-          const status = nodeExecution?.status;
-          const nodeType = nodeExecution?.nodeId?.type;
-          const socialMediaContent = nodeExecution?.socialMediaContent;
-
-          return {
-            nodeMasterId: nodeMasterId,
-            value: value,
-            title: variableName,
-            approvalStatus: approvalStatus,
-            approvalRequired: approvalRequired,
-            nodeExecutionId: nodeExecutionId,
-            status: status,
-            nodeType: nodeType,
-            socialMediaContent: socialMediaContent,
-          };
+          if (nodeExecution?.nodeId?.type !== "form") {
+            const nodeId = nodeExecution?.nodeId;
+            const variableName = nodeExecution?.parameters?.variableName;
+            const nodeMasterId = nodeId?._id;
+            const nodeExecutionId = nodeExecution?._id;
+            const value =
+              getWorkFlowExecData?.data?.variables[variableName] || "";
+            const approvalStatus = nodeExecution?.approvalStatus;
+            const approvalRequired =
+              nodeExecution?.parameters?.approvalRequired;
+            const status = nodeExecution?.status;
+            const nodeType = nodeExecution?.nodeId?.type;
+            const socialMediaContent = nodeExecution?.socialMediaContent;
+      
+            return {
+              nodeMasterId: nodeMasterId,
+              value: value,
+              title: variableName,
+              approvalStatus: approvalStatus,
+              approvalRequired: approvalRequired,
+              nodeExecutionId: nodeExecutionId,
+              status: status,
+              nodeType: nodeType,
+              socialMediaContent: socialMediaContent,
+            };
+          } else {
+            // Handle form type nodes by mapping over the subNodes and returning results
+            return nodeExecution?.subNodes?.map((data: any) => {
+              const nodeId = nodeExecution?.nodeId;
+              const nodeMasterId = nodeId?._id;
+              const nodeExecutionId = nodeExecution?._id;
+              const variableName = data?.parameters?.variableName;
+              const value =
+                getWorkFlowExecData?.data?.variables[variableName] || "";
+              const approvalStatus = nodeExecution?.approvalStatus;
+              const approvalRequired =
+                nodeExecution?.parameters?.approvalRequired;
+              const status = nodeExecution?.status;
+              const nodeType = nodeExecution?.nodeId?.type;
+              const socialMediaContent = nodeExecution?.socialMediaContent;
+      
+              return {
+                nodeMasterId: nodeMasterId,
+                value: value,
+                title: variableName,
+                approvalStatus: approvalStatus,
+                approvalRequired: approvalRequired,
+                nodeExecutionId: nodeExecutionId,
+                status: status,
+                nodeType: nodeType,
+                socialMediaContent: socialMediaContent,
+              };
+            });
+          }
         }
       );
 
@@ -513,11 +544,44 @@ const Run: React.FC<any> = ({
                                 </div>
                               )}
                             </div>
-                            {matchingOutput?.value && timeline && (
-                              <p className="bg-gray-100 p-4 rounded-lg w-full">
-                                {matchingOutput?.value}
-                              </p>
-                            )}
+                            {input?.type !== "form" &&
+                              matchingOutput?.value &&
+                              timeline && (
+                                <div className="bg-gray-100 p-4 rounded-lg w-full">
+                                  {typeof matchingOutput?.value ===
+                                    "string" && <p>{matchingOutput.value}</p>}
+                                  {typeof matchingOutput?.value ===
+                                    "boolean" && (
+                                    <p>
+                                      {matchingOutput.value ? "True" : "False"}
+                                    </p>
+                                  )}
+                                  {typeof matchingOutput?.value ===
+                                    "number" && <p>{matchingOutput.value}</p>}
+                                  {Array.isArray(matchingOutput?.value) &&
+                                    matchingOutput.value.length > 0 && (
+                                      <ul>
+                                        {matchingOutput.value.map(
+                                          (item, index) => (
+                                            <li key={index}>{item}</li>
+                                          )
+                                        )}
+                                      </ul>
+                                    )}
+                                  {!Array.isArray(matchingOutput?.value) &&
+                                    typeof matchingOutput?.value ===
+                                      "object" && (
+                                      <pre>
+                                        {JSON.stringify(
+                                          matchingOutput.value,
+                                          null,
+                                          2
+                                        )}
+                                      </pre>
+                                    )}
+                                </div>
+                              )}
+
                             {!timeline &&
                               (() => {
                                 switch (input?.type) {
