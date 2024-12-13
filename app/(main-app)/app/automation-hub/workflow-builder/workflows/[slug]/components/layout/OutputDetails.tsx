@@ -77,7 +77,9 @@ const OutputDetails = ({
         toast.error("Something went wrong");
       }
     } finally {
-      setIsRejectLoading(false);
+      setTimeout(() => {
+        setIsRejectLoading(false);
+      }, 7000);
     }
   };
   const handleApprove = async (nodeExecutionId: string) => {
@@ -99,7 +101,9 @@ const OutputDetails = ({
         toast.error("Something went wrong");
       }
     } finally {
-      setIsApproveLoading(false);
+      setTimeout(() => {
+        setIsApproveLoading(false);
+      }, 7000);
     }
   };
 
