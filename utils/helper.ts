@@ -1,4 +1,5 @@
 import { NodeState, VariableNameProps } from "@/types/workflows";
+import { extractParameterValues } from "./dataResolver";
 
 export const calculateNextNodePosition = (
   lastNode: NodeState | undefined,
@@ -67,4 +68,104 @@ export const getInputType = (label: string) => {
     default:
       return "text";
   }
+};
+
+export const prepareNodesPayload = (
+  nodes: NodeState[],
+  workFlowDataId: string
+) => {
+  if (!nodes.length) return [];
+
+  return nodes?.map(node => {
+    const updatedValue = extractParameterValues(node?.data?.parameters);
+    const dependencies = node.data?.dependencies || [];
+
+    const nodePayload: any = {
+      _id: node.id,
+      workflowId: workFlowDataId,
+      nodeMasterId: node.data.nodeMasterId,
+      position: node.position,
+      dependencies: dependencies,
+      parameters: updatedValue,
+      name: node.data.label || "",
+      description: node.data.description || "",
+      type: node.type,
+    };
+
+    if (node.data?.subNodes && node.data.subNodes?.length > 0) {
+      const filteredSubNodes = node.data.subNodes
+        .map(subNode => ({
+          nodeMasterId: subNode.nodeMasterId,
+          parameters: extractParameterValues(subNode.parameters),
+        }))
+        .filter(subNode =>
+          Object.values(subNode.parameters).some((param: any) => {
+            return param;
+          })
+        );
+
+      nodePayload.subNodes =
+        filteredSubNodes.length > 0 ? filteredSubNodes : [];
+    }
+
+    return nodePayload;
+  });
+};
+
+export const isValidEdges = (
+  nodes: NodeState[],
+  sourceId: string,
+  targetId: string
+): boolean => {
+  console.log("sourceId", sourceId);
+  console.log("targetId", targetId);
+
+  const visited = new Set<string>();
+
+  const checkDependencies = (currentId: string): boolean => {
+    // console.log("--step1---", currentId);
+    if (visited.has(currentId)) return true;
+    visited.add(currentId);
+    // console.log("--step2---", currentId);
+    const currentNode = nodes.find(node => node.id === currentId);
+    if (!currentNode) return true;
+    // console.log("--step3---");
+    if (
+      !currentNode.data.dependencies ||
+      currentNode.data.dependencies.length === 0
+    ) {
+      // console.log("--step4---");
+      return true;
+    }
+
+    if (currentNode.data.dependencies.some(dep => dep === targetId)) {
+      return false;
+    }
+    // console.log("--step5---");
+    for (const dep of currentNode.data.dependencies) {
+      // console.log("dep--->", dep);
+      if (!checkDependencies(dep)) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
+  return checkDependencies(sourceId);
+};
+
+export const validateNodes = (nodes: NodeState[]): boolean => {
+  for (const node of nodes) {
+    const requiredParams = Object.entries(node.data.parameters)
+      .filter(([key, param]) => key !== "nextParameter" && param.required)
+      .map(([key, param]) => param);
+
+    const allRequiredParamsFilled = requiredParams.every(param => param?.value);
+
+    if (!allRequiredParamsFilled) {
+      return false;
+    }
+  }
+  return true;
 };

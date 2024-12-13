@@ -21,7 +21,7 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
     <div>
       <Dialog
         open={openDeleteConfirmationModal}
-        onClose={() => onCloseDeleteConfirmationModal()}
+        onClose={() => {}}
         className="relative z-10 bg-white"
       >
         <DialogBackdrop

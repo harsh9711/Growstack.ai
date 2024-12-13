@@ -34,13 +34,19 @@ import {
   addNode,
   clearNodeData,
   createNode,
+  updateNodeDependency,
 } from "@/lib/features/workflow/node.slice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import Run from "@/app/(main-app)/app/automation-hub/workflow-builder/workflows/[slug]/components/layout/RunV2";
 import TimeLineTable from "@/components/timeLineTabel/TimeLineTabel";
-import { convertToUnderscore } from "@/utils/helper";
+import {
+  convertToUnderscore,
+  isValidEdges,
+  prepareNodesPayload,
+} from "@/utils/helper";
 import { resolveWorkflowNodes } from "@/utils/dataResolver";
 import { SnackbarProvider } from "./components/snackbar/SnackbarContext";
+import { debounce } from "lodash";
 
 interface DragEvent extends React.DragEvent<HTMLDivElement> { }
 interface PageProps {
@@ -53,7 +59,11 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
   const dispatch = useAppDispatch();
   const { screenToFlowPosition } = useReactFlow();
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
-  const { nodeData, isAddNodeLoading } = useAppSelector(state => state.nodes);
+  const {
+    nodeData,
+    isAddNodeLoading,
+    nodes: reduxNode,
+  } = useAppSelector(state => state.nodes);
   const { workFlowData } = useAppSelector(state => state.workflows);
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
@@ -64,7 +74,7 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
   const handleViewDetails = (executionId: string) => {
     setSelectedExecutionId(executionId);
     localStorage.setItem("workflowActiveTab", "1");
-    localStorage.setItem('isFromTimeline', 'true');
+    localStorage.setItem("isFromTimeline", "true");
     setActiveTab(1);
     setFromTimeline(true);
   };
@@ -75,6 +85,40 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
     return () => { };
   }, [dispatch, workflow_id]);
 
+
+
+  const saveData = () => {
+    const bodyPayload = {
+      name: workFlowData?.name,
+      description: workFlowData?.description || "",
+      nodes: prepareNodesPayload(reduxNode, workFlowData._id || ""),
+      edges: edges,
+    };
+
+    dispatch(
+      updateWorkFlowById({
+        id: workFlowData._id || "",
+        data: bodyPayload,
+      })
+    );
+  };
+
+  // const debouncedSaveData = debounce(saveData, 2000);
+
+  const debouncedSaveData = useCallback(
+    debounce(saveData, 2000),
+    [edges, reduxNode, workFlowData]
+  );
+
+  useEffect(() => {
+    if (!workFlowData?._id) return;
+    debouncedSaveData();
+
+    return () => {
+      debouncedSaveData.cancel();
+    };
+  }, [edges, reduxNode, workFlowData, debouncedSaveData]);
+
   const getWorkFlowDetails = async () => {
     if (!workflow_id) return;
     try {
@@ -83,6 +127,8 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
       const result = unwrapResult(resultAction);
 
       const updatedNodes = resolveWorkflowNodes(result.nodes);
+
+      console.log("Result--------------->", updatedNodes);
 
       // @ts-ignore
       setNodes(updatedNodes);
@@ -139,47 +185,56 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
         y: event.clientY - reactFlowBounds.top,
       });
 
-      const nodeId = await handleAddNode({
-        workflowId: workflow_id || workFlowData?._id,
-        nodeMasterId: nodeData.id,
-        name: nodeData.data?.label,
-        type: nodeData?.type,
-        description: nodeData.data?.descriptions || "",
-        position,
-        parameters: {},
-      });
+      try {
 
-      const newNode = {
-        ...nodeData,
-        data: {
-          ...nodeData.data,
-          parameters: {
-            ...nodeData.data.parameters,
-            variableName: {
-              ...(nodeData.data.parameters?.variableName ?? {}),
-              value: toolsNodes?.length
-                ? `${convertToUnderscore(nodeData.data.label)}${toolsNodes.length}`
-                : convertToUnderscore(nodeData.data.label),
-              label: nodeData.data.parameters?.variableName?.label || "",
-              type: nodeData.data.parameters?.variableName?.type || "",
-              required:
-                nodeData.data.parameters?.variableName?.required ?? true,
-              placeholder:
-                nodeData.data.parameters?.variableName?.placeholder || "",
-              options: nodeData.data.parameters?.variableName?.options || [],
-              description:
-                nodeData.data.parameters?.variableName?.description || "",
-              error: nodeData.data.parameters?.variableName?.error || "",
+
+
+        const nodeId = await handleAddNode({
+          workflowId: workflow_id || workFlowData?._id,
+          nodeMasterId: nodeData.id,
+          name: nodeData.data?.label,
+          type: nodeData?.type,
+          description: nodeData.data?.descriptions || "",
+          position,
+          parameters: {},
+        });
+
+        if (!nodeId) return;
+
+        const newNode = {
+          ...nodeData,
+          data: {
+            ...nodeData.data,
+            parameters: {
+              ...nodeData.data.parameters,
+              variableName: {
+                ...(nodeData.data.parameters?.variableName ?? {}),
+                value: toolsNodes?.length
+                  ? `${convertToUnderscore(nodeData.data.label)}${toolsNodes.length}`
+                  : convertToUnderscore(nodeData.data.label),
+                label: nodeData.data.parameters?.variableName?.label || "",
+                type: nodeData.data.parameters?.variableName?.type || "",
+                required:
+                  nodeData.data.parameters?.variableName?.required ?? true,
+                placeholder:
+                  nodeData.data.parameters?.variableName?.placeholder || "",
+                options: nodeData.data.parameters?.variableName?.options || [],
+                description:
+                  nodeData.data.parameters?.variableName?.description || "",
+                error: nodeData.data.parameters?.variableName?.error || "",
+              },
             },
           },
-        },
-        id: nodeId,
-        position,
-      };
+          id: nodeId,
+          position,
+        };
 
-      //@ts-ignore
-      setNodes(nds => nds.concat(newNode));
-      dispatch(addNode(newNode));
+        //@ts-ignore
+        setNodes(nds => nds.concat(newNode));
+        dispatch(addNode(newNode));
+      } catch (error: any) {
+        console.log('--errorWhileAddingNode--', error?.message);
+      }
     },
     [screenToFlowPosition, nodeData]
   );
@@ -234,6 +289,18 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
         console.log("Edge already exists, not adding new one");
         return;
       }
+
+      const validEdge = isValidEdges(
+        reduxNode,
+        connectionState.fromNode.id,
+        connectionState.toNode.id
+      );
+      if (!validEdge) {
+        console.log("Invalid edge, not adding edge", validEdge);
+        return;
+      }
+      console.log("connectionState--->", connectionState);
+
       const edgeId = `${[connectionState.fromNode.id, connectionState.toNode.id].sort().join("_")}`;
       const edge: any = {
         id: edgeId,
@@ -243,18 +310,36 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
         sourceHandle: connectionState.fromHandle.id,
         targetHandle: connectionState.toHandle.id,
       };
-      const updatedEdge: any = [...edges, edge];
+      // const updatedEdge: any = [...edges, edge];
 
       dispatch(
-        updateWorkFlowById({
-          id: workflow_id || "",
-          data: {
-            edges: updatedEdge,
-          },
+        updateNodeDependency({
+          sourceId: connectionState.fromNode.id,
+          targetId: connectionState.toNode.id,
         })
       );
 
-      console.log("connectionState", connectionState);
+      // const bodyPayload = {
+      //   name: workFlowData?.name,
+      //   description: workFlowData?.description || "",
+      //   // userId: workFlowData?.userId,
+      //   nodes: prepareNodesPayload(reduxNode, workFlowData._id || ""),
+      //   edges: updatedEdge,
+      // };
+
+      // dispatch(
+      //   updateWorkFlowById({
+      //     id: workflow_id || "",
+      //     data: bodyPayload,
+      //   })
+      // );
+
+      // dispatch(
+      //   updateNodeDependency({
+      //     sourceId: connectionState.fromNode.id,
+      //     targetId: connectionState.toNode.id,
+      //   })
+      // );
 
       setEdges(eds => eds.concat(edge));
     },

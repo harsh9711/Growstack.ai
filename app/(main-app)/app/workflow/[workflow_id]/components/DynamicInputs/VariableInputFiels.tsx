@@ -28,7 +28,7 @@ const VariableInputFields: React.FC<DynamicInputProps> = ({
                     position="bottom-full left-[-23px]"
                 />
             </div>
-            {param && param?.isEditable === false ? (
+            {param && param?.disabled === true ? (
                 <div className="text-box mb-5">
                     <h4 className="text-[#14171B] flex items-center gap-2 font-medium text-sm">
                         <span className="bg-[#FCF4DD] text-[#14171B] text-[12px] rounded-[20px] font-medium pt-3 pb-3 pr-4 pl-4">

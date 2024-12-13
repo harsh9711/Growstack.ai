@@ -6,14 +6,17 @@ import { extractParameterValues } from "@/utils/dataResolver";
 import {
   deleteNodeById,
   removeNodeById,
+  removeNodeDependency,
   updateNodeById,
+  updateNodeDependency,
+  updateNodeDescription,
   updateNodeParameter,
 } from "@/lib/features/workflow/node.slice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { VariableNameProps, WorkflowNodeState } from "@/types/workflows";
 import { getVariableName, isSpecialType } from "@/utils/helper";
 import { useSnackbar } from "../snackbar/SnackbarContext";
-import DeleteConfirmationModal from "../deleteconfirmationmodal/DeleteConfirmationModal";
+import DeleteConfirmationModal from "../modals/deletemodal/DeleteModal";
 
 const ToolsNodes = memo(
   ({
@@ -33,37 +36,36 @@ const ToolsNodes = memo(
 
     const { setNodes } = useReactFlow();
     const dispatch = useAppDispatch();
-    const { variables, isLoading, nodes } = useAppSelector(
+    const { isLoading, nodes } = useAppSelector(
       state => state.nodes
     );
     const { workFlowData } = useAppSelector(state => state.workflows);
     const [isEdit, setIsEdit] = useState(true);
     const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [description, setDescription] = useState(data?.descriptions || "");
     const [shake, setShake] = useState(false);
     const [variableNames, setVariableNames] = useState<VariableNameProps[]>([]);
     const [dependencies, setDependencies] = useState<
       { key: string; nodeId: string }[]
-    >(node?.data.dependencies || []);
+    >([]);
 
     const [focusedInputKey, setFocusedInputKey] = useState<string | null>(null);
 
     // added a code to add parent node id in dependencies
-    useEffect(() => {
-      if (parentId) {
-        setDependencies(prevDependencies => {
-          const newDependency = { key: "parent", nodeId: parentId };
-          const exists = prevDependencies.some(dep => dep.nodeId === parentId);
-          if (exists) {
-            return prevDependencies;
-          }
-          return [...prevDependencies, newDependency];
-        });
-      }
+    // useEffect(() => {
+    //   if (parentId) {
+    //     setDependencies(prevDependencies => {
+    //       const newDependency = { key: "parent", nodeId: parentId };
+    //       const exists = prevDependencies.some(dep => dep.nodeId === parentId);
+    //       if (exists) {
+    //         return prevDependencies;
+    //       }
+    //       return [...prevDependencies, newDependency];
+    //     });
+    //   }
 
-      return () => {};
-    }, [parentId]);
+    //   return () => { };
+    // }, [parentId]);
 
     const handleToggleAdvancedOptions = () => {
       setShowAdvancedOptions(!showAdvancedOptions);
@@ -73,61 +75,121 @@ const ToolsNodes = memo(
       setIsDropdownOpen(!isDropdownOpen);
     };
 
+    // const handleInputChange = useCallback(
+    //   (key: any, type: any, value: any, dependency?: string) => {
+
+    //     if (!isEdit) {
+    //       setShake(true);
+    //       setTimeout(() => setShake(false), 500);
+    //       return;
+    //     }
+
+    //     console.log(
+    //       "key-->",
+    //       key,
+    //       "type-->",
+    //       type,
+    //       "value-->",
+    //       value,
+    //       "dependencies--->",
+    //       dependency
+    //     );
+
+    //     dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
+
+    //     if (!isSpecialType(type)) return;
+
+    //     if (value && value.includes("$")) {
+    //       const index = nodes.findIndex(nds => nds.id === id);
+    //       const variableName = getVariableName(nodes, index);
+    //       console.log("variableName-->", variableName);
+    //       if (dependency) {
+    //         dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
+    //         // setDependencies(prevDependencies => {
+    //         //   const newDependency = { key, nodeId: dependency };
+    //         //   const uniqueDependencies = new Set([
+    //         //     ...prevDependencies,
+    //         //     newDependency,
+    //         //   ]);
+    //         //   return Array.from(uniqueDependencies);
+    //         // });
+    //       }
+    //       const regex = /\$(?!\s*$).+/;
+    //       if (regex.test(value)) {
+    //         setVariableNames([]);
+    //       } else {
+    //         setVariableNames(
+    //           variableName.filter(
+    //             (name): name is VariableNameProps => name !== null
+    //           )
+    //         );
+    //       }
+    //     } else {
+    //       dispatch(removeNodeDependency({ nodeId: id, key }));
+    //       // setDependencies(pre => pre.filter(dep => dep.key !== key));
+    //       setVariableNames([]);
+    //     }
+    //   },
+    //   [dispatch, id, nodes, dependencies, variableNames, isEdit]
+    // );
+
     const handleInputChange = useCallback(
-      (key: any, type: any, value: any, dependency?: string) => {
-
-
+      (key: any, type: any, value: any, dependency: any) => {
         if (!isEdit) {
           setShake(true);
           setTimeout(() => setShake(false), 500);
           return;
         }
 
-        console.log(
-          "key-->",
-          key,
-          "type-->",
-          type,
-          "value-->",
-          value,
-          "dependencies--->",
-          dependency
-        );
+        console.log("key-->", key, "type-->", type, "value-->", value);
+        console.log("dependencies-->", dependency);
 
         dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
 
         if (!isSpecialType(type)) return;
 
-        if (value && value.includes("$")) {
+        const singleDollarRegex = /^\$$/;
+        const validSequenceRegex = /.*\$$/;
+        const invalidPatternRegex = /\$(.*?)\$.*\S/;
+
+        if (singleDollarRegex.test(value)) {
           const index = nodes.findIndex(nds => nds.id === id);
           const variableName = getVariableName(nodes, index);
-          console.log("variableName-->", variableName);
-          if (dependency) {
-            setDependencies(prevDependencies => {
-              const newDependency = { key, nodeId: dependency };
-              const uniqueDependencies = new Set([
-                ...prevDependencies,
-                newDependency,
-              ]);
-              return Array.from(uniqueDependencies);
-            });
-          }
-          const regex = /\$(?!\s*$).+/;
-          if (regex.test(value)) {
-            setVariableNames([]);
-          } else {
-            setVariableNames(
-              variableName.filter(
-                (name): name is VariableNameProps => name !== null
-              )
-            );
-          }
+          setVariableNames(
+            variableName.filter(
+              (name): name is VariableNameProps => name !== null
+            )
+          );
+        } else if (
+          validSequenceRegex.test(value) &&
+          !invalidPatternRegex.test(value)
+        ) {
+          const index = nodes.findIndex(nds => nds.id === id);
+          const variableName = getVariableName(nodes, index);
+
+          setVariableNames(
+            variableName.filter(
+              (name): name is VariableNameProps => name !== null
+            )
+          );
         } else {
-          setDependencies(pre => pre.filter(dep => dep.key !== key));
+          // dispatch(removeNodeDependency({ nodeId: id, key }));
+          // setDependencies(pre => pre.filter(dep => dep.key !== key));
           setVariableNames([]);
         }
+        // if (dependency) {
+        //   // dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
+        //   setDependencies(prevDependencies => {
+        //     const newDependency = { key, nodeId: dependency };
+        //     const uniqueDependencies = new Set([
+        //       ...prevDependencies,
+        //       newDependency,
+        //     ]);
+        //     return Array.from(uniqueDependencies);
+        //   });
+        // }
       },
-      [dispatch, id, nodes, dependencies, variableNames, isEdit]
+      [dispatch, id, nodes, variableNames, isEdit, shake]
     );
 
     const handleNextClick = async () => {
@@ -164,7 +226,8 @@ const ToolsNodes = memo(
             workflowId: workFlowData._id,
             nodeMasterId: node.data.nodeMasterId,
             position: { x: positionAbsoluteX, y: positionAbsoluteY },
-            dependencies: dependencies.map(dps => dps.nodeId),
+            // dependencies: dependencies.map(dps => dps.nodeId),
+            dependencies: node.data?.dependencies || [],
             parameters: updatedValue,
           };
 
@@ -200,12 +263,6 @@ const ToolsNodes = memo(
       }
     };
 
-    const handleChange = (event: {
-      target: { value: React.SetStateAction<string> };
-    }) => {
-      setDescription(event.target.value);
-    };
-
     const handleInput = (event: { target: any }) => {
       const textarea = event.target;
       textarea.style.height = "auto";
@@ -220,7 +277,8 @@ const ToolsNodes = memo(
       setNodes(nds => nds.filter(nds => nds.id !== id));
       dispatch(removeNodeById(id));
       dispatch(deleteNodeById(id));
-      success("Node delete successfully");
+      // success("The node has been successfully deleted");
+      success(`The ${data?.label} node has been successfully deleted`);
     };
 
     // ON CLICK OPEN & CLOSE ACTION MODAL
@@ -265,18 +323,24 @@ const ToolsNodes = memo(
         <section className="node-box relative">
           <div className="node-top-box relative">
             <div className="node-name-text-description text-center mb-5">
-              <h4 className="text-sm font-medium text-[#2DA771]">
+              <h4 className="text-sm font-medium text-[#2DA771] w-[150px]">
                 {" "}
                 {data?.label || ""}
               </h4>
-
               <textarea
-                value={description}
-                onChange={handleChange}
+                value={node?.data?.description || ""}
                 onInput={handleInput}
                 className="resize-none text-xs text-center font-medium text-[#14171B] bg-transparent border-transparent focus:border-transparent focus:ring-0 focus:outline-none"
                 placeholder="Enter description"
                 rows={1}
+                onChange={e => {
+                  dispatch(
+                    updateNodeDescription({
+                      nodeId: id,
+                      value: e.target.value,
+                    })
+                  );
+                }}
               />
             </div>
 
@@ -291,7 +355,7 @@ const ToolsNodes = memo(
                   <img
                     src={data.icon}
                     alt={data.label}
-                    className="w-[30px] mx-auto absolute top-[55px] left-0 right-0"
+                    className="w-[30px] absolute left-0 right-0 mx-auto top-1/2 transform  -translate-y-1/2"
                   />
                 )}
               </div>
@@ -334,7 +398,7 @@ const ToolsNodes = memo(
                 </div>
               </div>
 
-              <div className="node-edge absolute top-1/2 transform -translate-y-1/2 right-[-65px] flex items-center">
+              <div className="node-edge absolute top-1/2 transform -translate-y-1/2 right-[-70px] flex items-center">
                 <div className="h-px border-t-2 border-dashed border-[#2DA771] w-[65px] mr-1">
                   <Handle
                     id={`${id}-source`}
@@ -398,7 +462,7 @@ const ToolsNodes = memo(
 
               <div className="form-box">
                 {node?.data?.parameters &&
-                  Object.entries(node.data.parameters)
+                  Object.entries(node?.data?.parameters)
                     .filter(
                       ([key, param]: any) =>
                         param.required || showAdvancedOptions

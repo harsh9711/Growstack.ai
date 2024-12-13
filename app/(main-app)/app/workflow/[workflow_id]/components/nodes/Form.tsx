@@ -15,7 +15,7 @@ import {
 } from "@/lib/features/workflow/node.slice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { extractParameterValues } from "@/utils/dataResolver";
-import DeleteConfirmationModal from "../deleteconfirmationmodal/DeleteConfirmationModal";
+import DeleteConfirmationModal from "../modals/deletemodal/DeleteModal";
 import { useSnackbar } from "../snackbar/SnackbarContext";
 
 interface OptionsProps {
@@ -156,7 +156,8 @@ const Form = ({
     setNodes(nds => nds.filter(nds => nds.id !== id));
     dispatch(removeNodeById(id));
     dispatch(deleteNodeById(id));
-    success("Node delete successfully");
+    // success("The node has been successfully deleted");
+    success(`The ${data?.label} node has been successfully deleted`);
   };
 
   const handleDeleteSubNode = async (index: number, nodeMasterId: string) => {
@@ -314,7 +315,6 @@ const Form = ({
     handleUpdateOptions();
   }, [currentSubNodes]);
 
-  console.log("updatedOptions", updatedOptions)
 
   return (
     <div>
@@ -532,7 +532,7 @@ const Form = ({
                           </div>
                         )}
                       </div>
-                      
+
                       <div className="advance-option-button-box mb-3">
                         <button
                           onClick={() =>
@@ -555,8 +555,8 @@ const Form = ({
                       onClick={handleNextClick}
                       className="bg-[#2DA771] text-white text-sm font-medium p-3 w-full rounded-[10px]"
                       disabled={node ? loadingNodes[node.data.nodeMasterId] : false}
-                      >
-                      { node && loadingNodes[node.data.nodeMasterId]? (
+                    >
+                      {node && loadingNodes[node.data.nodeMasterId] ? (
                         <div className="flex justify-center items-center">
                           <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
                         </div>

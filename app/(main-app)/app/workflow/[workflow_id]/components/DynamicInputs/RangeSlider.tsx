@@ -35,12 +35,13 @@ const RangeSlider: React.FC<DynamicInputProps> = ({
           min="0"
           max="1"
           step="0.1"
-          value={param?.value || 0}
+          value={param?.value || 0.7}
           onChange={handleSliderChange}
           onMouseDown={stopNodeDrag}
           onTouchStart={stopNodeDrag}
           className="w-full"
         />
+        
 
         <div className="range-text flex items-center justify-between">
           <span className="text-[12px] font-medium text-[#5B5D60]">0</span>

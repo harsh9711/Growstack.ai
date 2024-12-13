@@ -40,9 +40,9 @@ export interface NodeDataState {
   dynamicParams?: string[];
   icon?: string;
   subNodes?: SubNodeProps[];
-  descriptions?: string;
-  dependencies?: { key: string; nodeId: string }[];
-  parameters?: {
+  description?: string;
+  dependencies?: string[];
+  parameters: {
     [key: string]: NodeParameter;
   };
 }
@@ -115,6 +115,7 @@ export interface WorkflowNodeState {
   nodeMasterId: string;
   position: PositionState;
   type: string;
+  description?: string;
   parameters: {
     [key: string]: NodeParameter;
   };
@@ -145,6 +146,7 @@ export interface WorkflowDataState {
   _id?: string;
   name?: string;
   description?: string;
+  userId?: string;
   nodes?: WorkflowNodeState[];
   status?: string;
   createdAt?: Date;

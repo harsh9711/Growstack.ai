@@ -3,7 +3,7 @@
 import instance, { CustomAxiosInstance } from "@/config/axios.config";
 import Image from "next/image";
 import "aos/dist/aos.css";
-import { Fragment, useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react"; // Headless UI for dropdown
 import { useRouter } from "next/navigation";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -17,6 +17,7 @@ import {
   ChevronRight,
   CircleHelp,
   Copy,
+  Edit,
   LayoutDashboard,
   MessageSquareOff,
   Plus,
@@ -43,9 +44,27 @@ export default function Dashboard() {
   const [preBuiltTemplates, setPreBuiltTemplates] = useState<
     PreBuiltTemplate[]
   >([]);
-  const [activeTab, setActiveTab] = useState<string>("templates");
+  const [activeTab, setActiveTab] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState("");
+
+  const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [hasPreviousPage, setHasPreviousPage] = useState(false);
+  const isLoadingRef = useRef(isLoading);
+  const hasMoreRef = useRef(hasMore);
+  const throttleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    const activeTabName = localStorage.getItem("activeTab");
+    if (activeTabName) {
+      setActiveTab(activeTabName);
+      localStorage.removeItem("activeTab");
+    } else {
+      setActiveTab("templates");
+    }
+  }, []);
 
   const getPreBuiltTemplates = async () => {
     try {
@@ -56,21 +75,46 @@ export default function Dashboard() {
       // const response = await CustomAxiosInstance().get(
       //   `/workflow?isPrebuilt=true`
       // );
-      setPreBuiltTemplates(response.data);
-    } catch (error) {
+      setPreBuiltTemplates(prevItems => [
+        ...(Array.isArray(prevItems) ? prevItems : []),
+        ...response?.data?.data,
+      ]);
+      setHasPreviousPage(response?.data?.pagination?.hasPreviousPage);
+    } catch (error: any) {
+      if (error?.response) {
+        toast.error(error?.response?.data?.error);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("Something went wrong");
+      }
       console.error("Error fetching pre-built templates:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  const getUserSavedWorkflows = async () => {
+  const getUserSavedWorkflows = async (page: number = 1) => {
     try {
       setLoading(true);
-      // const response = await axios.get(`http://localhost:5000/workflow`);
-      const response = await instance.get(`/workflow`);
-      setPreBuiltTemplates(response.data);
-    } catch (error) {
+      const response = await instance.get(`/workflow?page=${page}&limit=20`);
+      if (response.data.length === 0) {
+        setHasMore(false);
+      } else {
+        setPreBuiltTemplates(prevItems => [
+          ...(Array.isArray(prevItems) ? prevItems : []),
+          ...response?.data?.data,
+        ]);
+        setHasPreviousPage(response?.data?.pagination?.hasPreviousPage);
+      }
+    } catch (error: any) {
+      if (error?.response) {
+        toast.error(error?.response?.data?.error);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("Something went wrong");
+      }
       console.error("Error fetching pre-built templates:", error);
     } finally {
       setLoading(false);
@@ -78,12 +122,50 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    if (activeTab === "templates") getPreBuiltTemplates();
-    if (activeTab === "workflows") getUserSavedWorkflows();
-  }, [activeTab]);
+    isLoadingRef.current = isLoading;
+    hasMoreRef.current = hasMore;
+  }, [isLoading, hasMore]);
+
+  useEffect(() => {
+    const loadItems = async () => {
+      setIsLoading(true);
+      if (activeTab === "templates") {
+        await getPreBuiltTemplates();
+      }
+      if (activeTab === "workflows") {
+        await getUserSavedWorkflows(page);
+      }
+      setIsLoading(false);
+    };
+
+    loadItems();
+  }, [page, activeTab]);
+
+  const handleScroll = () => {
+    if (throttleTimer.current) {
+      return;
+    }
+
+    throttleTimer.current = setTimeout(() => {
+      throttleTimer.current = null; // Reset throttle after delay
+      const { scrollTop, scrollHeight, clientHeight } =
+        document.documentElement;
+      if (scrollTop + clientHeight >= scrollHeight - 100) {
+        if (!isLoadingRef.current && hasMoreRef.current && !hasPreviousPage) {
+          setPage(prevPage => prevPage + 1);
+        }
+      }
+    }, 300);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const handleCreateWorkflow = async () => {
     try {
+      localStorage.removeItem("workflowActiveTab");
       const resultAction = await dispatch(
         createWorkFlow({ name: "Untitled workflow" })
       );
@@ -115,9 +197,16 @@ export default function Dashboard() {
         const response = await instance.get(
           `/workflow/search?keyword=${queryParams}`
         );
-         
-          setPreBuiltTemplates(response.data); // Update results with API response
-      } catch (error) {
+
+        setPreBuiltTemplates(response.data); // Update results with API response
+      } catch (error: any) {
+        if (error?.response) {
+          toast.error(error?.response?.data?.error);
+        } else if (error?.message) {
+          toast.error(error?.message);
+        } else {
+          toast.error("Something went wrong");
+        }
         console.error("Error fetching search results:", error);
       } finally {
         setLoading(false);
@@ -177,6 +266,7 @@ export default function Dashboard() {
                   onClick={() => {
                     setActiveTab("templates");
                     setSearchQuery("");
+                    setPreBuiltTemplates([]);
                   }}
                 >
                   <div className="flex items-center gap-3 px-3 py-2">
@@ -199,6 +289,7 @@ export default function Dashboard() {
                     onClick={() => {
                       setActiveTab("workflows");
                       setSearchQuery("");
+                      setPreBuiltTemplates([]);
                     }}
                   >
                     <Waypoints />
@@ -252,7 +343,7 @@ export default function Dashboard() {
             <div className="mt-10">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {preBuiltTemplates?.length > 0
-                  ? preBuiltTemplates.map(template => (
+                  ? preBuiltTemplates?.map(template => (
                       <Card
                         key={template._id}
                         title={template.name}
@@ -261,7 +352,7 @@ export default function Dashboard() {
                         workflow_id={template._id}
                         activeTab={activeTab}
                         setLoading={setLoading}
-                        refetchWorkflow={getPreBuiltTemplates}
+                        refetchWorkflow={getUserSavedWorkflows}
                       />
                     ))
                   : loading &&
@@ -335,14 +426,22 @@ const Card: React.FC<CardProps> = ({
       const response = await instance.post(
         `/workflow/${workflow_id}/duplicate`
       );
+      setIsModalOpen({ isOpen: false, type: "duplicate" });
+      localStorage.removeItem("workflowActiveTab");
+      router.push(`/app/workflow/${response?.data?._id}`);
+
       // const response = await instance.post(
       //   `/workflow/${workflow_id}/duplicate`
       // );
     } catch (error: any) {
       console.error("Error duplicating workflow:", error);
-      toast.error(
-        error?.response?.data?.error || "Failed to duplicate workflow"
-      );
+      if (error?.response) {
+        toast.error(error?.response?.data?.error);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("Failed to duplicate workflow");
+      }
     } finally {
       setLoading(false);
     }
@@ -363,12 +462,19 @@ const Card: React.FC<CardProps> = ({
   const handleDeleteClick = async () => {
     setLoading(true);
     try {
-      // const response = await CustomAxiosInstance().delete(
-      //   `/workflow/delete/${workflow_id}`
+      // const response = await axios.delete(
+      //   `/workflow/${workflow_id}`
       // );
-
-      const response = await instance.delete(`/workflow/delete/${workflow_id}`);
+      const response = await instance.delete(`/workflow/${workflow_id}`);
+      setIsModalOpen({ isOpen: false, type: "delete" });
     } catch (error: any) {
+      if (error?.response) {
+        toast.error(error?.response?.data?.error);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("Something went wrong");
+      }
       console.error("Error deleting workflow:", error);
     } finally {
       setLoading(false);
@@ -386,6 +492,13 @@ const Card: React.FC<CardProps> = ({
         `/workflow/unpublish/${workflow_id}`
       );
     } catch (error: any) {
+      if (error?.response) {
+        toast.error(error?.response?.data?.error);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("Something went wrong");
+      }
       console.error("Error unpublish workflow:", error);
     } finally {
       setLoading(false);
@@ -427,9 +540,10 @@ const Card: React.FC<CardProps> = ({
                         e.preventDefault();
                         e.stopPropagation();
                         handleEditClick();
+                        localStorage.removeItem("workflowActiveTab")
                       }}
                     >
-                      <Copy size={16} color="#9e9e9e" />
+                      <Edit size={16} color="#9e9e9e" />
                       Edit
                     </button>
                   </MenuItem>

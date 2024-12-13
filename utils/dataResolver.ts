@@ -67,10 +67,11 @@ export const getTypeFromParam = (paramType: string): string => {
 export const extractParameterValues = (parameters: { [key: string]: any }) => {
   const result: { [key: string]: string } = {};
 
-  console.log(parameters, "extractParameterValues");
-
-  Object.entries(parameters).forEach(([key, param]) => {
-    result[key] = param.value;
+  Object?.entries(parameters).forEach(([key, param]) => {
+    if (key !== "nextParameter") {
+      result[key] = param.value;
+    }
+    // result[key] = param.value;
   });
 
   return result;
@@ -221,39 +222,39 @@ export const resolveWorkflowNodes = (nodes?: WorkflowNodeState[]) => {
           })
         : node.subNodes;
 
-    const dependencies: { key: string; nodeId: string }[] = [];
+    // const dependencies: { key: string; nodeId: string }[] = [];
 
-    if (node?.parameters) {
-      Object.entries(node?.parameters)?.forEach(([key, param]) => {
-        // console.log("param----->value", param);
-        // console.log("param----->key", key);
-        const value = param;
-        if (typeof value === "string") {
-          const regex = /\$\{([^}]+)\}/;
-          const match = param?.match(regex);
-          // console.log("match----->", match);
-          if (match && match?.length > 0) {
-            const variableName = match[1];
-            // console.log("--variableName--", variableName);
-            const uniqueDependencies = new Set(
-              dependencies.map(dep => `${dep.key}-${dep.nodeId}`)
-            );
-            nodes.forEach(n => {
-              Object.entries(n.parameters || {}).forEach(([k, p]) => {
-                console.log("p.variableName", p);
-                if (p === variableName) {
-                  const dependencyKey = `${key}-${n._id}`;
-                  if (!uniqueDependencies.has(dependencyKey)) {
-                    dependencies.push({ key, nodeId: n._id });
-                    uniqueDependencies.add(dependencyKey);
-                  }
-                }
-              });
-            });
-          }
-        }
-      });
-    }
+    // if (node?.parameters) {
+    //   Object.entries(node?.parameters)?.forEach(([key, param]) => {
+    //     // console.log("param----->value", param);
+    //     // console.log("param----->key", key);
+    //     const value = param;
+    //     if (typeof value === "string") {
+    //       const regex = /\$\{([^}]+)\}/;
+    //       const match = param?.match(regex);
+    //       // console.log("match----->", match);
+    //       if (match && match?.length > 0) {
+    //         const variableName = match[1];
+    //         // console.log("--variableName--", variableName);
+    //         const uniqueDependencies = new Set(
+    //           dependencies.map(dep => `${dep.key}-${dep.nodeId}`)
+    //         );
+    //         nodes.forEach(n => {
+    //           Object.entries(n.parameters || {}).forEach(([k, p]) => {
+    //             console.log("p.variableName", p);
+    //             if (p === variableName) {
+    //               const dependencyKey = `${key}-${n._id}`;
+    //               if (!uniqueDependencies.has(dependencyKey)) {
+    //                 dependencies.push({ key, nodeId: n._id });
+    //                 uniqueDependencies.add(dependencyKey);
+    //               }
+    //             }
+    //           });
+    //         });
+    //       }
+    //     }
+    //   });
+    // }
 
     return {
       id: node._id,
@@ -266,9 +267,10 @@ export const resolveWorkflowNodes = (nodes?: WorkflowNodeState[]) => {
         dynamicParams: (node.nodeMasterId as any)?.dynamicParams || [],
         functionToExecute: (node.nodeMasterId as any)?.functionToExecute,
         label: (node.nodeMasterId as any)?.name,
-        description: (node.nodeMasterId as any)?.description,
+        // description: (node.nodeMasterId as any)?.description,
+        description: node?.description || "",
         icon: (node.nodeMasterId as any)?.logoUrl,
-        dependencies: dependencies,
+        dependencies: node.dependencies || [],
         // node?.dependencies?.map(item => ({
         //   key: "",
         //   nodeId: item,

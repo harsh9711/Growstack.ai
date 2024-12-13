@@ -83,11 +83,68 @@ const nodeSlice = createSlice({
     },
 
     addNode: (state, action: PayloadAction<NodeState>) => {
+      if (Array.isArray(action.payload) && !action.payload.length) return;
       if (Array.isArray(action.payload) && action.payload.length > 0) {
         state.nodes = action.payload;
         return;
       }
       state.nodes.push(action.payload);
+    },
+
+    updateNodeDescription: (
+      state,
+      action: PayloadAction<{ nodeId: string; value: string }>
+    ) => {
+      const { nodeId, value } = action.payload;
+      const nodeResult = state.nodes.find(nds => nds.id === nodeId);
+      if (nodeResult) {
+        nodeResult.data.description = value;
+      }
+    },
+
+    updateNodeDependency: (
+      state,
+      action: PayloadAction<{
+        sourceId: string;
+        targetId: string;
+      }>
+    ) => {
+      const { sourceId, targetId } = action.payload;
+      const nodeResult = state.nodes.find(node => node.id === targetId);
+      if (nodeResult) {
+        if (!nodeResult.data.dependencies) {
+          nodeResult.data.dependencies = [];
+        }
+        nodeResult.data.dependencies.push(sourceId);
+        nodeResult.data.dependencies = [
+          ...Array.from(new Set(nodeResult.data.dependencies)),
+        ];
+        // console.log(
+        //   "----nodeResultAdd---->",
+        //   JSON.stringify(nodeResult, null, 2)
+        // );
+      }
+    },
+
+    removeNodeDependency: (
+      state,
+      action: PayloadAction<{
+        sourceId: string;
+        targetId: string;
+      }>
+    ) => {
+      const { sourceId, targetId } = action.payload;
+      const nodeResult = state.nodes.find(node => node.id === targetId);
+
+      if (nodeResult && nodeResult.data?.dependencies) {
+        nodeResult.data.dependencies = nodeResult.data.dependencies.filter(
+          dep => dep !== sourceId
+        );
+        // console.log(
+        //   "----nodeResultRemove---->",
+        //   JSON.stringify(nodeResult, null, 2)
+        // );
+      }
     },
 
     updateNodeParameter: (
@@ -419,6 +476,16 @@ const nodeSlice = createSlice({
 
     removeNodeById: (state, action: PayloadAction<string>) => {
       state.nodes = state.nodes.filter(node => node.id !== action.payload);
+
+      state.nodes?.forEach(node => {
+        if (node.data.dependencies) {
+          node.data.dependencies = node.data?.dependencies?.filter(
+            dep => dep !== action.payload
+          );
+        }
+      });
+
+      console.log("----state.nodes----", JSON.stringify(state.nodes, null, 2));
     },
   },
 
@@ -471,10 +538,13 @@ export const {
   clearNodeData,
   removeNode,
   updateNode,
+  updateNodeDependency,
+  removeNodeDependency,
   removeNodeById,
   addVariable,
   updateNodeParameter,
   updateSubNodeParameter,
   resetSubNodeParameter,
   addDynamicParameterToNode,
+  updateNodeDescription,
 } = nodeSlice.actions;
