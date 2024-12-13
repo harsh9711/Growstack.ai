@@ -83,12 +83,69 @@ const nodeSlice = createSlice({
     },
 
     addNode: (state, action: PayloadAction<NodeState>) => {
-      if (Array.isArray(action.payload) && !action.payload.length) return;
-      if (Array.isArray(action.payload) && action.payload.length > 0) {
-        state.nodes = action.payload;
+      // if (Array.isArray(action.payload) && !action.payload.length) return;
+      // if (Array.isArray(action.payload) && action.payload.length > 0) {
+      //   state.nodes = action.payload;
+      //   return;
+      // }
+      // state.nodes.push(action.payload);
+
+      const payload = action.payload;
+
+      if (Array.isArray(payload)) {
+        if (payload.length === 0) return;
+        state.nodes = payload;
         return;
       }
-      state.nodes.push(action.payload);
+
+      state.nodes.push(payload);
+
+      // if (payload.data.label === "Generate Image") {
+      //   const { model, numberOfImages, quality, prompt, style, size } =
+      //     payload.data.parameters;
+
+      //   payload.data.parameters = {
+      //     ...payload.data.parameters,
+      //     model: {
+      //       ...model,
+      //       value: "dall-e-3",
+      //     },
+      //     numberOfImages: {
+      //       ...numberOfImages,
+      //       value: 1,
+      //       disabled: true,
+      //     },
+      //     quality: {
+      //       ...quality,
+      //       value: "hd",
+      //     },
+      //     prompt: {
+      //       ...prompt,
+      //       maxLength: 4000,
+      //     },
+      //     style: {
+      //       ...style,
+      //       value: "vivid",
+      //     },
+      //     size: {
+      //       ...size,
+      //       options: [
+      //         {
+      //           label: "1024x1024",
+      //           value: "1024x1024",
+      //         },
+      //         {
+      //           label: "1792x1024",
+      //           value: "1792x1024",
+      //         },
+      //         {
+      //           label: "1024x1792",
+      //           value: "1024x1792",
+      //         },
+      //       ],
+      //     },
+      //   };
+      // }
     },
 
     updateNodeDescription: (
@@ -232,6 +289,121 @@ const nodeSlice = createSlice({
           } else {
             console.error(`Variable name key not found in node ${nodeId}`);
           }
+        }
+
+        if (nodeResult.data.label === "Generate Image") {
+          const { model, numberOfImages, quality, prompt, size, style } =
+            nodeResult.data.parameters;
+
+          if (key === "model") {
+            switch (model?.value) {
+              case "dall-e-2":
+                numberOfImages.maxValue = 10;
+                numberOfImages.disabled = false;
+                quality.value = "standard";
+                quality.disabled = true;
+                prompt.maxLength = 1000;
+                style.value = "";
+                style.disabled = true;
+                size.value = "";
+                size.options = [
+                  {
+                    label: "256x256",
+                    value: "256x256",
+                  },
+                  {
+                    label: "512x512",
+                    value: "512x512",
+                  },
+                  {
+                    label: "1024x1024",
+                    value: "1024x1024",
+                  },
+                ];
+                break;
+
+              case "dall-e-3":
+                numberOfImages.value = 1;
+                numberOfImages.disabled = true;
+                quality.disabled = false;
+                quality.value = "hd";
+                style.value = "vivid";
+                size.value = "";
+                style.disabled = false;
+                prompt.maxLength = 4000;
+                size.options = [
+                  {
+                    label: "1024x1024",
+                    value: "1024x1024",
+                  },
+                  {
+                    label: "1792x1024",
+                    value: "1792x1024",
+                  },
+                  {
+                    label: "1024x1792",
+                    value: "1024x1792",
+                  },
+                ];
+                break;
+
+              default:
+                break;
+            }
+          }
+
+          // switch (model?.value) {
+          //   case "dall-e-2":
+          //     numberOfImages.maxValue = 10;
+          //     quality.value = "standard";
+          //     quality.disabled = true;
+          //     prompt.maxLength = 1000;
+          //     style.value = "";
+          //     style.disabled = true;
+          //     size.options = [
+          //       {
+          //         label: "256x256",
+          //         value: "256x256",
+          //       },
+          //       {
+          //         label: "512x512",
+          //         value: "512x512",
+          //       },
+          //       {
+          //         label: "1024x1024",
+          //         value: "1024x1024",
+          //       },
+          //     ];
+          //     break;
+
+          //   case "dall-e-3":
+          //     numberOfImages.value = 1;
+          //     numberOfImages.disabled = true;
+          //     quality.disabled = false;
+          //     // quality.value = "hd";
+          //     // style.value = "vivid";
+          //     // size.value = "";
+          //     style.disabled = false;
+          //     prompt.maxLength = 4000;
+          //     size.options = [
+          //       {
+          //         label: "1024x1024",
+          //         value: "1024x1024",
+          //       },
+          //       {
+          //         label: "1792x1024",
+          //         value: "1792x1024",
+          //       },
+          //       {
+          //         label: "1024x1792",
+          //         value: "1024x1792",
+          //       },
+          //     ];
+          //     break;
+
+          //   default:
+          //     break;
+          // }
         }
       } else {
         console.error(`Node with id ${nodeId} not found`);
@@ -484,8 +656,6 @@ const nodeSlice = createSlice({
           );
         }
       });
-
-      console.log("----state.nodes----", JSON.stringify(state.nodes, null, 2));
     },
   },
 

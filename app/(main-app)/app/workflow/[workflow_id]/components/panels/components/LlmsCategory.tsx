@@ -1,12 +1,16 @@
 import React from "react";
 import Image from "next/image";
-import { addNode, addNodeData, createNode, removeNode } from "@/lib/features/workflow/node.slice";
+import {
+    addNode,
+    addNodeData,
+    createNode,
+    removeNode,
+} from "@/lib/features/workflow/node.slice";
 import { NodeState } from "@/types/workflows";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { convertNodeData } from "@/utils/dataResolver";
 import { calculateNextNodePosition } from "@/utils/helper";
 import { unwrapResult } from "@reduxjs/toolkit";
-
 
 const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
     const dispatch = useAppDispatch();
@@ -17,9 +21,10 @@ const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
         return <div>Data not found</div>;
     }
 
-    const llmsData = masterNode?.filter(item => item.category.toLocaleLowerCase() === "llms");
+    const llmsData = masterNode?.filter(
+        item => item.category.toLocaleLowerCase() === "llms"
+    );
     const modifiedNodes = llmsData.map(convertNodeData);
-
 
     const groupedModels = modifiedNodes.reduce(
         (acc: { [key: string]: typeof modifiedNodes }, model) => {
@@ -58,6 +63,53 @@ const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
                 position: { x: nextNodeX, y: nextNodeY },
             };
 
+            if (newNode.data.label === "Generate Image") {
+                const { model, numberOfImages, quality, prompt, style, size } = newNode
+                    .data.parameters as unknown as any;
+
+                newNode.data.parameters = {
+                    ...newNode.data.parameters,
+                    model: {
+                        ...model,
+                        value: "dall-e-3",
+                    },
+                    numberOfImages: {
+                        ...numberOfImages,
+                        value: 1,
+                        disabled: true,
+                    },
+                    quality: {
+                        ...quality,
+                        value: "hd",
+                    },
+                    prompt: {
+                        ...prompt,
+                        maxLength: 4000,
+                    },
+                    style: {
+                        ...style,
+                        value: "vivid",
+                    },
+                    size: {
+                        ...size,
+                        options: [
+                            {
+                                label: "1024x1024",
+                                value: "1024x1024",
+                            },
+                            {
+                                label: "1792x1024",
+                                value: "1792x1024",
+                            },
+                            {
+                                label: "1024x1792",
+                                value: "1024x1792",
+                            },
+                        ],
+                    },
+                };
+            }
+
             setNodes((nds: NodeState[]) => nds.concat(newNode));
             dispatch(addNode(newNode));
         } catch (error) {
@@ -65,12 +117,10 @@ const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
         }
     };
 
-
     const handleDragStart = (event: React.DragEvent, item: NodeState) => {
         dispatch(addNodeData(item));
         event.dataTransfer.effectAllowed = "move";
     };
-
 
     return (
         <div className="absolute w-[470px] h-[500px] top-[120px] rounded-2xl overflow-y-auto backdrop-blur-sm drop-shadow-2xl">
@@ -98,7 +148,6 @@ const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
 
                     <hr className="border-0 border-t border-gray-300 my-5" />
                 </div>
-
 
                 <div className="flex flex-wrap h-full overflow-y-auto">
                     {Object.keys(groupedModels).map((subCategory, index) => (

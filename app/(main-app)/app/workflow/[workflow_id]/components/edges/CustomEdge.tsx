@@ -45,6 +45,7 @@ const CustomEdge = ({
 
     const handleEdgeClick = () => {
         setEdges((edges: any[]) => {
+            console.log('---edges---', edges);
             console.log('source====>', source);
             console.log('target====>', target);
             const updatedEdges = edges.filter((edge) => edge.id !== id);

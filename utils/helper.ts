@@ -4,7 +4,7 @@ import { extractParameterValues } from "./dataResolver";
 export const calculateNextNodePosition = (
   lastNode: NodeState | undefined,
   maxX: number = 1600,
-  offsetX: number = 250,
+  offsetX: number = 400,
   offsetY: number = 200
 ) => {
   let nextNodeX = offsetX;
@@ -27,18 +27,53 @@ export const convertToUnderscore = (value: string): string => {
   return value.toLowerCase().replace(/\s+/g, "_");
 };
 
+// export const getVariableName = (nodes: NodeState[], position: number) => {
+//   if (!nodes.length || position < 0 || position >= nodes.length) return [];
+
+//   const nodeVariables = nodes
+//     .filter((_, index) => index !== position)
+//     .map(nds => {
+//       const variableValue = nds.data?.parameters?.variableName?.value;
+//       return variableValue
+//         ? { nodeId: nds.id, variableName: variableValue }
+//         : null;
+//     })
+//     .filter(Boolean);
+
+//   if (!nodeVariables.length) return [] as VariableNameProps[];
+
+//   return nodeVariables;
+// };
+
 export const getVariableName = (nodes: NodeState[], position: number) => {
   if (!nodes.length || position < 0 || position >= nodes.length) return [];
 
   const nodeVariables = nodes
     .filter((_, index) => index !== position)
-    .map(nds => {
-      const variableValue = nds.data?.parameters?.variableName?.value;
-      return variableValue
-        ? { nodeId: nds.id, variableName: variableValue }
+    .flatMap(nds => {
+      const mainNodeVariable = nds.data?.parameters?.variableName?.value
+        ? {
+            nodeId: nds.id,
+            variableName: nds.data.parameters.variableName.value,
+          }
         : null;
-    })
-    .filter(Boolean);
+
+      const subNodeVariables =
+        nds.data?.subNodes
+          ?.flatMap(subNode => {
+            const subNodeVariableValue =
+              subNode.parameters?.variableName?.value;
+            return subNodeVariableValue
+              ? {
+                  nodeId: subNode.nodeMasterId,
+                  variableName: subNodeVariableValue,
+                }
+              : null;
+          })
+          .filter(Boolean) || [];
+
+      return [mainNodeVariable, ...subNodeVariables].filter(Boolean);
+    });
 
   if (!nodeVariables.length) return [] as VariableNameProps[];
 
@@ -155,16 +190,20 @@ export const isValidEdges = (
   return checkDependencies(sourceId);
 };
 
-export const validateNodes = (nodes: NodeState[]): boolean => {
+export const validateNodes = (nodes: NodeState[]) => {
   for (const node of nodes) {
     const requiredParams = Object.entries(node.data.parameters)
       .filter(([key, param]) => key !== "nextParameter" && param.required)
       .map(([key, param]) => param);
 
     const allRequiredParamsFilled = requiredParams.every(param => param?.value);
-
+    console.log("requiredParams", requiredParams);
     if (!allRequiredParamsFilled) {
-      return false;
+      return {
+        isValid: false,
+        node: node,
+        missingParams: requiredParams.filter(param => !param.value),
+      };
     }
   }
   return true;

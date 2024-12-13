@@ -29,10 +29,9 @@ const GeneralInputNodes = memo(
 
     console.log("id-->", id);
 
-    const { setNodes } = useReactFlow();
+    const { setNodes, setEdges } = useReactFlow();
     const dispatch = useAppDispatch();
     const { success } = useSnackbar();
-
     const { workFlowData } = useAppSelector(state => state.workflows);
     const { isLoading } = useAppSelector(state => state.nodes);
     const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
@@ -73,7 +72,7 @@ const GeneralInputNodes = memo(
       if (allRequiredParamsFilled) {
         const updatedValue = extractParameterValues(node.data.parameters);
         setLoadingNode(true);
-        console.log("updatedValue-->", updatedValue);
+        // console.log("updatedValue-->", updatedValue);
 
         dispatch(
           addVariable({
@@ -134,8 +133,8 @@ const GeneralInputNodes = memo(
         requiredParams.forEach(param => {
           const key = node?.data?.parameters
             ? Object.keys(node.data.parameters).find(
-                k => node.data.parameters?.[k] === param
-              )
+              k => node.data.parameters?.[k] === param
+            )
             : undefined;
           if (key && !param.value) {
             dispatch(
@@ -157,9 +156,15 @@ const GeneralInputNodes = memo(
 
     const handleDeleteNode = () => {
       setNodes(nds => nds.filter(nds => nds.id !== id));
+      setEdges((edges: any[]) => {
+        const updatedEdges = edges.filter(
+          (edge: any) =>
+            edge?.source !== id && edge?.target !== id
+        );
+        return updatedEdges;
+      });
       dispatch(removeNodeById(id));
       dispatch(deleteNodeById(id));
-      // success("The node has been successfully deleted");
       success(`The ${data?.label} node has been successfully deleted`);
     };
 
@@ -204,7 +209,7 @@ const GeneralInputNodes = memo(
     };
 
 
-    console.log("node-->", node);
+    // console.log("node-->", node);
 
     return (
       <div>
@@ -391,7 +396,7 @@ const GeneralInputNodes = memo(
                       key="nextParameter"
                       inputKey="nextParameter"
                       param={node.data.parameters.nextParameter}
-                      handleInputChange={() => {}}
+                      handleInputChange={() => { }}
                     />
                   )}
 
