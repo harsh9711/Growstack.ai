@@ -101,7 +101,7 @@ const FileUpload: React.FC<any> = ({
       );
       const fileUrl = response?.data?.getS3URL;
       setUploadedFileUrl(fileUrl);
-      onFileUploaded(fileUrl, fileExtension);
+      onFileUploaded(fileUrl);
     } catch (error) {
       console.error("Error uploading file:", error);
     } finally {
@@ -117,7 +117,7 @@ const FileUpload: React.FC<any> = ({
   const onClearImage = () => {
     setUploadedFileUrl(null);
     setError(null);
-    onFileUploaded("", "");
+    onFileUploaded("");
     setLoading(false);
   };
 

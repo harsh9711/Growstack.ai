@@ -122,7 +122,11 @@ const Run: React.FC<any> = ({
               display_name: parameters?.inputLabel || "Untitled Field",
               description: parameters?.description || "",
               placeholder: parameters?.placeholder || "",
-              default_value: parameters.defaultValue || "",
+              default_value:
+                parameters.defaultValue ||
+                parameters?.variableName === "boolean"
+                  ? false
+                  : "",
               variableName: parameters?.variableName || "",
               type: node?.nodeMasterId?.inputType,
               list_values: parameters?.options || [],
@@ -150,7 +154,7 @@ const Run: React.FC<any> = ({
                   display_name: formParameters?.inputLabel || "Untitled Field",
                   description: formParameters?.description || "",
                   placeholder: formParameters?.placeholder || "",
-                  default_value: formParameters?.defaultValue || "",
+                  default_value: formParameters?.defaultValue || formParameters?.variableName === "boolean" ? false : "",
                   variableName: formParameters?.variableName || "",
                   type: inputType,
                   list_values: formParameters?.options || [],
@@ -161,7 +165,6 @@ const Run: React.FC<any> = ({
             );
           }
         });
-
       setWorkFlowData({
         name: apiData.name,
         input_configs: inputConfigs,
@@ -182,11 +185,15 @@ const Run: React.FC<any> = ({
   };
 
   const handleRunWorkFlow = useCallback(async () => {
-    const updatedWorkflowData = workFlowData?.input_configs?.map((data: any) => ({
-      variableName: data?.variableName,
-      variableValue:
-        data?.type === "checkbox" ? data?.selected_values : data?.default_value,
-    }));
+    const updatedWorkflowData = workFlowData?.input_configs?.map(
+      (data: any) => ({
+        variableName: data?.variableName,
+        variableValue:
+          data?.type === "checkbox"
+            ? data?.selected_values
+            : data?.default_value,
+      })
+    );
     setIsLoading(true);
     try {
       // const response = await axios.post(
@@ -307,16 +314,19 @@ const Run: React.FC<any> = ({
             if (shouldStop) {
               setIsStoppedInternal(true);
               clearInterval(interval);
+              getWorkflowStats();
             }
           } catch (error) {
             setIsStoppedInternal(true);
             console.error("Error during polling:", error);
             clearInterval(interval); // Clear on error as well, if needed.
+            getWorkflowStats();
           }
         }, 5000);
         if (isStoppedInternal) {
           setIsStoppedInternal(false);
           clearInterval(interval); // Clear on error as well, if needed.
+          getWorkflowStats();
         }
       };
 
@@ -328,12 +338,13 @@ const Run: React.FC<any> = ({
     }
   }, [pollingWorkflowExec, executionId]);
 
-  const handleFileUploaded = (fileUrl: string, idx: number) => {
-    setFileUrl2(fileUrl);
-    const updatedInputs = [...workFlowData.input_configs];
-    updatedInputs[idx].default_value = fileUrl;
-    setWorkFlowData({ ...workFlowData, input_configs: updatedInputs });
-  };
+  const handleFileUploaded = useCallback((fileUrl: string, idx: number) => {
+    setWorkFlowData((prevWorkFlowData:any) => {
+      const updatedInputs = [...prevWorkFlowData.input_configs];
+      updatedInputs[idx].default_value = fileUrl;
+      return { ...prevWorkFlowData, input_configs: updatedInputs };
+    });
+  },[workFlowData]);
 
   const handleChangeInput = (value: string, idx: number) => {
     const updatedInputs = [...workFlowData.input_configs];
