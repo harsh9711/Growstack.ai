@@ -36,7 +36,7 @@ const LlmNodes = memo(
     const node = useAppSelector(state =>
       state.nodes.nodes.find(node => node.id === id)
     );
-    const { setNodes } = useReactFlow();
+    const { setNodes, setEdges } = useReactFlow();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
     const [isEdit, setIsEdit] = useState(true);
@@ -51,19 +51,38 @@ const LlmNodes = memo(
     const dropdownRef = useRef<HTMLDivElement | null>(null);
 
     // useEffect(() => {
-    //   if (parentId) {
-    //     setDependencies(prevDependencies => {
-    //       const newDependency = { key: "parent", nodeId: parentId };
-    //       const exists = prevDependencies.some(dep => dep.nodeId === parentId);
-    //       if (exists) {
-    //         return prevDependencies;
-    //       }
-    //       return [...prevDependencies, newDependency];
-    //     });
-    //   }
+    //   setDefaultValue();
 
     //   return () => { };
-    // }, [parentId]);
+    // }, [node]);
+
+    // const setDefaultValue = () => {
+    //   if (!node) return;
+    //   if (node.data.label === "Generate Image") {
+    //     const { model, numberOfImages, quality, prompt, style, size } =
+    //       node.data.parameters;
+    //     model.value = "dall-e-3";
+    //     numberOfImages.value = 1;
+    //     numberOfImages.disabled = true;
+    //     quality.value = "hd";
+    //     prompt.maxLength = 4000;
+    //     style.value = "vivid";
+    //     size.options = [
+    //       {
+    //         label: "1024x1024",
+    //         value: "1024x1024",
+    //       },
+    //       {
+    //         label: "1792x1024",
+    //         value: "1792x1024",
+    //       },
+    //       {
+    //         label: "1024x1792",
+    //         value: "1024x1792",
+    //       },
+    //     ];
+    //   }
+    // };
 
     const handleToggleAdvancedOptions = () => {
       setShowAdvancedOptions(!showAdvancedOptions);
@@ -302,9 +321,15 @@ const LlmNodes = memo(
 
     const handleDeleteNode = () => {
       setNodes(nds => nds.filter(nds => nds.id !== id));
+      setEdges((edges: any[]) => {
+        const updatedEdges = edges.filter(
+          (edge: any) =>
+            edge?.source !== id && edge?.target !== id
+        );
+        return updatedEdges;
+      });
       dispatch(removeNodeById(id));
       dispatch(deleteNodeById(id));
-      // success("The node has been successfully deleted");
       success(`The ${data?.label} node has been successfully deleted`);
     };
 
@@ -383,7 +408,7 @@ const LlmNodes = memo(
                   <img
                     src={data.icon}
                     alt={data.label}
-                   className="w-[30px] absolute left-0 right-0 mx-auto top-1/2 transform  -translate-y-1/2"
+                    className="w-[30px] absolute left-0 right-0 mx-auto top-1/2 transform  -translate-y-1/2"
                   />
                 )}
               </div>

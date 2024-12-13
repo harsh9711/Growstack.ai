@@ -61,7 +61,7 @@ const GmailNode = memo(
     // const { parameters, nodeMasterId } = data;
 
     const { success } = useSnackbar();
-    const { setNodes } = useReactFlow();
+    const { setNodes, setEdges } = useReactFlow();
     const dispatch = useAppDispatch();
     const { workFlowData } = useAppSelector(state => state.workflows);
     const { nodes, variables, isLoading } = useAppSelector(
@@ -299,6 +299,13 @@ const GmailNode = memo(
 
     const handleDeleteNode = () => {
       setNodes(nds => nds.filter(nds => nds.id !== id));
+      setEdges((edges: any[]) => {
+        const updatedEdges = edges.filter(
+          (edge: any) =>
+            edge?.source !== id && edge?.target !== id
+        );
+        return updatedEdges;
+      });
       dispatch(removeNodeById(id));
       dispatch(deleteNodeById(id));
       // success("The node has been successfully deleted");

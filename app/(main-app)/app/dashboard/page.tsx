@@ -51,7 +51,7 @@ export default function Dashboard() {
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const [hasPreviousPage, setHasPreviousPage] = useState(false);
+  const [hasNextPage, setHasNextPage] = useState(false);
   const isLoadingRef = useRef(isLoading);
   const hasMoreRef = useRef(hasMore);
   const throttleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -70,7 +70,9 @@ export default function Dashboard() {
     try {
       setLoading(true);
       // const response = await axios.get(`http://localhost:5000/workflow`);
-      const response = await instance.get(`/workflow?isPrebuilt=true`);
+      const response = await instance.get(
+        `/workflow?isPrebuilt=true&page=${page}&limit=20`
+      );
       // setPreBuiltTemplates([]);
       // const response = await CustomAxiosInstance().get(
       //   `/workflow?isPrebuilt=true`
@@ -79,7 +81,7 @@ export default function Dashboard() {
         ...(Array.isArray(prevItems) ? prevItems : []),
         ...response?.data?.data,
       ]);
-      setHasPreviousPage(response?.data?.pagination?.hasPreviousPage);
+      setHasNextPage(response?.data?.pagination?.hasNextPage);
     } catch (error: any) {
       if (error?.response) {
         toast.error(error?.response?.data?.error);
@@ -91,6 +93,7 @@ export default function Dashboard() {
       console.error("Error fetching pre-built templates:", error);
     } finally {
       setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -105,7 +108,7 @@ export default function Dashboard() {
           ...(Array.isArray(prevItems) ? prevItems : []),
           ...response?.data?.data,
         ]);
-        setHasPreviousPage(response?.data?.pagination?.hasPreviousPage);
+        setHasNextPage(response?.data?.pagination?.hasNextPage);
       }
     } catch (error: any) {
       if (error?.response) {
@@ -118,6 +121,7 @@ export default function Dashboard() {
       console.error("Error fetching pre-built templates:", error);
     } finally {
       setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -135,13 +139,12 @@ export default function Dashboard() {
       if (activeTab === "workflows") {
         await getUserSavedWorkflows(page);
       }
-      setIsLoading(false);
     };
 
     loadItems();
   }, [page, activeTab]);
 
-  const handleScroll = () => {
+  const handleScroll = useCallback(() => {
     if (throttleTimer.current) {
       return;
     }
@@ -151,17 +154,17 @@ export default function Dashboard() {
       const { scrollTop, scrollHeight, clientHeight } =
         document.documentElement;
       if (scrollTop + clientHeight >= scrollHeight - 100) {
-        if (!isLoadingRef.current && hasMoreRef.current && !hasPreviousPage) {
+        if (!isLoadingRef.current && hasMoreRef.current && hasNextPage) {
           setPage(prevPage => prevPage + 1);
         }
       }
     }, 300);
-  };
+  }, [hasMoreRef, hasNextPage, isLoadingRef]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [hasNextPage]);
 
   const handleCreateWorkflow = async () => {
     try {
@@ -199,6 +202,7 @@ export default function Dashboard() {
         );
 
         setPreBuiltTemplates(response.data); // Update results with API response
+        setHasNextPage(false);
       } catch (error: any) {
         if (error?.response) {
           toast.error(error?.response?.data?.error);
@@ -227,6 +231,7 @@ export default function Dashboard() {
       if (query.length > 0) {
         debouncedFetchSearchResults(query);
       } else {
+        setPreBuiltTemplates([]);
         if (activeTab === "templates") getPreBuiltTemplates();
         if (activeTab === "workflows") getUserSavedWorkflows();
       }
@@ -267,6 +272,7 @@ export default function Dashboard() {
                     setActiveTab("templates");
                     setSearchQuery("");
                     setPreBuiltTemplates([]);
+                    setPage(1);
                   }}
                 >
                   <div className="flex items-center gap-3 px-3 py-2">
@@ -283,15 +289,14 @@ export default function Dashboard() {
                       ? "bg-[#2DA771] text-white"
                       : "text-black"
                   }`}
+                  onClick={() => {
+                    setActiveTab("workflows");
+                    setSearchQuery("");
+                    setPreBuiltTemplates([]);
+                    setPage(1);
+                  }}
                 >
-                  <div
-                    className="flex items-center gap-3 px-3 py-2"
-                    onClick={() => {
-                      setActiveTab("workflows");
-                      setSearchQuery("");
-                      setPreBuiltTemplates([]);
-                    }}
-                  >
+                  <div className="flex items-center gap-3 px-3 py-2">
                     <Waypoints />
                     <span>My workflows</span>
                   </div>
@@ -353,6 +358,7 @@ export default function Dashboard() {
                         activeTab={activeTab}
                         setLoading={setLoading}
                         refetchWorkflow={getUserSavedWorkflows}
+                        setPreBuiltTemplates={setPreBuiltTemplates}
                       />
                     ))
                   : loading &&
@@ -386,6 +392,9 @@ type CardProps = {
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   activeTab: string;
   refetchWorkflow: () => void;
+  setPreBuiltTemplates: React.Dispatch<
+    React.SetStateAction<PreBuiltTemplate[]>
+  >;
 };
 
 const Card: React.FC<CardProps> = ({
@@ -396,6 +405,7 @@ const Card: React.FC<CardProps> = ({
   setLoading,
   activeTab,
   refetchWorkflow,
+  setPreBuiltTemplates,
 }) => {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState<{
@@ -466,6 +476,9 @@ const Card: React.FC<CardProps> = ({
       //   `/workflow/${workflow_id}`
       // );
       const response = await instance.delete(`/workflow/${workflow_id}`);
+      setPreBuiltTemplates(prevItems =>
+        prevItems.filter(item => item._id !== workflow_id)
+      );
       setIsModalOpen({ isOpen: false, type: "delete" });
     } catch (error: any) {
       if (error?.response) {
@@ -478,18 +491,20 @@ const Card: React.FC<CardProps> = ({
       console.error("Error deleting workflow:", error);
     } finally {
       setLoading(false);
-      refetchWorkflow();
     }
   };
 
   const handleUnpublishWorkflow = async () => {
     setLoading(true);
     try {
-      // const response = await CustomAxiosInstance().post(
-      //   `/workflow/unpublish/${workflow_id}`
-      // );
-      const response = await instance.post(
-        `/workflow/unpublish/${workflow_id}`
+      const response = await instance.patch(
+        `/workflow/${workflow_id}/status`,
+        {
+          status: "unpublished",
+        }
+      );
+      setPreBuiltTemplates(prevItems =>
+        prevItems.map(item => ({ ...item, status: "unpublished" }))
       );
     } catch (error: any) {
       if (error?.response) {
@@ -502,7 +517,6 @@ const Card: React.FC<CardProps> = ({
       console.error("Error unpublish workflow:", error);
     } finally {
       setLoading(false);
-      refetchWorkflow();
     }
   };
 
@@ -540,7 +554,7 @@ const Card: React.FC<CardProps> = ({
                         e.preventDefault();
                         e.stopPropagation();
                         handleEditClick();
-                        localStorage.removeItem("workflowActiveTab")
+                        localStorage.removeItem("workflowActiveTab");
                       }}
                     >
                       <Edit size={16} color="#9e9e9e" />

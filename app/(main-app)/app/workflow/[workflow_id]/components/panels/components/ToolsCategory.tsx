@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import {
   addNode,
@@ -12,13 +12,17 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { convertNodeData } from "@/utils/dataResolver";
 import { calculateNextNodePosition, convertToUnderscore } from "@/utils/helper";
 import { unwrapResult } from "@reduxjs/toolkit";
+import {
+  getAvatars,
+  getVoices,
+} from "@/lib/features/workflow/avatarVoice.slice";
 
 const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
   const dispatch = useAppDispatch();
+  const { avatars, voices } = useAppSelector(state => state.avatarVoice);
   const { nodes } = useAppSelector(state => state.nodes);
   const { masterNode } = useAppSelector(state => state.masterNode);
   const { workFlowData } = useAppSelector(state => state.workflows);
-
 
   if ((masterNode && !masterNode.length) || !masterNode) {
     return <div>Data not found</div>;
@@ -53,50 +57,17 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
     }
   }, [groupedIntegrations, selectedSubCategory]);
 
-  // const handleClick = async (nodeData: NodeState) => {
-  //   try {
-  //     const lastNode = nodes[nodes.length - 1];
-  //     const { nextNodeX, nextNodeY } = calculateNextNodePosition(lastNode);
-  //     const toolsNodes = nodes?.filter(
-  //       nds => nds?.data?.label === nodeData?.data?.label
-  //     );
+  useEffect(() => {
+    if (!avatars || (avatars && avatars.length === 0)) {
+      dispatch(getAvatars());
+    }
 
-  //     const resultAction = await dispatch(
-  //       createNode({
-  //         workflowId: workFlowData._id,
-  //         nodeMasterId: nodeData.id,
-  //         name: nodeData.data?.label,
-  //         type: nodeData?.type,
-  //         description: nodeData.data?.descriptions || "",
-  //         position: { x: nextNodeX, y: nextNodeY },
-  //         parameters: {},
-  //       })
-  //     );
-  //     const result = unwrapResult(resultAction);
+    if (!voices || (voices && voices.length === 0)) {
+      dispatch(getVoices());
+    }
 
-  //     const newNode = {
-  //       ...nodeData,
-  //       data: {
-  //         ...nodeData.data,
-  //         parameters: {
-  //           ...nodeData.data.parameters,
-  //           variableNames: {
-  //             ...nodeData.data.parameters.variableNames,
-  //             value: `${toolsNodes.length ? convertToUnderscore(nodeData.data.label) + toolsNodes.length : convertToUnderscore(nodeData.data.label)}`,
-  //           },
-  //         },
-  //       },
-  //       id: result._id,
-  //       position: { x: nextNodeX, y: nextNodeY },
-  //     };
-
-  //     setNodes((nds: NodeState[]) => nds.concat(newNode));
-  //     dispatch(addNode(newNode));
-  //     console.log("---nodeData----", JSON.stringify(nodeData, null, 2));
-  //   } catch (error) {
-  //     console.error("Error adding node:", error);
-  //   }
-  // };
+    return () => { };
+  }, [nodes]);
 
   const handleClick = async (nodeData: NodeState) => {
     try {
@@ -130,8 +101,8 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
             variableName: {
               ...(nodeData.data.parameters?.variableName ?? {}),
               value: toolsNodes?.length
-                ? `${convertToUnderscore(nodeData.data.label)}${toolsNodes.length}`
-                : convertToUnderscore(nodeData.data.label),
+                ? `${nodeData.data.parameters?.variableName?.value}${toolsNodes.length}`
+                : nodeData.data.parameters?.variableName?.value || "",
               label: nodeData.data.parameters?.variableName?.label || "",
               type: nodeData.data.parameters?.variableName?.type || "",
               required:
