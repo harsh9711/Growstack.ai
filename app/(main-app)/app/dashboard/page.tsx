@@ -272,6 +272,7 @@ export default function Dashboard() {
                     setActiveTab("templates");
                     setSearchQuery("");
                     setPreBuiltTemplates([]);
+                    setPage(1);
                   }}
                 >
                   <div className="flex items-center gap-3 px-3 py-2">
@@ -292,6 +293,7 @@ export default function Dashboard() {
                     setActiveTab("workflows");
                     setSearchQuery("");
                     setPreBuiltTemplates([]);
+                    setPage(1);
                   }}
                 >
                   <div className="flex items-center gap-3 px-3 py-2">
@@ -495,11 +497,14 @@ const Card: React.FC<CardProps> = ({
   const handleUnpublishWorkflow = async () => {
     setLoading(true);
     try {
-      // const response = await CustomAxiosInstance().post(
-      //   `/workflow/unpublish/${workflow_id}`
-      // );
-      const response = await instance.post(
-        `/workflow/unpublish/${workflow_id}`
+      const response = await instance.patch(
+        `/workflow/${workflow_id}/status`,
+        {
+          status: "unpublished",
+        }
+      );
+      setPreBuiltTemplates(prevItems =>
+        prevItems.map(item => ({ ...item, status: "unpublished" }))
       );
     } catch (error: any) {
       if (error?.response) {
@@ -512,7 +517,6 @@ const Card: React.FC<CardProps> = ({
       console.error("Error unpublish workflow:", error);
     } finally {
       setLoading(false);
-      refetchWorkflow();
     }
   };
 
