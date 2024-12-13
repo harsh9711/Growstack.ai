@@ -15,6 +15,7 @@ import documentSlice from "./features/documents/document.slice";
 import nodeSlice from "./features/workflow/node.slice";
 import masterNodeSlice from "./features/workflow/masterNode.slice";
 import workflowSlice from "./features/workflow/workflow.slice";
+import avatarVoiceSlice from "./features/workflow/avatarVoice.slice";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -22,13 +23,14 @@ const rootReducer = combineReducers({
   nodes: nodeSlice,
   masterNode: masterNodeSlice,
   workflows: workflowSlice,
+  avatarVoice: avatarVoiceSlice,
 });
 
 const persistConfig = {
   key: "root",
   version: 1,
   storage,
-  blacklist: ["nodes", "masterNode", "workflows"],
+  blacklist: ["nodes", "masterNode", "workflows", "avatarVoice"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

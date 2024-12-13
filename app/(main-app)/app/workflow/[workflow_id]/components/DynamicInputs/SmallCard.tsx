@@ -1,51 +1,14 @@
-import instance from "@/config/axios.config";
-import React, { useEffect } from "react";
+import React from "react";
 import Tooltip from "../tooltip/Tooltip";
 import { DynamicInputProps } from "@/types/workflows";
+import { useAppSelector } from "@/lib/hooks";
 
 const SmallCardFiled: React.FC<DynamicInputProps> = ({
   param,
   inputKey,
   handleInputChange,
 }) => {
-  interface Avatar {
-    thumbnailUrl: string;
-    name: string;
-    isActive: boolean;
-  }
-
-  const [avatars, setAvatars] = React.useState<Avatar[]>([]);
-  const [selectedAvatar, setSelectedAvatar] = React.useState<Avatar | null>(
-    null
-  );
-
-  useEffect(() => {
-    const savedAvatar = localStorage.getItem("selectedAvatar");
-    if (savedAvatar) {
-      setSelectedAvatar(JSON.parse(savedAvatar));
-    }
-    getAvatar();
-  }, []);
-
-  const getAvatar = async () => {
-    try {
-      const result = await instance.get("/ai/api/v1/video/avatars");
-      setAvatars(result.data.data);
-      console.log("----result---->", result);
-    } catch (error) {
-      console.log("----error---->", error);
-    }
-  };
-
-  const selectAvatar = (avatar: Avatar) => {
-    if (selectedAvatar?.name === avatar.name) {
-      setSelectedAvatar(null);
-      localStorage.removeItem("selectedAvatar");
-    } else {
-      setSelectedAvatar(avatar);
-      localStorage.setItem("selectedAvatar", JSON.stringify(avatar));
-    }
-  };
+  const { avatars } = useAppSelector(state => state.avatarVoice);
 
   return (
     <div className="input-box mt-3 mb-3">
@@ -70,19 +33,16 @@ const SmallCardFiled: React.FC<DynamicInputProps> = ({
           {avatars?.map((item, index) => (
             <div
               key={index}
-              className={`flex flex-col items-center rounded-[10px] shadow-sm p-2 relative cursor-pointer ${
-                selectedAvatar?.name === item.name
-                  ? "bg-[#2DA7711A]"
-                  : "bg-[#F8F8FA]"
-              }`}
-              onClick={() => selectAvatar(item)}
+              className={`flex flex-col items-center rounded-[10px] shadow-sm p-2 relative cursor-pointer ${param.value === item.id ? "bg-[#2DA771]" : "bg-[#F8F8FA]"
+                }`}
+              onClick={() => handleInputChange(inputKey, param.type, item.id)}
             >
               <img
                 src={item.thumbnailUrl}
                 alt={item.name}
                 className="w-[45px] h-[45px] object-cover rounded-[10px]"
               />
-              <p className="text-[10px] mt-2 text-center text-gray-600">
+              <p className={`text-[10px] mt-2 text-center  ${param.value === item.id ? "text-white" : "text-gray-600"} `}>
                 {item.name}
               </p>
             </div>
