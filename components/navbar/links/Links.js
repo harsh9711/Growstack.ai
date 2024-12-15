@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./links.scss";
 import NavLink from "./navLink/navLink";
 import Image from "next/image";
+import MobileNavLink from "./navLink/mobileNavLinks";
 
 const links = [
   {
@@ -230,7 +231,7 @@ const Links = () => {
         {isMobileMenuOpen && (
           <div className="mobileLinks">
             {links.map(link => (
-              <NavLink
+              <MobileNavLink
                 item={{ ...link, isOpen: openSubmenu === link.title }}
                 key={link.title}
                 onToggleSubmenu={handleToggleSubmenu}

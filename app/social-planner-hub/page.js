@@ -13,7 +13,7 @@ function Page() {
   return (
     <React.Fragment>
       <div className="clrNav">
-        <Navbar logoUrl="/images/growhite.svg" logoAlt="Custom Logo" />
+        <Navbar logoUrl="/logo/growstack.svg" logoAlt="Custom Logo" />
         <Banner />
         {/* <PlannerSolution /> */}
         <Partnership />
