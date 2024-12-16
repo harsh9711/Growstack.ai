@@ -67,7 +67,7 @@ const PricingPage: React.FC = () => {
       setSeconds(prev => {
         if (prev <= 1) {
           clearInterval(timer);
-          router.push("/app");
+          handleLogout()
           return 0;
         }
         return prev - 1;
@@ -104,7 +104,7 @@ const PricingPage: React.FC = () => {
             </p>
             <div className="mt-6">
               <p className="text-lg text-gray-600">
-                Redirecting to dashboard in
+                Redirecting to login page
               </p>
               {seconds ? (
                 <h3 className="text-4xl font-bold text-red-600">

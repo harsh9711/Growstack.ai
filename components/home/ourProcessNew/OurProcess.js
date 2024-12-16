@@ -2,10 +2,12 @@ import React, { useRef, useState, useEffect } from "react";
 import "./OurProcess.scss";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import dynamic from "next/dynamic";
 
 const HoverVideo = () => {
   const videoRef = useRef(null);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const [isInView, setIsInView] = useState(false);
 
   useEffect(() => {
     const videoElement = videoRef.current;
@@ -13,24 +15,40 @@ const HoverVideo = () => {
     const handleCanPlay = () => {
       setIsVideoLoaded(true);
 
-      // Ensure video plays automatically
-      if (videoElement) {
-        videoElement.play().catch(error => {
+      // Ensure video plays when in view
+      if (isInView && videoElement) {
+        videoElement.play().catch((error) => {
           console.error("Autoplay was prevented:", error);
         });
       }
     };
 
-    if (videoRef.current) {
-      videoRef.current.addEventListener("canplaythrough", handleCanPlay);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+        if (entry.isIntersecting && videoElement) {
+          videoElement.play().catch((error) => {
+            console.error("Autoplay was prevented:", error);
+          });
+        } else if (videoElement) {
+          videoElement.pause();
+        }
+      },
+      { threshold: 0.5 } // Trigger when 50% of the video is visible
+    );
+
+    if (videoElement) {
+      videoElement.addEventListener("canplaythrough", handleCanPlay);
+      observer.observe(videoElement);
     }
 
     return () => {
-      if (videoRef.current) {
-        videoRef.current.removeEventListener("canplaythrough", handleCanPlay);
+      if (videoElement) {
+        videoElement.removeEventListener("canplaythrough", handleCanPlay);
+        observer.unobserve(videoElement);
       }
     };
-  }, []);
+  }, [isInView]);
 
   return (
     <div
@@ -46,8 +64,6 @@ const HoverVideo = () => {
         width="100%"
         height="100%"
         muted
-        autoPlay
-        playsInline
         preload="auto"
         className={`rounded-2xl border-none outline-none transition-opacity duration-700 ${
           isVideoLoaded ? "opacity-100" : "opacity-0"
@@ -69,13 +85,28 @@ function OurProcess() {
     // Initialize AOS
     AOS.init();
 
-    // Handle video autoplay and looping
-    const videoElement = videoRef.current;
-    if (videoElement) {
-      videoElement.play().catch(error => {
-        console.log("Auto-play was prevented:", error);
-      });
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          videoRef.current?.play().catch((error) => {
+            console.error("Autoplay was prevented:", error);
+          });
+        } else {
+          videoRef.current?.pause();
+        }
+      },
+      { threshold: 0.5 } // Trigger when 50% of the video is visible
+    );
+
+    if (videoRef.current) {
+      observer.observe(videoRef.current);
     }
+
+    return () => {
+      if (videoRef.current) {
+        observer.unobserve(videoRef.current);
+      }
+    };
   }, []);
 
   return (
@@ -111,9 +142,8 @@ function OurProcess() {
                     width="720"
                     height="640"
                     preload="metadata"
-                    autoPlay
-                    loop
                     muted
+                    loop
                     playsInline
                     className="2xl:max-w-[720px] xl:max-w-[500px] lg:max-w-[400px] w-full"
                   >
