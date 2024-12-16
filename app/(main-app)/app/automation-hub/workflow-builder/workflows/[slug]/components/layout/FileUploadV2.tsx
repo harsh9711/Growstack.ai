@@ -51,7 +51,7 @@ const FileUpload: React.FC<any> = ({
   acceptedFileTypes,
   isUploadedFileUrl,
 }) => {
-  const allowedFiles = acceptedFileTypes.join(",")
+  const allowedFiles = typeof acceptedFileTypes === "string" ? acceptedFileTypes : acceptedFileTypes?.join(",")
   const [loading, setLoading] = useState(false);
   const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
