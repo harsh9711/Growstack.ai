@@ -144,6 +144,7 @@ const FanOut = ({
       setNodes((nds: FlowNode[]) => nds.concat(subFlow as unknown as FlowNode));
       dispatch(addNode(subFlow));
       dispatch(updateNodeDependency({ sourceId: id, targetId: result._id }));
+      setShowSearch(false);
     } catch (error) {
       console.error("Error adding node:", error);
     }

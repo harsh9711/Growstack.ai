@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import {
     addNode,
@@ -14,6 +14,8 @@ import { unwrapResult } from "@reduxjs/toolkit";
 
 const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
     const dispatch = useAppDispatch();
+    const [searchQuery, setSearchQuery] = useState("");
+
     const { isLoading, masterNode } = useAppSelector(state => state.masterNode);
     const { workFlowData } = useAppSelector(state => state.workflows);
     const { nodes } = useAppSelector(state => state.nodes);
@@ -26,7 +28,7 @@ const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
     );
     const modifiedNodes = llmsData.map(convertNodeData);
 
-    const groupedModels = modifiedNodes.reduce(
+    const initialGroupedModels = modifiedNodes.reduce(
         (acc: { [key: string]: typeof modifiedNodes }, model) => {
             if (!acc[model.subCategory]) {
                 acc[model.subCategory] = [];
@@ -36,6 +38,24 @@ const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
         },
         {}
     );
+
+    const filteredGroupedModels = Object.keys(initialGroupedModels).reduce(
+        (acc: { [key: string]: typeof modifiedNodes }, subCategory) => {
+            const filteredModels = initialGroupedModels[subCategory].filter(model =>
+                model.name.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+            
+            if (filteredModels.length > 0) {
+                acc[subCategory] = filteredModels;
+            }
+            return acc;
+        },
+        {}
+    );
+
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery(e.target.value);
+    };
 
     const handleClick = async (nodeData: NodeState) => {
         try {
@@ -142,6 +162,8 @@ const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
                                 type="text"
                                 placeholder="Search"
                                 className="bg-[#F7F7F7]"
+                                value={searchQuery}
+                                onChange={handleSearch}
                             />
                         </div>
                     </div>
@@ -150,18 +172,19 @@ const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
                 </div>
 
                 <div className="flex flex-wrap h-full overflow-y-auto">
-                    {Object.keys(groupedModels).map((subCategory, index) => (
+                    {Object.keys(filteredGroupedModels).map((subCategory, index) => (
                         <div key={index.toString()} className="mb-2.5 w-full">
                             <h3 className="text-base leading-6 font-normal text-[#878787]">
                                 {subCategory}
                             </h3>
                             <div className="flex flex-wrap pt-1">
-                                {groupedModels[subCategory].map((item, _) => (
-                                    <div
-                                        key={_.toString()}
-                                        onClick={() => handleClick(item.node)}
-                                        className="h-[92px] w-[130px] bg-transparent m-1 rounded-lg flex justify-center items-center cursor-pointer border border-[#E5E5E5]"
-                                        draggable
+                                {filteredGroupedModels[subCategory].map((item, _) => {
+                                    return (
+                                        <div
+                                            key={_.toString()}
+                                            onClick={() => handleClick(item.node)}
+                                            className="h-[92px] w-[130px] bg-transparent m-1 rounded-lg flex justify-center items-center cursor-pointer border border-[#E5E5E5]"
+                                            draggable
                                         onDragStart={event => {
                                             handleDragStart(event, item.node);
                                         }}
@@ -184,7 +207,7 @@ const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
                                             </p>
                                         </div>
                                     </div>
-                                ))}
+                                )})}
                             </div>
                         </div>
                     ))}
