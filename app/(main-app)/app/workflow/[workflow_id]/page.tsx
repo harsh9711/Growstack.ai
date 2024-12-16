@@ -50,7 +50,7 @@ import { SnackbarProvider } from "./components/snackbar/SnackbarContext";
 import { debounce } from "lodash";
 import { NodeState } from "@/types/workflows";
 
-interface DragEvent extends React.DragEvent<HTMLDivElement> { }
+interface DragEvent extends React.DragEvent<HTMLDivElement> {}
 interface PageProps {
   params: {
     workflow_id: string;
@@ -84,7 +84,7 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
   useEffect(() => {
     dispatch(getMasterNodes());
     getWorkFlowDetails();
-    return () => { };
+    return () => {};
   }, [dispatch, workflow_id]);
 
   const saveData = () => {
@@ -423,6 +423,24 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
     [nodes, edges, reduxNode]
   );
 
+  const onDragNode = useCallback(
+    (updatedNodes: any) => {
+      const bodyPayload = {
+        name: workFlowData?.name,
+        description: workFlowData?.description || "",
+        edges: edges,
+        nodes: prepareNodesPayload(updatedNodes, workFlowData._id || ""),
+      };
+      dispatch(
+        updateWorkFlowById({
+          id: workflow_id || "",
+          data: bodyPayload,
+        })
+      );
+    },
+    [nodes, edges]
+  );
+
   return (
     <div className="reactflow-wrapper h-[100vh] w-full" ref={reactFlowWrapper}>
       <TopRightPanel2nd
@@ -451,6 +469,12 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
             onDragOver={onDragOver}
             connectionLineComponent={ConnectionLine}
             onNodesDelete={onNodesDelete}
+            onNodeDragStop={(event, node: any) => {
+              const updatedNodes: any = nodes.map((n: any) =>
+                n.id === node.id ? { ...n, position: node.position } : n
+              );
+              onDragNode(updatedNodes);
+            }}
             defaultViewport={{ zoom: 0.9, x: 350, y: 100 }}
           >
             <Background
