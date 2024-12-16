@@ -48,7 +48,7 @@ const AdvanceDropDown: React.FC<DynamicInputProps> = ({
     handleInputChange(inputKey, param.type, selectedId);
   };
 
-  const selectedVoiceData = voices.find(voice => voice.id === selectedVoice);
+  const selectedVoiceData = voices?.find(voice => voice.id === selectedVoice);
 
   return (
     <div key={inputKey} className="input-box mb-3">
@@ -69,7 +69,7 @@ const AdvanceDropDown: React.FC<DynamicInputProps> = ({
           className="form-control outline-0 shadow-none w-full p-3 cursor-pointer rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-[12px] font-medium focus:outline-none"
           onChange={handleSelectChange}
         >
-          {voices.map(voice => (
+          {voices?.map(voice => (
             <option key={voice.id} value={voice.id}>
               {voice.name}
             </option>

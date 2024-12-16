@@ -51,6 +51,7 @@ const FileUpload: React.FC<any> = ({
   acceptedFileTypes,
   isUploadedFileUrl,
 }) => {
+  const allowedFiles = acceptedFileTypes.join(",")
   const [loading, setLoading] = useState(false);
   const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -64,7 +65,7 @@ const FileUpload: React.FC<any> = ({
       setError(null);
       const fileExtension = `${acceptedFiles[0].name.split(".").pop()?.toLowerCase()}`;
 
-    const acceptedTypesArray = acceptedFileTypes
+    const acceptedTypesArray = allowedFiles
       .split(",")
       .map((type: any) => type.trim().toLowerCase());
 
