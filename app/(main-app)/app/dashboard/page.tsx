@@ -20,6 +20,7 @@ import {
   Edit,
   LayoutDashboard,
   MessageSquareOff,
+  Play,
   Plus,
   Search,
   Settings,
@@ -35,6 +36,7 @@ type PreBuiltTemplate = {
   description: string;
   image: string;
   workflow_id: string;
+  status?: string
 };
 
 export default function Dashboard() {
@@ -247,11 +249,10 @@ export default function Dashboard() {
             <div className="bg-white rounded-3xl border border-[#E8E8E8] h-[430px] px-5 py-8 ">
               <div className="pb-3">
                 <button
-                  className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 w-[280px]  ${
-                    activeTab === "newWorkflows"
+                  className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 w-[280px]  ${activeTab === "newWorkflows"
                       ? "bg-[#2DA771] text-white"
                       : "text-black"
-                  }`}
+                    }`}
                   onClick={handleCreateWorkflow}
                 >
                   <div className="flex items-center gap-3 px-2 py-2">
@@ -263,11 +264,10 @@ export default function Dashboard() {
               </div>
               <div className="pb-3">
                 <button
-                  className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 w-[280px] ${
-                    activeTab === "templates"
+                  className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 w-[280px] ${activeTab === "templates"
                       ? "bg-[#2DA771] text-white"
                       : "text-black"
-                  }`}
+                    }`}
                   onClick={() => {
                     setActiveTab("templates");
                     setSearchQuery("");
@@ -284,11 +284,10 @@ export default function Dashboard() {
               </div>
               <div className="pb-3">
                 <button
-                  className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 w-[280px] ${
-                    activeTab === "workflows"
+                  className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 w-[280px] ${activeTab === "workflows"
                       ? "bg-[#2DA771] text-white"
                       : "text-black"
-                  }`}
+                    }`}
                   onClick={() => {
                     setActiveTab("workflows");
                     setSearchQuery("");
@@ -349,22 +348,23 @@ export default function Dashboard() {
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {preBuiltTemplates?.length > 0
                   ? preBuiltTemplates?.map(template => (
-                      <Card
-                        key={template._id}
-                        title={template.name}
-                        description={template.description}
-                        imageSrc={template?.image}
-                        workflow_id={template._id}
-                        activeTab={activeTab}
-                        setLoading={setLoading}
-                        refetchWorkflow={getUserSavedWorkflows}
-                        setPreBuiltTemplates={setPreBuiltTemplates}
-                      />
-                    ))
+                    <Card
+                      key={template._id}
+                      title={template.name}
+                      description={template.description}
+                      imageSrc={template?.image}
+                      workflow_id={template._id}
+                      activeTab={activeTab}
+                      setLoading={setLoading}
+                      refetchWorkflow={getUserSavedWorkflows}
+                      setPreBuiltTemplates={setPreBuiltTemplates}
+                      status={template?.status}
+                    />
+                  ))
                   : loading &&
-                    Array(5)
-                      .fill(null)
-                      .map((_, index) => <WorkflowLoader key={index} />)}
+                  Array(5)
+                    .fill(null)
+                    .map((_, index) => <WorkflowLoader key={index} />)}
               </div>
             </div>
             {loading && (
@@ -395,6 +395,7 @@ type CardProps = {
   setPreBuiltTemplates: React.Dispatch<
     React.SetStateAction<PreBuiltTemplate[]>
   >;
+  status?: string
 };
 
 const Card: React.FC<CardProps> = ({
@@ -406,6 +407,7 @@ const Card: React.FC<CardProps> = ({
   activeTab,
   refetchWorkflow,
   setPreBuiltTemplates,
+  status
 }) => {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState<{
@@ -458,6 +460,11 @@ const Card: React.FC<CardProps> = ({
   };
 
   const handleEditClick = async () => {
+    router.push(`${ALL_ROUTES.WORKFLOW_CANVAS_CREATE}/${workflow_id}`);
+  };
+
+  const handleRunClick = async () => {
+    localStorage.setItem("workflowActiveTab", "1");
     router.push(`${ALL_ROUTES.WORKFLOW_CANVAS_CREATE}/${workflow_id}`);
   };
 
@@ -561,6 +568,20 @@ const Card: React.FC<CardProps> = ({
                       Edit
                     </button>
                   </MenuItem>
+                  {status === "published" &&
+                    <MenuItem>
+                      <button
+                        className="px-5 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2 w-full rounded-xl"
+                        onClick={e => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleRunClick();
+                        }}
+                      >
+                        <Play size={16} color="#9e9e9e" />
+                        Run
+                      </button>
+                    </MenuItem>}
                   <MenuItem>
                     <button
                       className="px-5 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2 w-full rounded-xl"
@@ -629,8 +650,16 @@ const Card: React.FC<CardProps> = ({
         >
           {title}
         </h3>
+        {activeTab !== "templates" && (
+          <p
+            className={`!mt-3 p-2 rounded-lg capitalize w-fit leading-relaxed ${status === "draft" ? "text-orange-500 bg-orange-200" : status === "published" ? "text-green-600 bg-green-200" : "text-primary-black bg-gray-200"}`}
+            data-aos="fade-right"
+          >
+            {status}
+          </p>
+        )}
         <p
-          className="!mt-3 leading-relaxed text-primary-black text-opacity-70 line-clamp-2 text-ellipsis overflow-hidden"
+          className="leading-relaxed text-primary-black text-opacity-70 line-clamp-2 text-ellipsis overflow-hidden"
           data-aos="fade-right"
         >
           {description}

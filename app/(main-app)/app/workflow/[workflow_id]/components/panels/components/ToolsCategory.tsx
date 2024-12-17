@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import {
   addNode,
@@ -17,8 +17,20 @@ import {
   getVoices,
 } from "@/lib/features/workflow/avatarVoice.slice";
 
+interface NodeData {
+  description: any;
+  name: string;
+  logoUrl?: string;
+  node: NodeState;
+}
+interface GroupedTools {
+  [key: string]: NodeData[];
+}
+
 const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
   const dispatch = useAppDispatch();
+  const [searchQuery, setSearchQuery] = useState("");
+
   const { avatars, voices } = useAppSelector(state => state.avatarVoice);
   const { nodes } = useAppSelector(state => state.nodes);
   const { masterNode } = useAppSelector(state => state.masterNode);
@@ -132,6 +144,43 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
     event.dataTransfer.effectAllowed = "move";
   };
 
+  const filterToolsBySearch = (tools: GroupedTools): GroupedTools => {
+    if (!searchQuery) return tools;
+    
+    const filteredTools: GroupedTools = {};
+    
+    Object.keys(tools).forEach((subCategory) => {
+      const filteredItems = tools[subCategory].filter((item: NodeData) => 
+        item.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      
+      if (filteredItems.length > 0) {
+        filteredTools[subCategory] = filteredItems;
+      }
+    });
+    
+    // Update selected subcategory if current selection is no longer available
+    if (Object.keys(filteredTools).length > 0 && !filteredTools[selectedSubCategory]) {
+      setSelectedSubCategory(Object.keys(filteredTools)[0]);
+    }
+    
+    return filteredTools;
+  };
+
+  React.useEffect(() => {
+    const filteredTools = filterToolsBySearch(groupedIntegrations || {});
+    if (
+      Object.keys(filteredTools).length > 0 &&
+      (!selectedSubCategory || !filteredTools[selectedSubCategory])
+    ) {
+      const firstSubCategory = Object.keys(filteredTools)[0];
+      setSelectedSubCategory(firstSubCategory);
+    }
+  }, [groupedIntegrations, selectedSubCategory, searchQuery]); 
+
+  const filteredTools = filterToolsBySearch(groupedIntegrations);
+
+
   return (
     <div className="absolute bg-white w-[470px] h-[500px] top-[120px] rounded-2xl overflow-y-auto backdrop-blur-sm drop-shadow-2xl">
       <div className="bg-white p-5 pt-0">
@@ -152,6 +201,8 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
                 type="text"
                 placeholder="Search"
                 className="bg-[#F7F7F7]"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
           </div>
@@ -160,7 +211,7 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
 
         <div className="main-box">
           <div className="flex flex-wrap flex-row gap-2 mb-4">
-            {Object?.keys(groupedIntegrations).map((subCategory, index) => (
+            {Object.keys(filteredTools).map((subCategory, index) => (
               <div
                 key={index}
                 className={`flex flex-row p-3 rounded-lg items-center cursor-pointer ${selectedSubCategory === subCategory
@@ -197,7 +248,7 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
           </div>
 
           <div className="">
-            {groupedIntegrations[selectedSubCategory]?.map(item => (
+            {filteredTools[selectedSubCategory]?.map((item: NodeData, index) => (
               <div
                 key={item.node.id}
                 className="h-auto w-full bg-transparent mb-2 rounded-lg flex justify-center items-center cursor-pointer border border-[#E5E5E5] p-3"

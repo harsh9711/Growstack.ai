@@ -7,8 +7,22 @@ import { addNode, addNodeData, createNode, removeNode } from "@/lib/features/wor
 import { calculateNextNodePosition } from "@/utils/helper";
 import { unwrapResult } from "@reduxjs/toolkit";
 
+
+interface NodeData {
+  name: string;
+  logoUrl?: string;
+  node: NodeState;
+}
+
+interface GroupedIntegrations {
+  [key: string]: NodeData[];
+}
+
+
 const IntegrationCategory = ({ setNodes }: any): React.ReactElement => {
   const dispatch = useAppDispatch();
+  const [searchQuery, setSearchQuery] = useState("");
+
 
   const { masterNode } = useAppSelector(state => state.masterNode);
   const { workFlowData } = useAppSelector(state => state.workflows);
@@ -38,6 +52,24 @@ const IntegrationCategory = ({ setNodes }: any): React.ReactElement => {
     },
     {}
   );
+
+  const filterGeneralsBySearch = (integrations: GroupedIntegrations): GroupedIntegrations => {
+    if (!searchQuery) return integrations;
+    
+    const filteredGenerals: GroupedIntegrations = {};
+    
+    Object.keys(integrations).forEach((subCategory) => {
+      const filteredItems = integrations[subCategory].filter((item: NodeData) => 
+        item.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      
+      if (filteredItems.length > 0) {
+        filteredGenerals[subCategory] = filteredItems;
+      }
+    });
+    
+    return filteredGenerals;
+  };
 
   const [selectedSubCategory, setSelectedSubCategory] = useState<string>("");
 
@@ -136,6 +168,8 @@ const IntegrationCategory = ({ setNodes }: any): React.ReactElement => {
                 type="text"
                 placeholder="Search"
                 className="bg-[#F7F7F7]"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
           </div>
@@ -143,7 +177,7 @@ const IntegrationCategory = ({ setNodes }: any): React.ReactElement => {
 
         <div className="main-box">
           <div className="flex flex-wrap flex-row gap-2 mb-4">
-            {Object?.keys(integrationData).map((subCategory, index) => (
+            {Object?.keys(filterGeneralsBySearch(integrationData)).map((subCategory, index) => (
               <div
                 key={index}
                 className={`flex flex-row p-3 rounded-lg items-center cursor-pointer ${selectedSubCategory === subCategory
@@ -180,7 +214,7 @@ const IntegrationCategory = ({ setNodes }: any): React.ReactElement => {
           </div>
 
           <div className="flex flex-wrap pt-1">
-            {integrationData[selectedSubCategory]?.map((item, _) => (
+            {filterGeneralsBySearch(integrationData)[selectedSubCategory]?.map((item, _) => (
               // <div
               //   key={item.node.id}
               //   className="h-auto w-full bg-transparent mb-2 rounded-lg flex justify-center items-center cursor-pointer border border-[#E5E5E5] p-3"
