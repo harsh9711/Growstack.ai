@@ -105,7 +105,7 @@ const PricingPage: React.FC = () => {
             </p>
             <div className="mt-6">
               <p className="text-lg text-gray-600">
-                Redirecting to dashboard in
+                Redirecting to login page
               </p>
               {seconds ? (
                 <h3 className="text-4xl font-bold text-red-600">

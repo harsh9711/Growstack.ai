@@ -13,12 +13,13 @@ import {
 } from "@/components/svgs";
 import { ALL_ROUTES } from "@/utils/constant";
 
-const navLinks: NavLink[] = [
+let navLinks: NavLink[] = [
   {
     icon: <DashboardIcon />,
     href: "/app",
     title: "Dashboard",
   },
+
   {
     icon: <PlanIcon />,
     sublinks: [
@@ -71,6 +72,12 @@ const navLinks: NavLink[] = [
     ],
     title: "Automation Hub",
   },
+  // {
+  //   icon: <ProductAiIcon />,
+  //   href: "/app/publish/scheduler/quick-posting",
+  //   title: "Publish",
+  // },
 ];
+
 
 export default navLinks;
