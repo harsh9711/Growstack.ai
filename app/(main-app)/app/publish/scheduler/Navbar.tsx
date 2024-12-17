@@ -65,13 +65,13 @@ const SocialNavBar: FC<SocialNavBarProps> = ({
     >
       <div className="flex items-center">
         <button className="flex items-center text-sm bg-white border font-semibold px-3 py-3 py-1 rounded-l-full rounded-r-full ml-4">
-          <Image
+          {/* <Image
             src="/assets/layout-distribute-horizontal.svg"
             alt=""
             width={20}
             height={20}
             color="black"
-          />
+          /> */}
           <span className="px-1">Feed view</span>
         </button>
       </div>
@@ -115,13 +115,13 @@ const SocialNavBar: FC<SocialNavBarProps> = ({
 
       <div className="flex items-center" onClick={handleDialogToggle}>
         <button className="flex items-center text-sm bg-white border font-semibold px-4 py-3 py-1 rounded-lg mr-4">
-          <Image
+          {/* <Image
             src="/assets/edit-circle.svg"
             alt=""
             width={32}
             height={32}
             color="white"
-          />
+          /> */}
           <span className="text-primary-green">Compose</span>
         </button>
       </div>
