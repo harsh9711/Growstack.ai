@@ -59,7 +59,7 @@ const PostComment: FC<PostCommentProps> = ({
       setLoading(true);
       const payload = {
         user_prompt: user_text,
-        platform: selectedIcon,
+        platform: "facebook",
       };
       const apiUrl = `${API_URL}/ai/api/v1/generate/post`;
       setAccumulatedResponse("");

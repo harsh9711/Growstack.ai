@@ -343,7 +343,7 @@ export default function Publish() {
                       </button>
                     ) : (
                       <button
-                        onClick={handleOnConnect}
+                      onClick={skipNowFn}
                         type="submit"
                         className="min-w-[140px] py-3 rounded-xl text-green sheen flex justify-center items-center border border-emerald-600 cursor-pointer"
                       >
