@@ -33,6 +33,7 @@ const TextAreaField: React.FC<DynamicInputProps> = ({
                     placeholder={param.placeholder || ""}
                     value={param?.value || ""}
                     className="form-control outline-0 shadow-none w-full p-4 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-[12px] font-medium focus:outline-none"
+                    maxLength={param?.maxLength || 5000}
                     onFocus={handleInputFocus}
                     onChange={e =>
                         handleInputChange(inputKey, param.type, e.target.value)

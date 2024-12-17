@@ -3,12 +3,30 @@ import Image from "next/image";
 import { NodeState } from "@/types/workflows";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { convertNodeData } from "@/utils/dataResolver";
-import { addNodeData, removeNode } from "@/lib/features/workflow/node.slice";
+import { addNode, addNodeData, createNode, removeNode } from "@/lib/features/workflow/node.slice";
+import { calculateNextNodePosition } from "@/utils/helper";
+import { unwrapResult } from "@reduxjs/toolkit";
+
+
+interface NodeData {
+  name: string;
+  logoUrl?: string;
+  node: NodeState;
+}
+
+interface GroupedIntegrations {
+  [key: string]: NodeData[];
+}
+
 
 const IntegrationCategory = ({ setNodes }: any): React.ReactElement => {
   const dispatch = useAppDispatch();
+  const [searchQuery, setSearchQuery] = useState("");
+
 
   const { masterNode } = useAppSelector(state => state.masterNode);
+  const { workFlowData } = useAppSelector(state => state.workflows);
+  const { nodes } = useAppSelector(state => state.nodes);
 
   if ((masterNode && !masterNode.length) || !masterNode) {
     return <div>Data not found</div>;
@@ -35,6 +53,24 @@ const IntegrationCategory = ({ setNodes }: any): React.ReactElement => {
     {}
   );
 
+  const filterGeneralsBySearch = (integrations: GroupedIntegrations): GroupedIntegrations => {
+    if (!searchQuery) return integrations;
+    
+    const filteredGenerals: GroupedIntegrations = {};
+    
+    Object.keys(integrations).forEach((subCategory) => {
+      const filteredItems = integrations[subCategory].filter((item: NodeData) => 
+        item.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      
+      if (filteredItems.length > 0) {
+        filteredGenerals[subCategory] = filteredItems;
+      }
+    });
+    
+    return filteredGenerals;
+  };
+
   const [selectedSubCategory, setSelectedSubCategory] = useState<string>("");
 
   useEffect(() => {
@@ -44,32 +80,68 @@ const IntegrationCategory = ({ setNodes }: any): React.ReactElement => {
     }
   }, [integrationData, selectedSubCategory]);
 
-  const handleClick = (nodeData: NodeState) => {
-    console.log("nodeData", nodeData);
-    setNodes((prevNodes: NodeState[]) => {
-      const lastNode = prevNodes[prevNodes.length - 1];
-      let nextNodeX = 200;
-      let nextNodeY = 0;
-      if (lastNode) {
-        nextNodeX = lastNode.position.x + 200;
-        nextNodeY = lastNode.position.y;
+  // const handleClick = (nodeData: NodeState) => {
+  //   console.log("nodeData", nodeData);
+  //   setNodes((prevNodes: NodeState[]) => {
+  //     const lastNode = prevNodes[prevNodes.length - 1];
+  //     let nextNodeX = 200;
+  //     let nextNodeY = 0;
+  //     if (lastNode) {
+  //       nextNodeX = lastNode.position.x + 200;
+  //       nextNodeY = lastNode.position.y;
 
-        if (nextNodeX > 1600) {
-          nextNodeX = 200;
-          nextNodeY += 200;
-        }
-      }
+  //       if (nextNodeX > 1600) {
+  //         nextNodeX = 200;
+  //         nextNodeY += 200;
+  //       }
+  //     }
 
-      return [
-        ...prevNodes,
-        {
-          ...nodeData,
-          id: Date.now().toString(),
+  //     return [
+  //       ...prevNodes,
+  //       {
+  //         ...nodeData,
+  //         id: Date.now().toString(),
+  //         position: { x: nextNodeX, y: nextNodeY },
+  //       },
+  //     ];
+  //   });
+  // };
+
+
+  const handleClick = async (nodeData: NodeState) => {
+    try {
+      const lastNode = nodes[nodes.length - 1];
+      const { nextNodeX, nextNodeY } = calculateNextNodePosition(lastNode);
+
+      const resultAction = await dispatch(
+        createNode({
+          workflowId: workFlowData._id,
+          nodeMasterId: nodeData.id,
+          name: nodeData.data?.label,
+          type: nodeData?.type,
+          description: nodeData.data?.descriptions || "",
           position: { x: nextNodeX, y: nextNodeY },
-        },
-      ];
-    });
+          parameters: {},
+        })
+      );
+      const result = unwrapResult(resultAction);
+
+      if (!result._id) return;
+
+      const newNode = {
+        ...nodeData,
+        id: result._id,
+        position: { x: nextNodeX, y: nextNodeY },
+      };
+
+      setNodes((nds: NodeState[]) => nds.concat(newNode));
+      dispatch(addNode(newNode));
+    } catch (error) {
+      console.error("Error adding node:", error);
+    }
   };
+
+
 
   const handleDragStart = (event: React.DragEvent, item: NodeState) => {
     dispatch(addNodeData(item));
@@ -96,6 +168,8 @@ const IntegrationCategory = ({ setNodes }: any): React.ReactElement => {
                 type="text"
                 placeholder="Search"
                 className="bg-[#F7F7F7]"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
           </div>
@@ -103,7 +177,7 @@ const IntegrationCategory = ({ setNodes }: any): React.ReactElement => {
 
         <div className="main-box">
           <div className="flex flex-wrap flex-row gap-2 mb-4">
-            {Object?.keys(integrationData).map((subCategory, index) => (
+            {Object?.keys(filterGeneralsBySearch(integrationData)).map((subCategory, index) => (
               <div
                 key={index}
                 className={`flex flex-row p-3 rounded-lg items-center cursor-pointer ${selectedSubCategory === subCategory
@@ -140,7 +214,7 @@ const IntegrationCategory = ({ setNodes }: any): React.ReactElement => {
           </div>
 
           <div className="flex flex-wrap pt-1">
-            {integrationData[selectedSubCategory]?.map((item, _) => (
+            {filterGeneralsBySearch(integrationData)[selectedSubCategory]?.map((item, _) => (
               // <div
               //   key={item.node.id}
               //   className="h-auto w-full bg-transparent mb-2 rounded-lg flex justify-center items-center cursor-pointer border border-[#E5E5E5] p-3"

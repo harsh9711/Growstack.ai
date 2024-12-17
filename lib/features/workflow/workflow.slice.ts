@@ -55,6 +55,17 @@ const workflowSlice = createSlice({
   name: "workflow",
   initialState: {} as WorkflowState,
   reducers: {
+    onChangeWorkFlowData: (
+      state,
+      action: PayloadAction<{ key: keyof WorkflowDataState; value: any }>
+    ) => {
+      state.workFlowData[action.payload.key] = action.payload.value;
+    },
+
+    updateWorkflowStatus: (state, action) => {
+      state.workFlowData.status = action.payload;
+    },
+
     clearWorkFlowData: state => {
       state.workFlowData = {} as WorkflowDataState;
     },
@@ -68,12 +79,23 @@ const workflowSlice = createSlice({
         createWorkFlow.fulfilled,
         (state, action: PayloadAction<WorkflowDataState>) => {
           state.isLoading = false;
-          state.workFlowData = action.payload;
+          state.workFlowData = { ...action.payload, description: "" };
         }
       )
       .addCase(createWorkFlow.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload;
+      })
+      .addCase(updateWorkFlowById.pending, state => {
+        state.isLoading = true;
+      })
+      .addCase(
+        updateWorkFlowById.fulfilled,
+        (state, action: PayloadAction<WorkflowDataState>) => {
+          state.isLoading = false;
+        }
+      )
+      .addCase(updateWorkFlowById.rejected, (state, action) => {
+        state.isLoading = false;
       })
       .addCase(getWorkFlowById.pending, state => {
         state.isLoading = true;
@@ -81,44 +103,12 @@ const workflowSlice = createSlice({
       .addCase(
         getWorkFlowById.fulfilled,
         (state, action: PayloadAction<WorkflowDataState>) => {
-          // console.log(
-          //   "action.payload---workFloe---->",
-          //   JSON.stringify(action.payload, null, 2)
-          // );
           state.isLoading = false;
-          // state.workFlowData = action.payload;
-
-          // const updatedNodes = action.payload.nodes?.map(node => {
-          //   const updatedParameters = Object.entries(
-          //     (node.nodeMasterId as any).parameters
-          //   ).reduce((acc: { [key: string]: any }, [key, param]) => {
-          //     acc[key] = {
-          //       ...(typeof param === "object" && param !== null ? param : {}),
-          //       value: node.parameters?.[key] || "",
-          //     };
-          //     return acc;
-          //   }, {});
-
-          //   return {
-          //     id: node._id,
-          //     position: node.position,
-          //     type: node.type,
-          //     data: {
-          //       nodeMasterId: node.nodeMasterId._id,
-          //       parameters: updatedParameters,
-          //       subNodes: node.subNodes || [],
-          //       dynamicParams: node.nodeMasterId.dynamicParams || [],
-          //       functionToExecute: node.nodeMasterId.functionToExecute,
-          //       label: node.nodeMasterId.name,
-          //       description: node.nodeMasterId.description,
-          //       icon: node.nodeMasterId.logoUrl,
-          //     },
-          //   };
-          // });
           const updatedNodes = resolveWorkflowNodes(action.payload.nodes);
 
           state.workFlowData = {
             ...action.payload,
+            description: action.payload.description || "",
             //@ts-ignore
             nodes: updatedNodes,
           };
@@ -132,4 +122,5 @@ const workflowSlice = createSlice({
 });
 
 export default workflowSlice.reducer;
-export const { clearWorkFlowData } = workflowSlice.actions;
+export const { clearWorkFlowData, onChangeWorkFlowData, updateWorkflowStatus } =
+  workflowSlice.actions;

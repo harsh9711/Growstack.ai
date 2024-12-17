@@ -206,10 +206,12 @@ const History: React.FC<Props> = ({ workflowId, runnerId }) => {
       );
       setWorkFlowHistory(response.data.data.data);
     } catch (error: any) {
-      if (error.response) {
-        toast.error(error.response.data.error);
+      if (error?.response) {
+        toast.error(error?.response?.data?.error);
+      } else if (error?.message) {
+        toast.error(error?.message);
       } else {
-        toast.error(error.message);
+        toast.error("Something went wrong");
       }
     } finally {
       setLoading(false);
@@ -236,10 +238,12 @@ const History: React.FC<Props> = ({ workflowId, runnerId }) => {
       await fetchWorkflowHistory(workflowId);
       toast.success(response.data.message);
     } catch (error: any) {
-      if (error.response) {
-        toast.error(error.response.data.error);
+      if (error?.response) {
+        toast.error(error?.response?.data?.error);
+      } else if (error?.message) {
+        toast.error(error?.message);
       } else {
-        toast.error(error.message);
+        toast.error("Something went wrong");
       }
       console.error("Error deleting workflow history:", error);
     } finally {
@@ -262,8 +266,15 @@ const History: React.FC<Props> = ({ workflowId, runnerId }) => {
             runnerId = null;
             fetchWorkflowHistory(workflowId);
           }
-        } catch (error) {
+        } catch (error: any) {
           clearInterval(intervalId);
+          if (error?.response) {
+            toast.error(error?.response?.data?.error);
+          } else if (error?.message) {
+            toast.error(error?.message);
+          } else {
+            toast.error("Something went wrong");
+          }
           console.error("Error deleting status", error);
         }
       };
@@ -281,10 +292,12 @@ const History: React.FC<Props> = ({ workflowId, runnerId }) => {
       await fetchWorkflowHistory(workflowId);
       toast.success(response.data.message);
     } catch (error: any) {
-      if (error.response) {
-        toast.error(error.response.data.error);
+      if (error?.response) {
+        toast.error(error?.response?.data?.error);
+      } else if (error?.message) {
+        toast.error(error?.message);
       } else {
-        toast.error(error.message);
+        toast.error("Something went wrong");
       }
     }
   };
@@ -348,9 +361,9 @@ const History: React.FC<Props> = ({ workflowId, runnerId }) => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 {table
-                  .getAllColumns()
-                  .filter(column => column.getCanHide())
-                  .map(column => (
+                  ?.getAllColumns()
+                  ?.filter(column => column?.getCanHide())
+                  ?.map(column => (
                     <DropdownMenuCheckboxItem
                       key={column.id}
                       className="capitalize"
@@ -376,9 +389,9 @@ const History: React.FC<Props> = ({ workflowId, runnerId }) => {
         <div className="rounded-xl overflow-hidden border bg-white">
           <Table>
             <TableHeader>
-              {table.getHeaderGroups().map(headerGroup => (
+              {table?.getHeaderGroups()?.map(headerGroup => (
                 <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map(header => (
+                  {headerGroup?.headers?.map(header => (
                     <TableHead key={header.id}>
                       {header.isPlaceholder
                         ? null
@@ -392,16 +405,16 @@ const History: React.FC<Props> = ({ workflowId, runnerId }) => {
               ))}
             </TableHeader>
             <TableBody>
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map(row => (
+              {table?.getRowModel()?.rows?.length ? (
+                table?.getRowModel()?.rows?.map(row => (
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
                   >
-                    {row.getVisibleCells().map(cell => (
-                      <TableCell key={cell.id}>
-                        {cell.column.columnDef.header === "Status" &&
-                        row.original.workflow_runner_id === runnerId &&
+                    {row?.getVisibleCells()?.map(cell => (
+                      <TableCell key={cell?.id}>
+                        {cell?.column?.columnDef?.header === "Status" &&
+                        row?.original?.workflow_runner_id === runnerId &&
                         runnerId != null &&
                         runnerIdStatus ? (
                           <div className=" flex gap-2">
@@ -421,7 +434,7 @@ const History: React.FC<Props> = ({ workflowId, runnerId }) => {
               ) : (
                 <TableRow className="hover:bg-white">
                   <TableCell
-                    colSpan={columns.length}
+                    colSpan={columns?.length}
                     className="h-80 text-center font-semibold text-lg hover:bg-white"
                   >
                     No results.

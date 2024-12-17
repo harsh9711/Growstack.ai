@@ -25,7 +25,6 @@ function Banner() {
                   engagement with your audience.
                 </p>
 
-                
                 <div className="btns reverse">
                   <Link href="/auth/register" className="sheen">
                     Get a free trial{" "}

@@ -20,10 +20,11 @@ import {
   deleteNodeById,
   removeNodeById,
   updateNodeById,
+  updateNodeDependency,
   updateNodeParameter,
 } from "@/lib/features/workflow/node.slice";
 import { unwrapResult } from "@reduxjs/toolkit";
-import DeleteConfirmationModal from "../deleteconfirmationmodal/DeleteConfirmationModal";
+import DeleteConfirmationModal from "../modals/deletemodal/DeleteModal";
 import { useSnackbar } from "../snackbar/SnackbarContext";
 import DynamicInput from "../DynamicInputs";
 import { getVariableName, isSpecialType } from "@/utils/helper";
@@ -128,7 +129,7 @@ const FanOut = ({
 
       const result = unwrapResult(resultAction);
 
-      console.log("----result----", result);
+      // console.log("----result----", result);
 
       const subFlow = {
         ...nodeData,
@@ -142,6 +143,8 @@ const FanOut = ({
 
       setNodes((nds: FlowNode[]) => nds.concat(subFlow as unknown as FlowNode));
       dispatch(addNode(subFlow));
+      dispatch(updateNodeDependency({ sourceId: id, targetId: result._id }));
+      setShowSearch(false);
     } catch (error) {
       console.error("Error adding node:", error);
     }
@@ -220,7 +223,8 @@ const FanOut = ({
     setNodes(nds => nds.filter(nds => nds.id !== id));
     dispatch(removeNodeById(id));
     dispatch(deleteNodeById(id));
-    success("Node delete successfully");
+    // success("The node has been successfully deleted");
+    success(`The ${data?.label} node has been successfully deleted`);
   };
 
   const handleToggleAdvancedOptions = () => {
@@ -269,8 +273,8 @@ const FanOut = ({
       requiredParams.forEach(param => {
         const key = node?.data?.parameters
           ? Object.keys(node.data.parameters).find(
-              k => node.data.parameters?.[k] === param
-            )
+            k => node.data.parameters?.[k] === param
+          )
           : undefined;
         if (key && !param.value) {
           dispatch(
@@ -462,7 +466,7 @@ const FanOut = ({
           <div className="modal">
             {isActionModalShow && (
               <div
-           
+
                 id="node-action-modal"
                 className="absolute right-[-126px] top-[26px] mt-2 w-48 bg-white rounded-[15px] border-[1px] border-[#E8E8E8] shadow-2xl z-50"
               >

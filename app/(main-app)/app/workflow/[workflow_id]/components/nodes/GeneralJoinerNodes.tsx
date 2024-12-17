@@ -1,13 +1,14 @@
-import React, { memo, useState, useEffect, useRef, useCallback } from "react";
+import React, { memo, useState, useEffect, useCallback } from "react";
 import { Handle, Position, type NodeProps, useReactFlow } from "@xyflow/react";
 import { GeneralJoinerNodeProps } from "./types";
 import DynamicInput from "../DynamicInputs";
-import DeleteConfirmationModal from "../deleteconfirmationmodal/DeleteConfirmationModal";
+import DeleteConfirmationModal from "../modals/deletemodal/DeleteModal";
 import { extractParameterValues } from "@/utils/dataResolver";
 import {
   deleteNodeById,
   removeNodeById,
   updateNodeById,
+  updateNodeDescription,
   updateNodeParameter,
 } from "@/lib/features/workflow/node.slice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -23,9 +24,8 @@ const GeneralJoinerNodes = memo(
     positionAbsoluteX,
     positionAbsoluteY,
   }: NodeProps<GeneralJoinerNodeProps>) => {
-
-
     const { setNodes } = useReactFlow();
+    const { setEdges } = useReactFlow();
     const dispatch = useAppDispatch();
     const { success } = useSnackbar();
 
@@ -36,25 +36,15 @@ const GeneralJoinerNodes = memo(
     const { workFlowData } = useAppSelector(state => state.workflows);
     const { isLoading, nodes } = useAppSelector(state => state.nodes);
     const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
-    const [description, setDescription] = useState(data?.descriptions || "");
     const [isEdit, setIsEdit] = useState(true);
     const [shake, setShake] = useState(false);
     const [openDeleteConfirmationModal, setOpenDeleteConfirmationModal] =
       useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isActionModalShow, setIsActionModalShow] = useState(false);
-
-    // const handleOpenActionModal = () => {
-    //   setIsActionModalShow(!isActionModalShow);
-    // };
-    const dropdownRef = useRef<HTMLDivElement | null>(null);
     const [variableNames, setVariableNames] = useState<VariableNameProps[]>([]);
     const [focusedInputKey, setFocusedInputKey] = useState<string | null>(null);
-    const [dependencies, setDependencies] = useState<
-      { key: string; nodeId: string }[]
-    >(node?.data.dependencies || []);
 
-    // ON OUTSIDE CLICK CLOSE ACTION MODAL
     const handleOutsideClick = (e: MouseEvent) => {
       const modal = document.getElementById("node-action-modal");
       if (modal && !modal.contains(e.target as Node)) {
@@ -76,51 +66,113 @@ const GeneralJoinerNodes = memo(
       setIsDropdownOpen(!isDropdownOpen);
     };
 
+    // const handleInputChange = useCallback(
+    //   (key: any, type: any, value: any, dependency?: string) => {
+    //     console.log("key-->", key, "type-->", type, "value-->", value);
+    //     if (!isEdit) {
+    //       setShake(true);
+    //       setTimeout(() => setShake(false), 500);
+    //       return;
+    //     }
+
+    //     console.log("dependencies-->", dependency);
+
+    //     dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
+
+    //     if (!isSpecialType(type)) return;
+
+    //     if (value && value.includes("$")) {
+    //       const index = nodes.findIndex(nds => nds.id === id);
+    //       const variableName = getVariableName(nodes, index);
+    //       console.log("variableName-->", variableName);
+    //       if (dependency) {
+    //         // setDependencies(prevDependencies => {
+    //         //   const newDependency = { key, nodeId: dependency };
+    //         //   const uniqueDependencies = new Set([
+    //         //     ...prevDependencies,
+    //         //     newDependency,
+    //         //   ]);
+    //         //   return Array.from(uniqueDependencies);
+    //         // });
+
+    //         dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
+    //       }
+    //       const regex = /\$(?!\s*$).+/;
+    //       if (regex.test(value)) {
+    //         setVariableNames([]);
+    //       } else {
+    //         setVariableNames(
+    //           variableName.filter(
+    //             (name): name is VariableNameProps => name !== null
+    //           )
+    //         );
+    //       }
+    //     } else {
+    //       // setDependencies(pre => pre.filter(dep => dep.key !== key));
+    //       dispatch(removeNodeDependency({ nodeId: id, key }));
+    //       setVariableNames([]);
+    //     }
+    //   },
+    //   [dispatch, id, nodes, dependencies, variableNames, isEdit]
+    // );
+
     const handleInputChange = useCallback(
-      (key: any, type: any, value: any, dependency?: string) => {
-        console.log("key-->", key, "type-->", type, "value-->", value);
+      (key: any, type: any, value: any, dependency: any) => {
         if (!isEdit) {
           setShake(true);
           setTimeout(() => setShake(false), 500);
           return;
         }
 
+        console.log("key-->", key, "type-->", type, "value-->", value);
         console.log("dependencies-->", dependency);
 
         dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
 
         if (!isSpecialType(type)) return;
 
-        if (value && value.includes("$")) {
+        const singleDollarRegex = /^\$$/;
+        const validSequenceRegex = /.*\$$/;
+        const invalidPatternRegex = /\$(.*?)\$.*\S/;
+
+        if (singleDollarRegex.test(value)) {
           const index = nodes.findIndex(nds => nds.id === id);
           const variableName = getVariableName(nodes, index);
-          console.log("variableName-->", variableName);
-          if (dependency) {
-            setDependencies(prevDependencies => {
-              const newDependency = { key, nodeId: dependency };
-              const uniqueDependencies = new Set([
-                ...prevDependencies,
-                newDependency,
-              ]);
-              return Array.from(uniqueDependencies);
-            });
-          }
-          const regex = /\$(?!\s*$).+/;
-          if (regex.test(value)) {
-            setVariableNames([]);
-          } else {
-            setVariableNames(
-              variableName.filter(
-                (name): name is VariableNameProps => name !== null
-              )
-            );
-          }
+          setVariableNames(
+            variableName.filter(
+              (name): name is VariableNameProps => name !== null
+            )
+          );
+        } else if (
+          validSequenceRegex.test(value) &&
+          !invalidPatternRegex.test(value)
+        ) {
+          const index = nodes.findIndex(nds => nds.id === id);
+          const variableName = getVariableName(nodes, index);
+
+          setVariableNames(
+            variableName.filter(
+              (name): name is VariableNameProps => name !== null
+            )
+          );
         } else {
-          setDependencies(pre => pre.filter(dep => dep.key !== key));
+          // dispatch(removeNodeDependency({ nodeId: id, key }));
+          // setDependencies(pre => pre.filter(dep => dep.key !== key));
           setVariableNames([]);
         }
+        // if (dependency) {
+        //   // dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
+        //   setDependencies(prevDependencies => {
+        //     const newDependency = { key, nodeId: dependency };
+        //     const uniqueDependencies = new Set([
+        //       ...prevDependencies,
+        //       newDependency,
+        //     ]);
+        //     return Array.from(uniqueDependencies);
+        //   });
+        // }
       },
-      [dispatch, id, nodes, dependencies, variableNames, isEdit]
+      [dispatch, id, nodes, variableNames, isEdit, shake]
     );
 
     const handleNextClick = async () => {
@@ -142,7 +194,8 @@ const GeneralJoinerNodes = memo(
             workflowId: workFlowData._id,
             nodeMasterId: node.data.nodeMasterId,
             position: { x: positionAbsoluteX, y: positionAbsoluteY },
-            dependencies: dependencies.map(dps => dps.nodeId),
+            // dependencies: dependencies.map(dps => dps.nodeId),
+            dependencies: node.data?.dependencies || [],
             parameters: updatedValue,
           };
 
@@ -184,15 +237,16 @@ const GeneralJoinerNodes = memo(
 
     const handleDeleteNode = () => {
       setNodes(nds => nds.filter(nds => nds.id !== id));
+      setEdges((edges: any[]) => {
+        const updatedEdges = edges.filter(
+          (edge: any) =>
+            edge?.source !== id && edge?.target !== id
+        );
+        return updatedEdges;
+      });
       dispatch(removeNodeById(id));
       dispatch(deleteNodeById(id));
-      success("Node delete successfully");
-    };
-
-    const handleChange = (event: {
-      target: { value: React.SetStateAction<string> };
-    }) => {
-      setDescription(event.target.value);
+      success(`The ${data?.label} node has been successfully deleted`);
     };
 
     const handleInput = (event: { target: any }) => {
@@ -228,12 +282,19 @@ const GeneralJoinerNodes = memo(
               </h4>
 
               <textarea
-                value={description}
-                onChange={handleChange}
+                value={node?.data?.description || ""}
                 onInput={handleInput}
                 className="resize-none text-xs text-center font-medium text-[#14171B] bg-transparent border-transparent focus:border-transparent focus:ring-0 focus:outline-none"
                 placeholder="Enter description"
                 rows={1}
+                onChange={e => {
+                  dispatch(
+                    updateNodeDescription({
+                      nodeId: id,
+                      value: e.target.value,
+                    })
+                  );
+                }}
               />
             </div>
 
@@ -249,7 +310,7 @@ const GeneralJoinerNodes = memo(
                   <img
                     src={data.icon}
                     alt={data.label}
-                    className="w-[40px] mx-auto absolute top-[50px] left-0 right-0"
+                    className="w-[30px] absolute left-0 right-0 mx-auto top-1/2 transform  -translate-y-1/2"
                   />
                 )}
               </div>

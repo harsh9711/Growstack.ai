@@ -67,10 +67,11 @@ export const getTypeFromParam = (paramType: string): string => {
 export const extractParameterValues = (parameters: { [key: string]: any }) => {
   const result: { [key: string]: string } = {};
 
-  console.log(parameters, "extractParameterValues");
-
-  Object.entries(parameters).forEach(([key, param]) => {
-    result[key] = param.value;
+  Object?.entries(parameters).forEach(([key, param]) => {
+    if (key !== "nextParameter") {
+      result[key] = param.value;
+    }
+    // result[key] = param.value;
   });
 
   return result;
@@ -82,73 +83,42 @@ export const extractParameterValues = (parameters: { [key: string]: any }) => {
 //   const updatedNodes = nodes?.map(node => {
 //     const updatedParameters = Object.entries(
 //       (node.nodeMasterId as any).parameters
-//     ).reduce((acc: { [key: string]: any }, [key, param]) => {
+//     ).reduce((acc: { [key: string]: any }, [key, param]: [string, any]) => {
 //       acc[key] = {
 //         ...(typeof param === "object" && param !== null ? param : {}),
-//         value: node.parameters?.[key] || "",
+//         value: node.parameters?.[key] || param?.value || "",
 //       };
 //       return acc;
 //     }, {});
 
-//     return {
-//       id: node._id,
-//       position: node.position,
-//       type: node.type,
-//       data: {
-//         nodeMasterId: (node.nodeMasterId as any)?._id,
-//         parameters: updatedParameters,
-//         subNodes: node.subNodes || [],
-//         dynamicParams: (node.nodeMasterId as any)?.dynamicParams || [],
-//         functionToExecute: (node.nodeMasterId as any)?.functionToExecute,
-//         label: (node.nodeMasterId as any)?.name,
-//         description: (node.nodeMasterId as any)?.description,
-//         icon: (node.nodeMasterId as any)?.logoUrl,
-//       },
-//     };
-//   });
-
-//   return updatedNodes;
-// };
-
-// export const resolveWorkflowNodes = (nodes?: WorkflowNodeState[]) => {
-//   if (!nodes) return [];
-
-//   const updatedNodes = nodes?.map(node => {
-//     const updatedParameters = Object.entries(
-//       (node.nodeMasterId as any).parameters
-//     ).reduce((acc: { [key: string]: any }, [key, param]) => {
-//       acc[key] = {
-//         ...(typeof param === "object" && param !== null ? param : {}),
-//         value: node.parameters?.[key] || "",
-//       };
-//       return acc;
-//     }, {});
-
-//     // Update subNodes parameters if node type is "form"
 //     const updatedSubNodes =
 //       node.type === "form"
-//         ? node.subNodes.map((subNode: any) => {
-//             const matchingSubNode = (node.nodeMasterId as any).subNodes.find(
-//               (sn: any) => sn.nodeMasterId === subNode.nodeMasterId
-//             );
+//         ? (node.nodeMasterId as any).subNodes.map((sn: any) => {
+//             const matchingSubNode = node.subNodes.find(
+//               (subNode: any) => subNode.nodeMasterId === sn.nodeMasterId
+//             ) as { parameters?: { [key: string]: any } } | undefined;
 
 //             const updatedSubNodeParameters = Object.entries(
-//               (node.nodeMasterId as any).subNodes.find(
-//                 (sn: any) => sn.nodeMasterId === subNode.nodeMasterId
-//               ).parameters
-//             ).reduce((acc: { [key: string]: any }, [key, param]) => {
-//               acc[key] = {
-//                 ...(typeof param === "object" && param !== null ? param : {}),
-//                 value: subNode.parameters?.[key] || "",
-//               };
-//               return acc;
-//             }, {});
+//               sn.parameters
+//             ).reduce(
+//               (acc: { [key: string]: any }, [key, param]: [string, any]) => {
+//                 acc[key] = {
+//                   ...(typeof param === "object" && param !== null ? param : {}),
+//                   value:
+//                     matchingSubNode?.parameters?.[key] || param?.value || "",
+//                 };
+//                 return acc;
+//               },
+//               {}
+//             );
 
 //             return {
-//               ...(typeof subNode === "object" && subNode !== null
-//                 ? subNode
+//               ...(typeof matchingSubNode === "object" &&
+//               matchingSubNode !== null
+//                 ? matchingSubNode
 //                 : {}),
-//               name: matchingSubNode?.name || "",
+//               nodeMasterId: sn.nodeMasterId,
+//               name: sn.name || "",
 //               parameters: updatedSubNodeParameters,
 //             };
 //           })
@@ -165,8 +135,10 @@ export const extractParameterValues = (parameters: { [key: string]: any }) => {
 //         dynamicParams: (node.nodeMasterId as any)?.dynamicParams || [],
 //         functionToExecute: (node.nodeMasterId as any)?.functionToExecute,
 //         label: (node.nodeMasterId as any)?.name,
-//         description: (node.nodeMasterId as any)?.description,
+//         // description: (node.nodeMasterId as any)?.description,
+//         description: node?.description || "",
 //         icon: (node.nodeMasterId as any)?.logoUrl,
+//         dependencies: node.dependencies || [],
 //       },
 //     };
 //   });
@@ -177,7 +149,7 @@ export const extractParameterValues = (parameters: { [key: string]: any }) => {
 export const resolveWorkflowNodes = (nodes?: WorkflowNodeState[]) => {
   if (!nodes) return [];
 
-  const updatedNodes = nodes?.map(node => {
+  const updatedNodes = nodes.map(node => {
     const updatedParameters = Object.entries(
       (node.nodeMasterId as any).parameters
     ).reduce((acc: { [key: string]: any }, [key, param]: [string, any]) => {
@@ -187,6 +159,48 @@ export const resolveWorkflowNodes = (nodes?: WorkflowNodeState[]) => {
       };
       return acc;
     }, {});
+
+    if ((node.nodeMasterId as any).name === "Generate Image") {
+      const { model, numberOfImages, quality, prompt, size, style } =
+        updatedParameters;
+
+      switch (model?.value) {
+        case "dall-e-2":
+          numberOfImages.maxValue = 10;
+          numberOfImages.disabled = false;
+          quality.value = quality?.value || "standard";
+          quality.disabled = true;
+          prompt.maxLength = 1000;
+          style.value = style?.value || "";
+          style.disabled = true;
+          size.value = size?.value || "";
+          size.options = [
+            { label: "256x256", value: "256x256" },
+            { label: "512x512", value: "512x512" },
+            { label: "1024x1024", value: "1024x1024" },
+          ];
+          break;
+
+        case "dall-e-3":
+          numberOfImages.value = 1;
+          numberOfImages.disabled = true;
+          quality.disabled = false;
+          quality.value = quality?.value || "hd";
+          style.value = style?.value || "vivid";
+          size.value = size?.value || "";
+          style.disabled = false;
+          prompt.maxLength = 4000;
+          size.options = [
+            { label: "1024x1024", value: "1024x1024" },
+            { label: "1792x1024", value: "1792x1024" },
+            { label: "1024x1792", value: "1024x1792" },
+          ];
+          break;
+
+        default:
+          break;
+      }
+    }
 
     const updatedSubNodes =
       node.type === "form"
@@ -221,40 +235,6 @@ export const resolveWorkflowNodes = (nodes?: WorkflowNodeState[]) => {
           })
         : node.subNodes;
 
-    const dependencies: { key: string; nodeId: string }[] = [];
-
-    if (node?.parameters) {
-      Object.entries(node?.parameters)?.forEach(([key, param]) => {
-        // console.log("param----->value", param);
-        // console.log("param----->key", key);
-        const value = param;
-        if (typeof value === "string") {
-          const regex = /\$\{([^}]+)\}/;
-          const match = param?.match(regex);
-          // console.log("match----->", match);
-          if (match && match?.length > 0) {
-            const variableName = match[1];
-            // console.log("--variableName--", variableName);
-            const uniqueDependencies = new Set(
-              dependencies.map(dep => `${dep.key}-${dep.nodeId}`)
-            );
-            nodes.forEach(n => {
-              Object.entries(n.parameters || {}).forEach(([k, p]) => {
-                console.log("p.variableName", p);
-                if (p === variableName) {
-                  const dependencyKey = `${key}-${n._id}`;
-                  if (!uniqueDependencies.has(dependencyKey)) {
-                    dependencies.push({ key, nodeId: n._id });
-                    uniqueDependencies.add(dependencyKey);
-                  }
-                }
-              });
-            });
-          }
-        }
-      });
-    }
-
     return {
       id: node._id,
       position: node.position,
@@ -266,13 +246,9 @@ export const resolveWorkflowNodes = (nodes?: WorkflowNodeState[]) => {
         dynamicParams: (node.nodeMasterId as any)?.dynamicParams || [],
         functionToExecute: (node.nodeMasterId as any)?.functionToExecute,
         label: (node.nodeMasterId as any)?.name,
-        description: (node.nodeMasterId as any)?.description,
+        description: node?.description || "",
         icon: (node.nodeMasterId as any)?.logoUrl,
-        dependencies: dependencies,
-        // node?.dependencies?.map(item => ({
-        //   key: "",
-        //   nodeId: item,
-        // })) || [],
+        dependencies: node.dependencies || [],
       },
     };
   });

@@ -79,6 +79,7 @@ const Run: React.FC<any> = ({
   const [executionId, setExecutionId] = useState(initialExecutionId || "");
   const [runSummaryData, setRunSummaryData] = useState<any>([]);
   const [workflowStatsData, setWorkflowStatsData] = useState<any>([]);
+  const [isStoppedInternal, setIsStoppedInternal] = useState<any>(false);
 
   useEffect(() => {
     if (workflowId) {
@@ -121,7 +122,11 @@ const Run: React.FC<any> = ({
               display_name: parameters?.inputLabel || "Untitled Field",
               description: parameters?.description || "",
               placeholder: parameters?.placeholder || "",
-              default_value: parameters.defaultValue || "",
+              default_value:
+                parameters.defaultValue ||
+                parameters?.variableName === "boolean"
+                  ? false
+                  : "",
               variableName: parameters?.variableName || "",
               type: node?.nodeMasterId?.inputType,
               list_values: parameters?.options || [],
@@ -149,7 +154,7 @@ const Run: React.FC<any> = ({
                   display_name: formParameters?.inputLabel || "Untitled Field",
                   description: formParameters?.description || "",
                   placeholder: formParameters?.placeholder || "",
-                  default_value: formParameters?.defaultValue || "",
+                  default_value: formParameters?.defaultValue || formParameters?.variableName === "boolean" ? false : "",
                   variableName: formParameters?.variableName || "",
                   type: inputType,
                   list_values: formParameters?.options || [],
@@ -160,7 +165,6 @@ const Run: React.FC<any> = ({
             );
           }
         });
-
       setWorkFlowData({
         name: apiData.name,
         input_configs: inputConfigs,
@@ -170,19 +174,26 @@ const Run: React.FC<any> = ({
       });
     } catch (error: any) {
       console.error("Error fetching workflow data:", error);
-      if (error.response) {
-        toast.error(error.response.data.error);
+      if (error?.response) {
+        toast.error(error?.response?.data?.error);
+      } else if (error?.message) {
+        toast.error(error?.message);
       } else {
-        toast.error(error.message);
+        toast.error("Something went wrong");
       }
     }
   };
 
   const handleRunWorkFlow = useCallback(async () => {
-    const updatedWorkflowData = workFlowData.input_configs.map((data: any) => ({
-      variableName: data.variableName,
-      variableValue: data.type === "checkbox" ? data.selected_values : data.default_value,
-    }));
+    const updatedWorkflowData = workFlowData?.input_configs?.map(
+      (data: any) => ({
+        variableName: data?.variableName,
+        variableValue:
+          data?.type === "checkbox"
+            ? data?.selected_values
+            : data?.default_value,
+      })
+    );
     setIsLoading(true);
     try {
       // const response = await axios.post(
@@ -197,10 +208,17 @@ const Run: React.FC<any> = ({
       //   `/workflow/${workflowId}/run`,
       //   updatedWorkflowData
       // );
-      getWorkflowStats()
+      getWorkflowStats();
       setExecutionId(response?.data?.executionId);
-    } catch (error) {
-      // To:Do Handle error
+    } catch (error: any) {
+      if (error?.response) {
+        toast.error(error?.response?.data?.error);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("Something went wrong");
+      }
+      console.error("Error generating website:", error);
     } finally {
       setIsLoading(false);
     }
@@ -220,35 +238,66 @@ const Run: React.FC<any> = ({
       // );
       setRunSummaryData(getWorkFlowExecData?.data);
       const status = getWorkFlowExecData?.data?.status;
-      const outputDetails = getWorkFlowExecData?.data?.nodeExecutions.map(
+      const outputDetails = getWorkFlowExecData?.data?.nodeExecutions?.flatMap(
         (nodeExecution: any) => {
-          const nodeId = nodeExecution?.nodeId;
-          const variableName = nodeExecution?.parameters?.variableName;
-          const nodeMasterId = nodeId?._id;
-          const nodeExecutionId = nodeExecution?._id;
-          const value =
-            getWorkFlowExecData?.data?.variables[variableName] || "";
-          const approvalStatus = nodeExecution?.approvalStatus;
-          const approvalRequired = nodeExecution?.parameters?.approvalRequired;
-          const status = nodeExecution?.status;
-          const nodeType = nodeExecution?.nodeId?.type;
-          const socialMediaContent = nodeExecution?.socialMediaContent
-
-          return {
-            nodeMasterId: nodeMasterId,
-            value: value,
-            title: variableName,
-            approvalStatus: approvalStatus,
-            approvalRequired: approvalRequired,
-            nodeExecutionId: nodeExecutionId,
-            status: status,
-            nodeType: nodeType,
-            socialMediaContent: socialMediaContent
-          };
+          if (nodeExecution?.nodeId?.type !== "form") {
+            const nodeId = nodeExecution?.nodeId;
+            const variableName = nodeExecution?.parameters?.variableName;
+            const nodeMasterId = nodeId?._id;
+            const nodeExecutionId = nodeExecution?._id;
+            const value =
+              getWorkFlowExecData?.data?.variables[variableName] || "";
+            const approvalStatus = nodeExecution?.approvalStatus;
+            const approvalRequired =
+              nodeExecution?.parameters?.approvalRequired;
+            const status = nodeExecution?.status;
+            const nodeType = nodeExecution?.nodeId?.type;
+            const socialMediaContent = nodeExecution?.socialMediaContent;
+      
+            return {
+              nodeMasterId: nodeMasterId,
+              value: value,
+              title: variableName,
+              approvalStatus: approvalStatus,
+              approvalRequired: approvalRequired,
+              nodeExecutionId: nodeExecutionId,
+              status: status,
+              nodeType: nodeType,
+              socialMediaContent: socialMediaContent,
+            };
+          } else {
+            // Handle form type nodes by mapping over the subNodes and returning results
+            return nodeExecution?.subNodes?.map((data: any) => {
+              const nodeId = nodeExecution?.nodeId;
+              const nodeMasterId = nodeId?._id;
+              const nodeExecutionId = nodeExecution?._id;
+              const variableName = data?.parameters?.variableName;
+              const value =
+                getWorkFlowExecData?.data?.variables[variableName] || "";
+              const approvalStatus = nodeExecution?.approvalStatus;
+              const approvalRequired =
+                nodeExecution?.parameters?.approvalRequired;
+              const status = nodeExecution?.status;
+              const nodeType = nodeExecution?.nodeId?.type;
+              const socialMediaContent = nodeExecution?.socialMediaContent;
+      
+              return {
+                nodeMasterId: nodeMasterId,
+                value: value,
+                title: variableName,
+                approvalStatus: approvalStatus,
+                approvalRequired: approvalRequired,
+                nodeExecutionId: nodeExecutionId,
+                status: status,
+                nodeType: nodeType,
+                socialMediaContent: socialMediaContent,
+              };
+            });
+          }
         }
       );
 
-      const approvals = getWorkFlowExecData?.data?.nodeExecutions.map(
+      const approvals = getWorkFlowExecData?.data?.nodeExecutions?.map(
         (item: any) => {
           const name = item?.nodeId?.name;
           const description = item?.nodeId?.description;
@@ -270,14 +319,17 @@ const Run: React.FC<any> = ({
         status: status,
         approvalDetails: approvals,
       });
-      if (
-        status === "completed" ||
-        status === "awaiting-approval" ||
-        status === "failed"
-      ) {
+      if (status === "completed" || status === "failed") {
         return true;
       }
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.response) {
+        toast.error(error?.response?.data?.error);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("Something went wrong");
+      }
       console.error("Error fetching workflow execution data", error);
     }
     return false;
@@ -291,13 +343,22 @@ const Run: React.FC<any> = ({
           try {
             const shouldStop = await pollingWorkflowExec();
             if (shouldStop) {
+              setIsStoppedInternal(true);
               clearInterval(interval);
+              getWorkflowStats();
             }
           } catch (error) {
+            setIsStoppedInternal(true);
             console.error("Error during polling:", error);
             clearInterval(interval); // Clear on error as well, if needed.
+            getWorkflowStats();
           }
         }, 5000);
+        if (isStoppedInternal) {
+          setIsStoppedInternal(false);
+          clearInterval(interval); // Clear on error as well, if needed.
+          getWorkflowStats();
+        }
       };
 
       startPolling();
@@ -308,12 +369,13 @@ const Run: React.FC<any> = ({
     }
   }, [pollingWorkflowExec, executionId]);
 
-  const handleFileUploaded = (fileUrl: string, idx: number) => {
-    setFileUrl2(fileUrl);
-    const updatedInputs = [...workFlowData.input_configs];
-    updatedInputs[idx].default_value = fileUrl;
-    setWorkFlowData({ ...workFlowData, input_configs: updatedInputs });
-  };
+  const handleFileUploaded = useCallback((fileUrl: string, idx: number) => {
+    setWorkFlowData((prevWorkFlowData:any) => {
+      const updatedInputs = [...prevWorkFlowData.input_configs];
+      updatedInputs[idx].default_value = fileUrl;
+      return { ...prevWorkFlowData, input_configs: updatedInputs };
+    });
+  },[workFlowData]);
 
   const handleChangeInput = (value: string, idx: number) => {
     const updatedInputs = [...workFlowData.input_configs];
@@ -351,7 +413,14 @@ const Run: React.FC<any> = ({
       // );
       const response = await instance.get(`/workflow/${workflowId}/stats`);
       setWorkflowStatsData(response?.data);
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.response) {
+        toast.error(error?.response?.data?.error);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("Something went wrong");
+      }
       console.error("Error fetching workflow stats data", error);
     }
   };
@@ -435,136 +504,178 @@ const Run: React.FC<any> = ({
                     IsInputParameterOpen ? "block" : "hidden"
                   } transition-opacity`}
                 >
-                  {workFlowData?.input_configs?.map(
-                    (input: any, idx: number) => {
-                      const matchingOutput =
-                        outputDetailsData?.outputDetails?.find(
-                          (output: any) => output.title === input.variableName
-                        );
-                      return (
-                        <div key={idx} className="relative group">
-                          <div className="flex items-center mb-4 mt-4 gap-2">
-                            <h2 className="font-medium">
-                              {input?.display_name}
-                            </h2>
-                            {input?.required && (
-                              <span className="text-red-500">*</span>
-                            )}
+                  {workFlowData?.input_configs &&
+                    workFlowData?.input_configs?.length > 0 &&
+                    workFlowData?.input_configs?.map(
+                      (input: any, idx: number) => {
+                        const matchingOutput =
+                          outputDetailsData?.outputDetails?.find(
+                            (output: any) => output.title === input.variableName
+                          );
+                        return (
+                          <div key={idx} className="relative group">
+                            <div className="flex items-center mb-4 mt-4 gap-2">
+                              <h2 className="font-medium">
+                                {input?.display_name}
+                              </h2>
+                              {input?.required && (
+                                <span className="text-red-500">*</span>
+                              )}
 
-                            {input?.description?.length > 0 && (
-                              <div className="relative" key={idx}>
-                                {/* Info icon */}
-                                <div
-                                  className="inline-block cursor-pointer"
-                                  onMouseEnter={() => setIsHovered(idx)}
-                                  onMouseLeave={() => setIsHovered(null)}
-                                >
-                                  <Info className="hover:opacity-100" />
-                                </div>
-                                {/* Description box */}
-                                {isHovered === idx && (
+                              {input?.description?.length > 0 && (
+                                <div className="relative" key={idx}>
+                                  {/* Info icon */}
                                   <div
-                                    key={idx}
-                                    className="absolute left-0 top-full mt-2 w-max p-2 text-sm text-white bg-gray-800 rounded-md shadow-md z-10"
+                                    className="inline-block cursor-pointer"
+                                    onMouseEnter={() => setIsHovered(idx)}
+                                    onMouseLeave={() => setIsHovered(null)}
                                   >
-                                    {input?.description}
+                                    <Info className="hover:opacity-100" />
                                   </div>
-                                )}
-                              </div>
-                            )}
-                          </div>
-                          {matchingOutput?.value && timeline && (
-                            <p className="bg-gray-100 p-4 rounded-lg w-full">
-                              {matchingOutput?.value}
-                            </p>
-                          )}
-                          {!timeline &&
-                            (() => {
-                              switch (input?.type) {
-                                case "switch":
-                                  return (
-                                    <Switch
-                                      checked={input.default_value}
-                                      onCheckedChange={checked =>
-                                        handleBooleanInput(checked, idx)
-                                      }
-                                    />
-                                  );
-                                case "file":
-                                  return (
-                                    <FileUpload
-                                      onFileUploaded={(fileUrl: any) =>
-                                        handleFileUploaded(fileUrl, idx)
-                                      }
-                                      acceptedFileTypes={
-                                        input.file_type || "*/*"
-                                      }
-                                    />
-                                  );
-                                case "checkbox":
-                                  return (
-                                    <div className="flex gap-4">
-                                      {input.list_values.map(
-                                        (option: string) => (
-                                          <label
-                                            key={option}
-                                            className="flex items-center space-x-1.5"
-                                          >
-                                            <Checkbox
-                                              checked={
-                                                input?.selected_values?.includes(
-                                                  option
-                                                ) || false
-                                              }
-                                              onCheckedChange={() =>
-                                                handleCheckListInput(
-                                                  option,
-                                                  idx
-                                                )
-                                              }
-                                            />
-                                            <span className="text-sm capitalize font-medium text-gray-700">
-                                              {option}
-                                            </span>
-                                          </label>
-                                        )
-                                      )}
+                                  {/* Description box */}
+                                  {isHovered === idx && (
+                                    <div
+                                      key={idx}
+                                      className="absolute left-0 top-full mt-2 w-max p-2 text-sm text-white bg-gray-800 rounded-md shadow-md z-10"
+                                    >
+                                      {input?.description}
                                     </div>
-                                  );
-                                default:
-                                  return (
-                                    <>
-                                      <input
-                                        type={
-                                          input?.type === "number"
-                                            ? "number"
-                                            : input?.type === "textarea"
-                                              ? "textarea"
-                                              : "text"
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                            {input?.type !== "form" &&
+                              matchingOutput?.value &&
+                              timeline && (
+                                <div className="bg-gray-100 p-4 rounded-lg w-full">
+                                  {typeof matchingOutput?.value ===
+                                    "string" && <p>{matchingOutput.value}</p>}
+                                  {typeof matchingOutput?.value ===
+                                    "boolean" && (
+                                    <p>
+                                      {matchingOutput.value ? "True" : "False"}
+                                    </p>
+                                  )}
+                                  {typeof matchingOutput?.value ===
+                                    "number" && <p>{matchingOutput.value}</p>}
+                                  {Array.isArray(matchingOutput?.value) &&
+                                    matchingOutput.value.length > 0 && (
+                                      <ul>
+                                        {matchingOutput.value.map(
+                                          (item, index) => (
+                                            <li key={index}>{item}</li>
+                                          )
+                                        )}
+                                      </ul>
+                                    )}
+                                  {!Array.isArray(matchingOutput?.value) &&
+                                    typeof matchingOutput?.value ===
+                                      "object" && (
+                                      <pre>
+                                        {JSON.stringify(
+                                          matchingOutput.value,
+                                          null,
+                                          2
+                                        )}
+                                      </pre>
+                                    )}
+                                </div>
+                              )}
+
+                            {!timeline &&
+                              (() => {
+                                switch (input?.type) {
+                                  case "switch":
+                                    return (
+                                      <Switch
+                                        checked={input.default_value}
+                                        onCheckedChange={checked =>
+                                          handleBooleanInput(checked, idx)
                                         }
-                                        placeholder={input?.placeholder}
-                                        className="w-full p-4 h-[46px] border border-gray-100 bg-[#F9F9F9] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green/60 transition"
-                                        value={input?.default_value}
-                                        onChange={e =>
-                                          handleChangeInput(e.target.value, idx)
-                                        }
-                                        required={input?.required}
                                       />
-                                    </>
-                                  );
-                              }
-                            })()}
-                        </div>
-                      );
-                    }
-                  )}
+                                    );
+                                  case "file":
+                                    return (
+                                      <FileUpload
+                                        onFileUploaded={(fileUrl: any) =>
+                                          handleFileUploaded(fileUrl, idx)
+                                        }
+                                        acceptedFileTypes={
+                                          input.file_type || "*/*"
+                                        }
+                                      />
+                                    );
+                                  case "checkbox":
+                                    return (
+                                      <div className="flex gap-4">
+                                        {input?.list_values &&
+                                          input?.list_values?.length > 0 &&
+                                          input?.list_values?.map(
+                                            (option: string) => (
+                                              <label
+                                                key={option}
+                                                className="flex items-center space-x-1.5"
+                                              >
+                                                <Checkbox
+                                                  checked={
+                                                    input?.selected_values?.includes(
+                                                      option
+                                                    ) || false
+                                                  }
+                                                  onCheckedChange={() =>
+                                                    handleCheckListInput(
+                                                      option,
+                                                      idx
+                                                    )
+                                                  }
+                                                />
+                                                <span className="text-sm capitalize font-medium text-gray-700">
+                                                  {option}
+                                                </span>
+                                              </label>
+                                            )
+                                          )}
+                                      </div>
+                                    );
+                                  default:
+                                    return (
+                                      <>
+                                        <input
+                                          type={
+                                            input?.type === "number"
+                                              ? "number"
+                                              : input?.type === "textarea"
+                                                ? "textarea"
+                                                : "text"
+                                          }
+                                          placeholder={input?.placeholder}
+                                          className="w-full p-4 h-[46px] border border-gray-100 bg-[#F9F9F9] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green/60 transition"
+                                          value={input?.default_value}
+                                          onChange={e =>
+                                            handleChangeInput(
+                                              e.target.value,
+                                              idx
+                                            )
+                                          }
+                                          required={input?.required}
+                                        />
+                                      </>
+                                    );
+                                }
+                              })()}
+                          </div>
+                        );
+                      }
+                    )}
                   {!timeline && (
                     <div className="flex justify-center mt-12 w-full gap-2">
                       <button
                         className={clsx(
                           "bg-primary-light-shade-green flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 text-white"
                         )}
-                        disabled={isWorkflowDisabled(workFlowData?.input_configs)}
+                        disabled={isWorkflowDisabled(
+                          workFlowData?.input_configs
+                        )}
                         onClick={handleRunWorkFlow}
                       >
                         {isLoading && <Spinner />}
@@ -575,7 +686,9 @@ const Run: React.FC<any> = ({
                           "bg-transparent border-2 border-green-200 flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 "
                         )}
                         onClick={() => setIsSchedulerModalOpen(true)}
-                        disabled={isWorkflowDisabled(workFlowData?.input_configs)}
+                        disabled={isWorkflowDisabled(
+                          workFlowData?.input_configs
+                        )}
                       >
                         <Clock size={20} color="#2DA771" />
                         <h2 className="text-primary-light-shade-green">
