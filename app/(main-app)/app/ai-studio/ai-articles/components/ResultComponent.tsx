@@ -121,10 +121,48 @@ const ResultComponent: React.FC<ResultComponentProps> = ({
       .replace(/<\/p>/gi, "\n\n");
     return temp.textContent || temp.innerText || "";
   };
-
+  const downloadWizardPdf = async (payload: { text: string; url: string; }) => {
+    try {
+      // Make the POST request to the API endpoint
+      const response = await instance.post(
+        "/users/api/v1/generate-pdf/downloadwizardpdf",
+        payload,
+        {
+          responseType: "blob", // Specify the response type as 'blob' to handle binary data
+        }
+      );
+  
+      // Check if the response is successful
+      if (response.status === 200) {
+        // Create a Blob from the response data
+        const blob = new Blob([response.data], { type: "application/pdf" });
+        const url = window.URL.createObjectURL(blob);
+  
+        // Create a link element to trigger the download
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "wizardContent.pdf"; // Specify the file name
+        document.body.appendChild(link); // Append the link to the DOM
+        link.click(); // Trigger the download
+        link.remove(); // Remove the link element from the DOM
+  
+        // Clean up the URL object
+        window.URL.revokeObjectURL(url);
+      } else {
+        console.error("Failed to generate PDF. Status:", response.status);
+      }
+    } catch (error) {
+      console.error("Error while downloading the PDF:", error);
+    }
+  };
+  
   const handleDownload = async (selectedOption: string) => {
     const plainTextContent = stripHtmlTags(articleData);
+    const payload ={
+      "text": articleData,
+      "url": images[0].url
 
+    }
     const formats = {
       "Download as DOC": plainTextContent,
       "Download as PDF": plainTextContent,
@@ -139,14 +177,7 @@ const ResultComponent: React.FC<ResultComponentProps> = ({
         saveAs(docBlob, `${articleTitle}.doc`);
         break;
       case "Download as PDF":
-        downloadPdf(
-          formats["Download as PDF"],
-          {
-            language: "english",
-          },
-          articleTitle
-        );
-        break;
+        downloadWizardPdf(payload)
       default:
         console.error("Unsupported download option");
     }
@@ -204,7 +235,7 @@ const ResultComponent: React.FC<ResultComponentProps> = ({
             <Dropdown
               hideSearch
               label="Download"
-              items={["Download as DOC", "Download as PDF"]}
+              items={["Download as PDF"]}
               onChange={(value: any) => handleDownload(value)}
             />
             <div
