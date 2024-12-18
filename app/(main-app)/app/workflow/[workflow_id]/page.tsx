@@ -72,6 +72,7 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
   const [activeTab, setActiveTab] = useState(0);
   const [selectedExecutionId, setSelectedExecutionId] = useState<string>("");
   const [isFromTimeline, setFromTimeline] = useState(false);
+  const [isLockCanvas, setIsLockCanvas] = useState<boolean>(false);
 
   const handleViewDetails = (executionId: string) => {
     setSelectedExecutionId(executionId);
@@ -126,8 +127,6 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
       const result = unwrapResult(resultAction);
 
       const updatedNodes = resolveWorkflowNodes(result.nodes);
-
-      console.log("Result--------------->", updatedNodes);
 
       // @ts-ignore
       setNodes(updatedNodes);
@@ -475,6 +474,9 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
               );
               onDragNode(updatedNodes);
             }}
+            nodesDraggable={isLockCanvas}
+            nodesConnectable={isLockCanvas}
+            elementsSelectable={isLockCanvas}
             defaultViewport={{ zoom: 0.9, x: 350, y: 100 }}
           >
             <Background
@@ -486,7 +488,7 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
               }}
             />
             <MiniMap />
-            <Controls />
+            {/* <Controls /> */}
             {/* <Panel
                     position="top-left"
                     className="border-2 border-white rounded-lg p-1.5 bg-[#F8F8FA] left-[40px] cursor-pointer"
@@ -527,7 +529,10 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
                 </Panel> */}
 
             <Panel position="bottom-center" style={{ bottom: "20px" }}>
-              <BottomCenterPanel />
+              <BottomCenterPanel
+                onLockIconClick={() => setIsLockCanvas(!isLockCanvas)}
+                isLockCanvas={isLockCanvas}
+              />
             </Panel>
           </ReactFlow>
         </div>
