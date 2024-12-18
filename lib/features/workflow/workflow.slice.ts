@@ -1,4 +1,4 @@
-import instance, { CustomAxiosInstance } from "@/config/axios.config";
+import instance, { automation, CustomAxiosInstance } from "@/config/axios.config";
 import { WorkflowDataState, WorkflowState } from "@/types/workflows";
 import { resolveWorkflowNodes } from "@/utils/dataResolver";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
@@ -8,7 +8,7 @@ export const createWorkFlow = createAsyncThunk(
   "createWorkflow",
   async (data: WorkflowDataState, { rejectWithValue }) => {
     try {
-      const result = await instance.post("/workflow", data);
+      const result = await instance.post(`${automation}/workflow`, data);
       return result.data as WorkflowDataState;
     } catch (error: any) {
       return rejectWithValue(
@@ -23,7 +23,7 @@ export const getWorkFlowById = createAsyncThunk(
   async (workFlowId: string, { rejectWithValue }) => {
     try {
       // const result = await CustomAxiosInstance().get(`workflow/${workFlowId}`);
-      const result = await instance.get(`/workflow/${workFlowId}`);
+      const result = await instance.get(`${automation}/workflow/${workFlowId}`);
       return result.data as WorkflowDataState;
     } catch (error: any) {
       return rejectWithValue(
@@ -41,7 +41,7 @@ export const updateWorkFlowById = createAsyncThunk(
   ) => {
     try {
       // const result = await CustomAxiosInstance().patch(`workflow/${id}`, data);
-      const result = await instance.patch(`/workflow/${id}`, data);
+      const result = await instance.patch(`${automation}/workflow/${id}`, data);
       return result.data as WorkflowDataState;
     } catch (error: any) {
       return rejectWithValue(

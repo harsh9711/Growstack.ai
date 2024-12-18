@@ -1,4 +1,4 @@
-import instance, { CustomAxiosInstance } from "@/config/axios.config";
+import instance, { automation, CustomAxiosInstance } from "@/config/axios.config";
 import { MasterNodeState, MasterNodeProps } from "@/types/workflows";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
@@ -9,7 +9,7 @@ export const createMasterNode = createAsyncThunk(
       // const data = await CustomAxiosInstance("http://localhost:5000/").post(
       //   "nodemaster"
       // );
-      const data = await instance.post("/nodemaster");
+      const data = await instance.post(`/${automation}/nodemaster`);
       return data.data;
     } catch (error: any) {
       return rejectWithValue(
@@ -23,7 +23,7 @@ export const getMasterNodes = createAsyncThunk(
   "masterNodes/getMasterNodes",
   async (_, { rejectWithValue }) => {
     try {
-      const result = await instance.get(`/nodemaster`);
+      const result = await instance.get(`/${automation}/nodemaster`);
       console.log("---data----", result);
       return result.data;
     } catch (error: any) {
