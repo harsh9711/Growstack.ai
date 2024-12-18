@@ -1,6 +1,6 @@
 "use client";
 import React, { useRef, useState, useEffect } from "react";
- import Link from "next/link";
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import dynamic from "next/dynamic";
 
@@ -18,7 +18,7 @@ const AnimationStory = () => {
       setIsVideoLoaded(entry.isIntersecting);
 
       if (entry.isIntersecting && videoElement) {
-        videoElement.play().catch((error) => {
+        videoElement.play().catch(error => {
           console.error("Autoplay was prevented:", error);
         });
       } else if (videoElement) {
@@ -63,7 +63,7 @@ const AnimationStory = () => {
           <h1 className="text-black text-[16px] sm:text-[24px] md:text-[36px] lg:text-[42px] text-center sm:text-start max-w-[620px] w-full font-medium mb-1">
             AI for
             <span className="font-extrabold text-[#2DA771] px-2">
-              Smarter Writing, Engagement  & Automation
+              Smarter Writing, Engagement & Automation
             </span>
           </h1>
           <div className="flex flex-col text-center sm:text-start sm:text-[16px] md:text-[20px] font-semibold">
