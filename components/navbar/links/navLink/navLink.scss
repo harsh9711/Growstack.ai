@@ -13,8 +13,7 @@
 
   &.active {
     font-weight: 600;
-        color: #2DA771;
-
+    color: #2da771;
 
     &::before {
       content: "";
@@ -60,16 +59,38 @@
     background-color: white; // Active state underline color on specific background
   }
 }
-
 .navLink {
-  position: relative;
-  display: flex;
-  align-items: center;
-
-  @media (max-width: 768px) {
-    height: 33px;
+  .mainLink {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .submenu {
+    padding: 10px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    &.open {
+      display: block;
+    }
+  }
+  .nested-nav {
+    display: grid;
+    gap: 8px;
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
   }
 }
+
+// .navLink {
+//   position: relative;
+//   display: flex;
+//   align-items: center;
+
+//   @media (max-width: 768px) {
+//     height: 33px;
+//   }
+// }
 
 .submenu {
   display: none;

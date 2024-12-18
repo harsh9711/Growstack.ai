@@ -13,6 +13,7 @@ import OutputField from "./OutputField";
 import SmallCardFiled from "./SmallCard";
 import AdvanceDropDown from "./AdvanceDropDown";
 import VariableInputFields from "./VariableInputFiels";
+import MultiSelectCheckbox from "./MultiSelectCheckbox";
 
 const DynamicInput: React.FC<DynamicInputProps> = ({
     param,
@@ -156,6 +157,14 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
         case "advance_dropdown":
             return (
                 <AdvanceDropDown
+                    param={param}
+                    inputKey={inputKey}
+                    handleInputChange={handleInputChange}
+                />
+            );
+        case "multiselect_checkbox":
+            return (
+                <MultiSelectCheckbox
                     param={param}
                     inputKey={inputKey}
                     handleInputChange={handleInputChange}

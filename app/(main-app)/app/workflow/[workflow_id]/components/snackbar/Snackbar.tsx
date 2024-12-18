@@ -22,7 +22,7 @@ const Snackbar: React.FC<SnackbarProps> = ({
 
   return (
     <div
-      className={`fixed top-4 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded shadow-lg text-white text-sm transition-all ${isVisible ? "block" : "hidden"} ${type === "success" ? "bg-green-500" : "bg-red-500"}`}
+      className={`fixed bottom-4 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded shadow-lg text-white text-sm transition-all ${isVisible ? "block" : "hidden"} ${type === "success" ? "bg-green-500" : "bg-red-500"}`}
       style={{ display: isVisible ? "block" : "none" }}
     >
       {message}

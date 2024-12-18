@@ -40,9 +40,9 @@ export interface NodeDataState {
   dynamicParams?: string[];
   icon?: string;
   subNodes?: SubNodeProps[];
-  descriptions?: string;
-  dependencies?: { key: string; nodeId: string }[];
-  parameters?: {
+  description?: string;
+  dependencies?: string[];
+  parameters: {
     [key: string]: NodeParameter;
   };
 }
@@ -115,6 +115,7 @@ export interface WorkflowNodeState {
   nodeMasterId: string;
   position: PositionState;
   type: string;
+  description?: string;
   parameters: {
     [key: string]: NodeParameter;
   };
@@ -145,6 +146,7 @@ export interface WorkflowDataState {
   _id?: string;
   name?: string;
   description?: string;
+  userId?: string;
   nodes?: WorkflowNodeState[];
   status?: string;
   createdAt?: Date;
@@ -237,4 +239,32 @@ export interface IntegrationResultProps {
   sharedSettings: {};
   workflowSettings: {};
   isIntegrationEnableTriggered: boolean;
+}
+
+export interface AvatarProps {
+  id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  gestures: { label: string; slug: string; startFrame: number }[];
+  status: string;
+  width: number;
+  height: number;
+  thumbnailUrl: string;
+  extras?: any;
+}
+
+export interface VoiceProps {
+  id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  status: string;
+  sampleUrl: string;
+}
+export interface AvatarVoiceState {
+  avatars: AvatarProps[];
+  voices: VoiceProps[];
+  isLoading: boolean;
+  error: any;
 }

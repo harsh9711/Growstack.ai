@@ -12,7 +12,10 @@ import Image from "next/image";
 import {
   deleteNodeById,
   removeNodeById,
+  removeNodeDependency,
   updateNodeById,
+  updateNodeDependency,
+  updateNodeDescription,
   updateNodeParameter,
 } from "@/lib/features/workflow/node.slice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -21,7 +24,7 @@ import {
   VariableNameProps,
   WorkflowNodeState,
 } from "@/types/workflows";
-import DeleteConfirmationModal from "../../deleteconfirmationmodal/DeleteConfirmationModal";
+import DeleteConfirmationModal from "../../modals/deletemodal/DeleteModal";
 import { useSnackbar } from "../../snackbar/SnackbarContext";
 import { authenticateUser } from "@/utils/paraGonAuth";
 
@@ -45,7 +48,7 @@ const LinkedinNode = memo(
     // const { parameters, nodeMasterId } = data;
 
     const { success } = useSnackbar();
-    const { setNodes } = useReactFlow();
+    const { setNodes, setEdges } = useReactFlow();
     const dispatch = useAppDispatch();
     const { workFlowData } = useAppSelector(state => state.workflows);
     const { nodes, variables, isLoading } = useAppSelector(
@@ -60,8 +63,6 @@ const LinkedinNode = memo(
     const [isEdit, setIsEdit] = useState(true);
 
     const [isActionModalShow, setIsActionModalShow] = useState(false);
-
-    const [description, setDescription] = useState(data?.descriptions || "");
 
     const [connectionLoading, setConnectionLoading] = useState(false);
     const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
@@ -87,22 +88,20 @@ const LinkedinNode = memo(
         setIsActionModalShow(false);
       }
     };
-    useEffect(() => {
-      if (parentId) {
-        setDependencies(prevDependencies => {
-          const newDependency = { key: "parent", nodeId: parentId };
-          const exists = prevDependencies.some(dep => dep.nodeId === parentId);
-          if (exists) {
-            return prevDependencies;
-          }
-          return [...prevDependencies, newDependency];
-        });
-      }
+    // useEffect(() => {
+    //   if (parentId) {
+    //     setDependencies(prevDependencies => {
+    //       const newDependency = { key: "parent", nodeId: parentId };
+    //       const exists = prevDependencies.some(dep => dep.nodeId === parentId);
+    //       if (exists) {
+    //         return prevDependencies;
+    //       }
+    //       return [...prevDependencies, newDependency];
+    //     });
+    //   }
 
-      return () => { };
-    }, [parentId]);
-
-
+    //   return () => {};
+    // }, [parentId]);
 
     useEffect(() => {
       if (isActionModalShow) {
@@ -118,53 +117,109 @@ const LinkedinNode = memo(
       setIsDropdownOpen(!isDropdownOpen);
     };
 
+    // const handleInputChange = useCallback(
+    //   (key: any, type: any, value: any, dependency?: string) => {
+    //     console.log(
+    //       "key-->",
+    //       key,
+    //       "type-->",
+    //       type,
+    //       "value-->",
+    //       value,
+    //       "dependencies--->",
+    //       dependency
+    //     );
+
+    //     dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
+
+    //     if (!isSpecialType(type)) return;
+
+    //     if (value && value.includes("$")) {
+    //       const index = nodes.findIndex(nds => nds.id === id);
+    //       const variableName = getVariableName(nodes, index);
+    //       console.log("variableName-->", variableName);
+    //       if (dependency) {
+    //         // setDependencies(prevDependencies => {
+    //         //   const newDependency = { key, nodeId: dependency };
+    //         //   const uniqueDependencies = new Set([
+    //         //     ...prevDependencies,
+    //         //     newDependency,
+    //         //   ]);
+    //         //   return Array.from(uniqueDependencies);
+    //         // });
+
+    //         dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
+    //       }
+    //       const regex = /\$(?!\s*$).+/;
+    //       if (regex.test(value)) {
+    //         setVariableNames([]);
+    //       } else {
+    //         setVariableNames(
+    //           variableName.filter(
+    //             (name): name is VariableNameProps => name !== null
+    //           )
+    //         );
+    //       }
+    //     } else {
+    //       // setDependencies(pre => pre.filter(dep => dep.key !== key));
+    //       dispatch(removeNodeDependency({ nodeId: id, key }));
+    //       setVariableNames([]);
+    //     }
+    //   },
+    //   [dispatch, id, nodes, dependencies, variableNames]
+    // );
+
     const handleInputChange = useCallback(
-      (key: any, type: any, value: any, dependency?: string) => {
-        console.log(
-          "key-->",
-          key,
-          "type-->",
-          type,
-          "value-->",
-          value,
-          "dependencies--->",
-          dependency
-        );
+      (key: any, type: any, value: any, dependency: any) => {
+        console.log("key-->", key, "type-->", type, "value-->", value);
+        console.log("dependencies-->", dependency);
 
         dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
 
         if (!isSpecialType(type)) return;
 
-        if (value && value.includes("$")) {
+        const singleDollarRegex = /^\$$/;
+        const validSequenceRegex = /.*\$$/;
+        const invalidPatternRegex = /\$(.*?)\$.*\S/;
+
+        if (singleDollarRegex.test(value)) {
           const index = nodes.findIndex(nds => nds.id === id);
           const variableName = getVariableName(nodes, index);
-          console.log("variableName-->", variableName);
-          if (dependency) {
-            setDependencies(prevDependencies => {
-              const newDependency = { key, nodeId: dependency };
-              const uniqueDependencies = new Set([
-                ...prevDependencies,
-                newDependency,
-              ]);
-              return Array.from(uniqueDependencies);
-            });
-          }
-          const regex = /\$(?!\s*$).+/;
-          if (regex.test(value)) {
-            setVariableNames([]);
-          } else {
-            setVariableNames(
-              variableName.filter(
-                (name): name is VariableNameProps => name !== null
-              )
-            );
-          }
+          setVariableNames(
+            variableName.filter(
+              (name): name is VariableNameProps => name !== null
+            )
+          );
+        } else if (
+          validSequenceRegex.test(value) &&
+          !invalidPatternRegex.test(value)
+        ) {
+          const index = nodes.findIndex(nds => nds.id === id);
+          const variableName = getVariableName(nodes, index);
+
+          setVariableNames(
+            variableName.filter(
+              (name): name is VariableNameProps => name !== null
+            )
+          );
         } else {
-          setDependencies(pre => pre.filter(dep => dep.key !== key));
+          // dispatch(removeNodeDependency({ nodeId: id, key }));
+          // setDependencies(pre => pre.filter(dep => dep.key !== key));
           setVariableNames([]);
         }
+        // if (dependency) {
+        //   // dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
+        //   setDependencies(prevDependencies => {
+        //     const newDependency = { key, nodeId: dependency };
+        //     const uniqueDependencies = new Set([
+        //       ...prevDependencies,
+        //       newDependency,
+        //     ]);
+        //     return Array.from(uniqueDependencies);
+        //   });
+        // }
       },
-      [dispatch, id, nodes, dependencies, variableNames]
+      [dispatch, id, nodes, variableNames, isEdit]
     );
 
     const handleNextClick = async () => {
@@ -181,13 +236,13 @@ const LinkedinNode = memo(
         const updatedValue = extractParameterValues(node.data.parameters);
         console.log("updatedValue-->", updatedValue);
 
-        console.log("Matching Node IDs:", dependencies);
         try {
           const bodyPayload = {
             workflowId: workFlowData._id,
             nodeMasterId: node.data.nodeMasterId,
             position: { x: positionAbsoluteX, y: positionAbsoluteY },
-            dependencies: dependencies.map(dps => dps.nodeId),
+            // dependencies: dependencies.map(dps => dps.nodeId),
+            dependencies: node.data?.dependencies || [],
             parameters: updatedValue,
           };
 
@@ -206,8 +261,8 @@ const LinkedinNode = memo(
         requiredParams.forEach(param => {
           const key = node?.data?.parameters
             ? Object.keys(node.data.parameters).find(
-                k => node.data.parameters?.[k] === param
-              )
+              k => node.data.parameters?.[k] === param
+            )
             : undefined;
           if (key && !param.value) {
             dispatch(
@@ -229,15 +284,17 @@ const LinkedinNode = memo(
 
     const handleDeleteNode = () => {
       setNodes(nds => nds.filter(nds => nds.id !== id));
+      setEdges((edges: any[]) => {
+        const updatedEdges = edges.filter(
+          (edge: any) =>
+            edge?.source !== id && edge?.target !== id
+        );
+        return updatedEdges;
+      });
       dispatch(removeNodeById(id));
       dispatch(deleteNodeById(id));
-      success("Node delete successfully");
-    };
-
-    const handleChange = (event: {
-      target: { value: React.SetStateAction<string> };
-    }) => {
-      setDescription(event.target.value);
+      // success("The node has been successfully deleted");
+      success(`The ${data?.label} node has been successfully deleted`);
     };
 
     const handleInput = (event: { target: any }) => {
@@ -303,12 +360,19 @@ const LinkedinNode = memo(
               <h4 className="text-sm font-medium text-[#2DA771]">Linkedin</h4>
 
               <textarea
-                value={description}
-                onChange={handleChange}
+                value={node?.data?.description || ""}
                 onInput={handleInput}
                 className="resize-none text-xs text-center font-medium text-[#14171B] bg-transparent border-transparent focus:border-transparent focus:ring-0 focus:outline-none"
                 placeholder="Enter description"
                 rows={1}
+                onChange={e => {
+                  dispatch(
+                    updateNodeDescription({
+                      nodeId: id,
+                      value: e.target.value,
+                    })
+                  );
+                }}
               />
             </div>
 
@@ -364,7 +428,7 @@ const LinkedinNode = memo(
                 </div>
               </div>
 
-              <div className="node-edge absolute top-1/2 transform -translate-y-1/2 right-[-60px] flex items-center">
+              <div className="node-edge absolute top-1/2 transform -translate-y-1/2 right-[-68px] flex items-center">
                 <div className="h-px border-t-2 border-dashed border-[#2DA771] w-[65px] mr-1" />
                 <Handle
                   id={`${id}-source`}
@@ -384,7 +448,13 @@ const LinkedinNode = memo(
                   isConnectable={false}
                 />
               </div>
-
+              <Handle
+                id={`${id}-target`}
+                type="target"
+                position={Position.Left}
+                className="w-[10px] h-[10px] bg-[#2DA771]"
+                isConnectable={false}
+              />
               <div
                 className="toggle-button-box absolute right-0 left-0 mx-auto bottom-[-10px] z-10 cursor-pointer"
                 onClick={handleDropdownClick}
@@ -445,7 +515,7 @@ const LinkedinNode = memo(
                 )}
               </div>
 
-              <div className="mb-2 search-box flex items-center p-2 rounded-lg border border-[#EBEBEB]  bg-[#F7F7F7]">
+              {/* <div className="mb-2 search-box flex items-center p-2 rounded-lg border border-[#EBEBEB]  bg-[#F7F7F7]">
                 <Image
                   src="/images/workflow/search-normal.svg"
                   alt="Search"
@@ -458,14 +528,13 @@ const LinkedinNode = memo(
                   placeholder="Search"
                   className="bg-[#F7F7F7] w-full focus:outline-none"
                 />
-              </div>
+              </div> */}
 
               <div
-                className={`node-content-wrapper relative ${
-                  !isSignedUp
-                    ? "before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-white before:opacity-[45%]"
-                    : ""
-                }`}
+                className={`node-content-wrapper relative ${!isSignedUp
+                  ? "before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-white before:opacity-[45%]"
+                  : ""
+                  }`}
               >
                 <div className="action-box">
                   <h3 className="text-[16px] font-medium text-[#14171B] mb-4">
@@ -516,7 +585,7 @@ const LinkedinNode = memo(
                                 inputKey={key}
                                 param={param}
                                 handleInputChange={
-                                  isEdit ? handleInputChange : () => {}
+                                  isEdit ? handleInputChange : () => { }
                                 }
                                 variableNames={variableNames}
                                 focusedInputKey={focusedInputKey}

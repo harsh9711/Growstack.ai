@@ -42,7 +42,7 @@ const AnimationStory = () => {
   }, []);
 
   return (
-    <div className="relative w-full h-screen max-h-[550px] sm:max-h-[1000px] border-none outline-none overflow-hidden bg-[#F5F5F5] text-white">
+    <div className="relative w-full h-screen max-h-[550px] sm:max-h-[1000px] border-none outline-none overflow-y-hidden bg-[#F5F5F5] text-white">
       <video
         ref={videoRef}
         src="https://growstack-static-content.s3.us-east-1.amazonaws.com/landingpagevideos.mp4"
@@ -51,7 +51,7 @@ const AnimationStory = () => {
         loop
         muted
         preload="auto"
-        className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-700 ${
+        className={`absolute top-0 left-0 w-full h-full ease-out hidden sm:block border-none outline-none right-0 transition-opacity duration-700 ${
           isVideoLoaded ? "opacity-100" : "opacity-0"
         }`}
       >

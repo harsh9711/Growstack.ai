@@ -78,12 +78,13 @@ const Animation = () => {
     AOS.init({
       duration: 1200,
       once: false,
-      debounce: 50,
       easing: "ease-in-out",
     });
 
     // Add scroll listeners
-    const scrollContainer = document.getElementById("scroll-container");
+    const scrollContainer = document.getElementById(
+      "scroll-container"
+    ) as HTMLDivElement | null;
     if (scrollContainer) {
       scrollContainerRef.current = scrollContainer;
       scrollContainer.addEventListener("scroll", handleScroll, {
@@ -95,8 +96,10 @@ const Animation = () => {
     window.addEventListener("scroll", handleWindowScroll, { passive: true });
 
     // Path reference
-    const path = document.getElementById("path2") as SVGPathElement;
-    if (path) pathRef.current = path;
+    const path = document.getElementById("path2");
+    if (path instanceof SVGPathElement) {
+      pathRef.current = path;
+    }
 
     // Cleanup
     return () => {

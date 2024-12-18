@@ -2,6 +2,8 @@ import React, { memo } from 'react';
 import { BaseEdge, EdgeLabelRenderer, getBezierPath, useReactFlow, EdgeProps } from '@xyflow/react';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { updateWorkFlowById } from '@/lib/features/workflow/workflow.slice';
+import { removeNodeDependency } from '@/lib/features/workflow/node.slice';
+import { prepareNodesPayload } from '@/utils/helper';
 
 const CustomEdge = ({
     id,
@@ -11,10 +13,13 @@ const CustomEdge = ({
     targetY,
     sourcePosition,
     targetPosition,
+    source,
+    target,
     style = {},
     markerEnd,
 }: EdgeProps) => {
     const { workFlowData } = useAppSelector((state) => state.workflows);
+    const { nodes } = useAppSelector((state) => state.nodes);
     const dispatch = useAppDispatch();
     const { setEdges } = useReactFlow();
 
@@ -27,6 +32,9 @@ const CustomEdge = ({
         targetPosition,
     });
 
+
+
+
     const customStyle = {
         ...style,
         stroke: '#2DA771',
@@ -37,13 +45,23 @@ const CustomEdge = ({
 
     const handleEdgeClick = () => {
         setEdges((edges: any[]) => {
+            console.log('---edges---', edges);
+            console.log('source====>', source);
+            console.log('target====>', target);
             const updatedEdges = edges.filter((edge) => edge.id !== id);
-            dispatch(updateWorkFlowById({
-                id: workFlowData._id || "",
-                data: {
-                    edges: updatedEdges,
-                },
-            }));
+            dispatch(removeNodeDependency({ sourceId: source, targetId: target }));
+
+            // const bodyPayload = {
+            //     name: workFlowData?.name,
+            //     description: workFlowData?.description || "",
+            //     nodes: prepareNodesPayload(nodes, workFlowData._id || ""),
+            //     edges: updatedEdges,
+            // };
+
+            // dispatch(updateWorkFlowById({
+            //     id: workFlowData._id || "",
+            //     data: bodyPayload,
+            // }));
 
             console.log('updatedEdges', updatedEdges);
 

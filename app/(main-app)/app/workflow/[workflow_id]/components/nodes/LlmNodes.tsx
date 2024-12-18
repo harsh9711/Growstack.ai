@@ -7,14 +7,17 @@ import {
   addVariable,
   deleteNodeById,
   removeNodeById,
+  removeNodeDependency,
   updateNodeById,
+  updateNodeDependency,
+  updateNodeDescription,
   updateNodeParameter,
 } from "@/lib/features/workflow/node.slice";
 import { extractParameterValues } from "@/utils/dataResolver";
 import { VariableNameProps, WorkflowNodeState } from "@/types/workflows";
 import { getVariableName, isSpecialType } from "@/utils/helper";
 import { useSnackbar } from "../snackbar/SnackbarContext";
-import DeleteConfirmationModal from "../deleteconfirmationmodal/DeleteConfirmationModal";
+import DeleteConfirmationModal from "../modals/deletemodal/DeleteModal";
 
 const LlmNodes = memo(
   ({
@@ -33,35 +36,53 @@ const LlmNodes = memo(
     const node = useAppSelector(state =>
       state.nodes.nodes.find(node => node.id === id)
     );
-    const { setNodes } = useReactFlow();
+    const { setNodes, setEdges } = useReactFlow();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
     const [isEdit, setIsEdit] = useState(true);
     const [shake, setShake] = useState(false);
     const [variableNames, setVariableNames] = useState<VariableNameProps[]>([]);
-    const [description, setDescription] = useState(data?.descriptions || "");
     const [dependencies, setDependencies] = useState<
       { key: string; nodeId: string }[]
-    >(node?.data.dependencies || []);
+    >([]);
 
     const [focusedInputKey, setFocusedInputKey] = useState<string | null>(null);
     const [isActionModalShow, setIsActionModalShow] = useState(false);
     const dropdownRef = useRef<HTMLDivElement | null>(null);
 
-    useEffect(() => {
-      if (parentId) {
-        setDependencies(prevDependencies => {
-          const newDependency = { key: "parent", nodeId: parentId };
-          const exists = prevDependencies.some(dep => dep.nodeId === parentId);
-          if (exists) {
-            return prevDependencies;
-          }
-          return [...prevDependencies, newDependency];
-        });
-      }
+    // useEffect(() => {
+    //   setDefaultValue();
 
-      return () => { };
-    }, [parentId]);
+    //   return () => { };
+    // }, [node]);
+
+    // const setDefaultValue = () => {
+    //   if (!node) return;
+    //   if (node.data.label === "Generate Image") {
+    //     const { model, numberOfImages, quality, prompt, style, size } =
+    //       node.data.parameters;
+    //     model.value = "dall-e-3";
+    //     numberOfImages.value = 1;
+    //     numberOfImages.disabled = true;
+    //     quality.value = "hd";
+    //     prompt.maxLength = 4000;
+    //     style.value = "vivid";
+    //     size.options = [
+    //       {
+    //         label: "1024x1024",
+    //         value: "1024x1024",
+    //       },
+    //       {
+    //         label: "1792x1024",
+    //         value: "1792x1024",
+    //       },
+    //       {
+    //         label: "1024x1792",
+    //         value: "1024x1792",
+    //       },
+    //     ];
+    //   }
+    // };
 
     const handleToggleAdvancedOptions = () => {
       setShowAdvancedOptions(!showAdvancedOptions);
@@ -71,8 +92,62 @@ const LlmNodes = memo(
       setIsDropdownOpen(!isDropdownOpen);
     };
 
+    // const handleInputChange = useCallback(
+    //   (key: any, type: any, value: any, dependency?: string) => {
+    //     if (!isEdit) {
+    //       setShake(true);
+    //       setTimeout(() => setShake(false), 500);
+    //       return;
+    //     }
+
+    //     console.log("key-->", key, "type-->", type, "value-->", value);
+    //     console.log("dependencies-->", dependency);
+
+    //     dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
+
+    //     if (!isSpecialType(type)) return;
+
+    //     if (value && value.includes("$")) {
+    //       const index = nodes.findIndex(nds => nds.id === id);
+    //       const variableName = getVariableName(nodes, index);
+    //       if (dependency) {
+    //         dispatch(
+    //           updateNodeDependency({
+    //             nodeId: id,
+    //             data: { key, nodeId: dependency },
+    //           })
+    //         );
+    //         // setDependencies(prevDependencies => {
+    //         //   const newDependency = { key, nodeId: dependency };
+    //         //   const uniqueDependencies = new Set([
+    //         //     ...prevDependencies,
+    //         //     newDependency,
+    //         //   ]);
+    //         //   return Array.from(uniqueDependencies);
+    //         // });
+    //       }
+    //       const regex = /\$(?!\s*$).+/;
+    //       if (regex.test(value)) {
+    //         console.log("value-->", value);
+    //         setVariableNames([]);
+    //       } else {
+    //         setVariableNames(
+    //           variableName.filter(
+    //             (name): name is VariableNameProps => name !== null
+    //           )
+    //         );
+    //       }
+    //     } else {
+    //       dispatch(removeNodeDependency({ nodeId: id, key }));
+    //       // setDependencies(pre => pre.filter(dep => dep.key !== key));
+    //       setVariableNames([]);
+    //     }
+    //   },
+    //   [dispatch, id, nodes, dependencies, variableNames, isEdit, shake]
+    // );
+
     const handleInputChange = useCallback(
-      (key: any, type: any, value: any, dependency?: string) => {
+      (key: any, type: any, value: any, dependency: any) => {
         if (!isEdit) {
           setShake(true);
           setTimeout(() => setShake(false), 500);
@@ -86,36 +161,90 @@ const LlmNodes = memo(
 
         if (!isSpecialType(type)) return;
 
-        if (value && value.includes("$")) {
+        const singleDollarRegex = /^\$$/;
+        const validSequenceRegex = /.*\$$/;
+        const invalidPatternRegex = /\$(.*?)\$.*\S/;
+
+        if (singleDollarRegex.test(value)) {
           const index = nodes.findIndex(nds => nds.id === id);
           const variableName = getVariableName(nodes, index);
-          if (dependency) {
-            setDependencies(prevDependencies => {
-              const newDependency = { key, nodeId: dependency };
-              const uniqueDependencies = new Set([
-                ...prevDependencies,
-                newDependency,
-              ]);
-              return Array.from(uniqueDependencies);
-            });
-          }
-          const regex = /\$(?!\s*$).+/;
-          if (regex.test(value)) {
-            setVariableNames([]);
-          } else {
-            setVariableNames(
-              variableName.filter(
-                (name): name is VariableNameProps => name !== null
-              )
-            );
-          }
+          setVariableNames(
+            variableName.filter(
+              (name): name is VariableNameProps => name !== null
+            )
+          );
+        } else if (
+          validSequenceRegex.test(value) &&
+          !invalidPatternRegex.test(value)
+        ) {
+          const index = nodes.findIndex(nds => nds.id === id);
+          const variableName = getVariableName(nodes, index);
+
+          setVariableNames(
+            variableName.filter(
+              (name): name is VariableNameProps => name !== null
+            )
+          );
         } else {
-          setDependencies(pre => pre.filter(dep => dep.key !== key));
           setVariableNames([]);
         }
       },
-      [dispatch, id, nodes, dependencies, variableNames, isEdit, shake]
+      [dispatch, id, nodes, variableNames, isEdit, shake]
     );
+
+    // const handleInputChange = useCallback(
+    //   (key: any, type: any, value: any, dependency: any) => {
+    //     if (!isEdit) {
+    //       setShake(true);
+    //       setTimeout(() => setShake(false), 500);
+    //       return;
+    //     }
+
+    //     console.log("key-->", key, "type-->", type, "value-->", value);
+    //     console.log("dependencies-->", dependency);
+
+    //     dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
+
+    //     if (!isSpecialType(type)) return;
+
+    //     // Regex definitions
+    //     const containsDollarSignRegex = /\$/; // Matches any occurrence of "$"
+    //     const invalidAfterDollarRegex = /\$(\s*[^\s$])/; // "$text" or "$ text"
+    //     const invalidCompleteRegex = /\$(.*?)\$.*\S/; // "$ ... $ text"
+
+    //     if (containsDollarSignRegex.test(value)) {
+    //       if (invalidAfterDollarRegex.test(value) || invalidCompleteRegex.test(value)) {
+    //         // Case 1: Invalid patterns
+    //         setDependencies(pre => pre.filter(dep => dep.key !== key));
+    //         setVariableNames([]);
+    //       } else {
+    //         // Case 2: Valid patterns (any "$" without invalid characters following)
+    //         const index = nodes.findIndex(nds => nds.id === id);
+    //         const variableName = getVariableName(nodes, index);
+
+    //         setVariableNames(
+    //           variableName.filter(
+    //             (name): name is VariableNameProps => name !== null
+    //           )
+    //         );
+    //       }
+    //     } else {
+    //       // Case 3: No "$" in value
+    //       setDependencies(pre => pre.filter(dep => dep.key !== key));
+    //       setVariableNames([]);
+    //     }
+
+    //     // Dependency logic
+    //     if (dependency) {
+    //       setDependencies(prevDependencies => {
+    //         const newDependency = { key, nodeId: dependency };
+    //         const uniqueDependencies = new Set([...prevDependencies, newDependency]);
+    //         return Array.from(uniqueDependencies);
+    //       });
+    //     }
+    //   },
+    //   [dispatch, id, nodes, dependencies, variableNames, isEdit, shake]
+    // );
 
     const handleNextClick = async () => {
       if (!node?.data?.parameters) return;
@@ -149,7 +278,8 @@ const LlmNodes = memo(
             workflowId: workFlowData._id,
             nodeMasterId: node.data.nodeMasterId,
             position: { x: positionAbsoluteX, y: positionAbsoluteY },
-            dependencies: dependencies.map(dps => dps.nodeId),
+            // dependencies: dependencies.map(dps => dps.nodeId),
+            dependencies: node.data?.dependencies || [],
             parameters: updatedValue,
           };
 
@@ -191,16 +321,22 @@ const LlmNodes = memo(
 
     const handleDeleteNode = () => {
       setNodes(nds => nds.filter(nds => nds.id !== id));
+      setEdges((edges: any[]) => {
+        const updatedEdges = edges.filter(
+          (edge: any) =>
+            edge?.source !== id && edge?.target !== id
+        );
+        return updatedEdges;
+      });
       dispatch(removeNodeById(id));
       dispatch(deleteNodeById(id));
-      success("Node delete successfully");
+      success(`The ${data?.label} node has been successfully deleted`);
     };
 
     const handleOpenActionModal = () => {
       setIsActionModalShow(!isActionModalShow);
     };
 
-    // ON OUTSIDE CLICK CLOSE ACTION MODAL
     const handleOutsideClick = (e: MouseEvent) => {
       const modal = document.getElementById("node-action-modal");
       if (modal && !modal.contains(e.target as Node)) {
@@ -218,7 +354,6 @@ const LlmNodes = memo(
       return () => document.removeEventListener("click", handleOutsideClick);
     }, [isActionModalShow]);
 
-    //ONCLICK OPEN DELETE CONFIRMATION MODAL
     const [openDeleteConfirmationModal, setOpenDeleteConfirmationModal] =
       React.useState(false);
 
@@ -228,12 +363,6 @@ const LlmNodes = memo(
     const handleOpenDeleteConfirmationModal = () => {
       setOpenDeleteConfirmationModal(true);
       setIsActionModalShow(false);
-    };
-
-    const handleChange = (event: {
-      target: { value: React.SetStateAction<string> };
-    }) => {
-      setDescription(event.target.value);
     };
 
     const handleInput = (event: { target: any }) => {
@@ -252,12 +381,19 @@ const LlmNodes = memo(
               </h4>
 
               <textarea
-                value={description}
-                onChange={handleChange}
+                value={node?.data?.description || ""}
                 onInput={handleInput}
                 className="resize-none text-xs text-center font-medium text-[#14171B] bg-transparent border-transparent focus:border-transparent focus:ring-0 focus:outline-none"
                 placeholder="Enter description"
                 rows={1}
+                onChange={e => {
+                  dispatch(
+                    updateNodeDescription({
+                      nodeId: id,
+                      value: e.target.value,
+                    })
+                  );
+                }}
               />
             </div>
 
@@ -272,7 +408,7 @@ const LlmNodes = memo(
                   <img
                     src={data.icon}
                     alt={data.label}
-                    className="w-[30px] mx-auto absolute top-[55px] left-0 right-0"
+                    className="w-[30px] absolute left-0 right-0 mx-auto top-1/2 transform  -translate-y-1/2"
                   />
                 )}
               </div>
