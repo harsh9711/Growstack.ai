@@ -13,6 +13,7 @@ import storage from "redux-persist/lib/storage";
 import authReducer from "./features/auth/auth.slice";
 import documentSlice from "./features/documents/document.slice";
 import nodeSlice from "./features/workflow/node.slice";
+import nodeAuthSlice from "./features/workflow/nodeAuth.slice";
 import masterNodeSlice from "./features/workflow/masterNode.slice";
 import workflowSlice from "./features/workflow/workflow.slice";
 import avatarVoiceSlice from "./features/workflow/avatarVoice.slice";
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
   masterNode: masterNodeSlice,
   workflows: workflowSlice,
   avatarVoice: avatarVoiceSlice,
+  nodeAuth: nodeAuthSlice
 });
 
 const persistConfig = {

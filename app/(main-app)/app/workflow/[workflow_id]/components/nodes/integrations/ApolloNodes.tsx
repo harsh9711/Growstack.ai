@@ -1,16 +1,13 @@
-import React, { memo, useState, useEffect, useRef, useCallback } from "react";
+import React, { memo, useState, useEffect, useCallback } from "react";
 import { Handle, Position, type NodeProps, useReactFlow } from "@xyflow/react";
-import { GeneralInputNodeProps, GmailNodeProps } from "../types";
+import { GmailNodeProps } from "../types";
 import DynamicInput from "../../DynamicInputs";
 import { extractParameterValues } from "@/utils/dataResolver";
 import { getVariableName, isSpecialType } from "@/utils/helper";
-import Image from "next/image";
 import {
   deleteNodeById,
   removeNodeById,
-  removeNodeDependency,
   updateNodeById,
-  updateNodeDependency,
   updateNodeDescription,
   updateNodeParameter,
 } from "@/lib/features/workflow/node.slice";
@@ -26,32 +23,7 @@ import { authenticateUser } from "@/utils/paraGonAuth";
 import { setSignInStatus } from "@/lib/features/workflow/nodeAuth.slice";
 import { useSelector } from "react-redux";
 
-// const TriggerData = [
-//   {
-//     title: "New Email Received",
-//     info: "Fires when a new email is received in a specified folder (e.g., Inbox).",
-//   },
-// ];
-
-const ActionData = [
-  // {
-  //   title: "Search Email",
-  //   info: "Search for specific emails in your mail using keywords, sender, subject, or date filters.",
-  // },
-
-  {
-    title: "Send Email",
-    info: "Automatically send an email with customizable subject, body, recipients, and attachments.",
-    nodeType: "send_email",
-  },
-
-  // {
-  //   title: "Create Draft",
-  //   info: "Create a draft email with predefined content and attachments, ready for later sending.",
-  // },
-];
-
-const GmailNode = memo(
+const ApolloNodes = memo(
   ({
     data,
     isConnectable,
@@ -66,10 +38,14 @@ const GmailNode = memo(
     const { setNodes, setEdges } = useReactFlow();
     const dispatch = useAppDispatch();
     const { workFlowData } = useAppSelector(state => state.workflows);
+    console.log("workFlowData", workFlowData);
+
     const { nodes, variables, isLoading } = useAppSelector(
       state => state.nodes
     );
-    const isGmailSignedIn = useSelector((state: any) => state?.nodeAuth["gmail"]);
+    const isGmailSignedIn = useSelector(
+      (state: any) => state?.nodeAuth["gmail"]
+    );
 
     const handleSignIn = (platform: string, data: any) => {
       // Set the user as signed in for a particular platform
@@ -104,6 +80,8 @@ const GmailNode = memo(
       { key: string; nodeId: string }[]
     >([]);
 
+    console.log("variableNames", variableNames);
+
     // ON OUTSIDE CLICK CLOSE ACTION MODAL
     const handleOutsideClick = (e: MouseEvent) => {
       const modal = document.getElementById("node-action-modal");
@@ -111,21 +89,6 @@ const GmailNode = memo(
         setIsActionModalShow(false);
       }
     };
-    // useEffect(() => {
-    //   if (parentId) {
-    //     setDependencies(prevDependencies => {
-    //       const newDependency = { key: "parent", nodeId: parentId };
-    //       const exists = prevDependencies.some(dep => dep.nodeId === parentId);
-    //       if (exists) {
-    //         return prevDependencies;
-    //       }
-    //       return [...prevDependencies, newDependency];
-    //     });
-    //   }
-
-    //   return () => { };
-    // }, [parentId]);
-
     useEffect(() => {
       if (isActionModalShow) {
         document.addEventListener("click", handleOutsideClick);
@@ -140,62 +103,8 @@ const GmailNode = memo(
       setIsDropdownOpen(!isDropdownOpen);
     };
 
-    // const handleInputChange = useCallback(
-    //   (key: any, type: any, value: any, dependency?: string) => {
-    //     console.log(
-    //       "key-->",
-    //       key,
-    //       "type-->",
-    //       type,
-    //       "value-->",
-    //       value,
-    //       "dependencies--->",
-    //       dependency
-    //     );
-
-    //     dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
-
-    //     if (!isSpecialType(type)) return;
-
-    //     if (value && value.includes("$")) {
-    //       const index = nodes.findIndex(nds => nds.id === id);
-    //       const variableName = getVariableName(nodes, index);
-    //       console.log("variableName-->", variableName);
-    //       if (dependency) {
-    //         // setDependencies(prevDependencies => {
-    //         //   const newDependency = { key, nodeId: dependency };
-    //         //   const uniqueDependencies = new Set([
-    //         //     ...prevDependencies,
-    //         //     newDependency,
-    //         //   ]);
-    //         //   return Array.from(uniqueDependencies);
-    //         // });
-    //         dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
-    //       }
-    //       const regex = /\$(?!\s*$).+/;
-    //       if (regex.test(value)) {
-    //         setVariableNames([]);
-    //       } else {
-    //         setVariableNames(
-    //           variableName.filter(
-    //             (name): name is VariableNameProps => name !== null
-    //           )
-    //         );
-    //       }
-    //     } else {
-    //       // setDependencies(pre => pre.filter(dep => dep.key !== key));
-    //       dispatch(removeNodeDependency({ nodeId: id, key }));
-    //       setVariableNames([]);
-    //     }
-    //   },
-    //   [dispatch, id, nodes, dependencies, variableNames]
-    // );
-
     const handleInputChange = useCallback(
       (key: any, type: any, value: any, dependency: any) => {
-        console.log("key-->", key, "type-->", type, "value-->", value);
-        console.log("dependencies-->", dependency);
-
         dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
 
         if (!isSpecialType(type)) return;
@@ -225,21 +134,8 @@ const GmailNode = memo(
             )
           );
         } else {
-          // dispatch(removeNodeDependency({ nodeId: id, key }));
-          // setDependencies(pre => pre.filter(dep => dep.key !== key));
           setVariableNames([]);
         }
-        // if (dependency) {
-        //   // dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
-        //   setDependencies(prevDependencies => {
-        //     const newDependency = { key, nodeId: dependency };
-        //     const uniqueDependencies = new Set([
-        //       ...prevDependencies,
-        //       newDependency,
-        //     ]);
-        //     return Array.from(uniqueDependencies);
-        //   });
-        // }
       },
       [dispatch, id, nodes, variableNames, isEdit]
     );
@@ -258,13 +154,11 @@ const GmailNode = memo(
         const updatedValue = extractParameterValues(node.data.parameters);
         console.log("updatedValue-->", updatedValue);
 
-
         try {
           const bodyPayload = {
             workflowId: workFlowData._id,
             nodeMasterId: node.data.nodeMasterId,
             position: { x: positionAbsoluteX, y: positionAbsoluteY },
-            // dependencies: dependencies.map(dps => dps.nodeId),
             dependencies: node.data?.dependencies || [],
             parameters: updatedValue,
           };
@@ -315,11 +209,8 @@ const GmailNode = memo(
       });
       dispatch(removeNodeById(id));
       dispatch(deleteNodeById(id));
-      // success("The node has been successfully deleted");
       success(`The ${data?.label} node has been successfully deleted`);
     };
-
-
 
     const handleInput = (event: { target: any }) => {
       const textarea = event.target;
@@ -383,18 +274,21 @@ const GmailNode = memo(
       }
     }, [isGmailSignedIn]);
 
+    console.log("node?.data?.parameters", node?.data?.parameters);
+
     return (
       <div>
         <section className="node-box relative">
           <div className="node-top-box relative">
             <div className="node-name-text-description text-center mb-3">
-              <h4 className="text-sm font-medium text-[#2DA771]">Gmail</h4>
+              <h4 className="text-sm font-medium text-[#2DA771]">Apollo.io</h4>
 
               <textarea
                 value={node?.data?.description || ""}
                 onInput={handleInput}
                 className="resize-none text-xs text-center font-medium text-[#14171B] bg-transparent border-transparent focus:border-transparent focus:ring-0 focus:outline-none"
                 placeholder="Enter description"
+                rows={1}
                 onChange={e => {
                   dispatch(
                     updateNodeDescription({
@@ -414,7 +308,7 @@ const GmailNode = memo(
                   className="w-[140px] mx-auto"
                 />
                 <img
-                  src="/assets/node_icon/gmail-single.svg"
+                  src="/svgs/apollo.svg"
                   alt="foreground icon"
                   className="w-[40px] mx-auto absolute top-[50px] left-0 right-0"
                 />
@@ -504,12 +398,14 @@ const GmailNode = memo(
               <div className="heading-button-box rounded-[16px] mb-2 p-4 bg-[#FFE6FF] flex justify-between items-center overflow-hidden">
                 <div className="short-text-heading">
                   <img
-                    src="/assets/node_icon/gmail-single.svg"
+                    src="/svgs/apollo.svg"
                     alt="node icon"
                     className="w-[20px] mb-2"
                   />
 
-                  <h4 className="text-sm font-medium text-[#14171B]">Gmail</h4>
+                  <h4 className="text-sm font-medium text-[#14171B]">
+                    Apollo.io
+                  </h4>
                 </div>
 
                 {isSignedUp ? (
@@ -543,22 +439,6 @@ const GmailNode = memo(
                 )}
               </div>
 
-              {/* Not needed now */}
-              {/* <div className="mb-2 search-box flex items-center p-2 rounded-lg border border-[#EBEBEB]  bg-[#F7F7F7]">
-                <Image
-                  src="/images/workflow/search-normal.svg"
-                  alt="Search"
-                  width={16}
-                  height={16}
-                  className="cursor-pointer mr-2.5 text-sm font-normal text-[#5A5963]"
-                />
-                <input
-                  type="text"
-                  placeholder="Search"
-                  className="bg-[#F7F7F7] w-full focus:outline-none"
-                />
-              </div> */}
-
               <div
                 className={`node-content-wrapper relative ${
                   !isSignedUp
@@ -566,136 +446,82 @@ const GmailNode = memo(
                     : ""
                 }`}
               >
-                {/* <div className="trigger-box">
-                  <h3 className="text-[16px] font-medium text-[#14171B] mb-4">
-                    Triggers
-                  </h3>
-                  
-                  <div className="trigger-data-box">
-                    {TriggerData.map((value, index) => {
-                      return (
-                        <div
-                          className="trigger-info flex items-center gap-4 mb-5"
-                          key={index}
-                        >
-                          <div className="email-icon w-[50px] h-[50px] bg-[#FCE1E4] flex items-center justify-center rounded-full">
-                            <img
-                              src="/assets/node_icon/gmail-single.svg"
-                              alt="email icon"
-                              className="w-[25px]"
-                            />
-                          </div>
-
-                          <div className="content-box w-[80%]">
-                            <h3 className="text-[#14171B] text-[14px] ">
-                              {value.title}
-                            </h3>
-                            <p className="text-[12px] text-[#5A5963]">
-                              {value.info}
-                            </p>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div> */}
-
                 <div className="action-box">
-                  {!activeAction ? (
-                    <>
-                      <h3 className="text-[16px] font-medium text-[#14171B] mb-4">
-                        Actions
-                      </h3>
-                      <div className="action-data-box">
-                        {ActionData.map((value, index) => {
-                          return (
-                            <div
-                              className="action-info flex items-center gap-4 mb-5 cursor-pointer"
-                              key={index}
-                              onClick={() => handleActiveAction(value.nodeType)}
-                            >
-                              <div className="email-icon w-[50px] h-[50px] bg-[#FCE1E4] flex items-center justify-center rounded-full">
-                                <img
-                                  src="/assets/node_icon/gmail-single.svg"
-                                  alt="email icon"
-                                  className="w-[25px]"
-                                />
-                              </div>
+                  <>
+                    <h3 className="text-[16px] font-medium text-[#14171B] mb-4">
+                      Actions
+                    </h3>
+                  </>
+                  <>
+                    {node?.data?.parameters &&
+                      Object.entries(node.data.parameters)
+                        .filter(([key, param]: any) => {
+                          // Always show keywords and variableName
+                          if (
+                            key === "keywords" ||
+                            key === "variableName" ||
+                            key === "searchCriteria"
+                          )
+                            return true;
 
-                              <div className="content-box w-[80%]">
-                                <h3 className="text-[#14171B] text-[14px] ">
-                                  {value.title}
-                                </h3>
-                                <p className="text-[12px] text-[#5A5963]">
-                                  {value.info}
-                                </p>
-                              </div>
-                            </div>
+                          // Check if searchCriteria exists and includes the current key
+                          const searchCriteria =
+                            node.data.parameters?.searchCriteria?.value || [];
+                          return searchCriteria.includes(key);
+                        })
+                        .map(([key, param]) => {
+                          return (
+                            <DynamicInput
+                              key={key}
+                              inputKey={key}
+                              param={param}
+                              handleInputChange={
+                                isEdit ? handleInputChange : () => {}
+                              }
+                              variableNames={variableNames}
+                              focusedInputKey={focusedInputKey}
+                              setFocusedInputKey={setFocusedInputKey}
+                            />
                           );
                         })}
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      {node?.data?.parameters &&
-                        Object.entries(node.data.parameters)
-                          .filter(
-                            ([key, param]: any) =>
-                              param.required || showAdvancedOptions
-                          )
-                          .map(([key, param]) => {
-                            return (
-                              <DynamicInput
-                                key={key}
-                                inputKey={key}
-                                param={param}
-                                handleInputChange={
-                                  isEdit ? handleInputChange : () => {}
-                                }
-                                variableNames={variableNames}
-                                focusedInputKey={focusedInputKey}
-                                setFocusedInputKey={setFocusedInputKey}
-                              />
-                            );
-                          })}
-                      <div className="advance-option-button-box mb-3">
+
+                    <div className="advance-option-button-box mb-3">
+                      <button
+                        onClick={handleToggleAdvancedOptions}
+                        className="w-full text-center bg-transparent border-0 underline text-[12px] text-[#2DA771]"
+                      >
+                        {showAdvancedOptions
+                          ? "Hide Advanced Options"
+                          : "Show Advanced Options"}
+                      </button>
+                    </div>
+
+                    {isEdit ? (
+                      <div className="submit-button">
                         <button
-                          onClick={handleToggleAdvancedOptions}
-                          className="w-full text-center bg-transparent border-0 underline text-[12px] text-[#2DA771]"
+                          onClick={handleNextClick}
+                          className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
                         >
-                          {showAdvancedOptions
-                            ? "Hide Advanced Options"
-                            : "Show Advanced Options"}
+                          {isLoading ? (
+                            <div className="flex justify-center items-center">
+                              <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
+                            </div>
+                          ) : (
+                            "Save"
+                          )}
                         </button>
                       </div>
-
-                      {isEdit ? (
-                        <div className="submit-button">
-                          <button
-                            onClick={handleNextClick}
-                            className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
-                          >
-                            {isLoading ? (
-                              <div className="flex justify-center items-center">
-                                <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
-                              </div>
-                            ) : (
-                              "Save"
-                            )}
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="submit-button">
-                          <button
-                            onClick={handleEditClick}
-                            className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
-                          >
-                            Edit
-                          </button>
-                        </div>
-                      )}
-                    </>
-                  )}
+                    ) : (
+                      <div className="submit-button">
+                        <button
+                          onClick={handleEditClick}
+                          className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
+                        >
+                          Edit
+                        </button>
+                      </div>
+                    )}
+                  </>
                 </div>
               </div>
             </div>
@@ -714,4 +540,4 @@ const GmailNode = memo(
   }
 );
 
-export default GmailNode;
+export default ApolloNodes;
