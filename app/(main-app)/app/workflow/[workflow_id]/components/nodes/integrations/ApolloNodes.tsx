@@ -19,9 +19,6 @@ import {
 } from "@/types/workflows";
 import DeleteConfirmationModal from "../../modals/deletemodal/DeleteModal";
 import { useSnackbar } from "../../snackbar/SnackbarContext";
-import { authenticateUser } from "@/utils/paraGonAuth";
-import { setSignInStatus } from "@/lib/features/workflow/nodeAuth.slice";
-import { useSelector } from "react-redux";
 
 const ApolloNodes = memo(
   ({
@@ -30,7 +27,6 @@ const ApolloNodes = memo(
     id,
     positionAbsoluteX,
     positionAbsoluteY,
-    parentId,
   }: NodeProps<GmailNodeProps>) => {
     // const { parameters, nodeMasterId } = data;
 
@@ -38,25 +34,12 @@ const ApolloNodes = memo(
     const { setNodes, setEdges } = useReactFlow();
     const dispatch = useAppDispatch();
     const { workFlowData } = useAppSelector(state => state.workflows);
-    console.log("workFlowData", workFlowData);
-
-    const { nodes, variables, isLoading } = useAppSelector(
-      state => state.nodes
-    );
-    const isGmailSignedIn = useSelector(
-      (state: any) => state?.nodeAuth["gmail"]
-    );
-
-    const handleSignIn = (platform: string, data: any) => {
-      // Set the user as signed in for a particular platform
-      dispatch(setSignInStatus({ platform, data, status: true }));
-    };
+    const { nodes, isLoading } = useAppSelector(state => state.nodes);
 
     const node = useAppSelector(state =>
       state.nodes.nodes.find(node => node.id === id)
     );
 
-    const [isSignedUp, setIsSignedUp] = useState(false);
     const [isEdit, setIsEdit] = useState(true);
 
     const [isActionModalShow, setIsActionModalShow] = useState(false);
@@ -80,8 +63,6 @@ const ApolloNodes = memo(
       { key: string; nodeId: string }[]
     >([]);
 
-    console.log("variableNames", variableNames);
-
     // ON OUTSIDE CLICK CLOSE ACTION MODAL
     const handleOutsideClick = (e: MouseEvent) => {
       const modal = document.getElementById("node-action-modal");
@@ -104,7 +85,7 @@ const ApolloNodes = memo(
     };
 
     const handleInputChange = useCallback(
-      (key: any, type: any, value: any, dependency: any) => {
+      (key: any, type: any, value: any) => {
         dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
 
         if (!isSpecialType(type)) return;
@@ -152,8 +133,6 @@ const ApolloNodes = memo(
 
       if (allRequiredParamsFilled) {
         const updatedValue = extractParameterValues(node.data.parameters);
-        console.log("updatedValue-->", updatedValue);
-
         try {
           const bodyPayload = {
             workflowId: workFlowData._id,
@@ -231,57 +210,18 @@ const ApolloNodes = memo(
       setIsActionModalShow(false);
     };
 
-    const handleGmailSignIn = async () => {
-      try {
-        console.log("gmail sign in");
-
-        if (connectedEmail.enabled) return;
-
-        setConnectionLoading(true);
-
-        const timeoutId = setTimeout(() => {
-          setConnectionLoading(false);
-          console.log("Authentication timeout, stopping loading state");
-        }, 8000);
-
-        const result = await authenticateUser("gmail");
-        clearTimeout(timeoutId);
-
-        if (result && result.credentialStatus === "VALID") {
-          handleSignIn("gmail", result);
-          setConnectedEmail(result);
-          setIsSignedUp(true);
-        }
-      } catch (error) {
-        console.log("---error---", error);
-      } finally {
-        setConnectionLoading(false);
-      }
-    };
-
-    const handleActiveAction = (action: string) => {
-      setActiveAction(action);
-    };
-
     const handleEditClick = () => {
       setIsEdit(!isEdit);
     };
-
-    useEffect(() => {
-      if (isGmailSignedIn?.status) {
-        setConnectedEmail(isGmailSignedIn?.data);
-        setIsSignedUp(true);
-      }
-    }, [isGmailSignedIn]);
-
-    console.log("node?.data?.parameters", node?.data?.parameters);
 
     return (
       <div>
         <section className="node-box relative">
           <div className="node-top-box relative">
             <div className="node-name-text-description text-center mb-3">
-              <h4 className="text-sm font-medium text-[#2DA771]">Apollo.io</h4>
+              <h4 className="text-sm font-medium text-[#2DA771]">
+                {node?.data?.label ?? "Apollo"}
+              </h4>
 
               <textarea
                 value={node?.data?.description || ""}
@@ -404,48 +344,12 @@ const ApolloNodes = memo(
                   />
 
                   <h4 className="text-sm font-medium text-[#14171B]">
-                    Apollo.io
+                    {node?.data?.label ?? "Apollo"}
                   </h4>
                 </div>
-
-                {isSignedUp ? (
-                  <div className="user-connected-info relative">
-                    <span className="connected-text absolute top-[-17px] right-[-20px] bg-[#2DA771] p-2 rounded-l-[20px]  w-[100px] inline-block  text-[12px] font-medium text-white">
-                      Connected
-                    </span>
-
-                    <div className="user-mail relative mt-1 translate-y-[20px]">
-                      <div className="online-status-div absolute w-[6px] h-[6px] bg-[#2DA771] rounded-full left-[-14px] top-[5px]"></div>
-                      <p className="text-[11px] text-[#5A5963]">
-                        {connectedEmail?.providerId || "NO EMAIL"}
-                      </p>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="signin-button-box">
-                    <button
-                      onClick={handleGmailSignIn}
-                      className="p-4 text-white text-[16px] bg-[#2DA771] rounded-[20px] w-[100px]"
-                    >
-                      {connectionLoading ? (
-                        <div className="flex justify-center items-center">
-                          <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
-                        </div>
-                      ) : (
-                        "Sign In"
-                      )}
-                    </button>
-                  </div>
-                )}
               </div>
 
-              <div
-                className={`node-content-wrapper relative ${
-                  !isSignedUp
-                    ? "before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-white before:opacity-[45%]"
-                    : ""
-                }`}
-              >
+              <div className={`node-content-wrapper relative `}>
                 <div className="action-box">
                   <>
                     <h3 className="text-[16px] font-medium text-[#14171B] mb-4">
@@ -455,7 +359,7 @@ const ApolloNodes = memo(
                   <>
                     {node?.data?.parameters &&
                       Object.entries(node.data.parameters)
-                        .filter(([key, param]: any) => {
+                        .filter(([key]: any) => {
                           // Always show keywords and variableName
                           if (
                             key === "keywords" ||
