@@ -72,7 +72,7 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
   const [activeTab, setActiveTab] = useState(0);
   const [selectedExecutionId, setSelectedExecutionId] = useState<string>("");
   const [isFromTimeline, setFromTimeline] = useState(false);
-  const [isLockCanvas, setIsLockCanvas] = useState<boolean>(false);
+  const [isLockCanvas, setIsLockCanvas] = useState<boolean>(true);
 
   const handleViewDetails = (executionId: string) => {
     setSelectedExecutionId(executionId);
