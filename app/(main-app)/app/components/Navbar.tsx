@@ -11,7 +11,7 @@ import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoIosMenu } from "react-icons/io";
 import navLinks from "./constants/nav";
 import { ProfileButton } from "./ProfileButton";
@@ -21,13 +21,27 @@ import { RootState } from "@/lib/store";
 import { useSelector } from "react-redux";
 import { getUserFriendlyPlanName } from "@/lib/utils";
 import { PlanName } from "@/types/enums";
+import { ProductAiIcon } from "@/components/svgs";
 
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { currentPlan } = useSelector((rootState: RootState) => rootState.auth);
-
+  useEffect(() => {
+    const userId = localStorage.getItem('user_id');
+    const publishHref = "/app/publish/scheduler/quick-posting";
+    if (
+      userId === "675998d505fdf746bb21bd27" &&
+      !navLinks.some(link => link.href === publishHref)
+    ) {
+      navLinks.push({
+        icon: <ProductAiIcon />,
+        href: publishHref,
+        title: "Publish",
+      });
+    }
+  }, []);
   const isLinkActive = (link: NavLink): boolean => {
     if (link.href && pathname === link.href) {
       return true;

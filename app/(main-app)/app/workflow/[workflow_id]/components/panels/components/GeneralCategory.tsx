@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import {
   addNode,
@@ -13,11 +13,23 @@ import { convertNodeData } from "@/utils/dataResolver";
 import { calculateNextNodePosition } from "@/utils/helper";
 import { unwrapResult } from "@reduxjs/toolkit";
 
+interface NodeData {
+  name: string;
+  logoUrl?: string;
+  node: NodeState;
+}
+
+interface GroupedGenerals {
+  [key: string]: NodeData[];
+}
+
+
 const GeneralCategory = ({ setNodes }: any): React.ReactElement => {
   const dispatch = useAppDispatch();
   const { nodes } = useAppSelector(state => state.nodes);
   const { masterNode } = useAppSelector(state => state.masterNode);
   const { workFlowData } = useAppSelector(state => state.workflows);
+  const [searchQuery, setSearchQuery] = useState("");
 
   if ((masterNode && !masterNode.length) || !masterNode) {
     return <div>Data not found</div>;
@@ -57,6 +69,7 @@ const GeneralCategory = ({ setNodes }: any): React.ReactElement => {
       );
       const result = unwrapResult(resultAction);
 
+      if (!result._id) return;
       const newNode = {
         ...nodeData,
         id: result._id,
@@ -73,6 +86,24 @@ const GeneralCategory = ({ setNodes }: any): React.ReactElement => {
   const handleDragStart = (event: React.DragEvent, item: NodeState) => {
     dispatch(addNodeData(item));
     event.dataTransfer.effectAllowed = "move";
+  };
+
+  const filterGeneralsBySearch = (generals: GroupedGenerals): GroupedGenerals => {
+    if (!searchQuery) return generals;
+    
+    const filteredGenerals: GroupedGenerals = {};
+    
+    Object.keys(generals).forEach((subCategory) => {
+      const filteredItems = generals[subCategory].filter((item: NodeData) => 
+        item.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      
+      if (filteredItems.length > 0) {
+        filteredGenerals[subCategory] = filteredItems;
+      }
+    });
+    
+    return filteredGenerals;
   };
 
   return (
@@ -96,6 +127,8 @@ const GeneralCategory = ({ setNodes }: any): React.ReactElement => {
                   type="text"
                   placeholder="Search"
                   className="bg-[#F7F7F7]"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
             </div>
@@ -103,13 +136,17 @@ const GeneralCategory = ({ setNodes }: any): React.ReactElement => {
           </div>
 
           <div className="flex flex-wrap h-full overflow-y-auto">
-            {groupedGenerals && Object.keys(groupedGenerals).map((subCategory, index) => (
+            {groupedGenerals && 
+            // Object.keys(groupedGenerals).map((subCategory, index) => (
+              Object.keys(filterGeneralsBySearch(groupedGenerals)).map((subCategory, index) => (
+
               <div key={index.toString()} className="mb-2.5 w-full">
                 <h3 className="text-base leading-6 font-normal text-[#878787]">
                   {subCategory}
                 </h3>
                 <div className="flex flex-wrap pt-1">
-                  {groupedGenerals[subCategory].map((item, _) => (
+                  {/* {groupedGenerals[subCategory].map((item, _) => ( */}
+                  {filterGeneralsBySearch(groupedGenerals)[subCategory].map((item, _) => (
                     <div
                       key={_.toString()}
                       className="h-[92px] w-[130px] bg-transparent m-1 rounded-lg flex justify-center items-center cursor-pointer border border-[#E5E5E5]"

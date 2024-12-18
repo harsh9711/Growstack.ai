@@ -16,6 +16,7 @@ const InputFields: React.FC<DynamicInputProps> = ({
         setFocusedInputKey(inputKey);
     };
 
+
     return (
         <div key={inputKey} className="input-box mb-3">
             <div className="label-box flex gap-2 items-center mb-1 relative">
@@ -36,10 +37,13 @@ const InputFields: React.FC<DynamicInputProps> = ({
                     placeholder={param?.placeholder || ""}
                     className="nopan nodrag form-control shadow-none w-full p-4 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-sm font-medium focus:outline-none"
                     required={!!param.required}
-                    onChange={e =>
+                    onChange={e => {
+                        if (param?.maxValue && param.type === 'number' && e.target.value > param?.maxValue) return;
                         handleInputChange(inputKey, param.type, e.target.value)
-                    }
+                    }}
                     onFocus={handleInputFocus}
+                    max={getTypeFromParam(param.type) === "number" ? param?.maxValue : undefined}
+                    disabled={!!param?.disabled}
                 />
                 {focusedInputKey === inputKey &&
                     variableNames &&

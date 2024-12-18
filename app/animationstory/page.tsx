@@ -2,52 +2,41 @@
 import React, { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import dynamic from "next/dynamic";
 
-const KeyPoints = () => {
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-10 p-4 sm:p-8">
-      {[
-        "Spot Social Trends and Generate Content Instantly",
-        "Launch Campaigns in just a few Clicks Create, Publish, Manage",
-        "AI Agents for Smart Lead Gen and Engagement",
-        "Streamline Sales and Marketing with AI Automation",
-      ].map((point, index) => (
-        <div key={index} className="flex flex-row items-start space-x-2">
-          <span className="w-3 h-3 mt-1 bg-green-500 rounded-full" />
-          <h2 className="text-sm sm:text-md md:text-lg font-semibold text-black">
-            {point}
-          </h2>
-        </div>
-      ))}
-    </div>
-  );
-};
-
+// Lazy load the KeyPoints component
+const KeyPoints = dynamic(() => import("./KeyPoints"), {
+  ssr: false,
+});
 const AnimationStory = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
-
   useEffect(() => {
     const videoElement = videoRef.current;
+    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
+      const [entry] = entries;
+      setIsVideoLoaded(entry.isIntersecting);
 
-    const handleCanPlay = () => {
-      setIsVideoLoaded(true);
-
-      // Ensure video plays automatically
-      if (videoElement) {
-        videoElement.play().catch(error => {
+      if (entry.isIntersecting && videoElement) {
+        videoElement.play().catch((error) => {
           console.error("Autoplay was prevented:", error);
         });
+      } else if (videoElement) {
+        videoElement.pause();
       }
     };
 
-    if (videoRef.current) {
-      videoRef.current.addEventListener("canplaythrough", handleCanPlay);
+    const observer = new IntersectionObserver(handleIntersection, {
+      threshold: 0.5,
+    });
+
+    if (videoElement) {
+      observer.observe(videoElement);
     }
 
     return () => {
-      if (videoRef.current) {
-        videoRef.current.removeEventListener("canplaythrough", handleCanPlay);
+      if (videoElement) {
+        observer.unobserve(videoElement);
       }
     };
   }, []);

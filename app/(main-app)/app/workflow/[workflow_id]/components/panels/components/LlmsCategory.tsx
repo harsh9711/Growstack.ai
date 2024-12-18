@@ -1,15 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
-import { addNode, addNodeData, createNode, removeNode } from "@/lib/features/workflow/node.slice";
+import {
+    addNode,
+    addNodeData,
+    createNode,
+    removeNode,
+} from "@/lib/features/workflow/node.slice";
 import { NodeState } from "@/types/workflows";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { convertNodeData } from "@/utils/dataResolver";
 import { calculateNextNodePosition } from "@/utils/helper";
 import { unwrapResult } from "@reduxjs/toolkit";
 
-
 const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
     const dispatch = useAppDispatch();
+    const [searchQuery, setSearchQuery] = useState("");
+
     const { isLoading, masterNode } = useAppSelector(state => state.masterNode);
     const { workFlowData } = useAppSelector(state => state.workflows);
     const { nodes } = useAppSelector(state => state.nodes);
@@ -17,11 +23,12 @@ const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
         return <div>Data not found</div>;
     }
 
-    const llmsData = masterNode?.filter(item => item.category.toLocaleLowerCase() === "llms");
+    const llmsData = masterNode?.filter(
+        item => item.category.toLocaleLowerCase() === "llms"
+    );
     const modifiedNodes = llmsData.map(convertNodeData);
 
-
-    const groupedModels = modifiedNodes.reduce(
+    const initialGroupedModels = modifiedNodes.reduce(
         (acc: { [key: string]: typeof modifiedNodes }, model) => {
             if (!acc[model.subCategory]) {
                 acc[model.subCategory] = [];
@@ -31,6 +38,24 @@ const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
         },
         {}
     );
+
+    const filteredGroupedModels = Object.keys(initialGroupedModels).reduce(
+        (acc: { [key: string]: typeof modifiedNodes }, subCategory) => {
+            const filteredModels = initialGroupedModels[subCategory].filter(model =>
+                model.name.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+            
+            if (filteredModels.length > 0) {
+                acc[subCategory] = filteredModels;
+            }
+            return acc;
+        },
+        {}
+    );
+
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery(e.target.value);
+    };
 
     const handleClick = async (nodeData: NodeState) => {
         try {
@@ -50,11 +75,60 @@ const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
             );
             const result = unwrapResult(resultAction);
 
+            if (!result._id) return;
+
             const newNode = {
                 ...nodeData,
                 id: result._id,
                 position: { x: nextNodeX, y: nextNodeY },
             };
+
+            if (newNode.data.label === "Generate Image") {
+                const { model, numberOfImages, quality, prompt, style, size } = newNode
+                    .data.parameters as unknown as any;
+
+                newNode.data.parameters = {
+                    ...newNode.data.parameters,
+                    model: {
+                        ...model,
+                        value: "dall-e-3",
+                    },
+                    numberOfImages: {
+                        ...numberOfImages,
+                        value: 1,
+                        disabled: true,
+                    },
+                    quality: {
+                        ...quality,
+                        value: "hd",
+                    },
+                    prompt: {
+                        ...prompt,
+                        maxLength: 4000,
+                    },
+                    style: {
+                        ...style,
+                        value: "vivid",
+                    },
+                    size: {
+                        ...size,
+                        options: [
+                            {
+                                label: "1024x1024",
+                                value: "1024x1024",
+                            },
+                            {
+                                label: "1792x1024",
+                                value: "1792x1024",
+                            },
+                            {
+                                label: "1024x1792",
+                                value: "1024x1792",
+                            },
+                        ],
+                    },
+                };
+            }
 
             setNodes((nds: NodeState[]) => nds.concat(newNode));
             dispatch(addNode(newNode));
@@ -63,12 +137,10 @@ const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
         }
     };
 
-
     const handleDragStart = (event: React.DragEvent, item: NodeState) => {
         dispatch(addNodeData(item));
         event.dataTransfer.effectAllowed = "move";
     };
-
 
     return (
         <div className="absolute w-[470px] h-[500px] top-[120px] rounded-2xl overflow-y-auto backdrop-blur-sm drop-shadow-2xl">
@@ -90,6 +162,8 @@ const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
                                 type="text"
                                 placeholder="Search"
                                 className="bg-[#F7F7F7]"
+                                value={searchQuery}
+                                onChange={handleSearch}
                             />
                         </div>
                     </div>
@@ -97,20 +171,20 @@ const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
                     <hr className="border-0 border-t border-gray-300 my-5" />
                 </div>
 
-
                 <div className="flex flex-wrap h-full overflow-y-auto">
-                    {Object.keys(groupedModels).map((subCategory, index) => (
+                    {Object.keys(filteredGroupedModels).map((subCategory, index) => (
                         <div key={index.toString()} className="mb-2.5 w-full">
                             <h3 className="text-base leading-6 font-normal text-[#878787]">
                                 {subCategory}
                             </h3>
                             <div className="flex flex-wrap pt-1">
-                                {groupedModels[subCategory].map((item, _) => (
-                                    <div
-                                        key={_.toString()}
-                                        onClick={() => handleClick(item.node)}
-                                        className="h-[92px] w-[130px] bg-transparent m-1 rounded-lg flex justify-center items-center cursor-pointer border border-[#E5E5E5]"
-                                        draggable
+                                {filteredGroupedModels[subCategory].map((item, _) => {
+                                    return (
+                                        <div
+                                            key={_.toString()}
+                                            onClick={() => handleClick(item.node)}
+                                            className="h-[92px] w-[130px] bg-transparent m-1 rounded-lg flex justify-center items-center cursor-pointer border border-[#E5E5E5]"
+                                            draggable
                                         onDragStart={event => {
                                             handleDragStart(event, item.node);
                                         }}
@@ -133,7 +207,7 @@ const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
                                             </p>
                                         </div>
                                     </div>
-                                ))}
+                                )})}
                             </div>
                         </div>
                     ))}

@@ -10,12 +10,13 @@ import {
   removeNodeById,
   resetSubNodeParameter,
   updateNodeById,
+  updateNodeDescription,
   updateNodeParameter,
   updateSubNodeParameter,
 } from "@/lib/features/workflow/node.slice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { extractParameterValues } from "@/utils/dataResolver";
-import DeleteConfirmationModal from "../deleteconfirmationmodal/DeleteConfirmationModal";
+import DeleteConfirmationModal from "../modals/deletemodal/DeleteModal";
 import { useSnackbar } from "../snackbar/SnackbarContext";
 
 interface OptionsProps {
@@ -41,7 +42,7 @@ const Form = ({
     state.nodes.nodes.find(node => node.id === id)
   );
 
-  const { setNodes } = useReactFlow();
+  const { setNodes, setEdges } = useReactFlow();
   const dispatch = useAppDispatch();
   const { workFlowData } = useAppSelector(state => state.workflows);
 
@@ -72,8 +73,6 @@ const Form = ({
   const [isActionModalShow, setIsActionModalShow] = useState(false);
   const [updatedOptions, setUpdatedOptions] = useState<OptionsProps[]>([]);
   const [loadingNodes, setLoadingNodes] = useState<Record<string, any>>({});
-
-  console.log("loadingNodes", loadingNodes);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -154,9 +153,15 @@ const Form = ({
 
   const handleDeleteNode = () => {
     setNodes(nds => nds.filter(nds => nds.id !== id));
+    setEdges((edges: any[]) => {
+      const updatedEdges = edges.filter(
+        (edge: any) => edge?.source !== id && edge?.target !== id
+      );
+      return updatedEdges;
+    });
     dispatch(removeNodeById(id));
     dispatch(deleteNodeById(id));
-    success("Node delete successfully");
+    success(`The ${data?.label} node has been successfully deleted`);
   };
 
   const handleDeleteSubNode = async (index: number, nodeMasterId: string) => {
@@ -199,7 +204,6 @@ const Form = ({
     console.log("subNodesToValidate-->", subNodesToValidate);
 
     if (allSubNodesValid) {
-
       setLoadingNodes(prevState => ({
         ...prevState,
         [node.data.nodeMasterId]: true,
@@ -236,7 +240,6 @@ const Form = ({
           ...prevState,
           [node.data.nodeMasterId]: false,
         }));
-
       } catch (error: any) {
         console.error("error-->", error?.message);
         setLoadingNodes(prevState => ({
@@ -263,7 +266,6 @@ const Form = ({
     }
   };
 
-  console.log("loadingnodes", loadingNodes);
 
   const handleOpenActionModal = () => {
     setIsActionModalShow(!isActionModalShow);
@@ -302,10 +304,9 @@ const Form = ({
 
   const handleUpdateOptions = useCallback(() => {
     setUpdatedOptions(
-      options?.filter((subNode: any) =>
-        !currentSubNodes.some(
-          cs => cs.nodeMasterId === subNode.value
-        )
+      options?.filter(
+        (subNode: any) =>
+          !currentSubNodes.some(cs => cs.nodeMasterId === subNode.value)
       ) || []
     );
   }, [currentSubNodes]);
@@ -313,8 +314,6 @@ const Form = ({
   useEffect(() => {
     handleUpdateOptions();
   }, [currentSubNodes]);
-
-  console.log("updatedOptions", updatedOptions)
 
   return (
     <div>
@@ -327,12 +326,19 @@ const Form = ({
             </h4>
 
             <textarea
-              value={description}
-              onChange={handleChange}
+              value={node?.data?.description || ""}
               onInput={handleInput}
               className="resize-none text-xs text-center font-medium text-[#14171B] bg-transparent border-transparent focus:border-transparent focus:ring-0 focus:outline-none"
               placeholder="Enter description"
               rows={1}
+              onChange={e => {
+                dispatch(
+                  updateNodeDescription({
+                    nodeId: id,
+                    value: e.target.value,
+                  })
+                );
+              }}
             />
           </div>
 
@@ -532,7 +538,7 @@ const Form = ({
                           </div>
                         )}
                       </div>
-                      
+
                       <div className="advance-option-button-box mb-3">
                         <button
                           onClick={() =>
@@ -554,9 +560,11 @@ const Form = ({
                     <button
                       onClick={handleNextClick}
                       className="bg-[#2DA771] text-white text-sm font-medium p-3 w-full rounded-[10px]"
-                      disabled={node ? loadingNodes[node.data.nodeMasterId] : false}
-                      >
-                      { node && loadingNodes[node.data.nodeMasterId]? (
+                      disabled={
+                        node ? loadingNodes[node.data.nodeMasterId] : false
+                      }
+                    >
+                      {node && loadingNodes[node.data.nodeMasterId] ? (
                         <div className="flex justify-center items-center">
                           <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
                         </div>
@@ -568,7 +576,9 @@ const Form = ({
                     <button
                       onClick={() => setIsEdit(!isEdit)}
                       className="bg-[#2DA771] text-white text-sm font-medium p-3 w-full rounded-[10px]"
-                      disabled={node ? loadingNodes[node.data.nodeMasterId] : false}
+                      disabled={
+                        node ? loadingNodes[node.data.nodeMasterId] : false
+                      }
                     >
                       Edit
                     </button>

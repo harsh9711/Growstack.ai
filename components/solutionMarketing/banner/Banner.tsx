@@ -39,7 +39,7 @@ const Banner: React.FC = () => {
                 >
                   <Link href="/auth/register" className="sheen">
                     {" "}
-                    <button className="bg-primary-green font-medium flex items-center gap-2 text-white 2xl:py-4 2xl:px-7 rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
+                    <button className="bg-[#2DA771] font-medium flex items-center gap-2 text-white 2xl:py-4 2xl:px-7 rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
                       Get a free trial <ArrowRight className="text-white " />
                     </button>
                   </Link>

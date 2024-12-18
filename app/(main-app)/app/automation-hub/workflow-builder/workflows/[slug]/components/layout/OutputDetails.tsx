@@ -17,6 +17,8 @@ const OutputDetails = ({
 }: any) => {
   const [openIndex, setOpenIndex] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isRejectLoading, setIsRejectLoading] = useState(false);
+  const [isApproveLoading, setIsApproveLoading] = useState(false);
 
   const toggleAccordion = (index: any) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -44,14 +46,21 @@ const OutputDetails = ({
       if (rerunPartialWorkflow?.data?.executionId) {
         onPollingWithNewId(rerunPartialWorkflow?.data?.executionId);
       }
-    } catch {
-      // To:Do Error will handle here
+    } catch (error: any) {
+      if (error?.response) {
+        toast.error(error?.response?.data?.error);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("Something went wrong");
+      }
     } finally {
       setIsLoading(false);
     }
   };
   const handleReject = async (nodeExecutionId: string) => {
     try {
+      setIsRejectLoading(true);
       // const rejectExecution = await CustomAxiosInstance().patch(
       //   `/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=false`
       // );
@@ -59,12 +68,23 @@ const OutputDetails = ({
         `/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=false`
       );
       setApproveOutputDataId(rejectExecution?.data);
-    } catch (err) {
-      console.log("err", err);
+    } catch (error: any) {
+      if (error?.response) {
+        toast.error(error?.response?.data?.error);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("Something went wrong");
+      }
+    } finally {
+      setTimeout(() => {
+        setIsRejectLoading(false);
+      }, 7000);
     }
   };
   const handleApprove = async (nodeExecutionId: string) => {
     try {
+      setIsApproveLoading(true);
       // const approveExecution = await axios.patch(
       //   `http://localhost:5000/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=true`
       // );
@@ -72,8 +92,18 @@ const OutputDetails = ({
         `/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=true`
       );
       setApproveOutputDataId(approveExecution?.data);
-    } catch (err) {
-      console.log("err", err);
+    } catch (error: any) {
+      if (error?.response) {
+        toast.error(error?.response?.data?.error);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("Something went wrong");
+      }
+    } finally {
+      setTimeout(() => {
+        setIsApproveLoading(false);
+      }, 7000);
     }
   };
 
@@ -132,7 +162,8 @@ const OutputDetails = ({
           {outputDetailsData?.outputDetails?.map((item: any, index: number) => {
             return (
               item.title &&
-              (item?.status === "completed" || item?.status === "approval-pending")  && (
+              (item?.status === "completed" ||
+                item?.status === "approval-pending") && (
                 <div
                   key={index}
                   className={`border rounded-lg ${
@@ -157,8 +188,17 @@ const OutputDetails = ({
                     <div className=" border-t border-gray-200">
                       <div className="p-4 prose prose-sm max-w-none">
                         {(() => {
-                          if(item?.nodeType === "linkedin" || item?.nodeType === "gmail") {
-                            return <div>{renderSocialMediaContent(item?.socialMediaContent)}</div>;
+                          if (
+                            item?.nodeType === "linkedin" ||
+                            item?.nodeType === "gmail"
+                          ) {
+                            return (
+                              <div>
+                                {renderSocialMediaContent(
+                                  item?.socialMediaContent
+                                )}
+                              </div>
+                            );
                           }
                           if (typeof item?.value === "string") {
                             // Render string using ReactMarkdown
@@ -237,18 +277,71 @@ const OutputDetails = ({
                             // Render single object as key-value pairs
                             return (
                               <div>
-                                {Object.entries(item?.value).map(
-                                  ([key, value]: any) => (
-                                    <div key={key}>
-                                      <strong>{key}:</strong>{" "}
-                                      {value?.startsWith(value) ? (
-                                        <a target="">{value}</a>
-                                      ) : (
-                                        JSON.stringify(value)
-                                      )}
-                                    </div>
-                                  )
-                                )}
+                                {item?.value &&
+                                Object?.keys(item?.value)?.length > 0
+                                  ? Object?.entries(item?.value)?.map(
+                                      ([key, value]: any) => (
+                                        <div key={key}>
+                                          <strong>{key}:</strong>{" "}
+                                          {typeof value === "string" ? (
+                                            value.startsWith("http") ? (
+                                              <a
+                                                href={value}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                              >
+                                                {value}
+                                              </a>
+                                            ) : (
+                                              value
+                                            )
+                                          ) : typeof value === "object" ? (
+                                            <div className="ml-4">
+                                              {value &&
+                                              Object?.keys(value)?.length > 0
+                                                ? Object?.entries(value)?.map(
+                                                    ([
+                                                      nestedKey,
+                                                      nestedValue,
+                                                    ]: any) => (
+                                                      <div key={nestedKey}>
+                                                        <strong>
+                                                          {nestedKey}:
+                                                        </strong>{" "}
+                                                        {typeof nestedValue ===
+                                                        "string" ? (
+                                                          nestedValue.startsWith(
+                                                            "http"
+                                                          ) ? (
+                                                            <a
+                                                              href={nestedValue}
+                                                              target="_blank"
+                                                              rel="noopener noreferrer"
+                                                            >
+                                                              {nestedValue}
+                                                            </a>
+                                                          ) : (
+                                                            nestedValue
+                                                          )
+                                                        ) : (
+                                                          JSON.stringify(
+                                                            nestedValue,
+                                                            null,
+                                                            2
+                                                          )
+                                                        )}
+                                                      </div>
+                                                    )
+                                                  )
+                                                : null}
+                                            </div>
+                                          ) : (
+                                            JSON.stringify(value, null, 2)
+                                          )}
+                                        </div>
+                                      )
+                                    )
+                                  : null}
                               </div>
                             );
                           } else {
@@ -278,6 +371,9 @@ const OutputDetails = ({
                                   }
                                 : {}
                             }
+                            disabled={
+                              isRejectLoading || isLoading || isApproveLoading
+                            }
                             onClick={() => handleRerun(item?.nodeMasterId)}
                           >
                             <RefreshCw color="#4B465C" />
@@ -287,20 +383,39 @@ const OutputDetails = ({
                           item?.approvalStatus === "pending" && (
                             <div className="flex gap-4 items-center px-4 py-4">
                               <button
-                                className="text-red-500 p-5 rounded-xl border border-red-500"
                                 onClick={() => {
                                   handleReject(item?.nodeExecutionId);
                                 }}
+                                className="text-red-500 p-5 rounded-xl border border-red-500 flex items-center justify-center"
+                                disabled={
+                                  isRejectLoading ||
+                                  isLoading ||
+                                  isApproveLoading
+                                }
                               >
-                                Reject
+                                {isRejectLoading ? (
+                                  <div className="w-5 h-5 border-2 border-red-500 border-t-transparent rounded-full animate-spin"></div>
+                                ) : (
+                                  "Reject"
+                                )}
                               </button>
+
                               <button
-                                className="text-[#2DA771] p-5 rounded-xl border border-[#2DA771]"
                                 onClick={() => {
                                   handleApprove(item?.nodeExecutionId);
                                 }}
+                                className="text-[#2DA771] p-5 rounded-xl border border-[#2DA771] flex items-center justify-center"
+                                disabled={
+                                  isRejectLoading ||
+                                  isLoading ||
+                                  isApproveLoading
+                                }
                               >
-                                Approve
+                                {isApproveLoading ? (
+                                  <div className="w-5 h-5 border-2 border-green-500 border-t-transparent rounded-full animate-spin"></div>
+                                ) : (
+                                  "Approve"
+                                )}
                               </button>
                             </div>
                           )}
