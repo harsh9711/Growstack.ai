@@ -12,7 +12,7 @@ import { convertNodeData } from "@/utils/dataResolver";
 import { calculateNextNodePosition } from "@/utils/helper";
 import { unwrapResult } from "@reduxjs/toolkit";
 
-const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
+const LllmsCategory = ({ setNodes, setSelectedCategory }: any): React.ReactElement => {
     const dispatch = useAppDispatch();
     const [searchQuery, setSearchQuery] = useState("");
 
@@ -44,7 +44,7 @@ const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
             const filteredModels = initialGroupedModels[subCategory].filter(model =>
                 model.name.toLowerCase().includes(searchQuery.toLowerCase())
             );
-            
+
             if (filteredModels.length > 0) {
                 acc[subCategory] = filteredModels;
             }
@@ -185,29 +185,31 @@ const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
                                             onClick={() => handleClick(item.node)}
                                             className="h-[92px] w-[130px] bg-transparent m-1 rounded-lg flex justify-center items-center cursor-pointer border border-[#E5E5E5]"
                                             draggable
-                                        onDragStart={event => {
-                                            handleDragStart(event, item.node);
-                                        }}
-                                        onDragEnd={() => {
-                                            dispatch(removeNode());
-                                        }}
-                                    >
-                                        <div className="h-full w-full rounded-lg bg-white flex justify-center items-center flex-col">
-                                            {item?.logoUrl && (
-                                                <Image
-                                                    src={item.logoUrl}
-                                                    alt={item.name}
-                                                    width={45}
-                                                    height={45}
-                                                    draggable={false}
-                                                />
-                                            )}
-                                            <p className="text-sm leading-5 font-medium text-[#020817] mt-2">
-                                                {item.name}
-                                            </p>
+                                            onDragStart={event => {
+                                                handleDragStart(event, item.node);
+                                            }}
+                                            onDragEnd={() => {
+                                                dispatch(removeNode());
+                                                setSelectedCategory(false);
+                                            }}
+                                        >
+                                            <div className="h-full w-full rounded-lg bg-white flex justify-center items-center flex-col">
+                                                {item?.logoUrl && (
+                                                    <Image
+                                                        src={item.logoUrl}
+                                                        alt={item.name}
+                                                        width={45}
+                                                        height={45}
+                                                        draggable={false}
+                                                    />
+                                                )}
+                                                <p className="text-sm leading-5 font-medium text-[#020817] mt-2">
+                                                    {item.name}
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                )})}
+                                    )
+                                })}
                             </div>
                         </div>
                     ))}

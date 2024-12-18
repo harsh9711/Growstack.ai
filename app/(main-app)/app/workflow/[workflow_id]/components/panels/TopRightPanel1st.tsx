@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { dummyData2 } from "../data";
-import instance, { CustomAxiosInstance } from "@/config/axios.config";
+import instance, { automation, CustomAxiosInstance } from "@/config/axios.config";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { addVariable } from "@/lib/features/workflow/node.slice";
 
@@ -30,7 +30,7 @@ const TopRightPanel1st = (): React.ReactElement => {
             //     data
             // );
 
-            const result = await instance.post(`/workflow/${workFlowData?._id}/run/`, data);
+            const result = await instance.post(`${automation}/workflow/${workFlowData?._id}/run/`, data);
             console.log("Run Workflow", result);
         } catch (error) {
             console.log("Run Workflow Error", error);

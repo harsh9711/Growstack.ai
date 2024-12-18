@@ -24,7 +24,7 @@ interface GroupedGenerals {
 }
 
 
-const GeneralCategory = ({ setNodes }: any): React.ReactElement => {
+const GeneralCategory = ({ setNodes, setSelectedCategory }: any): React.ReactElement => {
   const dispatch = useAppDispatch();
   const { nodes } = useAppSelector(state => state.nodes);
   const { masterNode } = useAppSelector(state => state.masterNode);
@@ -157,6 +157,7 @@ const GeneralCategory = ({ setNodes }: any): React.ReactElement => {
                       }}
                       onDragEnd={() => {
                         dispatch(removeNode());
+                        setSelectedCategory(false)
                       }}
                     >
                       <div className="h-full w-full rounded-lg bg-white flex justify-center items-center flex-col">

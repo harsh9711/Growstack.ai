@@ -364,7 +364,6 @@ const LinkedinNode = memo(
                 onInput={handleInput}
                 className="resize-none text-xs text-center font-medium text-[#14171B] bg-transparent border-transparent focus:border-transparent focus:ring-0 focus:outline-none"
                 placeholder="Enter description"
-                rows={1}
                 onChange={e => {
                   dispatch(
                     updateNodeDescription({

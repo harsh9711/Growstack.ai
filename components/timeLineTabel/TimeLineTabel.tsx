@@ -1,5 +1,5 @@
 import WorkflowSchedulerModal from "@/app/(main-app)/app/automation-hub/workflow-builder/workflows/[slug]/components/WorkflowSchedulerModal";
-import instance, { CustomAxiosInstance } from "@/config/axios.config";
+import instance, { automation, CustomAxiosInstance } from "@/config/axios.config";
 import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -43,7 +43,7 @@ const TimeLineTable = ({
 
   const getHistoryData = useCallback(async () => {
     try {
-      const getHistory = await instance.get(`/workflow/${workflow_id}/history`);
+      const getHistory = await instance.get(`${automation}/workflow/${workflow_id}/history`);
 
       // const getHistory = await CustomAxiosInstance().get(
       //   `workflow/${workflow_id}/history`
@@ -66,7 +66,7 @@ const TimeLineTable = ({
   const getScheduleData = useCallback(async () => {
     try {
       const getHistory = await instance.get(
-        `/workflow/${workflow_id}/schedules`
+        `${automation}/workflow/${workflow_id}/schedules`
       );
       // const getSchedule = await axios.get(
       //   `http://localhost:5000/workflow/${workflow_id}/schedules`
@@ -102,7 +102,7 @@ const TimeLineTable = ({
     try {
       // Fetch the workflow details to get input_configs
 
-      const workflowResponse = await instance.get(`/workflow/${workflow_id}`);
+      const workflowResponse = await instance.get(`${automation}/workflow/${workflow_id}`);
       // const workflowResponse = await instance.get(
       //   `/workflow/${workflow_id}`
       // );
