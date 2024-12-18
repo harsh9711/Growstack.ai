@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import instance, { CustomAxiosInstance } from "@/config/axios.config";
+import instance, { automation, CustomAxiosInstance } from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import Spinner from "@/components/Spinner";
 import { FaFileUpload } from "react-icons/fa";
@@ -92,7 +92,7 @@ const FileUpload: React.FC<any> = ({
       //   }
       // );
       const response = await instance.post(
-        `/workflow/upload`,
+        `${automation}/workflow/upload`,
         formData,
         {
           headers: {

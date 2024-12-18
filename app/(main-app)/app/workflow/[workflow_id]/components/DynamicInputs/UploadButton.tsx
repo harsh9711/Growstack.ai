@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import Tooltip from "../tooltip/Tooltip";
 import { DynamicInputProps } from "@/types/workflows";
-import instance, { CustomAxiosInstance } from "@/config/axios.config";
+import instance, { automation, CustomAxiosInstance } from "@/config/axios.config";
 
 const UploadButton: React.FC<DynamicInputProps> = ({
     param,
@@ -35,7 +35,7 @@ const UploadButton: React.FC<DynamicInputProps> = ({
             //     },
             // });
             
-            const response = await instance.post("/workflow/upload", formData, {
+            const response = await instance.post(`${automation}/workflow/upload`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
