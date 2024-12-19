@@ -4,6 +4,7 @@ import {FaChevronDown, FaChevronUp } from "react-icons/fa";
 import axios from "axios";
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { API_URL } from "@/lib/api";
 
 interface DataItem {
   _id: string;
@@ -26,15 +27,13 @@ const KeywordInsights = ({ runnerAgentId }: { runnerAgentId: string }) => {
         console.log("runnerAgentId", runnerAgentId);
 
         const response = await axios.get(
-          `http://localhost:8087/agents/api/v1/run/status/${runnerAgentId}`,
+          `${API_URL}/agents/api/v1/run/status/${runnerAgentId}`,
           {
             headers: {
               'Content-Type': 'application/json',
             },
           }
         );
-
-        console.log("response++++++++++++++++++", response);
         setData(response.data.data);
 
         if (response.data.data.status === "COMPLETED") {

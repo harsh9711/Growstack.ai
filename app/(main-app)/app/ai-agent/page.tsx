@@ -11,6 +11,7 @@ import {
 } from "@/components/svgs";
 import { useRouter } from "next/navigation";
 const axios = require('axios');
+import { API_URL } from "@/lib/api";
 
 export default function AiAgent() {
   const router = useRouter();
@@ -30,7 +31,7 @@ export default function AiAgent() {
     const fetchAgents = async () => {
       setLoading(true);
       try {
-        const response = await axios.get('http://localhost:8087/agents/api/v1/');
+        const response = await axios.get(`${API_URL}/agents/api/v1/`);
 
         if (response.data.message === "Agents fetched successfully") {
           // Ensure the data is an array of Agent objects
