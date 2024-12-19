@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Tooltip from "../tooltip/Tooltip";
 import { DynamicInputProps } from "@/types/workflows";
-import { useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { getVoices } from "@/lib/features/workflow/avatarVoice.slice";
+
 
 interface AdvanceDropDownProps {
   id: string;
@@ -18,6 +20,7 @@ const AdvanceDropDown: React.FC<DynamicInputProps> = ({
   handleInputChange,
 }) => {
   const { voices } = useAppSelector(state => state.avatarVoice);
+  const dispatch = useAppDispatch();
 
   const [selectedVoice, setSelectedVoice] = useState<string | null>(null);
   const [playingVoiceId, setPlayingVoiceId] = useState<string | null>(null);
@@ -49,6 +52,10 @@ const AdvanceDropDown: React.FC<DynamicInputProps> = ({
   };
 
   const selectedVoiceData = voices?.find(voice => voice.id === selectedVoice);
+
+  useEffect(() => {
+    dispatch(getVoices());
+  }, [dispatch]);
 
   return (
     <div key={inputKey} className="input-box mb-3">

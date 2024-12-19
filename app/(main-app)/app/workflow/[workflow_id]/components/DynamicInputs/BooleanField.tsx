@@ -28,6 +28,7 @@ const BooleanField: React.FC<DynamicInputProps> = ({
                         type={"checkbox"}
                         className="sr-only peer"
                         checked={!!param.value}
+                        disabled={param?.disabled}
                         onChange={e =>
                             handleInputChange(inputKey, param.type, e.target.checked)
                         }

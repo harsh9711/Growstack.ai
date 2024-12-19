@@ -25,6 +25,7 @@ import ToolsNode from "./ToolsNodes";
 import GmailNode from "./integrations/GmailNodes";
 import LinkedinNode from "./integrations/LinkedinNode";
 import FanOut from "./fanOut";
+import ApolloNodes from "./integrations/ApolloNodes";
 
 export const initialNodes: AppNode[] = [
   {
@@ -67,4 +68,6 @@ export const nodeTypes = {
   gmail: GmailNode,
   linkedin: LinkedinNode,
   fanout: FanOut,
+  apollo: ApolloNodes
+
 } satisfies NodeTypes;

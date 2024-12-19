@@ -29,6 +29,8 @@ instance.interceptors.response.use(
   }
 );
 
+export const automation  = "automation"
+
 export default instance;
 
 export const CustomAxiosInstance = (

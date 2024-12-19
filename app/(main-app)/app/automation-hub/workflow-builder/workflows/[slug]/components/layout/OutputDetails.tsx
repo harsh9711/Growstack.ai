@@ -6,7 +6,7 @@ import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
 import toast from "react-hot-toast";
 import axios from "axios";
-import instance, { CustomAxiosInstance } from "@/config/axios.config";
+import instance, { automation, CustomAxiosInstance } from "@/config/axios.config";
 
 const OutputDetails = ({
   outputDetailsData,
@@ -41,7 +41,7 @@ const OutputDetails = ({
       //   `/workflow/${workflowId}/run?previousExecutionId=&${executionId}&startNodeId=${nodeMasterId}`
       // );
       const rerunPartialWorkflow = await instance.post(
-        `/workflow/${workflowId}/run?previousExecutionId=${executionId}&startNodeId=${nodeMasterId}`
+        `${automation}/workflow/${workflowId}/run?previousExecutionId=${executionId}&startNodeId=${nodeMasterId}`
       );
       if (rerunPartialWorkflow?.data?.executionId) {
         onPollingWithNewId(rerunPartialWorkflow?.data?.executionId);
@@ -65,7 +65,7 @@ const OutputDetails = ({
       //   `/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=false`
       // );
       const rejectExecution = await instance.patch(
-        `/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=false`
+        `${automation}/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=false`
       );
       setApproveOutputDataId(rejectExecution?.data);
     } catch (error: any) {
@@ -89,7 +89,7 @@ const OutputDetails = ({
       //   `http://localhost:5000/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=true`
       // );
       const approveExecution = await instance.patch(
-        `/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=true`
+        `${automation}/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=true`
       );
       setApproveOutputDataId(approveExecution?.data);
     } catch (error: any) {

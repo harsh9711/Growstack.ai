@@ -19,7 +19,7 @@ interface GroupedIntegrations {
 }
 
 
-const IntegrationCategory = ({ setNodes }: any): React.ReactElement => {
+const IntegrationCategory = ({ setNodes, setSelectedCategory }: any): React.ReactElement => {
   const dispatch = useAppDispatch();
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -35,7 +35,7 @@ const IntegrationCategory = ({ setNodes }: any): React.ReactElement => {
   const generalData = masterNode?.filter(
     item =>
       item.category.toLowerCase() === "integration" &&
-      (item.type === "gmail" || item.type === "linkedin")
+      (item.type === "gmail" || item.type === "linkedin" || item.type === "apollo")
   );
 
   // console.log("generalData", generalData);
@@ -265,6 +265,7 @@ const IntegrationCategory = ({ setNodes }: any): React.ReactElement => {
                 }}
                 onDragEnd={() => {
                   dispatch(removeNode());
+                  setSelectedCategory(false);
                 }}
               >
                 <div className="h-full w-full rounded-lg bg-white flex justify-center items-center flex-col">

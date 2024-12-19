@@ -332,7 +332,6 @@ const ToolsNodes = memo(
                 onInput={handleInput}
                 className="resize-none text-xs text-center font-medium text-[#14171B] bg-transparent border-transparent focus:border-transparent focus:ring-0 focus:outline-none"
                 placeholder="Enter description"
-                rows={1}
                 onChange={e => {
                   dispatch(
                     updateNodeDescription({
@@ -480,7 +479,7 @@ const ToolsNodes = memo(
                         />
                       );
                     })}
-                <div className="advance-option-button-box mb-3">
+                {/* <div className="advance-option-button-box mb-3">
                   <button
                     onClick={handleToggleAdvancedOptions}
                     className="w-full text-center bg-transparent border-0 underline text-[12px] text-[#2DA771]"
@@ -489,7 +488,20 @@ const ToolsNodes = memo(
                       ? "Hide Advanced Options"
                       : "Show Advanced Options"}
                   </button>
-                </div>
+                </div> */}
+                {node?.data?.parameters && 
+                  Object.values(node.data.parameters).some(param => !param.required) && (
+                    <div className="advance-option-button-box mb-3">
+                      <button
+                        onClick={handleToggleAdvancedOptions}
+                        className="w-full text-center bg-transparent border-0 underline text-[12px] text-[#2DA771]"
+                      >
+                        {showAdvancedOptions
+                          ? "Hide Advanced Options"
+                          : "Show Advanced Options"}
+                      </button>
+                    </div>
+                  )}
 
                 {isEdit ? (
                   <div className="submit-button">
