@@ -26,6 +26,7 @@ import GmailNode from "./integrations/GmailNodes";
 import LinkedinNode from "./integrations/LinkedinNode";
 import FanOut from "./fanOut";
 import ApolloNodes from "./integrations/ApolloNodes";
+import AutoBoundNode from "./integrations/AutoBound";
 
 export const initialNodes: AppNode[] = [
   {
@@ -68,6 +69,7 @@ export const nodeTypes = {
   gmail: GmailNode,
   linkedin: LinkedinNode,
   fanout: FanOut,
-  apollo: ApolloNodes
+  apollo: ApolloNodes,
+  autobound: AutoBoundNode
 
 } satisfies NodeTypes;
