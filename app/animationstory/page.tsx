@@ -1,59 +1,48 @@
 "use client";
 import React, { useRef, useState, useEffect } from "react";
- import Link from "next/link";
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import dynamic from "next/dynamic";
 
-const KeyPoints = () => {
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-10 p-4 sm:p-8">
-      {[
-        "Spot Social Trends and Generate Content Instantly",
-        "Launch Campaigns in just a few Clicks Create, Publish, Manage",
-        "AI Agents for Smart Lead Gen and Engagement",
-        "Streamline Sales and Marketing with AI Automation",
-      ].map((point, index) => (
-        <div key={index} className="flex flex-row items-start space-x-2">
-          <span className="w-3 h-3 mt-1 bg-green-500 rounded-full" />
-          <h2 className="text-sm sm:text-md md:text-lg font-semibold text-black">
-            {point}
-          </h2>
-        </div>
-      ))}
-    </div>
-  );
-};
-
+// Lazy load the KeyPoints component
+const KeyPoints = dynamic(() => import("./KeyPoints"), {
+  ssr: false,
+});
 const AnimationStory = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
-
   useEffect(() => {
     const videoElement = videoRef.current;
+    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
+      const [entry] = entries;
+      setIsVideoLoaded(entry.isIntersecting);
 
-    const handleCanPlay = () => {
-      setIsVideoLoaded(true);
-
-      // Ensure video plays automatically
-      if (videoElement) {
+      if (entry.isIntersecting && videoElement) {
         videoElement.play().catch(error => {
           console.error("Autoplay was prevented:", error);
         });
+      } else if (videoElement) {
+        videoElement.pause();
       }
     };
 
-    if (videoRef.current) {
-      videoRef.current.addEventListener("canplaythrough", handleCanPlay);
+    const observer = new IntersectionObserver(handleIntersection, {
+      threshold: 0.5,
+    });
+
+    if (videoElement) {
+      observer.observe(videoElement);
     }
 
     return () => {
-      if (videoRef.current) {
-        videoRef.current.removeEventListener("canplaythrough", handleCanPlay);
+      if (videoElement) {
+        observer.unobserve(videoElement);
       }
     };
   }, []);
 
   return (
-    <div className="relative w-full h-screen max-h-[550px] sm:max-h-[1000px] border-none outline-none overflow-hidden bg-[#F5F5F5] text-white">
+    <div className="relative w-full h-screen max-h-[550px] sm:max-h-[1000px] border-none outline-none overflow-y-hidden bg-[#F5F5F5] text-white">
       <video
         ref={videoRef}
         src="https://growstack-static-content.s3.us-east-1.amazonaws.com/landingpagevideos.mp4"
@@ -62,7 +51,7 @@ const AnimationStory = () => {
         loop
         muted
         preload="auto"
-        className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-700 ${
+        className={`absolute top-0 left-0 w-full h-full ease-out hidden sm:block border-none outline-none right-0 transition-opacity duration-700 ${
           isVideoLoaded ? "opacity-100" : "opacity-0"
         }`}
       >
@@ -74,7 +63,7 @@ const AnimationStory = () => {
           <h1 className="text-black text-[16px] sm:text-[24px] md:text-[36px] lg:text-[42px] text-center sm:text-start max-w-[620px] w-full font-medium mb-1">
             AI for
             <span className="font-extrabold text-[#2DA771] px-2">
-              Smarter Writing, Engagement  & Automation
+              Smarter Writing, Engagement & Automation
             </span>
           </h1>
           <div className="flex flex-col text-center sm:text-start sm:text-[16px] md:text-[20px] font-semibold">

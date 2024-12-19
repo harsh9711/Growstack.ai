@@ -162,7 +162,7 @@ const SixCardSwitch = () => {
           data-aos="fade-right"
         >
           <h1 className="text-[28px] xl:text-[40px] w-full leading-tight font-semibold text-black">
-            Integrations that we use in our platform{" "} are 
+            Integrations that we use in our platform are
             <span className="font-light"> in our platform </span>
           </h1>
         </div>

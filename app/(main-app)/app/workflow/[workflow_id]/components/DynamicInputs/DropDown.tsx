@@ -3,11 +3,12 @@ import Tooltip from "../tooltip/Tooltip";
 import { DynamicInputProps } from "@/types/workflows";
 
 const DropDown: React.FC<DynamicInputProps> = ({ param, inputKey, handleInputChange }) => {
-    useEffect(() => {
-        if (!param.value && param.options && param.options.length > 0) {
-            handleInputChange(inputKey, param.type, param.required?  param.options[0].value : "");
-        }
-    }, []);
+  // useEffect(() => {
+  // if(param.value)
+  // if (!param.value && param.options && param.options.length > 0) {
+  //   handleInputChange(inputKey, param.type, param.required ? param.options[0].value : "");
+  // }
+  // }, []);
 
   return (
     <div key={inputKey} className="input-box mb-3">
@@ -31,7 +32,11 @@ const DropDown: React.FC<DynamicInputProps> = ({ param, inputKey, handleInputCha
           onChange={e =>
             handleInputChange(inputKey, param.type, e.target.value)
           }
+          disabled={!!param?.disabled}
         >
+          <option value="" disabled>
+            Select value
+          </option>
           {param?.options &&
             param.options.map((option: any, index: number) => (
               <option key={index} value={option.value}>

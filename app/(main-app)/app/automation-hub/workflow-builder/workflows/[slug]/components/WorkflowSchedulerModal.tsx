@@ -17,7 +17,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../../../../../../../styles/datepicker.css";
 import { Switch } from "@/components/ui/switch";
-import instance, { CustomAxiosInstance } from "@/config/axios.config";
+import instance, { automation, CustomAxiosInstance } from "@/config/axios.config";
 import FileUpload from "./layout/FileUploadV2";
 
 function WorkflowSchedulerModal({
@@ -71,7 +71,7 @@ function WorkflowSchedulerModal({
         //   payload
         // );
         const response = await instance.patch(
-          `/workflow/${workFlowData?.workflow_id}/schedule/${workFlowData?._id}`,
+          `${automation}/workflow/${workFlowData?.workflow_id}/schedule/${workFlowData?._id}`,
           payload
         );
         toast.success("Schedule updated successfully");
@@ -84,7 +84,7 @@ function WorkflowSchedulerModal({
         //   payload
         // );
         const response = await instance.post(
-          `/workflow/${workFlowData?.workflow_id}/schedule`,
+          `${automation}/workflow/${workFlowData?.workflow_id}/schedule`,
           payload
         );
         toast.success("Schedule updated successfully");

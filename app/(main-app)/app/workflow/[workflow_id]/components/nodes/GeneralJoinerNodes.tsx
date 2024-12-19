@@ -25,6 +25,7 @@ const GeneralJoinerNodes = memo(
     positionAbsoluteY,
   }: NodeProps<GeneralJoinerNodeProps>) => {
     const { setNodes } = useReactFlow();
+    const { setEdges } = useReactFlow();
     const dispatch = useAppDispatch();
     const { success } = useSnackbar();
 
@@ -236,9 +237,15 @@ const GeneralJoinerNodes = memo(
 
     const handleDeleteNode = () => {
       setNodes(nds => nds.filter(nds => nds.id !== id));
+      setEdges((edges: any[]) => {
+        const updatedEdges = edges.filter(
+          (edge: any) =>
+            edge?.source !== id && edge?.target !== id
+        );
+        return updatedEdges;
+      });
       dispatch(removeNodeById(id));
       dispatch(deleteNodeById(id));
-      // success("The node has been successfully deleted");
       success(`The ${data?.label} node has been successfully deleted`);
     };
 
@@ -279,7 +286,6 @@ const GeneralJoinerNodes = memo(
                 onInput={handleInput}
                 className="resize-none text-xs text-center font-medium text-[#14171B] bg-transparent border-transparent focus:border-transparent focus:ring-0 focus:outline-none"
                 placeholder="Enter description"
-                rows={1}
                 onChange={e => {
                   dispatch(
                     updateNodeDescription({

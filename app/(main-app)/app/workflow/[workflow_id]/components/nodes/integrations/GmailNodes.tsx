@@ -23,6 +23,8 @@ import {
 import DeleteConfirmationModal from "../../modals/deletemodal/DeleteModal";
 import { useSnackbar } from "../../snackbar/SnackbarContext";
 import { authenticateUser } from "@/utils/paraGonAuth";
+import { setSignInStatus } from "@/lib/features/workflow/nodeAuth.slice";
+import { useSelector } from "react-redux";
 
 // const TriggerData = [
 //   {
@@ -61,12 +63,18 @@ const GmailNode = memo(
     // const { parameters, nodeMasterId } = data;
 
     const { success } = useSnackbar();
-    const { setNodes } = useReactFlow();
+    const { setNodes, setEdges } = useReactFlow();
     const dispatch = useAppDispatch();
     const { workFlowData } = useAppSelector(state => state.workflows);
     const { nodes, variables, isLoading } = useAppSelector(
       state => state.nodes
     );
+    const isGmailSignedIn = useSelector((state: any) => state?.nodeAuth["gmail"]);
+
+    const handleSignIn = (platform: string, data: any) => {
+      // Set the user as signed in for a particular platform
+      dispatch(setSignInStatus({ platform, data, status: true }));
+    };
 
     const node = useAppSelector(state =>
       state.nodes.nodes.find(node => node.id === id)
@@ -276,8 +284,8 @@ const GmailNode = memo(
         requiredParams.forEach(param => {
           const key = node?.data?.parameters
             ? Object.keys(node.data.parameters).find(
-              k => node.data.parameters?.[k] === param
-            )
+                k => node.data.parameters?.[k] === param
+              )
             : undefined;
           if (key && !param.value) {
             dispatch(
@@ -299,6 +307,12 @@ const GmailNode = memo(
 
     const handleDeleteNode = () => {
       setNodes(nds => nds.filter(nds => nds.id !== id));
+      setEdges((edges: any[]) => {
+        const updatedEdges = edges.filter(
+          (edge: any) => edge?.source !== id && edge?.target !== id
+        );
+        return updatedEdges;
+      });
       dispatch(removeNodeById(id));
       dispatch(deleteNodeById(id));
       // success("The node has been successfully deleted");
@@ -343,6 +357,7 @@ const GmailNode = memo(
         clearTimeout(timeoutId);
 
         if (result && result.credentialStatus === "VALID") {
+          handleSignIn("gmail", result);
           setConnectedEmail(result);
           setIsSignedUp(true);
         }
@@ -361,6 +376,13 @@ const GmailNode = memo(
       setIsEdit(!isEdit);
     };
 
+    useEffect(() => {
+      if (isGmailSignedIn?.status) {
+        setConnectedEmail(isGmailSignedIn?.data);
+        setIsSignedUp(true);
+      }
+    }, [isGmailSignedIn]);
+
     return (
       <div>
         <section className="node-box relative">
@@ -373,7 +395,6 @@ const GmailNode = memo(
                 onInput={handleInput}
                 className="resize-none text-xs text-center font-medium text-[#14171B] bg-transparent border-transparent focus:border-transparent focus:ring-0 focus:outline-none"
                 placeholder="Enter description"
-                rows={1}
                 onChange={e => {
                   dispatch(
                     updateNodeDescription({
@@ -539,10 +560,11 @@ const GmailNode = memo(
               </div> */}
 
               <div
-                className={`node-content-wrapper relative ${!isSignedUp
-                  ? "before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-white before:opacity-[45%]"
-                  : ""
-                  }`}
+                className={`node-content-wrapper relative ${
+                  !isSignedUp
+                    ? "before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-white before:opacity-[45%]"
+                    : ""
+                }`}
               >
                 {/* <div className="trigger-box">
                   <h3 className="text-[16px] font-medium text-[#14171B] mb-4">
@@ -628,7 +650,7 @@ const GmailNode = memo(
                                 inputKey={key}
                                 param={param}
                                 handleInputChange={
-                                  isEdit ? handleInputChange : () => { }
+                                  isEdit ? handleInputChange : () => {}
                                 }
                                 variableNames={variableNames}
                                 focusedInputKey={focusedInputKey}

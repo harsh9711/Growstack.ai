@@ -240,3 +240,31 @@ export interface IntegrationResultProps {
   workflowSettings: {};
   isIntegrationEnableTriggered: boolean;
 }
+
+export interface AvatarProps {
+  id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  gestures: { label: string; slug: string; startFrame: number }[];
+  status: string;
+  width: number;
+  height: number;
+  thumbnailUrl: string;
+  extras?: any;
+}
+
+export interface VoiceProps {
+  id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  status: string;
+  sampleUrl: string;
+}
+export interface AvatarVoiceState {
+  avatars: AvatarProps[];
+  voices: VoiceProps[];
+  isLoading: boolean;
+  error: any;
+}

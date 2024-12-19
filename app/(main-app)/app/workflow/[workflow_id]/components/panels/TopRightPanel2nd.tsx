@@ -14,6 +14,7 @@ import {
   updateWorkflowStatus,
 } from "@/lib/features/workflow/workflow.slice";
 import { useSnackbar } from "../snackbar/SnackbarContext";
+import { updateNodeParameter } from "@/lib/features/workflow/node.slice";
 
 const TopRightPanel2nd = ({
   setActiveTab,
@@ -62,13 +63,39 @@ const TopRightPanel2nd = ({
 
   const handleSaveWorkFlow = async () => {
     try {
+
+      const isValidNode = validateNodes(nodes);
+      if (typeof isValidNode === "object" && !isValidNode.isValid) {
+        const { isValid, missingParams, node } = isValidNode;
+        missingParams.forEach(param => {
+          const key = node?.data?.parameters
+            ? Object.keys(node.data.parameters).find(
+                k => node.data.parameters?.[k] === param
+              )
+            : undefined;
+          if (key && !param.value) {
+            dispatch(
+              updateNodeParameter({
+                nodeId: node.id,
+                key: key,
+                type: "error",
+                value: "This field is required",
+              })
+            );
+          }
+        });
+        error(
+          "Please fill all the required fields of Node, before saving the Workflow"
+        );
+        return;
+      }
+      
       const bodyPayload = {
         name: workFlowData?.name,
         description: workFlowData?.description || "",
         nodes: prepareNodesPayload(nodes, workFlowData._id || ""),
         edges: edges,
       };
-
       console.log("----bodyPayload---", bodyPayload);
 
       await dispatch(
@@ -87,6 +114,7 @@ const TopRightPanel2nd = ({
 
   const handlePublishWorkFlow = async () => {
     try {
+
       if (nodes.length === 0) {
         setOpenPublishConfirmationModal(false);
         error("Please add at least one node to publish the workflow");
@@ -94,12 +122,31 @@ const TopRightPanel2nd = ({
       }
 
       const isValidNode = validateNodes(nodes);
-
-      if (!isValidNode) {
+      if (typeof isValidNode === "object" && !isValidNode.isValid) {
+        const { isValid, missingParams, node } = isValidNode
         setOpenPublishConfirmationModal(false);
+        missingParams.forEach(param => {
+          const key = node?.data?.parameters
+            ? Object.keys(node.data.parameters).find(
+              k => node.data.parameters?.[k] === param
+            )
+            : undefined;
+          if (key && !param.value) {
+            dispatch(
+              updateNodeParameter({
+                nodeId: node.id,
+                key: key,
+                type: "error",
+                value: "This field is required",
+              })
+            );
+          }
+        });
+
         error(
           "Please fill all the required fields of Node, before publishing the Workflow"
         );
+
         return;
       }
 
@@ -195,11 +242,10 @@ const TopRightPanel2nd = ({
           {dummyData3.map((item, index) => (
             <button
               key={index.toString()}
-              className={`flex justify-center items-center m-2 cursor-pointer px-2.5 py-1.5 rounded-md text-base font-normal ${
-                activeTab === index
-                  ? "text-white bg-[#2DA771]"
-                  : "text-black bg-transparent"
-              } shadow-lg disabled:opacity-60 disabled:cursor-not-allowed`}
+              className={`flex justify-center items-center m-2 cursor-pointer px-2.5 py-1.5 rounded-md text-base font-normal ${activeTab === index
+                ? "text-white bg-[#2DA771]"
+                : "text-black bg-transparent"
+                } shadow-lg disabled:opacity-60 disabled:cursor-not-allowed`}
               onClick={() => handleClick(index)}
               disabled={
                 workFlowData?.status !== "published" && item?.text !== "Build"

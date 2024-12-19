@@ -2,7 +2,7 @@
 
 import Motion from "@/components/Motion";
 import Spinner from "@/components/Spinner";
-import instance, { CustomAxiosInstance } from "@/config/axios.config";
+import instance, { automation, CustomAxiosInstance } from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import clsx from "clsx";
 import { Clock, ChevronDown, ChevronUp, Info } from "lucide-react";
@@ -96,7 +96,7 @@ const Run: React.FC<any> = ({
     setLoading(true);
     try {
       // const response = await axios.get(`http://localhost:5000/workflow/${id}`);
-      const response = await instance.get(`/workflow/${id}`);
+      const response = await instance.get(`${automation}/workflow/${id}`);
       const apiData = response.data;
 
       // Filter and map `nodes` to `input_configs`
@@ -122,7 +122,10 @@ const Run: React.FC<any> = ({
               display_name: parameters?.inputLabel || "Untitled Field",
               description: parameters?.description || "",
               placeholder: parameters?.placeholder || "",
-              default_value: parameters.defaultValue || "",
+              default_value:
+                parameters?.variableName === "boolean"
+                  ? false
+                  : parameters.defaultValue || "",
               variableName: parameters?.variableName || "",
               type: node?.nodeMasterId?.inputType,
               list_values: parameters?.options || [],
@@ -150,7 +153,7 @@ const Run: React.FC<any> = ({
                   display_name: formParameters?.inputLabel || "Untitled Field",
                   description: formParameters?.description || "",
                   placeholder: formParameters?.placeholder || "",
-                  default_value: formParameters?.defaultValue || "",
+                  default_value: formParameters?.variableName === "boolean" ? false : formParameters?.defaultValue || "",
                   variableName: formParameters?.variableName || "",
                   type: inputType,
                   list_values: formParameters?.options || [],
@@ -161,7 +164,6 @@ const Run: React.FC<any> = ({
             );
           }
         });
-
       setWorkFlowData({
         name: apiData.name,
         input_configs: inputConfigs,
@@ -182,11 +184,15 @@ const Run: React.FC<any> = ({
   };
 
   const handleRunWorkFlow = useCallback(async () => {
-    const updatedWorkflowData = workFlowData?.input_configs?.map((data: any) => ({
-      variableName: data?.variableName,
-      variableValue:
-        data?.type === "checkbox" ? data?.selected_values : data?.default_value,
-    }));
+    const updatedWorkflowData = workFlowData?.input_configs?.map(
+      (data: any) => ({
+        variableName: data?.variableName,
+        variableValue:
+          data?.type === "checkbox"
+            ? data?.selected_values
+            : data?.default_value,
+      })
+    );
     setIsLoading(true);
     try {
       // const response = await axios.post(
@@ -194,7 +200,7 @@ const Run: React.FC<any> = ({
       //   updatedWorkflowData
       // );
       const response = await instance.post(
-        `/workflow/${workflowId}/run`,
+        `${automation}/workflow/${workflowId}/run`,
         updatedWorkflowData
       );
       // const response = await instance.post(
@@ -223,7 +229,7 @@ const Run: React.FC<any> = ({
       //   `http://localhost:5000/workflow/${workflowId}/status/${executionId}`
       // );
       const getWorkFlowExecData = await instance.get(
-        `/workflow/${workflowId}/status/${executionId}`
+        `${automation}/workflow/${workflowId}/status/${executionId}`
       );
 
       // const getWorkFlowExecData = await instance.get(
@@ -231,31 +237,62 @@ const Run: React.FC<any> = ({
       // );
       setRunSummaryData(getWorkFlowExecData?.data);
       const status = getWorkFlowExecData?.data?.status;
-      const outputDetails = getWorkFlowExecData?.data?.nodeExecutions?.map(
+      const outputDetails = getWorkFlowExecData?.data?.nodeExecutions?.flatMap(
         (nodeExecution: any) => {
-          const nodeId = nodeExecution?.nodeId;
-          const variableName = nodeExecution?.parameters?.variableName;
-          const nodeMasterId = nodeId?._id;
-          const nodeExecutionId = nodeExecution?._id;
-          const value =
-            getWorkFlowExecData?.data?.variables[variableName] || "";
-          const approvalStatus = nodeExecution?.approvalStatus;
-          const approvalRequired = nodeExecution?.parameters?.approvalRequired;
-          const status = nodeExecution?.status;
-          const nodeType = nodeExecution?.nodeId?.type;
-          const socialMediaContent = nodeExecution?.socialMediaContent;
+          if (nodeExecution?.nodeId?.type !== "form") {
+            const nodeId = nodeExecution?.nodeId;
+            const variableName = nodeExecution?.parameters?.variableName;
+            const nodeMasterId = nodeId?._id;
+            const nodeExecutionId = nodeExecution?._id;
+            const value =
+              getWorkFlowExecData?.data?.variables[variableName] || "";
+            const approvalStatus = nodeExecution?.approvalStatus;
+            const approvalRequired =
+              nodeExecution?.parameters?.approvalRequired;
+            const status = nodeExecution?.status;
+            const nodeType = nodeExecution?.nodeId?.type;
+            const socialMediaContent = nodeExecution?.socialMediaContent;
 
-          return {
-            nodeMasterId: nodeMasterId,
-            value: value,
-            title: variableName,
-            approvalStatus: approvalStatus,
-            approvalRequired: approvalRequired,
-            nodeExecutionId: nodeExecutionId,
-            status: status,
-            nodeType: nodeType,
-            socialMediaContent: socialMediaContent,
-          };
+            return {
+              nodeMasterId: nodeMasterId,
+              value: value,
+              title: variableName,
+              approvalStatus: approvalStatus,
+              approvalRequired: approvalRequired,
+              nodeExecutionId: nodeExecutionId,
+              status: status,
+              nodeType: nodeType,
+              socialMediaContent: socialMediaContent,
+            };
+          } else {
+            // Handle form type nodes by mapping over the subNodes and returning results
+            return nodeExecution?.subNodes?.map((data: any) => {
+              const nodeId = nodeExecution?.nodeId;
+              const nodeMasterId = nodeId?._id;
+              const nodeExecutionId = nodeExecution?._id;
+              const variableName = data?.parameters?.variableName;
+              const value =
+                getWorkFlowExecData?.data?.variables[variableName] || "";
+              const approvalStatus = nodeExecution?.approvalStatus;
+              const approvalRequired =
+                nodeExecution?.parameters?.approvalRequired;
+              const status = nodeExecution?.status;
+              const nodeType = nodeExecution?.nodeId?.type;
+              const socialMediaContent = nodeExecution?.socialMediaContent;
+
+              return {
+                nodeMasterId: nodeMasterId,
+                value: value,
+                title: variableName,
+                approvalStatus: approvalStatus,
+                approvalRequired: approvalRequired,
+                nodeExecutionId: nodeExecutionId,
+                status: status,
+                nodeType: nodeType,
+                socialMediaContent: socialMediaContent,
+              };
+            });
+          }
         }
       );
 
@@ -307,16 +344,19 @@ const Run: React.FC<any> = ({
             if (shouldStop) {
               setIsStoppedInternal(true);
               clearInterval(interval);
+              getWorkflowStats();
             }
           } catch (error) {
             setIsStoppedInternal(true);
             console.error("Error during polling:", error);
             clearInterval(interval); // Clear on error as well, if needed.
+            getWorkflowStats();
           }
         }, 5000);
         if (isStoppedInternal) {
           setIsStoppedInternal(false);
           clearInterval(interval); // Clear on error as well, if needed.
+          getWorkflowStats();
         }
       };
 
@@ -328,12 +368,13 @@ const Run: React.FC<any> = ({
     }
   }, [pollingWorkflowExec, executionId]);
 
-  const handleFileUploaded = (fileUrl: string, idx: number) => {
-    setFileUrl2(fileUrl);
-    const updatedInputs = [...workFlowData.input_configs];
-    updatedInputs[idx].default_value = fileUrl;
-    setWorkFlowData({ ...workFlowData, input_configs: updatedInputs });
-  };
+  const handleFileUploaded = useCallback((fileUrl: string, idx: number) => {
+    setWorkFlowData((prevWorkFlowData: any) => {
+      const updatedInputs = [...prevWorkFlowData.input_configs];
+      updatedInputs[idx].default_value = fileUrl;
+      return { ...prevWorkFlowData, input_configs: updatedInputs };
+    });
+  }, [workFlowData]);
 
   const handleChangeInput = (value: string, idx: number) => {
     const updatedInputs = [...workFlowData.input_configs];
@@ -369,7 +410,7 @@ const Run: React.FC<any> = ({
       // const response = await CustomAxiosInstance().get(
       //   `/workflow/${workflowId}/stats`
       // );
-      const response = await instance.get(`/workflow/${workflowId}/stats`);
+      const response = await instance.get(`${automation}/workflow/${workflowId}/stats`);
       setWorkflowStatsData(response?.data);
     } catch (error: any) {
       if (error?.response) {
@@ -458,9 +499,8 @@ const Run: React.FC<any> = ({
                   </div>
                 </div>
                 <div
-                  className={`${
-                    IsInputParameterOpen ? "block" : "hidden"
-                  } transition-opacity`}
+                  className={`${IsInputParameterOpen ? "block" : "hidden"
+                    } transition-opacity`}
                 >
                   {workFlowData?.input_configs &&
                     workFlowData?.input_configs?.length > 0 &&
@@ -502,11 +542,44 @@ const Run: React.FC<any> = ({
                                 </div>
                               )}
                             </div>
-                            {matchingOutput?.value && timeline && (
-                              <p className="bg-gray-100 p-4 rounded-lg w-full">
-                                {matchingOutput?.value}
-                              </p>
-                            )}
+                            {input?.type !== "form" &&
+                              matchingOutput?.value &&
+                              timeline && (
+                                <div className="bg-gray-100 p-4 rounded-lg w-full">
+                                  {typeof matchingOutput?.value ===
+                                    "string" && <p>{matchingOutput.value}</p>}
+                                  {typeof matchingOutput?.value ===
+                                    "boolean" && (
+                                      <p>
+                                        {matchingOutput.value ? "True" : "False"}
+                                      </p>
+                                    )}
+                                  {typeof matchingOutput?.value ===
+                                    "number" && <p>{matchingOutput.value}</p>}
+                                  {Array.isArray(matchingOutput?.value) &&
+                                    matchingOutput.value.length > 0 && (
+                                      <ul>
+                                        {matchingOutput.value.map(
+                                          (item, index) => (
+                                            <li key={index}>{item}</li>
+                                          )
+                                        )}
+                                      </ul>
+                                    )}
+                                  {!Array.isArray(matchingOutput?.value) &&
+                                    typeof matchingOutput?.value ===
+                                    "object" && (
+                                      <pre>
+                                        {JSON.stringify(
+                                          matchingOutput.value,
+                                          null,
+                                          2
+                                        )}
+                                      </pre>
+                                    )}
+                                </div>
+                              )}
+
                             {!timeline &&
                               (() => {
                                 switch (input?.type) {

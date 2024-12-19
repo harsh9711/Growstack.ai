@@ -28,12 +28,13 @@ import {
   getWorkFlowById,
   updateWorkFlowById,
 } from "@/lib/features/workflow/workflow.slice";
-import { useRouter } from "next/navigation";
 import ConnectionLine from "./components/edges/ConnectionLine";
 import {
   addNode,
   clearNodeData,
   createNode,
+  deleteNodeById,
+  removeNodeById,
   updateNodeDependency,
 } from "@/lib/features/workflow/node.slice";
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -47,8 +48,9 @@ import {
 import { resolveWorkflowNodes } from "@/utils/dataResolver";
 import { SnackbarProvider } from "./components/snackbar/SnackbarContext";
 import { debounce } from "lodash";
+import { NodeState } from "@/types/workflows";
 
-interface DragEvent extends React.DragEvent<HTMLDivElement> { }
+interface DragEvent extends React.DragEvent<HTMLDivElement> {}
 interface PageProps {
   params: {
     workflow_id: string;
@@ -70,6 +72,7 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
   const [activeTab, setActiveTab] = useState(0);
   const [selectedExecutionId, setSelectedExecutionId] = useState<string>("");
   const [isFromTimeline, setFromTimeline] = useState(false);
+  const [isLockCanvas, setIsLockCanvas] = useState<boolean>(true);
 
   const handleViewDetails = (executionId: string) => {
     setSelectedExecutionId(executionId);
@@ -82,10 +85,8 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
   useEffect(() => {
     dispatch(getMasterNodes());
     getWorkFlowDetails();
-    return () => { };
+    return () => {};
   }, [dispatch, workflow_id]);
-
-
 
   const saveData = () => {
     const bodyPayload = {
@@ -103,12 +104,11 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
     );
   };
 
-  // const debouncedSaveData = debounce(saveData, 2000);
-
-  const debouncedSaveData = useCallback(
-    debounce(saveData, 2000),
-    [edges, reduxNode, workFlowData]
-  );
+  const debouncedSaveData = useCallback(debounce(saveData, 2000), [
+    edges,
+    reduxNode,
+    workFlowData,
+  ]);
 
   useEffect(() => {
     if (!workFlowData?._id) return;
@@ -127,8 +127,6 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
       const result = unwrapResult(resultAction);
 
       const updatedNodes = resolveWorkflowNodes(result.nodes);
-
-      console.log("Result--------------->", updatedNodes);
 
       // @ts-ignore
       setNodes(updatedNodes);
@@ -186,9 +184,6 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
       });
 
       try {
-
-
-
         const nodeId = await handleAddNode({
           workflowId: workflow_id || workFlowData?._id,
           nodeMasterId: nodeData.id,
@@ -201,39 +196,104 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
 
         if (!nodeId) return;
 
-        const newNode = {
-          ...nodeData,
-          data: {
-            ...nodeData.data,
-            parameters: {
-              ...nodeData.data.parameters,
-              variableName: {
-                ...(nodeData.data.parameters?.variableName ?? {}),
-                value: toolsNodes?.length
-                  ? `${convertToUnderscore(nodeData.data.label)}${toolsNodes.length}`
-                  : convertToUnderscore(nodeData.data.label),
-                label: nodeData.data.parameters?.variableName?.label || "",
-                type: nodeData.data.parameters?.variableName?.type || "",
-                required:
-                  nodeData.data.parameters?.variableName?.required ?? true,
-                placeholder:
-                  nodeData.data.parameters?.variableName?.placeholder || "",
-                options: nodeData.data.parameters?.variableName?.options || [],
-                description:
-                  nodeData.data.parameters?.variableName?.description || "",
-                error: nodeData.data.parameters?.variableName?.error || "",
+        let newNode = {} as NodeState;
+
+        if (nodeData.data.label !== "Generate Image") {
+          newNode = {
+            ...nodeData,
+            data: {
+              ...nodeData.data,
+              parameters: {
+                ...nodeData.data.parameters,
+                variableName: {
+                  ...(nodeData.data.parameters?.variableName ?? {}),
+                  value: toolsNodes?.length
+                    ? `${nodeData.data.parameters?.variableName?.value}${toolsNodes.length}`
+                    : nodeData.data.parameters?.variableName?.value,
+                  label: nodeData.data.parameters?.variableName?.label || "",
+                  type: nodeData.data.parameters?.variableName?.type || "",
+                  required:
+                    nodeData.data.parameters?.variableName?.required ?? true,
+                  placeholder:
+                    nodeData.data.parameters?.variableName?.placeholder || "",
+                  options:
+                    nodeData.data.parameters?.variableName?.options || [],
+                  description:
+                    nodeData.data.parameters?.variableName?.description || "",
+                  error: nodeData.data.parameters?.variableName?.error || "",
+                },
               },
             },
-          },
-          id: nodeId,
-          position,
-        };
+            id: nodeId,
+            position,
+          };
+        }
+
+        if (nodeData.data.label === "Generate Image") {
+          newNode = {
+            ...nodeData,
+            data: {
+              ...nodeData.data,
+              parameters: {
+                ...nodeData.data.parameters,
+                model: {
+                  ...(nodeData.data.parameters?.model ?? {}),
+                  value: "dall-e-3",
+                },
+                numberOfImages: {
+                  ...(nodeData.data.parameters?.numberOfImages ?? {}),
+                  value: 1,
+                  disabled: true,
+                },
+                quality: {
+                  ...(nodeData.data.parameters?.quality ?? {}),
+                  value: "hd",
+                },
+                prompt: {
+                  ...(nodeData.data.parameters?.prompt ?? {}),
+                  maxLength: 4000,
+                },
+                style: {
+                  ...(nodeData.data.parameters?.style ?? {}),
+                  value: "vivid",
+                },
+                size: {
+                  ...(nodeData.data.parameters?.size ?? {}),
+                  options: [
+                    { label: "1024x1024", value: "1024x1024" },
+                    { label: "1792x1024", value: "1792x1024" },
+                    { label: "1024x1792", value: "1024x1792" },
+                  ],
+                },
+                variableName: {
+                  ...(nodeData.data.parameters?.variableName ?? {}),
+                  value: toolsNodes?.length
+                    ? `${convertToUnderscore(nodeData.data.label)}${toolsNodes.length}`
+                    : convertToUnderscore(nodeData.data.label),
+                  label: nodeData.data.parameters?.variableName?.label || "",
+                  type: nodeData.data.parameters?.variableName?.type || "",
+                  required:
+                    nodeData.data.parameters?.variableName?.required ?? true,
+                  placeholder:
+                    nodeData.data.parameters?.variableName?.placeholder || "",
+                  options:
+                    nodeData.data.parameters?.variableName?.options || [],
+                  description:
+                    nodeData.data.parameters?.variableName?.description || "",
+                  error: nodeData.data.parameters?.variableName?.error || "",
+                },
+              },
+            },
+            id: nodeId,
+            position,
+          };
+        }
 
         //@ts-ignore
         setNodes(nds => nds.concat(newNode));
         dispatch(addNode(newNode));
       } catch (error: any) {
-        console.log('--errorWhileAddingNode--', error?.message);
+        console.log("--errorWhileAddingNode--", error?.message);
       }
     },
     [screenToFlowPosition, nodeData]
@@ -346,6 +406,40 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
     [edges, screenToFlowPosition]
   );
 
+  const onNodesDelete = useCallback(
+    (deleted: any) => {
+      setEdges((edges: any) => {
+        const updatedEdges = edges.filter(
+          (edge: any) =>
+            edge?.source !== deleted[0]?.id && edge?.target !== deleted[0]?.id
+        );
+
+        return updatedEdges;
+      });
+      dispatch(removeNodeById(deleted[0]?.id));
+      dispatch(deleteNodeById(deleted[0]?.id));
+    },
+    [nodes, edges, reduxNode]
+  );
+
+  const onDragNode = useCallback(
+    (updatedNodes: any) => {
+      const bodyPayload = {
+        name: workFlowData?.name,
+        description: workFlowData?.description || "",
+        edges: edges,
+        nodes: prepareNodesPayload(updatedNodes, workFlowData._id || ""),
+      };
+      dispatch(
+        updateWorkFlowById({
+          id: workflow_id || "",
+          data: bodyPayload,
+        })
+      );
+    },
+    [nodes, edges]
+  );
+
   return (
     <div className="reactflow-wrapper h-[100vh] w-full" ref={reactFlowWrapper}>
       <TopRightPanel2nd
@@ -373,7 +467,17 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
             onDrop={onDrop}
             onDragOver={onDragOver}
             connectionLineComponent={ConnectionLine}
-            defaultViewport={{ zoom: 0.9, x: 0, y: 0 }}
+            onNodesDelete={onNodesDelete}
+            onNodeDragStop={(event, node: any) => {
+              const updatedNodes: any = nodes.map((n: any) =>
+                n.id === node.id ? { ...n, position: node.position } : n
+              );
+              onDragNode(updatedNodes);
+            }}
+            nodesDraggable={isLockCanvas}
+            nodesConnectable={isLockCanvas}
+            elementsSelectable={isLockCanvas}
+            defaultViewport={{ zoom: 0.9, x: 350, y: 100 }}
           >
             <Background
               variant={BackgroundVariant.Lines}
@@ -384,7 +488,7 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
               }}
             />
             <MiniMap />
-            <Controls />
+            {/* <Controls /> */}
             {/* <Panel
                     position="top-left"
                     className="border-2 border-white rounded-lg p-1.5 bg-[#F8F8FA] left-[40px] cursor-pointer"
@@ -425,7 +529,10 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
                 </Panel> */}
 
             <Panel position="bottom-center" style={{ bottom: "20px" }}>
-              <BottomCenterPanel />
+              <BottomCenterPanel
+                onLockIconClick={() => setIsLockCanvas(!isLockCanvas)}
+                isLockCanvas={isLockCanvas}
+              />
             </Panel>
           </ReactFlow>
         </div>
@@ -447,9 +554,7 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
       {isAddNodeLoading && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
           <div className="relative w-16 h-16">
-            {/* Outer ring */}
             <div className="absolute inset-0 border-4 border-t-4 border-gray-300 rounded-full"></div>
-            {/* Inner ring with fill color */}
             <div className="absolute inset-0 border-4 border-t-4 border-t-[#2da771] border-transparent rounded-full animate-spin"></div>
           </div>
         </div>

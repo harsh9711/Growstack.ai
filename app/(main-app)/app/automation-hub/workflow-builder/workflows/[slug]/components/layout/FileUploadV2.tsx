@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import instance, { CustomAxiosInstance } from "@/config/axios.config";
+import instance, { automation, CustomAxiosInstance } from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import Spinner from "@/components/Spinner";
 import { FaFileUpload } from "react-icons/fa";
@@ -51,6 +51,7 @@ const FileUpload: React.FC<any> = ({
   acceptedFileTypes,
   isUploadedFileUrl,
 }) => {
+  const allowedFiles = typeof acceptedFileTypes === "string" ? acceptedFileTypes : acceptedFileTypes?.join(",")
   const [loading, setLoading] = useState(false);
   const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -64,7 +65,7 @@ const FileUpload: React.FC<any> = ({
       setError(null);
       const fileExtension = `${acceptedFiles[0].name.split(".").pop()?.toLowerCase()}`;
 
-    const acceptedTypesArray = acceptedFileTypes
+    const acceptedTypesArray = allowedFiles
       .split(",")
       .map((type: any) => type.trim().toLowerCase());
 
@@ -91,7 +92,7 @@ const FileUpload: React.FC<any> = ({
       //   }
       // );
       const response = await instance.post(
-        `/workflow/upload`,
+        `${automation}/workflow/upload`,
         formData,
         {
           headers: {
@@ -101,7 +102,7 @@ const FileUpload: React.FC<any> = ({
       );
       const fileUrl = response?.data?.getS3URL;
       setUploadedFileUrl(fileUrl);
-      onFileUploaded(fileUrl, fileExtension);
+      onFileUploaded(fileUrl);
     } catch (error) {
       console.error("Error uploading file:", error);
     } finally {
@@ -117,7 +118,7 @@ const FileUpload: React.FC<any> = ({
   const onClearImage = () => {
     setUploadedFileUrl(null);
     setError(null);
-    onFileUploaded("", "");
+    onFileUploaded("");
     setLoading(false);
   };
 

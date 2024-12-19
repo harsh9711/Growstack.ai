@@ -65,11 +65,11 @@ const TopLeftPanel2nd = ({ setNodes }: any): React.ReactElement => {
       {/* Subcategories*/}
 
       {selectedCategory && selectedCategory === "llms" && (
-        <LllmsCategory setNodes={setNodes} />
+        <LllmsCategory setNodes={setNodes} setSelectedCategory={setSelectedCategory} />
       )}
 
       {selectedCategory && selectedCategory === "general" && (
-        <GeneralCategory setNodes={setNodes} />
+        <GeneralCategory setNodes={setNodes} setSelectedCategory={setSelectedCategory} />
       )}
 
       {/* {selectedCategory && selectedCategory === "ai-templates" && (
@@ -81,10 +81,10 @@ const TopLeftPanel2nd = ({ setNodes }: any): React.ReactElement => {
       )} */}
 
       {selectedCategory && selectedCategory === "integrations" && (
-        <IntegrationCategory setNodes={setNodes} />
+        <IntegrationCategory setNodes={setNodes} setSelectedCategory={setSelectedCategory} />
       )}
       {selectedCategory && selectedCategory === "tools" && (
-        <ToolsCategory setNodes={setNodes} />
+        <ToolsCategory setNodes={setNodes} setSelectedCategory={setSelectedCategory} />
       )}
     </div>
 

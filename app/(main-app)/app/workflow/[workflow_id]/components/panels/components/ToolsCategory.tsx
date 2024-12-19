@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import {
   addNode,
@@ -12,13 +12,29 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { convertNodeData } from "@/utils/dataResolver";
 import { calculateNextNodePosition, convertToUnderscore } from "@/utils/helper";
 import { unwrapResult } from "@reduxjs/toolkit";
+import {
+  getAvatars,
+  getVoices,
+} from "@/lib/features/workflow/avatarVoice.slice";
 
-const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
+interface NodeData {
+  description: any;
+  name: string;
+  logoUrl?: string;
+  node: NodeState;
+}
+interface GroupedTools {
+  [key: string]: NodeData[];
+}
+
+const ToolsCategory = ({ setNodes, setSelectedCategory}: any): React.ReactElement => {
   const dispatch = useAppDispatch();
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const { avatars, voices } = useAppSelector(state => state.avatarVoice);
   const { nodes } = useAppSelector(state => state.nodes);
   const { masterNode } = useAppSelector(state => state.masterNode);
   const { workFlowData } = useAppSelector(state => state.workflows);
-
 
   if ((masterNode && !masterNode.length) || !masterNode) {
     return <div>Data not found</div>;
@@ -53,50 +69,17 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
     }
   }, [groupedIntegrations, selectedSubCategory]);
 
-  // const handleClick = async (nodeData: NodeState) => {
-  //   try {
-  //     const lastNode = nodes[nodes.length - 1];
-  //     const { nextNodeX, nextNodeY } = calculateNextNodePosition(lastNode);
-  //     const toolsNodes = nodes?.filter(
-  //       nds => nds?.data?.label === nodeData?.data?.label
-  //     );
+  useEffect(() => {
+    if (!avatars || (avatars && avatars.length === 0)) {
+      dispatch(getAvatars());
+    }
 
-  //     const resultAction = await dispatch(
-  //       createNode({
-  //         workflowId: workFlowData._id,
-  //         nodeMasterId: nodeData.id,
-  //         name: nodeData.data?.label,
-  //         type: nodeData?.type,
-  //         description: nodeData.data?.descriptions || "",
-  //         position: { x: nextNodeX, y: nextNodeY },
-  //         parameters: {},
-  //       })
-  //     );
-  //     const result = unwrapResult(resultAction);
+    if (!voices || (voices && voices.length === 0)) {
+      dispatch(getVoices());
+    }
 
-  //     const newNode = {
-  //       ...nodeData,
-  //       data: {
-  //         ...nodeData.data,
-  //         parameters: {
-  //           ...nodeData.data.parameters,
-  //           variableNames: {
-  //             ...nodeData.data.parameters.variableNames,
-  //             value: `${toolsNodes.length ? convertToUnderscore(nodeData.data.label) + toolsNodes.length : convertToUnderscore(nodeData.data.label)}`,
-  //           },
-  //         },
-  //       },
-  //       id: result._id,
-  //       position: { x: nextNodeX, y: nextNodeY },
-  //     };
-
-  //     setNodes((nds: NodeState[]) => nds.concat(newNode));
-  //     dispatch(addNode(newNode));
-  //     console.log("---nodeData----", JSON.stringify(nodeData, null, 2));
-  //   } catch (error) {
-  //     console.error("Error adding node:", error);
-  //   }
-  // };
+    return () => { };
+  }, [nodes]);
 
   const handleClick = async (nodeData: NodeState) => {
     try {
@@ -130,8 +113,8 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
             variableName: {
               ...(nodeData.data.parameters?.variableName ?? {}),
               value: toolsNodes?.length
-                ? `${convertToUnderscore(nodeData.data.label)}${toolsNodes.length}`
-                : convertToUnderscore(nodeData.data.label),
+                ? `${nodeData.data.parameters?.variableName?.value}${toolsNodes.length}`
+                : nodeData.data.parameters?.variableName?.value || "",
               label: nodeData.data.parameters?.variableName?.label || "",
               type: nodeData.data.parameters?.variableName?.type || "",
               required:
@@ -161,6 +144,43 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
     event.dataTransfer.effectAllowed = "move";
   };
 
+  const filterToolsBySearch = (tools: GroupedTools): GroupedTools => {
+    if (!searchQuery) return tools;
+    
+    const filteredTools: GroupedTools = {};
+    
+    Object.keys(tools).forEach((subCategory) => {
+      const filteredItems = tools[subCategory].filter((item: NodeData) => 
+        item.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      
+      if (filteredItems.length > 0) {
+        filteredTools[subCategory] = filteredItems;
+      }
+    });
+    
+    // Update selected subcategory if current selection is no longer available
+    if (Object.keys(filteredTools).length > 0 && !filteredTools[selectedSubCategory]) {
+      setSelectedSubCategory(Object.keys(filteredTools)[0]);
+    }
+    
+    return filteredTools;
+  };
+
+  React.useEffect(() => {
+    const filteredTools = filterToolsBySearch(groupedIntegrations || {});
+    if (
+      Object.keys(filteredTools).length > 0 &&
+      (!selectedSubCategory || !filteredTools[selectedSubCategory])
+    ) {
+      const firstSubCategory = Object.keys(filteredTools)[0];
+      setSelectedSubCategory(firstSubCategory);
+    }
+  }, [groupedIntegrations, selectedSubCategory, searchQuery]); 
+
+  const filteredTools = filterToolsBySearch(groupedIntegrations);
+
+
   return (
     <div className="absolute bg-white w-[470px] h-[500px] top-[120px] rounded-2xl overflow-y-auto backdrop-blur-sm drop-shadow-2xl">
       <div className="bg-white p-5 pt-0">
@@ -181,6 +201,8 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
                 type="text"
                 placeholder="Search"
                 className="bg-[#F7F7F7]"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
           </div>
@@ -189,7 +211,7 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
 
         <div className="main-box">
           <div className="flex flex-wrap flex-row gap-2 mb-4">
-            {Object?.keys(groupedIntegrations).map((subCategory, index) => (
+            {Object.keys(filteredTools).map((subCategory, index) => (
               <div
                 key={index}
                 className={`flex flex-row p-3 rounded-lg items-center cursor-pointer ${selectedSubCategory === subCategory
@@ -226,7 +248,7 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
           </div>
 
           <div className="">
-            {groupedIntegrations[selectedSubCategory]?.map(item => (
+            {filteredTools[selectedSubCategory]?.map((item: NodeData, index) => (
               <div
                 key={item.node.id}
                 className="h-auto w-full bg-transparent mb-2 rounded-lg flex justify-center items-center cursor-pointer border border-[#E5E5E5] p-3"
@@ -237,6 +259,7 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
                 }}
                 onDragEnd={() => {
                   dispatch(removeNode());
+                  setSelectedCategory(false);
                 }}
               >
                 <div className="h-full w-full rounded-lg bg-white flex items-center gap-3">
