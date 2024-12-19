@@ -153,6 +153,38 @@ const OutputDetails = ({
       return <div>Unsupported content type</div>;
     }
   };
+
+  function renderValue(value: any) {
+    if (typeof value === "string") {
+      return value.startsWith("http") ? (
+        <a href={value} target="_blank" rel="noopener noreferrer">
+          {value}
+        </a>
+      ) : (
+        value
+      );
+    } else if (Array.isArray(value)) {
+      return (
+        <ul>
+          {value.map((item, index) => (
+            <li key={index}>{renderValue(item)}</li>
+          ))}
+        </ul>
+      );
+    } else if (typeof value === "object" && value !== null) {
+      return (
+        <div>
+          {Object.entries(value).map(([key, nestedValue]) => (
+            <div key={key} className="ml-4">
+              <strong>{key}:</strong> {renderValue(nestedValue)}
+            </div>
+          ))}
+        </div>
+      );
+    } else {
+      return JSON.stringify(value);
+    }
+  }
   return (
     <>
       <div className="w-full bg-white border-l-4 border-[#FB8491] rounded-lg shadow-md p-4 relative overflow-hidden">
@@ -166,9 +198,8 @@ const OutputDetails = ({
                 item?.status === "approval-pending") && (
                 <div
                   key={index}
-                  className={`border rounded-lg ${
-                    openIndex === index ? "border-blue-400" : "border-gray-200"
-                  }`}
+                  className={`border rounded-lg ${openIndex === index ? "border-blue-400" : "border-gray-200"
+                    }`}
                 >
                   {/* Accordion Header */}
                   <div
@@ -186,7 +217,7 @@ const OutputDetails = ({
                   {/* Accordion Content */}
                   {openIndex === index && (
                     <div className=" border-t border-gray-200">
-                      <div className="p-4 prose prose-sm max-w-none">
+                      <div className="p-4 prose prose-sm max-w-none max-h-[300px] overflow-y-scroll custom-scrollbar">
                         {(() => {
                           if (
                             item?.nodeType === "linkedin" ||
@@ -200,156 +231,160 @@ const OutputDetails = ({
                               </div>
                             );
                           }
-                          if (typeof item?.value === "string") {
-                            // Render string using ReactMarkdown
-                            return (
-                              <ReactMarkdown
-                                remarkPlugins={[remarkGfm, remarkBreaks]}
-                                rehypePlugins={[rehypeRaw]}
-                              >
-                                {formatToMarkdown(item?.value)}
-                              </ReactMarkdown>
-                            );
-                          } else if (Array.isArray(item?.value)) {
-                            if (
-                              item?.value.every(
-                                (val: any) =>
-                                  typeof val === "string" &&
-                                  val.startsWith("https://")
-                              )
-                            ) {
-                              // Render array of URLs
-                              return (
-                                <ul>
-                                  {item?.value.map(
-                                    (url: string, idx: number) => (
-                                      <li key={idx}>
-                                        <a
-                                          href={url}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                          className="text-blue-500 underline"
-                                        >
-                                          {url}
-                                        </a>
-                                      </li>
-                                    )
-                                  )}
-                                </ul>
-                              );
-                            } else if (
-                              item?.value.every(
-                                (val: any) =>
-                                  typeof val === "object" && val !== null
-                              )
-                            ) {
-                              // Render array of objects as key-value pairs
-                              return (
-                                <ul>
-                                  {item?.value.map((obj: any, idx: number) => (
-                                    <li key={idx} className="mb-2">
-                                      {Object.entries(obj).map(
-                                        ([key, value]: any) => (
-                                          <div key={key}>
-                                            <strong>{key}:</strong>{" "}
-                                            {JSON.stringify(value)}
-                                          </div>
-                                        )
-                                      )}
-                                    </li>
-                                  ))}
-                                </ul>
-                              );
-                            } else {
-                              // Fallback for mixed content arrays
-                              return (
-                                <ul>
-                                  {item?.value.map((val: any, idx: number) => (
-                                    <li key={idx}>{JSON.stringify(val)}</li>
-                                  ))}
-                                </ul>
-                              );
-                            }
-                          } else if (
-                            typeof item?.value === "object" &&
-                            item?.value !== null
-                          ) {
-                            // Render single object as key-value pairs
-                            return (
-                              <div>
-                                {item?.value &&
-                                Object?.keys(item?.value)?.length > 0
-                                  ? Object?.entries(item?.value)?.map(
-                                      ([key, value]: any) => (
-                                        <div key={key}>
-                                          <strong>{key}:</strong>{" "}
-                                          {typeof value === "string" ? (
-                                            value.startsWith("http") ? (
-                                              <a
-                                                href={value}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                              >
-                                                {value}
-                                              </a>
-                                            ) : (
-                                              value
-                                            )
-                                          ) : typeof value === "object" ? (
-                                            <div className="ml-4">
-                                              {value &&
-                                              Object?.keys(value)?.length > 0
-                                                ? Object?.entries(value)?.map(
-                                                    ([
-                                                      nestedKey,
-                                                      nestedValue,
-                                                    ]: any) => (
-                                                      <div key={nestedKey}>
-                                                        <strong>
-                                                          {nestedKey}:
-                                                        </strong>{" "}
-                                                        {typeof nestedValue ===
-                                                        "string" ? (
-                                                          nestedValue.startsWith(
-                                                            "http"
-                                                          ) ? (
-                                                            <a
-                                                              href={nestedValue}
-                                                              target="_blank"
-                                                              rel="noopener noreferrer"
-                                                            >
-                                                              {nestedValue}
-                                                            </a>
-                                                          ) : (
-                                                            nestedValue
-                                                          )
-                                                        ) : (
-                                                          JSON.stringify(
-                                                            nestedValue,
-                                                            null,
-                                                            2
-                                                          )
-                                                        )}
-                                                      </div>
-                                                    )
-                                                  )
-                                                : null}
-                                            </div>
-                                          ) : (
-                                            JSON.stringify(value, null, 2)
-                                          )}
-                                        </div>
-                                      )
-                                    )
-                                  : null}
-                              </div>
-                            );
-                          } else {
-                            // Fallback: Display JSON stringified value
-                            return (
-                              <pre>{JSON.stringify(item?.value, null, 2)}</pre>
-                            );
-                          }
+                          // if (typeof item?.value === "string") {
+                          //   // Render string using ReactMarkdown
+                          //   return (
+                          //     <ReactMarkdown
+                          //       remarkPlugins={[remarkGfm, remarkBreaks]}
+                          //       rehypePlugins={[rehypeRaw]}
+                          //     >
+                          //       {formatToMarkdown(item?.value)}
+                          //     </ReactMarkdown>
+                          //   );
+                          // } else if (Array.isArray(item?.value)) {
+                          //   if (
+                          //     item?.value.every(
+                          //       (val: any) =>
+                          //         typeof val === "string" &&
+                          //         val.startsWith("https://")
+                          //     )
+                          //   ) {
+                          //     // Render array of URLs
+                          //     return (
+                          //       <ul>
+                          //         {item?.value.map(
+                          //           (url: string, idx: number) => (
+                          //             <li key={idx}>
+                          //               <a
+                          //                 href={url}
+                          //                 target="_blank"
+                          //                 rel="noopener noreferrer"
+                          //                 className="text-blue-500 underline"
+                          //               >
+                          //                 {url}
+                          //               </a>
+                          //             </li>
+                          //           )
+                          //         )}
+                          //       </ul>
+                          //     );
+                          //   } else if (
+                          //     item?.value.every(
+                          //       (val: any) =>
+                          //         typeof val === "object" && val !== null
+                          //     )
+                          //   ) {
+                          //     // Render array of objects as key-value pairs
+                          //     return (
+                          //       <ul>
+                          //         {item?.value.map((obj: any, idx: number) => (
+                          //           <li key={idx} className="mb-2">
+                          //             {Object.entries(obj).map(
+                          //               ([key, value]: any) => (
+                          //                 <div key={key}>
+                          //                   <strong>{key}:</strong>{" "}
+                          //                   {JSON.stringify(value)}
+                          //                 </div>
+                          //               )
+                          //             )}
+                          //           </li>
+                          //         ))}
+                          //       </ul>
+                          //     );
+                          //   } else {
+                          //     // Fallback for mixed content arrays
+                          //     return (
+                          //       <ul>
+                          //         {item?.value.map((val: any, idx: number) => (
+                          //           <li key={idx}>{JSON.stringify(val)}</li>
+                          //         ))}
+                          //       </ul>
+                          //     );
+                          //   }
+                          // } else if (
+                          //   typeof item?.value === "object" &&
+                          //   item?.value !== null
+                          // ) {
+                          //   // Render single object as key-value pairs
+                          //   return (
+                          //     <div>
+                          //       {item?.value &&
+                          //       Object?.keys(item?.value)?.length > 0
+                          //         ? Object?.entries(item?.value)?.map(
+                          //             ([key, value]: any) => (
+                          //               <div key={key}>
+                          //                 <strong>{key}:</strong>{" "}
+                          //                 {typeof value === "string" ? (
+                          //                   value.startsWith("http") ? (
+                          //                     <a
+                          //                       href={value}
+                          //                       target="_blank"
+                          //                       rel="noopener noreferrer"
+                          //                     >
+                          //                       {value}
+                          //                     </a>
+                          //                   ) : (
+                          //                     value
+                          //                   )
+                          //                 ) : typeof value === "object" ? (
+                          //                   <div className="ml-4">
+                          //                     {value &&
+                          //                     Object?.keys(value)?.length > 0
+                          //                       ? Object?.entries(value)?.map(
+                          //                           ([
+                          //                             nestedKey,
+                          //                             nestedValue,
+                          //                           ]: any) => (
+                          //                             <div key={nestedKey}>
+                          //                               <strong>
+                          //                                 {nestedKey}:
+                          //                               </strong>{" "}
+                          //                               {typeof nestedValue ===
+                          //                               "string" ? (
+                          //                                 nestedValue.startsWith(
+                          //                                   "http"
+                          //                                 ) ? (
+                          //                                   <a
+                          //                                     href={nestedValue}
+                          //                                     target="_blank"
+                          //                                     rel="noopener noreferrer"
+                          //                                   >
+                          //                                     {nestedValue}
+                          //                                   </a>
+                          //                                 ) : (
+                          //                                   nestedValue
+                          //                                 )
+                          //                               ) : (
+                          //                                 JSON.stringify(
+                          //                                   nestedValue,
+                          //                                   null,
+                          //                                   2
+                          //                                 )
+                          //                               )}
+                          //                             </div>
+                          //                           )
+                          //                         )
+                          //                       : null}
+                          //                   </div>
+                          //                 ) : (
+                          //                   JSON.stringify(value, null, 2)
+                          //                 )}
+                          //               </div>
+                          //             )
+                          //           )
+                          //         : null}
+                          //     </div>
+                          //   );
+                          // } else {
+                          //   // Fallback: Display JSON stringified value
+                          //   return (
+                          //     <pre>{JSON.stringify(item?.value, null, 2)}</pre>
+                          //   );
+                          // }
+                          return (
+                            <div>
+                              {item?.value ? renderValue(item.value) : <pre>{JSON.stringify(item, null, 2)}</pre>}
+                            </div>)
                         })()}
                       </div>
                       <hr className="mt-4" />
@@ -366,9 +401,9 @@ const OutputDetails = ({
                             style={
                               isLoading
                                 ? {
-                                    animationDuration: "infinite",
-                                    animationTimingFunction: "linear",
-                                  }
+                                  animationDuration: "infinite",
+                                  animationTimingFunction: "linear",
+                                }
                                 : {}
                             }
                             disabled={
