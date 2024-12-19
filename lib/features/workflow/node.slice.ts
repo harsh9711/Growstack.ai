@@ -1,4 +1,4 @@
-import instance, { CustomAxiosInstance } from "@/config/axios.config";
+import instance, { automation, CustomAxiosInstance } from "@/config/axios.config";
 import {
   NodeDataState,
   NodeState,
@@ -11,7 +11,7 @@ export const createNode = createAsyncThunk(
   "workflow/createNode",
   async (data: any, { rejectWithValue }) => {
     try {
-      const result = await instance.post("/node", data);
+      const result = await instance.post(`${automation}/node`, data);
 
       return result.data;
     } catch (error: any) {
@@ -34,7 +34,7 @@ export const updateNodeById = createAsyncThunk(
       //   data
       // );
 
-      const result = await instance.patch(`/node/${id}`, data);
+      const result = await instance.patch(`${automation}/node/${id}`, data);
       return result.data;
     } catch (error: any) {
       return rejectWithValue(
@@ -52,7 +52,7 @@ export const deleteNodeById = createAsyncThunk(
       //   `node/${id}`
       // );
 
-      const result = await instance.delete(`/node/${id}`);
+      const result = await instance.delete(`${automation}/node/${id}`);
       return result.data;
     } catch (error: any) {
       return rejectWithValue(

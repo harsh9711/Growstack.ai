@@ -63,13 +63,39 @@ const TopRightPanel2nd = ({
 
   const handleSaveWorkFlow = async () => {
     try {
+
+      const isValidNode = validateNodes(nodes);
+      if (typeof isValidNode === "object" && !isValidNode.isValid) {
+        const { isValid, missingParams, node } = isValidNode;
+        missingParams.forEach(param => {
+          const key = node?.data?.parameters
+            ? Object.keys(node.data.parameters).find(
+                k => node.data.parameters?.[k] === param
+              )
+            : undefined;
+          if (key && !param.value) {
+            dispatch(
+              updateNodeParameter({
+                nodeId: node.id,
+                key: key,
+                type: "error",
+                value: "This field is required",
+              })
+            );
+          }
+        });
+        error(
+          "Please fill all the required fields of Node, before saving the Workflow"
+        );
+        return;
+      }
+      
       const bodyPayload = {
         name: workFlowData?.name,
         description: workFlowData?.description || "",
         nodes: prepareNodesPayload(nodes, workFlowData._id || ""),
         edges: edges,
       };
-
       console.log("----bodyPayload---", bodyPayload);
 
       await dispatch(
@@ -88,6 +114,7 @@ const TopRightPanel2nd = ({
 
   const handlePublishWorkFlow = async () => {
     try {
+
       if (nodes.length === 0) {
         setOpenPublishConfirmationModal(false);
         error("Please add at least one node to publish the workflow");

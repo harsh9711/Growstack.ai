@@ -1,9 +1,9 @@
 import React, { memo, useState, useEffect, useCallback } from "react";
 import { Handle, Position, type NodeProps, useReactFlow } from "@xyflow/react";
-import { GeneralJoinerNodeProps } from "./types";
-import DynamicInput from "../DynamicInputs";
-import DeleteConfirmationModal from "../modals/deletemodal/DeleteModal";
+import { GmailNodeProps } from "../types";
+import DynamicInput from "../../DynamicInputs";
 import { extractParameterValues } from "@/utils/dataResolver";
+import { getVariableName, isSpecialType } from "@/utils/helper";
 import {
   deleteNodeById,
   removeNodeById,
@@ -12,46 +12,64 @@ import {
   updateNodeParameter,
 } from "@/lib/features/workflow/node.slice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { VariableNameProps, WorkflowNodeState } from "@/types/workflows";
-import { useSnackbar } from "../snackbar/SnackbarContext";
-import { getVariableName, isSpecialType } from "@/utils/helper";
+import {
+  IntegrationResultProps,
+  VariableNameProps,
+  WorkflowNodeState,
+} from "@/types/workflows";
+import DeleteConfirmationModal from "../../modals/deletemodal/DeleteModal";
+import { useSnackbar } from "../../snackbar/SnackbarContext";
 
-const GeneralJoinerNodes = memo(
+const ApolloNodes = memo(
   ({
     data,
     isConnectable,
     id,
     positionAbsoluteX,
     positionAbsoluteY,
-  }: NodeProps<GeneralJoinerNodeProps>) => {
-    const { setNodes } = useReactFlow();
-    const { setEdges } = useReactFlow();
-    const dispatch = useAppDispatch();
+  }: NodeProps<GmailNodeProps>) => {
+    // const { parameters, nodeMasterId } = data;
+
     const { success } = useSnackbar();
+    const { setNodes, setEdges } = useReactFlow();
+    const dispatch = useAppDispatch();
+    const { workFlowData } = useAppSelector(state => state.workflows);
+    const { nodes, isLoading } = useAppSelector(state => state.nodes);
 
     const node = useAppSelector(state =>
       state.nodes.nodes.find(node => node.id === id)
     );
 
-    const { workFlowData } = useAppSelector(state => state.workflows);
-    const { isLoading, nodes } = useAppSelector(state => state.nodes);
-    const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
     const [isEdit, setIsEdit] = useState(true);
-    const [shake, setShake] = useState(false);
+
+    const [isActionModalShow, setIsActionModalShow] = useState(false);
+
+    const [description, setDescription] = useState(data?.descriptions || "");
+
+    const [connectionLoading, setConnectionLoading] = useState(false);
+    const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
+
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [activeAction, setActiveAction] = useState<string>("");
     const [openDeleteConfirmationModal, setOpenDeleteConfirmationModal] =
       useState(false);
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [isActionModalShow, setIsActionModalShow] = useState(false);
     const [variableNames, setVariableNames] = useState<VariableNameProps[]>([]);
     const [focusedInputKey, setFocusedInputKey] = useState<string | null>(null);
 
+    const [connectedEmail, setConnectedEmail] =
+      useState<IntegrationResultProps>({} as IntegrationResultProps);
+
+    const [dependencies, setDependencies] = useState<
+      { key: string; nodeId: string }[]
+    >([]);
+
+    // ON OUTSIDE CLICK CLOSE ACTION MODAL
     const handleOutsideClick = (e: MouseEvent) => {
       const modal = document.getElementById("node-action-modal");
       if (modal && !modal.contains(e.target as Node)) {
         setIsActionModalShow(false);
       }
     };
-
     useEffect(() => {
       if (isActionModalShow) {
         document.addEventListener("click", handleOutsideClick);
@@ -66,67 +84,8 @@ const GeneralJoinerNodes = memo(
       setIsDropdownOpen(!isDropdownOpen);
     };
 
-    // const handleInputChange = useCallback(
-    //   (key: any, type: any, value: any, dependency?: string) => {
-    //     console.log("key-->", key, "type-->", type, "value-->", value);
-    //     if (!isEdit) {
-    //       setShake(true);
-    //       setTimeout(() => setShake(false), 500);
-    //       return;
-    //     }
-
-    //     console.log("dependencies-->", dependency);
-
-    //     dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
-
-    //     if (!isSpecialType(type)) return;
-
-    //     if (value && value.includes("$")) {
-    //       const index = nodes.findIndex(nds => nds.id === id);
-    //       const variableName = getVariableName(nodes, index);
-    //       console.log("variableName-->", variableName);
-    //       if (dependency) {
-    //         // setDependencies(prevDependencies => {
-    //         //   const newDependency = { key, nodeId: dependency };
-    //         //   const uniqueDependencies = new Set([
-    //         //     ...prevDependencies,
-    //         //     newDependency,
-    //         //   ]);
-    //         //   return Array.from(uniqueDependencies);
-    //         // });
-
-    //         dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
-    //       }
-    //       const regex = /\$(?!\s*$).+/;
-    //       if (regex.test(value)) {
-    //         setVariableNames([]);
-    //       } else {
-    //         setVariableNames(
-    //           variableName.filter(
-    //             (name): name is VariableNameProps => name !== null
-    //           )
-    //         );
-    //       }
-    //     } else {
-    //       // setDependencies(pre => pre.filter(dep => dep.key !== key));
-    //       dispatch(removeNodeDependency({ nodeId: id, key }));
-    //       setVariableNames([]);
-    //     }
-    //   },
-    //   [dispatch, id, nodes, dependencies, variableNames, isEdit]
-    // );
-
     const handleInputChange = useCallback(
-      (key: any, type: any, value: any, dependency: any) => {
-        if (!isEdit) {
-          setShake(true);
-          setTimeout(() => setShake(false), 500);
-          return;
-        }
-
-        console.log("key-->", key, "type-->", type, "value-->", value);
-        console.log("dependencies-->", dependency);
-
+      (key: any, type: any, value: any) => {
         dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
 
         if (!isSpecialType(type)) return;
@@ -156,23 +115,10 @@ const GeneralJoinerNodes = memo(
             )
           );
         } else {
-          // dispatch(removeNodeDependency({ nodeId: id, key }));
-          // setDependencies(pre => pre.filter(dep => dep.key !== key));
           setVariableNames([]);
         }
-        // if (dependency) {
-        //   // dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
-        //   setDependencies(prevDependencies => {
-        //     const newDependency = { key, nodeId: dependency };
-        //     const uniqueDependencies = new Set([
-        //       ...prevDependencies,
-        //       newDependency,
-        //     ]);
-        //     return Array.from(uniqueDependencies);
-        //   });
-        // }
       },
-      [dispatch, id, nodes, variableNames, isEdit, shake]
+      [dispatch, id, nodes, variableNames, isEdit]
     );
 
     const handleNextClick = async () => {
@@ -187,14 +133,11 @@ const GeneralJoinerNodes = memo(
 
       if (allRequiredParamsFilled) {
         const updatedValue = extractParameterValues(node.data.parameters);
-        console.log("updatedValue-->", updatedValue);
-
         try {
           const bodyPayload = {
             workflowId: workFlowData._id,
             nodeMasterId: node.data.nodeMasterId,
             position: { x: positionAbsoluteX, y: positionAbsoluteY },
-            // dependencies: dependencies.map(dps => dps.nodeId),
             dependencies: node.data?.dependencies || [],
             parameters: updatedValue,
           };
@@ -214,8 +157,8 @@ const GeneralJoinerNodes = memo(
         requiredParams.forEach(param => {
           const key = node?.data?.parameters
             ? Object.keys(node.data.parameters).find(
-              k => node.data.parameters?.[k] === param
-            )
+                k => node.data.parameters?.[k] === param
+              )
             : undefined;
           if (key && !param.value) {
             dispatch(
@@ -239,8 +182,7 @@ const GeneralJoinerNodes = memo(
       setNodes(nds => nds.filter(nds => nds.id !== id));
       setEdges((edges: any[]) => {
         const updatedEdges = edges.filter(
-          (edge: any) =>
-            edge?.source !== id && edge?.target !== id
+          (edge: any) => edge?.source !== id && edge?.target !== id
         );
         return updatedEdges;
       });
@@ -262,6 +204,7 @@ const GeneralJoinerNodes = memo(
     const handleCloseDeleteConfirmationModal = () => {
       setOpenDeleteConfirmationModal(false);
     };
+
     const handleOpenDeleteConfirmationModal = () => {
       setOpenDeleteConfirmationModal(true);
       setIsActionModalShow(false);
@@ -277,8 +220,7 @@ const GeneralJoinerNodes = memo(
           <div className="node-top-box relative">
             <div className="node-name-text-description text-center mb-3">
               <h4 className="text-sm font-medium text-[#2DA771]">
-                {" "}
-                {data?.label || ""}
+                {node?.data?.label ?? "Apollo"}
               </h4>
 
               <textarea
@@ -286,6 +228,7 @@ const GeneralJoinerNodes = memo(
                 onInput={handleInput}
                 className="resize-none text-xs text-center font-medium text-[#14171B] bg-transparent border-transparent focus:border-transparent focus:ring-0 focus:outline-none"
                 placeholder="Enter description"
+                rows={1}
                 onChange={e => {
                   dispatch(
                     updateNodeDescription({
@@ -300,21 +243,18 @@ const GeneralJoinerNodes = memo(
             <div className="node-image-action-box text-center relative">
               <div className="node-image">
                 <img
-                  src="/assets/node_icon/node-bg.svg"
+                  src="/assets/node_icon/gmail-node-bg.svg"
                   alt="background icon"
                   className="w-[140px] mx-auto"
                 />
-
-                {data?.icon && (
-                  <img
-                    src={data.icon}
-                    alt={data.label}
-                    className="w-[30px] absolute left-0 right-0 mx-auto top-1/2 transform  -translate-y-1/2"
-                  />
-                )}
+                <img
+                  src="/svgs/apollo.svg"
+                  alt="foreground icon"
+                  className="w-[40px] mx-auto absolute top-[50px] left-0 right-0"
+                />
               </div>
 
-              <div className="node-delete-modal-box absolute left-0 rigt-0 top-[-8px] w-full mx-auto z-10">
+              <div className="node-delete-modal-box absolute left-0 rigt-0 top-[-10px] w-full mx-auto z-10">
                 <div className="action-modal-button">
                   <button
                     className="cursor-pointer"
@@ -352,30 +292,26 @@ const GeneralJoinerNodes = memo(
                 </div>
               </div>
 
-              <div className="node-edge absolute top-1/2 transform -translate-y-1/2 right-[-65px] flex items-center">
-                <div className="h-px border-t-2 border-dashed border-[#2DA771] w-[65px] mr-1">
-                  <Handle
-                    id={`${id}-source`}
-                    type="source"
-                    position={Position.Right}
-                    className="w-5 h-5 bg-white border-2 border-[#2DA771] rounded-full flex items-center justify-center text-[#2DA771] text-lg font-bold transform translate-x-1/2 -translate-y-1/2 p-0 m-0 leading-none"
-                    onConnect={params =>
-                      console.log("handle onConnect", params)
-                    }
-                    isConnectable={isConnectable}
-                  >
-                    +
-                  </Handle>
+              <div className="node-edge absolute top-1/2 transform -translate-y-1/2 right-[-68px] flex items-center">
+                <div className="h-px border-t-2 border-dashed border-[#2DA771] w-[65px] mr-1" />
+                <Handle
+                  id={`${id}-source`}
+                  type="source"
+                  position={Position.Right}
+                  className="w-5 h-5 bg-white border-2 border-[#2DA771] rounded-full flex items-center justify-center text-[#2DA771] text-lg font-bold transform translate-x-1/2 -translate-y-1/2 p-0 m-0 leading-none"
+                  onConnect={params => console.log("handle onConnect", params)}
+                  isConnectable={isConnectable}
+                >
+                  +
+                </Handle>
 
-                  <Handle
-                    type="source"
-                    position={Position.Left}
-                    className="w-[10px] h-[10px] bg-[#2DA771]"
-                    isConnectable={false}
-                  />
-                </div>
+                <Handle
+                  type="source"
+                  position={Position.Left}
+                  className="w-[10px] h-[10px] bg-[#2DA771]"
+                  isConnectable={false}
+                />
               </div>
-
               <Handle
                 id={`${id}-target`}
                 type="target"
@@ -383,7 +319,6 @@ const GeneralJoinerNodes = memo(
                 className="w-[10px] h-[10px] bg-[#2DA771]"
                 isConnectable={false}
               />
-
               <div
                 className="toggle-button-box absolute right-0 left-0 mx-auto bottom-[-10px] z-10 cursor-pointer"
                 onClick={handleDropdownClick}
@@ -400,87 +335,98 @@ const GeneralJoinerNodes = memo(
 
           {isDropdownOpen && (
             <div className="node-inner-wrapper bg-white p-4 border-2 border-[#2DA771] rounded-[20px] w-[400px] absolute left-1/2 transform -translate-x-1/2">
-              <div className="node-text-heading bg-[#FFE6FF] p-4 rounded-[16px] mb-2">
-                {data?.icon && (
+              <div className="heading-button-box rounded-[16px] mb-2 p-4 bg-[#FFE6FF] flex justify-between items-center overflow-hidden">
+                <div className="short-text-heading">
                   <img
-                    src={data.icon}
-                    alt={data.label}
+                    src="/svgs/apollo.svg"
+                    alt="node icon"
                     className="w-[20px] mb-2"
                   />
-                )}
 
-                <h4 className="text-sm font-medium text-[#14171B]">
-                  {data?.label || ""}
-                </h4>
-              </div>
-              <div className="form-box">
-                {node?.data?.parameters &&
-                  Object.entries(node.data.parameters)
-                    .filter(
-                      ([key, param]: any) =>
-                        param.required || showAdvancedOptions
-                    )
-                    .map(([key, param]) => {
-                      return (
-                        <DynamicInput
-                          key={key}
-                          inputKey={key}
-                          param={param}
-                          handleInputChange={handleInputChange}
-                          variableNames={variableNames}
-                          focusedInputKey={focusedInputKey}
-                          setFocusedInputKey={setFocusedInputKey}
-                        />
-                      );
-                    })}
-                <div className="advance-option-button-box mb-3">
-                  <button
-                    onClick={handleToggleAdvancedOptions}
-                    className="w-full text-center bg-transparent border-0 underline text-[12px] text-[#2DA771]"
-                  >
-                    {showAdvancedOptions
-                      ? "Hide Advanced Options"
-                      : "Show Advanced Options"}
-                  </button>
+                  <h4 className="text-sm font-medium text-[#14171B]">
+                    {node?.data?.label ?? "Apollo"}
+                  </h4>
                 </div>
+              </div>
 
-                {node?.data?.parameters?.variableName?.value && (
-                  <div className="text-box mb-5">
-                    <h4 className="text-[#14171B] flex items-center gap-2 font-medium text-sm">
-                      Variable name:{" "}
-                      <span className="bg-[#FFE6FF] text-[#14171B] text-[12px] rounded-[20px] font-medium pt-3 pb-3 pr-4 pl-4">
-                        {node.data.parameters.variableName.value}
-                      </span>
-                    </h4>
-                  </div>
-                )}
+              <div className={`node-content-wrapper relative `}>
+                <div className="action-box">
+                  <>
+                    <h3 className="text-[16px] font-medium text-[#14171B] mb-4">
+                      Actions
+                    </h3>
+                  </>
+                  <>
+                    {node?.data?.parameters &&
+                      Object.entries(node.data.parameters)
+                        .filter(([key]: any) => {
+                          // Always show keywords and variableName
+                          if (
+                            key === "keywords" ||
+                            key === "variableName" ||
+                            key === "searchCriteria"
+                          )
+                            return true;
 
-                {isEdit ? (
-                  <div className="submit-button">
-                    <button
-                      onClick={handleNextClick}
-                      className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
-                    >
-                      {isLoading ? (
-                        <div className="flex justify-center items-center">
-                          <div className="loader ease-linear rounded-full border-4 border-gray-200 border-t-4 border-t-[#2DA771] h-6 w-6" />
-                        </div>
-                      ) : (
-                        "Save"
-                      )}
-                    </button>
-                  </div>
-                ) : (
-                  <div className="submit-button">
-                    <button
-                      onClick={handleEditClick}
-                      // className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
-                      className={`bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px] ${shake ? "shake" : ""}`}
-                    >
-                      Edit
-                    </button>
-                  </div>
-                )}
+                          // Check if searchCriteria exists and includes the current key
+                          const searchCriteria =
+                            node.data.parameters?.searchCriteria?.value || [];
+                          return searchCriteria.includes(key);
+                        })
+                        .map(([key, param]) => {
+                          return (
+                            <DynamicInput
+                              key={key}
+                              inputKey={key}
+                              param={param}
+                              handleInputChange={
+                                isEdit ? handleInputChange : () => {}
+                              }
+                              variableNames={variableNames}
+                              focusedInputKey={focusedInputKey}
+                              setFocusedInputKey={setFocusedInputKey}
+                            />
+                          );
+                        })}
+
+                    <div className="advance-option-button-box mb-3">
+                      <button
+                        onClick={handleToggleAdvancedOptions}
+                        className="w-full text-center bg-transparent border-0 underline text-[12px] text-[#2DA771]"
+                      >
+                        {showAdvancedOptions
+                          ? "Hide Advanced Options"
+                          : "Show Advanced Options"}
+                      </button>
+                    </div>
+
+                    {isEdit ? (
+                      <div className="submit-button">
+                        <button
+                          onClick={handleNextClick}
+                          className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
+                        >
+                          {isLoading ? (
+                            <div className="flex justify-center items-center">
+                              <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
+                            </div>
+                          ) : (
+                            "Save"
+                          )}
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="submit-button">
+                        <button
+                          onClick={handleEditClick}
+                          className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
+                        >
+                          Edit
+                        </button>
+                      </div>
+                    )}
+                  </>
+                </div>
               </div>
             </div>
           )}
@@ -498,4 +444,4 @@ const GeneralJoinerNodes = memo(
   }
 );
 
-export default GeneralJoinerNodes;
+export default ApolloNodes;

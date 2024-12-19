@@ -1,6 +1,6 @@
 "use client";
 
-import instance, { CustomAxiosInstance } from "@/config/axios.config";
+import instance, { automation, CustomAxiosInstance } from "@/config/axios.config";
 import Image from "next/image";
 import "aos/dist/aos.css";
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
@@ -71,9 +71,9 @@ export default function Dashboard() {
   const getPreBuiltTemplates = async () => {
     try {
       setLoading(true);
-      // const response = await axios.get(`http://localhost:5000/workflow`);
+      // const response = await axios.get(`http://localhost:8081/workflow?isPrebuilt=true&page=${page}&limit=20`);
       const response = await instance.get(
-        `/workflow?isPrebuilt=true&page=${page}&limit=20`
+        `/${automation}/workflow?isPrebuilt=true&page=${page}&limit=20`
       );
       // setPreBuiltTemplates([]);
       // const response = await CustomAxiosInstance().get(
@@ -102,7 +102,7 @@ export default function Dashboard() {
   const getUserSavedWorkflows = async (page: number = 1) => {
     try {
       setLoading(true);
-      const response = await instance.get(`/workflow?page=${page}&limit=20`);
+      const response = await instance.get(`/${automation}/workflow?page=${page}&limit=20`);
       if (response.data.length === 0) {
         setHasMore(false);
       } else {
@@ -200,7 +200,7 @@ export default function Dashboard() {
         //   `http://localhost:5000/workflow/search?keyword=${query}`
         // );
         const response = await instance.get(
-          `/workflow/search?keyword=${queryParams}`
+          `/${automation}/workflow/search?keyword=${queryParams}`
         );
 
         setPreBuiltTemplates(response.data); // Update results with API response
@@ -250,8 +250,8 @@ export default function Dashboard() {
               <div className="pb-3">
                 <button
                   className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 w-[280px]  ${activeTab === "newWorkflows"
-                      ? "bg-[#2DA771] text-white"
-                      : "text-black"
+                    ? "bg-[#2DA771] text-white"
+                    : "text-black"
                     }`}
                   onClick={handleCreateWorkflow}
                 >
@@ -265,8 +265,8 @@ export default function Dashboard() {
               <div className="pb-3">
                 <button
                   className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 w-[280px] ${activeTab === "templates"
-                      ? "bg-[#2DA771] text-white"
-                      : "text-black"
+                    ? "bg-[#2DA771] text-white"
+                    : "text-black"
                     }`}
                   onClick={() => {
                     setActiveTab("templates");
@@ -285,8 +285,8 @@ export default function Dashboard() {
               <div className="pb-3">
                 <button
                   className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 w-[280px] ${activeTab === "workflows"
-                      ? "bg-[#2DA771] text-white"
-                      : "text-black"
+                    ? "bg-[#2DA771] text-white"
+                    : "text-black"
                     }`}
                   onClick={() => {
                     setActiveTab("workflows");
@@ -416,6 +416,8 @@ const Card: React.FC<CardProps> = ({
   }>({ isOpen: false, type: "" });
   const [modalText, setModalText] = useState("");
   const [modalMessage, setModalMessage] = useState("");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
 
   useEffect(() => {
     Aos.init({ duration: 1000 });
@@ -436,7 +438,7 @@ const Card: React.FC<CardProps> = ({
       //   `http://localhost:5000/workflow/${workflow_id}/duplicate`
       // );
       const response = await instance.post(
-        `/workflow/${workflow_id}/duplicate`
+        `/${automation}/workflow/${workflow_id}/duplicate`
       );
       setIsModalOpen({ isOpen: false, type: "duplicate" });
       localStorage.removeItem("workflowActiveTab");
@@ -482,7 +484,7 @@ const Card: React.FC<CardProps> = ({
       // const response = await axios.delete(
       //   `/workflow/${workflow_id}`
       // );
-      const response = await instance.delete(`/workflow/${workflow_id}`);
+      const response = await instance.delete(`/${automation}/workflow/${workflow_id}`);
       setPreBuiltTemplates(prevItems =>
         prevItems.filter(item => item._id !== workflow_id)
       );
@@ -505,13 +507,17 @@ const Card: React.FC<CardProps> = ({
     setLoading(true);
     try {
       const response = await instance.patch(
-        `/workflow/${workflow_id}/status`,
+        `/${automation}/workflow/${workflow_id}/status`,
         {
           status: "unpublished",
         }
       );
       setPreBuiltTemplates(prevItems =>
-        prevItems.map(item => ({ ...item, status: "unpublished" }))
+        prevItems.map(item =>
+          item._id === workflow_id
+            ? { ...item, status: "unpublished" }
+            : item
+        )
       );
     } catch (error: any) {
       if (error?.response) {
@@ -524,7 +530,25 @@ const Card: React.FC<CardProps> = ({
       console.error("Error unpublish workflow:", error);
     } finally {
       setLoading(false);
+      setIsMenuOpen(false); 
     }
+  };
+
+  const handleDoubleClick = () => {
+    if (activeTab !== "templates") {
+      if (status === "published") {
+        handleRunClick()
+      }
+      else if (status === "draft") {
+        handleEditClick()
+        localStorage.removeItem("workflowActiveTab");
+      }
+    }
+  }
+
+  const toggleMenu = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsMenuOpen(prev => !prev); 
   };
 
   return (
@@ -532,6 +556,7 @@ const Card: React.FC<CardProps> = ({
       <div
         className="relative p-5 bg-white rounded-3xl border border-[#E8E8E8] hover:shadow-xl hover:shadow-gray-200/60 transition-all duration-300 cursor-pointer space-y-4 min-h-[315px]"
         data-aos="fade-up"
+        onDoubleClick={handleDoubleClick}
       >
         <div className="relative z-10" data-aos="zoom-in">
           <Image
@@ -546,101 +571,104 @@ const Card: React.FC<CardProps> = ({
 
           <Menu as="div" className="absolute top-0 right-0 !z-[999]">
             <MenuButton
-              onClick={e => e.stopPropagation()}
+              // onClick={e => e.stopPropagation()}
+              onClick={toggleMenu}
               className=" text-gray-500 hover:text-gray-700"
             >
               <BsThreeDotsVertical className="w-6 h-6" />
             </MenuButton>
-            <MenuItems className="absolute right-0 mt-2 w-[157px] bg-white border border-gray-200 rounded-xl shadow-lg">
-              {activeTab !== "templates" && (
-                <>
-                  <MenuItem>
-                    <button
-                      className="px-5 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2 w-full rounded-xl"
-                      onClick={e => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        handleEditClick();
-                        localStorage.removeItem("workflowActiveTab");
-                      }}
-                    >
-                      <Edit size={16} color="#9e9e9e" />
-                      Edit
-                    </button>
-                  </MenuItem>
-                  {status === "published" &&
+            {isMenuOpen &&
+              <MenuItems className="absolute right-0 mt-2 w-[157px] bg-white border border-gray-200 rounded-xl shadow-lg">
+                {activeTab !== "templates" && (
+                  <>
                     <MenuItem>
                       <button
                         className="px-5 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2 w-full rounded-xl"
                         onClick={e => {
                           e.preventDefault();
                           e.stopPropagation();
-                          handleRunClick();
+                          handleEditClick();
+                          localStorage.removeItem("workflowActiveTab");
                         }}
                       >
-                        <Play size={16} color="#9e9e9e" />
-                        Run
+                        <Edit size={16} color="#9e9e9e" />
+                        Edit
                       </button>
-                    </MenuItem>}
-                  <MenuItem>
-                    <button
-                      className="px-5 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2 w-full rounded-xl"
-                      onClick={e => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        onHandleDeleteClick();
-                      }}
-                    >
-                      <Trash2 size={16} color="#9e9e9e" />
-                      Delete
-                    </button>
-                  </MenuItem>
-                  <MenuItem>
-                    <button
-                      className="px-5 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2 w-full rounded-xl"
-                      onClick={e => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        handleDuplicateClick(e);
-                      }}
-                    >
-                      <Copy size={16} color="#9e9e9e" />
-                      Duplicate
-                    </button>
-                  </MenuItem>
-                  <MenuItem>
-                    <button
-                      className="px-5 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2 w-full rounded-xl"
-                      onClick={e => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        handleUnpublishWorkflow();
-                      }}
-                    >
-                      <MessageSquareOff size={16} color="#9e9e9e" />
-                      Unpublish
-                    </button>
-                  </MenuItem>{" "}
-                </>
-              )}
-              {activeTab === "templates" && (
-                <>
-                  <MenuItem>
-                    <button
-                      className="px-5 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2 w-full rounded-xl"
-                      onClick={e => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        handleDuplicateClick(e);
-                      }}
-                    >
-                      <Copy size={16} color="#9e9e9e" />
-                      Duplicate
-                    </button>
-                  </MenuItem>
-                </>
-              )}
-            </MenuItems>
+                    </MenuItem>
+                    {status === "published" &&
+                      <MenuItem>
+                        <button
+                          className="px-5 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2 w-full rounded-xl"
+                          onClick={e => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleRunClick();
+                          }}
+                        >
+                          <Play size={16} color="#9e9e9e" />
+                          Run
+                        </button>
+                      </MenuItem>}
+                    <MenuItem>
+                      <button
+                        className="px-5 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2 w-full rounded-xl"
+                        onClick={e => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          onHandleDeleteClick();
+                        }}
+                      >
+                        <Trash2 size={16} color="#9e9e9e" />
+                        Delete
+                      </button>
+                    </MenuItem>
+                    <MenuItem>
+                      <button
+                        className="px-5 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2 w-full rounded-xl"
+                        onClick={e => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleDuplicateClick(e);
+                        }}
+                      >
+                        <Copy size={16} color="#9e9e9e" />
+                        Duplicate
+                      </button>
+                    </MenuItem>
+                    <MenuItem>
+                      <button
+                        className="px-5 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2 w-full rounded-xl"
+                        onClick={e => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleUnpublishWorkflow();
+                        }}
+                      >
+                        <MessageSquareOff size={16} color="#9e9e9e" />
+                        Unpublish
+                      </button>
+                    </MenuItem>{" "}
+                  </>
+                )}
+                {activeTab === "templates" && (
+                  <>
+                    <MenuItem>
+                      <button
+                        className="px-5 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2 w-full rounded-xl"
+                        onClick={e => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleDuplicateClick(e);
+                        }}
+                      >
+                        <Copy size={16} color="#9e9e9e" />
+                        Duplicate
+                      </button>
+                    </MenuItem>
+                  </>
+                )}
+              </MenuItems>
+            }
           </Menu>
         </div>
         <h3
@@ -653,7 +681,6 @@ const Card: React.FC<CardProps> = ({
         {activeTab !== "templates" && (
           <p
             className={`!mt-3 p-2 rounded-lg capitalize w-fit leading-relaxed ${status === "draft" ? "text-orange-500 bg-orange-200" : status === "published" ? "text-green-600 bg-green-200" : "text-primary-black bg-gray-200"}`}
-            data-aos="fade-right"
           >
             {status}
           </p>

@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Tooltip from "../tooltip/Tooltip";
 import { DynamicInputProps } from "@/types/workflows";
-import { useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { getAvatars } from "@/lib/features/workflow/avatarVoice.slice";
 
 const SmallCardFiled: React.FC<DynamicInputProps> = ({
   param,
@@ -10,9 +11,15 @@ const SmallCardFiled: React.FC<DynamicInputProps> = ({
 }) => {
   const { avatars } = useAppSelector(state => state.avatarVoice);
 
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getAvatars());
+  }, [dispatch]);
+
   return (
     <div className="input-box mt-3 mb-3">
-      <div className="label-box flex gap-2 items-center mb-1">
+      <div className="label-box flex gap-2 items-center mb-1 ">
         <label className="font-medium text-[#14171B] text-[12px]">
           {param.label}
           <span>
