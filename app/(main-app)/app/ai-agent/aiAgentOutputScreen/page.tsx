@@ -5,6 +5,7 @@ import axios from "axios";
 import KeywordInsights from "../agentScreen/textOutput";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { z } from "zod";
+import { API_URL } from "@/lib/api";
 const uploadDetails = () => {
   interface AgentDetails {
     name: string;
@@ -60,7 +61,7 @@ const uploadDetails = () => {
 
   async function getAgentById(agentId: string): Promise<AgentDetails | null> {
     try {
-      const response = await axios.get(`http://localhost:8087/agents/api/v1/${agentId}`, {
+      const response = await axios.get(`${API_URL}/agents/api/v1/${agentId}`, {
         headers: {
           'Content-Type': 'application/json',
 
@@ -184,7 +185,7 @@ const uploadDetails = () => {
     };
     try {
       const response = await axios.post(
-        `http://localhost:8087/agents/api/v1/run/${agent}`,
+        `${API_URL}/agents/api/v1/run/${agent}`,
         bodyData,
         {
           headers: {
