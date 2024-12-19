@@ -10,6 +10,7 @@ import {
   ProductAiIcon,
   ShapeIcon,
   TextToVideoIcon,
+  AgentNavigationIcon
 } from "@/components/svgs";
 import { ALL_ROUTES } from "@/utils/constant";
 
@@ -68,6 +69,11 @@ let navLinks: NavLink[] = [
         icon: <ShapeIcon />,
         name: "AI workflow builder",
         href: ALL_ROUTES.WORKFLOW_DASHBOARD,
+      },
+      {
+        icon:<AgentNavigationIcon width={24} height={24} />,
+        name: "AI agent",
+        href: ALL_ROUTES.AI_AGENT,
       },
     ],
     title: "Automation Hub",

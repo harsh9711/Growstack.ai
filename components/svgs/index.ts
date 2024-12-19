@@ -137,3 +137,13 @@ export { default as Columns } from "@/public/columns.svg";
 export { default as TwitterIcon } from "@/public/TwitterIcon.svg";
 export { default as UserCircleIcon } from "@/public/UserCircleIcon.svg";
 export { default as CloseIcon } from "@/public/svgs/closeicon.svg";
+export { default as ChevroRight } from "@/public/aiAgent/chevron-right.svg";
+export { default as GptIcon } from "@/public/aiAgent/gptIcon.svg";
+export { default as PersonIcon } from "@/public/aiAgent/personIcon.svg";
+export { default as Plus } from "@/public/aiAgent/plus.svg";
+export { default as AgentIcon } from "@/public/aiAgent/agentIcon.svg";
+export { default as AgentSideImage } from "@/public/aiAgent/agentSideImage.svg";
+export { default as AgentNavigationIcon } from "@/public/aiAgent/agentNavigationIcon.svg";
+export { default as AiAgentIcon } from "@/public/aiAgent/AIAgentsIcon.svg";
+export { default as MyAIAgents } from "@/public/aiAgent/MyAIAgents.svg";
+
