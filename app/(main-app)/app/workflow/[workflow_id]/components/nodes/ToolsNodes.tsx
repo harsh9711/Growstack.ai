@@ -479,7 +479,7 @@ const ToolsNodes = memo(
                         />
                       );
                     })}
-                <div className="advance-option-button-box mb-3">
+                {/* <div className="advance-option-button-box mb-3">
                   <button
                     onClick={handleToggleAdvancedOptions}
                     className="w-full text-center bg-transparent border-0 underline text-[12px] text-[#2DA771]"
@@ -488,7 +488,20 @@ const ToolsNodes = memo(
                       ? "Hide Advanced Options"
                       : "Show Advanced Options"}
                   </button>
-                </div>
+                </div> */}
+                {node?.data?.parameters && 
+                  Object.values(node.data.parameters).some(param => !param.required) && (
+                    <div className="advance-option-button-box mb-3">
+                      <button
+                        onClick={handleToggleAdvancedOptions}
+                        className="w-full text-center bg-transparent border-0 underline text-[12px] text-[#2DA771]"
+                      >
+                        {showAdvancedOptions
+                          ? "Hide Advanced Options"
+                          : "Show Advanced Options"}
+                      </button>
+                    </div>
+                  )}
 
                 {isEdit ? (
                   <div className="submit-button">
