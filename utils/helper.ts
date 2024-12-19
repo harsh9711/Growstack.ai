@@ -127,11 +127,13 @@ export const prepareNodesPayload = (
       type: node.type,
     };
 
+
     if (node.data?.subNodes && node.data.subNodes?.length > 0) {
       const filteredSubNodes = node.data.subNodes
         .map(subNode => ({
           nodeMasterId: subNode.nodeMasterId,
           parameters: extractParameterValues(subNode.parameters),
+          name: subNode?.name ?? "form-node"
         }))
         .filter(subNode =>
           Object.values(subNode.parameters).some((param: any) => {
@@ -192,6 +194,11 @@ export const isValidEdges = (
 
 export const validateNodes = (nodes: NodeState[]) => {
   for (const node of nodes) {
+
+    if (node.type === 'form') {
+      continue;
+    }
+
     const requiredParams = Object.entries(node.data.parameters)
       .filter(([key, param]) => key !== "nextParameter" && param.required)
       .map(([key, param]) => param);

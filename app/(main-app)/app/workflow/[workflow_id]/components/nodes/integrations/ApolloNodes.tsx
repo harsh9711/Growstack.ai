@@ -389,7 +389,7 @@ const ApolloNodes = memo(
                           );
                         })}
 
-                    <div className="advance-option-button-box mb-3">
+                    {/* <div className="advance-option-button-box mb-3">
                       <button
                         onClick={handleToggleAdvancedOptions}
                         className="w-full text-center bg-transparent border-0 underline text-[12px] text-[#2DA771]"
@@ -398,7 +398,7 @@ const ApolloNodes = memo(
                           ? "Hide Advanced Options"
                           : "Show Advanced Options"}
                       </button>
-                    </div>
+                    </div> */}
 
                     {isEdit ? (
                       <div className="submit-button">

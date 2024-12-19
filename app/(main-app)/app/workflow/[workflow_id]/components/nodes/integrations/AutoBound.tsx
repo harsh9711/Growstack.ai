@@ -155,8 +155,8 @@ const AutoBoundNode = memo(
         requiredParams.forEach(param => {
           const key = node?.data?.parameters
             ? Object.keys(node.data.parameters).find(
-                k => node.data.parameters?.[k] === param
-              )
+              k => node.data.parameters?.[k] === param
+            )
             : undefined;
           if (key && !param.value) {
             dispatch(
@@ -218,7 +218,7 @@ const AutoBoundNode = memo(
           <div className="node-top-box relative">
             <div className="node-name-text-description text-center mb-3">
               <h4 className="text-sm font-medium text-[#2DA771]">
-                {node?.data?.label ?? "Apollo"}
+                {node?.data?.label ?? "Autobound"}
               </h4>
 
               <textarea
@@ -246,7 +246,7 @@ const AutoBoundNode = memo(
                   className="w-[140px] mx-auto"
                 />
                 <img
-                  src="/svgs/apollo.svg"
+                  src="/svgs/mail.svg"
                   alt="foreground icon"
                   className="w-[40px] mx-auto absolute top-[50px] left-0 right-0"
                 />
@@ -336,13 +336,13 @@ const AutoBoundNode = memo(
               <div className="heading-button-box rounded-[16px] mb-2 p-4 bg-[#FFE6FF] flex justify-between items-center overflow-hidden">
                 <div className="short-text-heading">
                   <img
-                    src="/svgs/apollo.svg"
+                    src="/svgs/mail.svg"
                     alt="node icon"
                     className="w-[20px] mb-2"
                   />
 
                   <h4 className="text-sm font-medium text-[#14171B]">
-                    {node?.data?.label ?? "Apollo"}
+                    {node?.data?.label ?? "Autobound"}
                   </h4>
                 </div>
               </div>
@@ -358,13 +358,14 @@ const AutoBoundNode = memo(
                     {node?.data?.parameters &&
                       Object.entries(node.data.parameters).map(
                         ([key, param]) => {
+
                           return (
                             <DynamicInput
                               key={key}
                               inputKey={key}
                               param={param}
                               handleInputChange={
-                                isEdit ? handleInputChange : () => {}
+                                isEdit ? handleInputChange : () => { }
                               }
                               variableNames={variableNames}
                               focusedInputKey={focusedInputKey}
