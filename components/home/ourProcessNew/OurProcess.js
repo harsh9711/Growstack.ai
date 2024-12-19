@@ -17,7 +17,7 @@ const HoverVideo = () => {
 
       // Ensure video plays when in view
       if (isInView && videoElement) {
-        videoElement.play().catch((error) => {
+        videoElement.play().catch(error => {
           console.error("Autoplay was prevented:", error);
         });
       }
@@ -27,7 +27,7 @@ const HoverVideo = () => {
       ([entry]) => {
         setIsInView(entry.isIntersecting);
         if (entry.isIntersecting && videoElement) {
-          videoElement.play().catch((error) => {
+          videoElement.play().catch(error => {
             console.error("Autoplay was prevented:", error);
           });
         } else if (videoElement) {
@@ -88,7 +88,7 @@ function OurProcess() {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          videoRef.current?.play().catch((error) => {
+          videoRef.current?.play().catch(error => {
             console.error("Autoplay was prevented:", error);
           });
         } else {
