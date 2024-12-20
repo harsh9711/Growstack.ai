@@ -383,7 +383,7 @@ const OutputDetails = ({
                           // }
                           return (
                             <div>
-                              {item?.value ? renderValue(item.value) : <pre>{JSON.stringify(item, null, 2)}</pre>}
+                              {item?.value ? renderValue(item.value) : <pre>{JSON.stringify(item.value, null, 2)}</pre>}
                             </div>)
                         })()}
                       </div>
