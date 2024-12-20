@@ -464,7 +464,6 @@ const uploadDetails = () => {
             </div>
           </div>
         </div>
-
         {/* Output Details */}
         <div className="col-span-2 flex flex-col">
           <div>
