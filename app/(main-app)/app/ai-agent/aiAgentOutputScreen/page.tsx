@@ -3,9 +3,12 @@ import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import KeywordInsights from "../agentScreen/textOutput";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { FaArrowLeft, FaChevronDown, FaChevronUp, FaLink } from "react-icons/fa";
 import { z } from "zod";
 import { API_URL } from "@/lib/api";
+import {
+  BackIcon, InputLinkIcon
+} from "@/components/svgs";
 const uploadDetails = () => {
   interface AgentDetails {
     name: string;
@@ -99,14 +102,76 @@ const uploadDetails = () => {
     variablePlaceholder: string
   }
 
-  const handleInputChange = (index: number, value: string) => {
+  // const handleInputChange = (index: number, value: string | null, file: File | null) => {
+  //   if (file) {
+  //     console.log("file", file);
+
+  //   }
+  //   const updatedInputs: Input[] = [...inputs]; // Type 'Input[]' for the inputs array
+  //   const input = updatedInputs[index];
+  //   type Errors = Record<string, string>;
+  //   // Reset specific input error
+  //   const updatedErrors: Errors = { ...errors };  // Type 'Errors' for the errors object
+  //   updatedErrors[input.variableName] = "";
+
+  //   const parsedInput = {
+  //     variableName: input.variableName,
+  //     variableDisplayName: input.variableDisplayName,
+  //     value: value,
+  //     variableValidation: input.variableValidation,
+  //     variableLimit: input.variableLimit,
+  //     isRequired: input.isRequired,
+  //   };
+
+  //   try {
+  //     if (input.isRequired && !value) {
+  //       updatedErrors[input.variableName] = `${input.variableDisplayName} is required.`;
+  //       setErrors(updatedErrors);
+  //     }
+  //     inputSchema.parse(parsedInput);
+  //     if (input.variableLimit && value.length > input.variableLimit) {
+  //       updatedErrors[input.variableName] = `${input.variableDisplayName} exceeds the character limit of ${input.variableLimit}.`;
+  //       setErrors(updatedErrors);
+  //       return;
+  //     }
+
+  //     // Validate email if applicable
+  //     if (input.variableValidation === "EMAIL" && value) {
+  //       if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) {
+  //         updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid email.`;
+  //       }
+  //     }
+
+  //     // Validate URL if applicable
+  //     if (input.variableValidation === "URL" && value) {
+  //       if (!/^https?:\/\/[^\s$.?#].[^\s]*$/.test(value)) {
+  //         updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid URL.`;
+  //       }
+  //     }
+  //     updatedInputs[index].value = value;
+  //     setInputs(updatedInputs);
+  //     setErrors(updatedErrors);
+  //   } catch (err: any) {
+  //     // Handle any validation errors from inputSchema
+  //     updatedErrors[input.variableName] = err.message || err.errors[0].message;
+  //     setErrors(updatedErrors);
+  //   }
+  // };
+
+
+  const handleInputChange = (index: number, value: string | null, file: File | null) => {
+    if (file) {
+      console.log("file", file);
+    }
+  
     const updatedInputs: Input[] = [...inputs]; // Type 'Input[]' for the inputs array
     const input = updatedInputs[index];
     type Errors = Record<string, string>;
+    
     // Reset specific input error
     const updatedErrors: Errors = { ...errors };  // Type 'Errors' for the errors object
     updatedErrors[input.variableName] = "";
-
+  
     const parsedInput = {
       variableName: input.variableName,
       variableDisplayName: input.variableDisplayName,
@@ -115,34 +180,58 @@ const uploadDetails = () => {
       variableLimit: input.variableLimit,
       isRequired: input.isRequired,
     };
-
+  
     try {
-      if (input.isRequired && !value) {
-        updatedErrors[input.variableName] = `${input.variableDisplayName} is required.`;
-        setErrors(updatedErrors);
-      }
-      inputSchema.parse(parsedInput);
-      if (input.variableLimit && value.length > input.variableLimit) {
-        updatedErrors[input.variableName] = `${input.variableDisplayName} exceeds the character limit of ${input.variableLimit}.`;
-        setErrors(updatedErrors);
-        return;
-      }
-
-      // Validate email if applicable
-      if (input.variableValidation === "EMAIL" && value) {
-        if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) {
-          updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid email.`;
+      // Check if required field is empty
+      if (input.isRequired) {
+        // If it's a text input (value), check if it is empty
+        if (input.variableType !== "FILE" && !value) {
+          updatedErrors[input.variableName] = `${input.variableDisplayName} is required.`;
+        }
+        // If it's a file input, check if the file is missing
+        else if (input.variableType === "FILE" && !file) {
+          updatedErrors[input.variableName] = `${input.variableDisplayName} is required.`;
+        }
+      
+        // Only update errors if any error has been added
+        if (updatedErrors[input.variableName]) {
+          setErrors(updatedErrors);
         }
       }
-
-      // Validate URL if applicable
-      if (input.variableValidation === "URL" && value) {
-        if (!/^https?:\/\/[^\s$.?#].[^\s]*$/.test(value)) {
-          updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid URL.`;
+      
+  
+      // Only proceed if value is not null
+      if (value !== null) {
+        inputSchema.parse(parsedInput);
+  
+        // Check if the value exceeds the character limit
+        if (input.variableLimit && value.length > input.variableLimit) {
+          updatedErrors[input.variableName] = `${input.variableDisplayName} exceeds the character limit of ${input.variableLimit}.`;
+          setErrors(updatedErrors);
+          return;
         }
+  
+        // Validate email if applicable
+        if (input.variableValidation === "EMAIL" && value) {
+          if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) {
+            updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid email.`;
+          }
+        }
+  
+        // Validate URL if applicable
+        if (input.variableValidation === "URL" && value) {
+          if (!/^https?:\/\/[^\s$.?#].[^\s]*$/.test(value)) {
+            updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid URL.`;
+          }
+        }
+  
+        updatedInputs[index].value = value;
+        setInputs(updatedInputs);
+      } else if (file) {
+        // Handle file input
+        console.log("File uploaded:", file);
       }
-      updatedInputs[index].value = value;
-      setInputs(updatedInputs);
+  
       setErrors(updatedErrors);
     } catch (err: any) {
       // Handle any validation errors from inputSchema
@@ -150,7 +239,7 @@ const uploadDetails = () => {
       setErrors(updatedErrors);
     }
   };
-
+  
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -208,10 +297,10 @@ const uploadDetails = () => {
   };
 
   const renderInputs = () => {
-
     let longTextInput: JSX.Element | null = null;
     const shortTextInputs: JSX.Element[] = [];
-    // Separate short and long text inputs
+
+    // Separate short, long text inputs, and file inputs
     inputs.forEach((input, index) => {
       const isRequired = input.isRequired;
 
@@ -226,7 +315,7 @@ const uploadDetails = () => {
               style={{ fontSize: '12px' }}
               placeholder={input.variablePlaceholder || "Enter details..."}
               value={input.value || ""}
-              onChange={(e) => handleInputChange(index, e.target.value)}
+              onChange={(e) => handleInputChange(index, e.target.value, null)}
               className="w-full p-4 h-[120px] rounded-md focus:outline-none resize-none"
               rows={10}
             />
@@ -235,32 +324,67 @@ const uploadDetails = () => {
             )}
           </div>
         );
-      } else {
-        // For short text input
+      } else if (input.variableType === "FILE") {
+        // For file input
         shortTextInputs.push(
-          <div key={index} className="mb-4 flex flex-col w-full">
+          <div key={index} className="mb-4 flex flex-col w-full relative">
             <label className="text-md text-black mb-2">
               {input.variableDisplayName} {isRequired && <span className="text-red-500">*</span>}
             </label>
-            <input
-              type="text"
-              style={{ fontSize: '12px' }}
-              placeholder={input.variablePlaceholder || "Enter text..."}
-              value={input.value || ""}
-              onChange={(e) => handleInputChange(index, e.target.value)}
-              className="w-full p-4 rounded-md focus:outline-none  "
-            />
+            <div className="relative">
+              <input
+                type="file"
+                onChange={(e) => {
+                  if (e.target.files && e.target.files[0]) {
+                    handleInputChange(index, null, e.target.files[0]);
+                  } else {
+                    handleInputChange(index, null, null);
+                  }
+                }}
+                className="w-full p-2 rounded-md focus:outline-none border border-gray-300 text-gray-700 file:bg-gray-100 file:border file:border-gray-300 file:rounded-md file:px-4 file:py-2 file:text-sm file:text-gray-700 file:cursor-pointer hover:file:bg-gray-200"
+              />
+            </div>
+            {errors[input.variableName] && (
+              <p className="text-red-500 text-sm mt-1">{errors[input.variableName]}</p>
+            )}
+          </div>
+        );
+      } else {
+        // For short text input
+        shortTextInputs.push(
+          <div key={index} className="mb-4 flex flex-col w-full relative">
+            <label className="text-md text-black mb-2 flex items-center">
+              {input.variableDisplayName}
+              {isRequired && <span className="text-red-500 ml-1">*</span>}
+              {input.variableValidation === "URL" && (
+                <span className="ml-2 text-gray-500">
+                  {/* Replace with your desired icon */}
+                  <InputLinkIcon />
+                </span>
+              )}
+            </label>
+            <div className="relative">
+              <input
+                type="text"
+                style={{ fontSize: '12px', paddingLeft: "1rem" }}
+                placeholder={input.variablePlaceholder || "Enter text..."}
+                value={input.value || ""}
+                onChange={(e) => handleInputChange(index, e.target.value, null)}
+                className="w-full p-4 rounded-md focus:outline-none"
+              />
+            </div>
             {errors[input.variableName] && (
               <p className="text-red-500 text-sm mt-1">{errors[input.variableName]}</p>
             )}
           </div>
         );
       }
+
     });
 
     return (
       <>
-        {expandedInput ? (
+        {!expandedInput ? (
           <div className="flex flex-col gap-4 overflow-auto max-h-[calc(100vh-120px)]">
             {/* Render all inputs in a column */}
             {shortTextInputs}
@@ -269,22 +393,36 @@ const uploadDetails = () => {
         ) : (
           <div className="flex flex-col gap-4">
             {/* Display only a portion of short text inputs initially */}
-            {shortTextInputs.slice(0, 2)}
+            {/* {shortTextInputs.slice(0, 2)} */}
           </div>
         )}
       </>
     );
   };
 
+
   return (
     <form onSubmit={handleSubmit}>
+      {/* Back Button */}
+      <div className="flex items-center gap-2 mb-4">
+        <button
+          type="button"
+          onClick={() => window.history.back()}
+          className="flex items-center bg-white text-black hover:bg-gray-100 border border-gray-300 rounded-2xl px-4 py-2 focus:outline-none"
+        >
+          <BackIcon className="mr-2" />
+          <span className="text-sm font-medium">Back</span>
+        </button>
+
+      </div>
+
       <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
         {/* Top Section */}
         <div className="col-span-1 md:col-span-3">
           <div className="w-full h-[120px] rounded-2xl border-2 border-l-8 border-l-green-500">
             <div className="flex items-center gap-6">
               <div className="flex-1 md:mr-6 text-center md:text-left mt-4">
-                <p className="ml-2 text text-sm ">Agent Name & Description </p>
+                <p className="ml-2 text text-sm text-gray-500">Agent Name & Description</p>
                 <p className="text-lg md:text-lg font-bold m-2" style={{ height: '30px' }}>
                   {agentDetails?.name || "Agent not found"}
                 </p>
@@ -298,50 +436,58 @@ const uploadDetails = () => {
 
         {/* Input Parameters */}
         <div className="col-span-1 flex flex-col">
-          <div className="w-full rounded-2xl border-2 flex flex-col h-full border-l-8 border-l-yellow-400">
-            <button type="button"
-              onClick={() => setExpandedInput((prev) => !prev)}
-              className="w-full text-left bg-gray-100 p-2 rounded-t-2xl border-b flex justify-between items-center"
-            >
-              <span className=" text font-bold">{expandedInput}Input Parameters</span>
-              <span>{expandedInput ? <FaChevronUp /> : <FaChevronDown />}</span>
-            </button>
-            {/* Keep the card structure visible, toggle content inside */}
-            <div className="p-4 overflow-y-auto flex-grow">
-              {renderInputs()}
-            </div>
-            {/* Submit Button after renderInputs */}
-            {expandedInput && (
-              <div className="mt-4 flex justify-center">
-
-                <button
-                  type="submit"
-                  className="py-1 mb-4 px-8 bg-black text-sm text-white rounded-lg hover:bg-gray-800 focus:outline-none  transition-colors duration-300"
-                >
-                  Analyze
-                </button>
+          <div>
+            <div className="w-full rounded-2xl border-2 flex flex-col h-full border-l-8 border-l-yellow-400">
+              <button
+                type="button"
+                onClick={() => setExpandedInput((prev) => !prev)}
+                className="w-full text-left bg-gray-100 p-2 rounded-t-2xl border-b flex justify-between items-center"
+              >
+                <span className="text font-bold">{expandedInput}Input Parameters</span>
+                <span>{expandedInput ? <FaChevronUp /> : <FaChevronDown />}</span>
+              </button>
+              {/* Keep the card structure visible, toggle content inside */}
+              <div className="p-4 overflow-y-auto flex-grow">
+                {renderInputs()}
               </div>
-            )}
+              {/* Submit Button after renderInputs */}
+              {!expandedInput && (
+                <div className="mt-4 flex justify-center">
+                  <button
+                    type="submit"
+                    className="py-2 mb-4 px-8 bg-[#2DA771] text-sm text-white rounded-lg hover:bg-gray-800 focus:outline-none transition-colors duration-300"
+                  >
+                    Analyze
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
         {/* Output Details */}
         <div className="col-span-2 flex flex-col">
-          <div className="w-full rounded-2xl border-2 flex flex-col h-full border-l-8 border-l-red-500">
-            <span className="w-full text-left bg-gray-100 p-2 rounded-t-2xl  font-bold border-b flex">Output Details</span>
-
-            <div className="p-2 overflow-y-auto h-[50%]">
-
-              <div >
-                {output && (
-                  <div className="mt-8 px-4">
-                    <KeywordInsights runnerAgentId={output.data.runnerAgentId} />
-                  </div>
-                )}
-              </div>
-
+          <div>
+            <div className="w-full rounded-2xl border-2 flex flex-col h-full border-l-8 border-l-red-500">
+              <button
+                type="button"
+                onClick={() => setExpandedOutput((prev) => !prev)}
+                className="w-full text-left bg-gray-100 p-2 rounded-t-2xl border-b flex justify-between items-center"
+              >
+                <span className="text font-bold">{expandedOutput ? "Output Details" : "Output Details"}</span>
+                <span>{expandedOutput ? <FaChevronUp /> : <FaChevronDown />}</span>
+              </button>
+              <div className="p-6"></div>
+              {expandedOutput && (
+                <div className="p-2 overflow-y-auto h-[70%]">
+                  {output && (
+                    <div className="mt-2 px-4">
+                      <KeywordInsights runnerAgentId={output.data.runnerAgentId} />
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
-
           </div>
         </div>
       </div>

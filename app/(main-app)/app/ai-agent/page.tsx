@@ -69,9 +69,9 @@ export default function AiAgent() {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen">
+    <div className="flex flex-col lg:flex-row min-h-screen mt-4">
       {/* Sidebar */}
-      <aside className="lg:w-1/4 w-full lg:h-1/4 h-auto bg-white p-6 shadow-lg rounded-2xl mb-6 lg:mb-0">
+      <aside className="w-full lg:w-[300px] lg:h-1/4  bg-white p-6 shadow-lg rounded-2xl mb-6 lg:mb-0">
         <div className="space-y-6">
           <ul>
             <li>
@@ -148,15 +148,35 @@ export default function AiAgent() {
                 <div className="bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100 p-3 flex justify-between items-center relative">
                   <GptIcon className="w-12 h-12 absolute top-6 left-4 rounded-lg" />
                   <span className="text-gray-600 text-sm font-small ml-auto">
-                    {agent.users} users
+                    {agent.users} 786
                   </span>
                 </div>
                 <div className="p-4 flex flex-col">
-                  <h3 className="text-md mt-4 font-semibold text-gray-800">
-                    {agent.name}
-                  </h3>
+                <h3
+  className="text-md mt-4 font-semibold text-gray-800"
+  style={{
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+  }}
+>
+  {agent.name}
+</h3>
+
                   <div className="flex items-center justify-between">
-                    <p className="text text-sm text-gray-500"> {agent.description}</p>
+                  <p
+  className="text text-sm text-gray-500"
+  style={{
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    display: "-webkit-box",
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: "vertical",
+  }}
+>
+  {agent.description}
+</p>
+
                     <button
                       onClick={() => {
                         handleAgentSelect(agent.name);
