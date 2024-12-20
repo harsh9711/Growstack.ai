@@ -102,63 +102,6 @@ const uploadDetails = () => {
     variablePlaceholder: string
   }
 
-  // const handleInputChange = (index: number, value: string | null, file: File | null) => {
-  //   if (file) {
-  //     console.log("file", file);
-
-  //   }
-  //   const updatedInputs: Input[] = [...inputs]; // Type 'Input[]' for the inputs array
-  //   const input = updatedInputs[index];
-  //   type Errors = Record<string, string>;
-  //   // Reset specific input error
-  //   const updatedErrors: Errors = { ...errors };  // Type 'Errors' for the errors object
-  //   updatedErrors[input.variableName] = "";
-
-  //   const parsedInput = {
-  //     variableName: input.variableName,
-  //     variableDisplayName: input.variableDisplayName,
-  //     value: value,
-  //     variableValidation: input.variableValidation,
-  //     variableLimit: input.variableLimit,
-  //     isRequired: input.isRequired,
-  //   };
-
-  //   try {
-  //     if (input.isRequired && !value) {
-  //       updatedErrors[input.variableName] = `${input.variableDisplayName} is required.`;
-  //       setErrors(updatedErrors);
-  //     }
-  //     inputSchema.parse(parsedInput);
-  //     if (input.variableLimit && value.length > input.variableLimit) {
-  //       updatedErrors[input.variableName] = `${input.variableDisplayName} exceeds the character limit of ${input.variableLimit}.`;
-  //       setErrors(updatedErrors);
-  //       return;
-  //     }
-
-  //     // Validate email if applicable
-  //     if (input.variableValidation === "EMAIL" && value) {
-  //       if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) {
-  //         updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid email.`;
-  //       }
-  //     }
-
-  //     // Validate URL if applicable
-  //     if (input.variableValidation === "URL" && value) {
-  //       if (!/^https?:\/\/[^\s$.?#].[^\s]*$/.test(value)) {
-  //         updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid URL.`;
-  //       }
-  //     }
-  //     updatedInputs[index].value = value;
-  //     setInputs(updatedInputs);
-  //     setErrors(updatedErrors);
-  //   } catch (err: any) {
-  //     // Handle any validation errors from inputSchema
-  //     updatedErrors[input.variableName] = err.message || err.errors[0].message;
-  //     setErrors(updatedErrors);
-  //   }
-  // };
-
-
   const handleInputChange = (index: number, value: string | null, file: File | null) => {
     if (file) {
       console.log("file", file);
