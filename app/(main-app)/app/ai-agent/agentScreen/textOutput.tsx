@@ -34,10 +34,11 @@ const KeywordInsights = ({ runnerAgentId }: { runnerAgentId: string }) => {
             },
           }
         );
-        setData(response.data.data);
+      
 
         if (response.data.data.status === "COMPLETED") {
           clearInterval(intervalId);
+          setData(response.data.data);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -53,7 +54,7 @@ const KeywordInsights = ({ runnerAgentId }: { runnerAgentId: string }) => {
 
     return () => clearInterval(intervalId);
   }, [runnerAgentId]);
-
+  
   const renderCSVTable = (csvData: string) => {
     const rows = csvData.split("\n");
     const headers = rows[0].split(",").map(header => header.trim());
