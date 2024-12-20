@@ -1,21 +1,14 @@
 "use client";
 import React, { useState } from "react";
-import Facts from "/components/home/facts/facts";
 import Footer from "@/components/footer/Footer";
-import Banner from "@/components/home/banner/Banner";
-import Capability from "@/components/home/capability/Capability";
 import DragFeatures from "@/components/home/drag-features/DragFeatures";
 import Faqs from "@/components/home/faq/Faqs";
 import FuturePlans from "@/components/home/futurePlans/FuturePlans";
-import Marketing from "@/components/home/marketing/Marketing";
 import OurProcess from "@/components/home/ourProcessNew/OurProcess";
-import PoweredBy from "@/components/home/poweredBy/PoweredBy";
 import Premium from "@/components/home/premium/Premium";
 import WhyChoose from "@/components/home/whyChoose/WhyChoose";
 import Navbar from "@/components/navbar/Navbar";
-// import 'bootstrap/dist/css/bootstrap.min.css';
 import Animation from "../animation/page";
-import Capability2 from "../colorBox/page";
 import Cta2 from "../control/page";
 import SixCard from "../cards/page";
 import SixCardVideo from "../cardsvideo/page";
@@ -38,32 +31,57 @@ function Page() {
       <div className="bg-[#F5F5F5] w-full h-full">
         <AnimationStory />
         <div className="sm:flex hidden relative mx-auto p-6 sm:p-0  -translate-y-20 items-center justify-center flex-col sm:flex-row gap-4">
-          <button className="flex items-center gap-2 text-primary-green rounded-xl">
-            <Image
-              className="w-full h-full"
-              src="/play2.png"
-              alt="Play Store"
-              width={180}
-              height={400}
-            />
+          <button className="flex items-center gap-4 bg-black rounded-xl py-2 px-4 w-fit">
+            <div className="flex-shrink-0">
+              <img
+                src="/google-play.svg"
+                alt="Google Play"
+                className="w-10 h-10 object-contain"
+              />
+            </div>
+            <div className="flex flex-col items-start">
+              <span className="text-white font-light text-[14px]">
+                GET IT ON
+              </span>
+              <span className="text-white font-semibold text-[25px]">
+                Google Play
+              </span>
+            </div>
           </button>
-          <button className="flex items-center gap-2 text-primary-green rounded-xl">
-            <Image
-              className="w-full h-full"
-              src="/apple2.png"
-              alt="Apple Store"
-              width={180}
-              height={400}
-            />
+
+          <button className="flex items-center gap-4 bg-black rounded-xl py-2 px-4 w-fit">
+            <div className="flex-shrink-0">
+              <img
+                src="/apple-home.svg"
+                alt="Google Play"
+                className="w-10 h-10 object-contain"
+              />
+            </div>
+            <div className="flex flex-col items-start">
+              <span className="text-white font-light text-[14px]">
+                DOWNLOAD ON THE
+              </span>
+              <span className="text-white font-semibold text-[25px]">
+                App Store
+              </span>
+            </div>
           </button>
-          <button className="flex w-full h-full max-w-[330px] max-h-[159px] items-center gap-2 text-primary-green rounded-xl">
-            <Image
-              className="w-full h-full"
-              src="/badge2.png"
-              alt="Apple Store"
-              width={180}
-              height={400}
-            />
+          <button className="flex items-center gap-4 bg-black rounded-xl py-2 px-4 w-fit">
+            <div className="flex-shrink-0">
+              <img
+                src="/web-store.png"
+                alt="Google Play"
+                className="w-10 h-10 object-contain"
+              />
+            </div>
+            <div className="flex flex-col items-start">
+              <span className="text-white font-light text-[14px]">
+                GET IT ON
+              </span>
+              <span className="text-white font-semibold text-[25px]">
+                Chrome Web Store
+              </span>
+            </div>
           </button>
         </div>
       </div>{" "}

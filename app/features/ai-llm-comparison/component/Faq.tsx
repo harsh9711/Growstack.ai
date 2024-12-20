@@ -69,7 +69,7 @@ const CustomAccordion = () => {
               </div>
 
               <div
-                className={`flex ease-in-out transition-transform duration-300 items-center justify-center border w-12 h-12 bg-${isActive ? "primary-green" : "white"} rounded-full ${isActive ? "-rotate-180" : "rotate-75"}`}
+                className={`flex ease-in-out transition-transform duration-300 items-center justify-center border w-12 h-12 bg-${isActive ? "[#2DA771]" : "white"} rounded-full ${isActive ? "-rotate-180" : "rotate-75"}`}
               >
                 <svg
                   width="20"
@@ -80,7 +80,7 @@ const CustomAccordion = () => {
                 >
                   <path
                     d="M1.85156 1.93066L10.0003 10.0426L18.1491 1.93066"
-                    stroke={isActive ? "white" : "#034737"}
+                    stroke={isActive ? "white" : "#2DA771"}
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"

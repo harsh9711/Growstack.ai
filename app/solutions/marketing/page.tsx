@@ -35,11 +35,6 @@ const Page: React.FC = () => {
                     content efficiently
                   </span>
                 </h1>
-                {/* <p className="text-center text-white/30 tracking-normal items-center justify-center w-full max-w-[1026px]">
-              In <span className="text-[#A9FF9B]">large enterprises,</span>{" "}
-              various teams collaborate to manage operations, develop
-              strategies, and handle day-to-day functions.
-            </p> */}
               </div>
             </div>
 

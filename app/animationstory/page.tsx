@@ -18,7 +18,7 @@ const AnimationStory = () => {
       setIsVideoLoaded(entry.isIntersecting);
 
       if (entry.isIntersecting && videoElement) {
-        videoElement.play().catch((error) => {
+        videoElement.play().catch(error => {
           console.error("Autoplay was prevented:", error);
         });
       } else if (videoElement) {
