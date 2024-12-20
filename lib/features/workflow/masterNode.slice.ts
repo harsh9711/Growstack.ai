@@ -24,7 +24,6 @@ export const getMasterNodes = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const result = await instance.get(`/${automation}/nodemaster`);
-      console.log("---data----", result);
       return result.data;
     } catch (error: any) {
       console.log(error);

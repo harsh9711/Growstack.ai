@@ -23,8 +23,6 @@ const Perplexity = ({ data, id }: NodeProps<PerplexityNodeProps>) => {
   ];
 
 
-  console.log('---data----', data)
-
   return (
     <div>
       <div className="node-main-box">
