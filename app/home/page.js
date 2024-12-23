@@ -1,11 +1,19 @@
 "use client";
+<<<<<<< HEAD
 import React, { useState } from "react";
+=======
+import React from "react";
+>>>>>>> 51fe43536edf9b0ad30d65213c30a96155e6b2ee
 import Footer from "@/components/footer/Footer";
 import DragFeatures from "@/components/home/drag-features/DragFeatures";
 import Faqs from "@/components/home/faq/Faqs";
 import FuturePlans from "@/components/home/futurePlans/FuturePlans";
 import OurProcess from "@/components/home/ourProcessNew/OurProcess";
+<<<<<<< HEAD
 import Premium from "@/components/home/premium/Premium";
+=======
+// import Premium from "@/components/home/premium/Premium";
+>>>>>>> 51fe43536edf9b0ad30d65213c30a96155e6b2ee
 import WhyChoose from "@/components/home/whyChoose/WhyChoose";
 import Navbar from "@/components/navbar/Navbar";
 import Animation from "../animation/page";
@@ -16,7 +24,12 @@ import SixCardTab from "../cardstab/page";
 import SixCardSwitch from "../cardsswitch/page";
 import AnimationStory from "../animationstory/page";
 import Image from "next/image";
-import Carousel from "../carouselvideos/page";
+import TeamVideosCarousel from "../carouselvideos/TeamVideosCarousel";
+import dynamic from "next/dynamic";
+
+const Premium = dynamic(() => import("@/components/home/premium/Premium"), {
+  ssr: false,
+});
 
 // I commented this bootstrapp CDN because of conflicting styles with tailwindcss, NB: I'll uncomment it as soon as reliable solution is found
 function Page() {
@@ -88,11 +101,8 @@ function Page() {
       <div className="sm:px-10 sm:-translate-y-10 relative z-0">
         <DragFeatures />
       </div>
-      {/* <Banner /> */}
       <OurProcess />
-      {/* <Features /> */}
       <div className="relative w-full h-full overflow-hidden">
-        {/* Video Background */}
         <video
           className="absolute top-0 left-0 w-full h-full object-cover z-0 opacity-20"
           autoPlay
@@ -114,18 +124,21 @@ function Page() {
             <Image
               className="float-animation-1"
               src="/12.svg"
+              alt="float1"
               width={110}
               height={110}
             />
             <Image
               className="float-animation-2"
               src="/13.svg"
+              alt="float2"
               width={110}
               height={110}
             />
             <Image
               className="float-animation-3"
               src="/14.svg"
+              alt="float3"
               width={110}
               height={110}
             />
@@ -135,18 +148,21 @@ function Page() {
             <Image
               className="float-animation-4"
               src="/15.svg"
+              alt="float4"
               width={110}
               height={110}
             />
             <Image
               className="float-animation-5"
               src="/16.svg"
+              alt="float5"
               width={110}
               height={110}
             />
             <Image
               className="float-animation-6"
               src="/17.svg"
+              alt="float6"
               width={110}
               height={110}
             />
@@ -154,19 +170,14 @@ function Page() {
         </div>
       </div>
       <SixCardVideo />
-      <Carousel />
+      <TeamVideosCarousel />
       <Animation />
-      {/* <Facts /> */}
-      {/* <Carousel /> */}
-      {/* <PoweredBy /> */}
       <section className="sm:px-0 px-6 ">
         {" "}
         <Premium />
       </section>
       <SixCardTab />
       <SixCardSwitch />
-      {/* <Capability /> */}
-      {/* <Capability2 /> */}
       <section className="sm:px-0 px-6 py-10 sm:py-40 ">
         {" "}
         <WhyChoose />{" "}

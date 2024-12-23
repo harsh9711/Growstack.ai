@@ -20,7 +20,7 @@ import {
 import DeleteConfirmationModal from "../../modals/deletemodal/DeleteModal";
 import { useSnackbar } from "../../snackbar/SnackbarContext";
 
-const ApolloNodes = memo(
+const AutoBoundNode = memo(
   ({
     data,
     isConnectable,
@@ -28,8 +28,6 @@ const ApolloNodes = memo(
     positionAbsoluteX,
     positionAbsoluteY,
   }: NodeProps<GmailNodeProps>) => {
-    // const { parameters, nodeMasterId } = data;
-
     const { success } = useSnackbar();
     const { setNodes, setEdges } = useReactFlow();
     const dispatch = useAppDispatch();
@@ -157,8 +155,8 @@ const ApolloNodes = memo(
         requiredParams.forEach(param => {
           const key = node?.data?.parameters
             ? Object.keys(node.data.parameters).find(
-                k => node.data.parameters?.[k] === param
-              )
+              k => node.data.parameters?.[k] === param
+            )
             : undefined;
           if (key && !param.value) {
             dispatch(
@@ -220,7 +218,7 @@ const ApolloNodes = memo(
           <div className="node-top-box relative">
             <div className="node-name-text-description text-center mb-3">
               <h4 className="text-sm font-medium text-[#2DA771]">
-                {node?.data?.label ?? "Apollo"}
+                {node?.data?.label ?? "Autobound"}
               </h4>
 
               <textarea
@@ -248,7 +246,7 @@ const ApolloNodes = memo(
                   className="w-[140px] mx-auto"
                 />
                 <img
-                  src="/svgs/apollo.svg"
+                  src="/svgs/mail.svg"
                   alt="foreground icon"
                   className="w-[40px] mx-auto absolute top-[50px] left-0 right-0"
                 />
@@ -338,13 +336,13 @@ const ApolloNodes = memo(
               <div className="heading-button-box rounded-[16px] mb-2 p-4 bg-[#FFE6FF] flex justify-between items-center overflow-hidden">
                 <div className="short-text-heading">
                   <img
-                    src="/svgs/apollo.svg"
+                    src="/svgs/mail.svg"
                     alt="node icon"
                     className="w-[20px] mb-2"
                   />
 
                   <h4 className="text-sm font-medium text-[#14171B]">
-                    {node?.data?.label ?? "Apollo"}
+                    {node?.data?.label ?? "Autobound"}
                   </h4>
                 </div>
               </div>
@@ -358,38 +356,26 @@ const ApolloNodes = memo(
                   </>
                   <>
                     {node?.data?.parameters &&
-                      Object.entries(node.data.parameters)
-                        .filter(([key]: any) => {
-                          // Always show keywords and variableName
-                          if (
-                            key === "keywords" ||
-                            key === "variableName" ||
-                            key === "searchCriteria"
-                          )
-                            return true;
+                      Object.entries(node.data.parameters).map(
+                        ([key, param]) => {
 
-                          // Check if searchCriteria exists and includes the current key
-                          const searchCriteria =
-                            node.data.parameters?.searchCriteria?.value || [];
-                          return searchCriteria.includes(key);
-                        })
-                        .map(([key, param]) => {
                           return (
                             <DynamicInput
                               key={key}
                               inputKey={key}
                               param={param}
                               handleInputChange={
-                                isEdit ? handleInputChange : () => {}
+                                isEdit ? handleInputChange : () => { }
                               }
                               variableNames={variableNames}
                               focusedInputKey={focusedInputKey}
                               setFocusedInputKey={setFocusedInputKey}
                             />
                           );
-                        })}
+                        }
+                      )}
 
-                    {/* <div className="advance-option-button-box mb-3">
+                    <div className="advance-option-button-box mb-3">
                       <button
                         onClick={handleToggleAdvancedOptions}
                         className="w-full text-center bg-transparent border-0 underline text-[12px] text-[#2DA771]"
@@ -398,7 +384,7 @@ const ApolloNodes = memo(
                           ? "Hide Advanced Options"
                           : "Show Advanced Options"}
                       </button>
-                    </div> */}
+                    </div>
 
                     {isEdit ? (
                       <div className="submit-button">
@@ -444,4 +430,4 @@ const ApolloNodes = memo(
   }
 );
 
-export default ApolloNodes;
+export default AutoBoundNode;
