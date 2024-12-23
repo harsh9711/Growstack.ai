@@ -1,15 +1,16 @@
 "use client";
 import { ArrowRight } from "lucide-react";
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import Navbar from "@/components/navbar/Navbar";
 import "../../../styles/myanimation.css";
-import Footer from "@/components/footer/Footer";
 import Link from "next/link";
-import CardResponsive from "./component/CardResponsive";
-import Benefits from "./component/Benefits";
-import Faq from "./component/Faq";
 import Image from "next/image";
-import Card from "./component/Card";
+
+const Benefits = lazy(() => import("./component/Benefits"));
+const CardResponsive = lazy(() => import("./component/CardResponsive"));
+const Faq = lazy(() => import("./component/Faq"));
+const Card = lazy(() => import("./component/Card"));
+const Footer = lazy(() => import("@/components/footer/Footer"));
 
 const page = () => {
   return (
@@ -210,13 +211,19 @@ const page = () => {
         </div>
       </section>
       <section className="2xl:flex xl:flex hidden sm:pt-20 items-center justify-center mx-auto">
-        <Card />
+        <Suspense>
+          <Card />
+        </Suspense>
       </section>
       <section className="flex 2xl:hidden xl:hidden  items-center justify-center mx-auto p-6">
-        <CardResponsive />
+        <Suspense>
+          <CardResponsive />
+        </Suspense>
       </section>
       <section className="px-6 sm:px-10 ">
-        <Benefits />
+        <Suspense>
+          <Benefits />
+        </Suspense>
       </section>
 
       <section className="items-center justify-center flex flex-col  sm:py-20  overflow-hidden ">
@@ -229,9 +236,13 @@ const page = () => {
             className="w-full overflow-hidden  absolute translate-y-[500px] -rotate-6 z-0"
           />
         </div>
-        <Faq />
+        <Suspense>
+          <Faq />
+        </Suspense>
       </section>
-      <Footer />
+      <Suspense>
+        <Footer />
+      </Suspense>
     </main>
   );
 };

@@ -1,6 +1,6 @@
 "use client";
 import { ArrowRight } from "lucide-react";
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import Navbar from "@/components/navbar/Navbar";
 
 import Footer from "@/components/footer/Footer";
@@ -11,12 +11,19 @@ import {
 } from "react-compare-slider";
 
 import ExpandableCard from "./component/ExpandableCard";
-import Card from "./component/Card";
-import CardResponsive from "./component/CardResponsive";
-import Benefits from "./component/Benefits";
-import Cases from "./component/Cases";
-import Faq from "./component/Faq";
 import Image from "next/image";
+
+const Card = lazy(() => import("./component/Card"));
+const CardResponsive = lazy(() => import("./component/CardResponsive"));
+const Benefits = lazy(() => import("./component/Benefits"));
+const Cases = lazy(() => import("./component/Cases"));
+const Faq = lazy(() => import("./component/Faq"));
+
+const LoadingSpinner = () => (
+  <div className="flex items-center justify-center w-full h-40">
+    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#034737]"></div>
+  </div>
+);
 
 const page = () => {
   return (
@@ -69,8 +76,6 @@ const page = () => {
               </div>
             </div>
             <div className="sm:flex hidden max-w-[848px] w-full items-center justify-center">
-              {/* <Image width={100} height={100} alt="map" /> */}
-              {/* <Image  width={100} height={100} alt="map" /> */}
               <div
                 style={{
                   border: "4px solid gray",
@@ -151,7 +156,7 @@ const page = () => {
           </div>
         </div>
       </section>
-      <div className="2xl:flex xl:flex hidden bg-[#034737] z-[40] relative -top-40 xl:max-w-[1240px] max-w-[700px] max-h-[131px] h-full w-full rounded-[20px] items-center justify-center mx-auto text-white">
+      <div className="2xl:flex xl:flex hidden bg-[#2DA771] z-[40] relative -top-40 xl:max-w-[1240px] max-w-[700px] max-h-[131px] h-full w-full rounded-[20px] items-center justify-center mx-auto text-white">
         <div className="overflow-visible flex flex-row items-center gap-8 justify-center h-[131px]  w-full">
           <ExpandableCard
             heading="Essential data"
@@ -175,16 +180,24 @@ const page = () => {
         </div>
       </div>
       <section className="2xl:flex xl:flex hidden  items-center justify-center mx-auto">
-        <Card />
+        <Suspense fallback={<LoadingSpinner />}>
+          <Card />
+        </Suspense>
       </section>
       <section className="flex 2xl:hidden xl:hidden  items-center justify-center mx-auto p-6">
-        <CardResponsive />
+        <Suspense fallback={<LoadingSpinner />}>
+          <CardResponsive />
+        </Suspense>
       </section>
       <section>
-        <Benefits />
+        <Suspense fallback={<LoadingSpinner />}>
+          <Benefits />
+        </Suspense>
       </section>
       <section className="pt-44">
-        <Cases />
+        <Suspense fallback={<LoadingSpinner />}>
+          <Cases />
+        </Suspense>
       </section>
       <section className="items-center justify-center flex flex-col py-20  overflow-hidden ">
         <div className="items-center justify-center flex flex-col gap-y-4  overflow-hidden ">
@@ -196,9 +209,13 @@ const page = () => {
             className="w-full overflow-hidden  absolute translate-y-[500px] -rotate-6 z-0"
           />
         </div>
-        <Faq />
+        <Suspense fallback={<LoadingSpinner />}>
+          <Faq />
+        </Suspense>
       </section>
-      <Footer />
+      <Suspense fallback={<LoadingSpinner />}>
+        <Footer />
+      </Suspense>
     </main>
   );
 };

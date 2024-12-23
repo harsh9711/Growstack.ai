@@ -51,22 +51,6 @@ const Banner: React.FC = () => {
                     </button>{" "}
                   </Link>
                 </div>
-
-                <div className="sale"></div>
-                {/* <div className="store">
-                  <Link href="/register">
-                    <img
-                      src="/images_growstack/banner/playStore.svg"
-                      alt="banner"
-                    />
-                  </Link>
-                  <Link href="/register">
-                    <img
-                      src="/images_growstack/banner/apple.svg"
-                      alt="banner"
-                    />
-                  </Link>
-                </div> */}
               </div>
             </div>
             <div>

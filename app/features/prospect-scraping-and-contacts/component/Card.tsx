@@ -139,7 +139,7 @@ const RectangleCardRight: React.FC<RectangleCardProps> = ({
 const Card = () => {
   return (
     <div>
-      <div className="flex flex-col gap-y-48">
+      <div className="flex flex-col gap-y-28">
         <div className="text-black sm:items-start items-start justify-start flex flex-col gap-y-4">
           <div className="bg-[#03473714] text-[#034737] hover:shadow-md whitespace-nowrap justify-center py-2 2xl:px-4 flex items-center text-center text-[12px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[130px] 2xl:max-w-[151px]">
             Benefits
