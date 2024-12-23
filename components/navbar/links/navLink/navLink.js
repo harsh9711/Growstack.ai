@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import "./navLink.scss";
 
 const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
@@ -29,92 +29,233 @@ const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
     onCloseMobileMenu();
     onToggleSubmenu(null);
   };
+  const [activeSection, setActiveSection] = useState("team");
 
-  const renderNestedNav = list => (
-    <div className="flex justify-between rounded-xl">
-      <div className="flex flex-row ">
-        <div
-          className="border-b rounded-tl-[20px] rounded-bl-[20px] rounded-r-[40px] bg-gradient-to-r from-[#2DA771]/100  to-[#008F50]/100 text-white w-full max-w-[60px] flex items-center justify-center shadow-lg shadow-indigo-500/40 hover:shadow-sm hover:shadow-indigo-500/70 transition-all duration-300 transform scale-105"
-          style={{
-            backdropFilter: "blur(3px)",
-          }}
-        >
-          <h3 className="font-extrabold whitespace-nowrap text-sm -rotate-90">
-            BY TEAM
-          </h3>
-        </div>
+  // const renderNestedNav = list => (
+  //   <div className="flex justify-between rounded-xl">
+  //     <div className="flex flex-row ">
+  //       <div
+  //         className="border-b rounded-tl-[20px] rounded-bl-[20px] rounded-r-[40px] bg-gradient-to-r from-[#2DA771]/100  to-[#008F50]/100 text-white w-full max-w-[60px] flex items-center justify-center shadow-lg shadow-indigo-500/40 hover:shadow-sm hover:shadow-indigo-500/70 transition-all duration-300 transform scale-105"
+  //         style={{
+  //           backdropFilter: "blur(3px)",
+  //         }}
+  //       >
+  //         <h3 className="font-extrabold whitespace-nowrap text-sm -rotate-90">
+  //           BY TEAM
+  //         </h3>
+  //       </div>
 
-        <div className="grid grid-cols-3 m-4 border-gray-300">
-          {list.slice(0, 9).map(
-            (nav, index) =>
-              nav && (
-                <Link
-                  href={nav.path}
-                  key={index}
-                  className={`p-2 group rounded flex flex-row items-center max-w-[300px] text-[16px] gap-6 justify-between transition-all duration-300 ease-in-out transform hover:scale-105
-                  ${index % 3 !== 0 ? "border-l" : ""} 
-                  ${index % 3 !== 2 ? "border-r" : ""} 
-                  ${index < 6 ? "border-b" : ""} 
-                  border-gray-300`}
-                  onClick={handleSubmenuItemClick}
-                >
-                  <span className="flex flex-col gap-2 w-full items-center">
-                    <img src={nav.img} alt={nav.title} className="w-6 h-6" />
-                    <span className="text-center group-hover:text-[#2DA771] sm:text-[13px] text-[10px] w-full">
-                      {nav.title}
-                    </span>
-                  </span>
-                </Link>
-              )
-          )}
-        </div>
-      </div>
+  //       <div className="grid grid-cols-3 m-4 border-gray-300">
+  //         {list.slice(0, 9).map(
+  //           (nav, index) =>
+  //             nav && (
+  //               <Link
+  //                 href={nav.path}
+  //                 key={index}
+  //                 className={`p-2 group rounded flex flex-row items-center max-w-[300px] text-[16px] gap-6 justify-between transition-all duration-300 ease-in-out transform hover:scale-105
+  //                 ${index % 3 !== 0 ? "border-l" : ""}
+  //                 ${index % 3 !== 2 ? "border-r" : ""}
+  //                 ${index < 6 ? "border-b" : ""}
+  //                 border-gray-300`}
+  //                 onClick={handleSubmenuItemClick}
+  //               >
+  //                 <span className="flex flex-col gap-2 w-full items-center">
+  //                   <img src={nav.img} alt={nav.title} className="w-6 h-6" />
+  //                   <span className="text-center group-hover:text-[#2DA771] sm:text-[13px] text-[10px] w-full">
+  //                     {nav.title}
+  //                   </span>
+  //                 </span>
+  //               </Link>
+  //             )
+  //         )}
+  //       </div>
+  //     </div>
 
-      <div className="flex flex-row">
-        <div
-          className="border-b rounded-tl-[20px] rounded-bl-[20px] rounded-r-[40px] bg-gradient-to-r from-[#2DA771]/100  to-[#008F50]/100 text-white w-full max-w-[60px] flex items-center justify-center shadow-lg shadow-indigo-500/40 hover:shadow-sm hover:shadow-indigo-500/70 transition-all duration-300 transform scale-105"
-          style={{
-            backdropFilter: "blur(3px)", // Additional blur to enhance the fog effect
-          }}
-        >
-          {" "}
-          <div className="-rotate-90 flex flex-row">
-            <h3 className="font-extrabold whitespace-nowrap text-sm">
-              BY INDUSTRY
-            </h3>
-            <div className="border border-gray-300 w-full h-6 mx-4"></div>
-            <h3 className="font-extrabold whitespace-nowrap text-sm">
-              BY COMPANY
+  //     <div className="flex flex-row">
+  //       <div
+  //         className="border-b rounded-tl-[20px] rounded-bl-[20px] rounded-r-[40px] bg-gradient-to-r from-[#2DA771]/100  to-[#008F50]/100 text-white w-full max-w-[60px] flex items-center justify-center shadow-lg shadow-indigo-500/40 hover:shadow-sm hover:shadow-indigo-500/70 transition-all duration-300 transform scale-105"
+  //         style={{
+  //           backdropFilter: "blur(3px)", // Additional blur to enhance the fog effect
+  //         }}
+  //       >
+  //         {" "}
+  //         <div className="-rotate-90 flex flex-row">
+  //           <h3 className="font-extrabold whitespace-nowrap text-sm">
+  //             BY INDUSTRY
+  //           </h3>
+  //           <div className="border border-gray-300 w-full h-6 mx-4"></div>
+  //           <h3 className="font-extrabold whitespace-nowrap text-sm">
+  //             BY COMPANY
+  //           </h3>
+  //         </div>
+  //       </div>
+  //       <div className="grid grid-cols-4 m-4 border-gray-300">
+  //         {list.slice(9).map(
+  //           (nav, index) =>
+  //             nav && (
+  //               <Link
+  //                 href={nav.path}
+  //                 key={index}
+  //                 className={`p-2 rounded group flex flex-row items-center max-w-[300px] text-[16px] gap-6 justify-between transition-all duration-300 ease-in-out transform hover:scale-105
+  //                 ${index % 4 !== 0 ? "border-l" : ""}
+  //                 ${index % 4 !== 3 ? "border-r" : ""}
+  //                 ${index < 8 ? "border-b" : ""}
+  //                 border-gray-300`}
+  //                 onClick={handleSubmenuItemClick}
+  //               >
+  //                 <span className="flex flex-col gap-2 w-full items-center">
+  //                   <img src={nav.img} alt={nav.title} className="w-6 h-6" />
+  //                   <span className="text-center group-hover:text-[#2DA771] sm:text-[13px] text-[10px] w-full">
+  //                     {nav.title}
+  //                   </span>
+  //                 </span>
+  //               </Link>
+  //             )
+  //         )}
+  //       </div>
+  //     </div>
+  //   </div>
+  // );
+
+  const renderNestedNav = list => {
+    const handleSectionClick = section => {
+      if (activeSection === section) {
+        setActiveSection(null);
+      } else {
+        setActiveSection(section);
+      }
+    };
+
+    return (
+      <div className="flex justify-between rounded-xl">
+        <div className="flex flex-row">
+          <div
+            onClick={() => handleSectionClick("team")}
+            className={`cursor-pointer border-b rounded-tl-[20px] rounded-bl-[20px] rounded-r-[40px] bg-gradient-to-r from-[#2DA771]/100 to-[#008F50]/100 text-white w-full max-w-[60px] flex items-center justify-center shadow-lg shadow-indigo-500/40 hover:shadow-sm hover:shadow-indigo-500/70 transition-all duration-300 transform ${activeSection === "team" ? "scale-110 ring-2 ring-[#2DA771]" : "scale-105"}`}
+            style={{
+              backdropFilter: "blur(3px)",
+            }}
+          >
+            <h3 className="font-extrabold whitespace-nowrap text-sm -rotate-90">
+              BY TEAM
             </h3>
           </div>
+
+          <div
+            className={`transform transition-all duration-500 ease-in-out origin-left ${
+              activeSection === "team"
+                ? "opacity-100 scale-x-100 translate-x-0 w-[300px]"
+                : "opacity-0 scale-x-0 -translate-x-full w-[0px]"
+            }`}
+          >
+            <div className="grid grid-cols-3 m-4 border-gray-300">
+              {list.slice(0, 9).map(
+                (nav, index) =>
+                  nav && (
+                    <Link
+                      href={nav.path}
+                      key={index}
+                      className={`p-2 group rounded flex flex-row items-center max-w-[300px] text-[16px] gap-6 justify-between 
+                      transition-all duration-300 ease-in-out transform 
+                      hover:scale-105 hover:bg-gray-50
+                      ${index % 3 !== 0 ? "border-l" : ""} 
+                      ${index % 3 !== 2 ? "border-r" : ""} 
+                      ${index < 6 ? "border-b" : ""} 
+                      border-gray-300`}
+                      onClick={handleSubmenuItemClick}
+                      style={{
+                        animationDelay: `${index * 50}ms`,
+                        animation:
+                          activeSection === "team"
+                            ? "fadeIn 0.5s ease-in-out forwards"
+                            : "none",
+                      }}
+                    >
+                      <span className="flex flex-col gap-2 w-full items-center">
+                        <img
+                          src={nav.img}
+                          alt={nav.title}
+                          className="w-6 h-6 transition-transform duration-300 group-hover:scale-110"
+                        />
+                        <span className="text-center group-hover:text-[#2DA771] sm:text-[13px] text-[10px] w-full transition-colors duration-300">
+                          {nav.title}
+                        </span>
+                      </span>
+                    </Link>
+                  )
+              )}
+            </div>
+          </div>
         </div>
-        <div className="grid grid-cols-4 m-4 border-gray-300">
-          {list.slice(9).map(
-            (nav, index) =>
-              nav && (
-                <Link
-                  href={nav.path}
-                  key={index}
-                  className={`p-2 rounded group flex flex-row items-center max-w-[300px] text-[16px] gap-6 justify-between transition-all duration-300 ease-in-out transform hover:scale-105
-                  ${index % 4 !== 0 ? "border-l" : ""} 
-                  ${index % 4 !== 3 ? "border-r" : ""} 
-                  ${index < 8 ? "border-b" : ""} 
-                  border-gray-300`}
-                  onClick={handleSubmenuItemClick}
-                >
-                  <span className="flex flex-col gap-2 w-full items-center">
-                    <img src={nav.img} alt={nav.title} className="w-6 h-6" />
-                    <span className="text-center group-hover:text-[#2DA771] sm:text-[13px] text-[10px] w-full">
-                      {nav.title}
-                    </span>
-                  </span>
-                </Link>
-              )
-          )}
+
+        <div className="flex flex-row">
+          <div
+            onClick={() => handleSectionClick("industry")}
+            className={`cursor-pointer border-b rounded-tl-[20px] rounded-bl-[20px] rounded-r-[40px] bg-gradient-to-r from-[#2DA771]/100 to-[#008F50]/100 text-white w-full max-w-[60px] flex items-center justify-center shadow-lg shadow-indigo-500/40 hover:shadow-sm hover:shadow-indigo-500/70 transition-all duration-300 transform ${activeSection === "industry" ? "scale-110 ring-2 ring-[#2DA771]" : "scale-105"}`}
+            style={{
+              backdropFilter: "blur(3px)",
+            }}
+          >
+            <div className="-rotate-90 flex flex-row">
+              <h3 className="font-extrabold whitespace-nowrap text-sm">
+                BY INDUSTRY
+              </h3>
+              <div className="border border-gray-300 w-full h-6 mx-4"></div>
+              <h3 className="font-extrabold whitespace-nowrap text-sm">
+                BY COMPANY
+              </h3>
+            </div>
+          </div>
+
+          <div
+            className={`transform transition-all duration-500 ease-in-out origin-left ${
+              activeSection === "industry"
+                ? "opacity-100 scale-x-100 translate-x-0 w-[390px]"
+                : "opacity-0 scale-x-0 -translate-x-full w-[0px]"
+            }`}
+          >
+            <div className="grid grid-cols-4 m-4 border-gray-300">
+              {list.slice(9).map(
+                (nav, index) =>
+                  nav && (
+                    <Link
+                      href={nav.path}
+                      key={index}
+                      className={`p-2 rounded group flex flex-row items-center max-w-[300px] text-[16px] gap-6 justify-between 
+                      transition-all duration-300 ease-in-out transform 
+                      hover:scale-105 hover:bg-gray-50
+                      ${index % 4 !== 0 ? "border-l" : ""} 
+                      ${index % 4 !== 3 ? "border-r" : ""} 
+                      ${index < 8 ? "border-b" : ""} 
+                      border-gray-300`}
+                      onClick={handleSubmenuItemClick}
+                      style={{
+                        animationDelay: `${index * 50}ms`,
+                        animation:
+                          activeSection === "industry"
+                            ? "fadeIn 0.5s ease-in-out forwards"
+                            : "none",
+                      }}
+                    >
+                      <span className="flex flex-col gap-2 w-full items-center">
+                        <img
+                          src={nav.img}
+                          alt={nav.title}
+                          className="w-6 h-6 transition-transform duration-300 group-hover:scale-110"
+                        />
+                        <span className="text-center group-hover:text-[#2DA771] sm:text-[13px] text-[10px] w-full transition-colors duration-300">
+                          {nav.title}
+                        </span>
+                      </span>
+                    </Link>
+                  )
+              )}
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const renderNestedNavForFeatures = list => {
     return (
