@@ -24,13 +24,14 @@ const page = () => {
               <div className="w-full max-w-[700px] items-center sm:items-start gap-y-4 flex flex-col">
                 <div className="bg-[#03473714]   text-[#034737] hover:shadow-md whitespace-nowrap justify-center py-2 px-4 flex items-center text-center text-[10px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[140px]">
                   AI LLM Comparison
-                </div>{" "}
+                </div>
                 <div className=" w-full brightness-95   ">
-                  <h1 className="text-[26px] max-w-[357px] xl:text-[40px] leading-tight  sm:!text-left !text-center text-black ">
-                    <span className="font-semibold">
-                      Choose the best AI model
+                  <h1 className="text-[26px] max-w-[457px] xl:text-[40px] leading-tight  sm:!text-left !text-center text-black ">
+                    <span className="font-semibold">AI LLM Comparison</span>
+                    <br></br>
+                    <span className="font-extralight ml-2">
+                      Choose the best AI model for your needs
                     </span>
-                    <span className="font-extralight ml-2">for your needs</span>
                   </h1>
                   <p className="text-[12px] sm:text-[18px] text-black mt-4 w-full lg:max-w-[600px] sm:!text-left !text-center gap-4 flex flex-col leading-tight font-light ">
                     <span>

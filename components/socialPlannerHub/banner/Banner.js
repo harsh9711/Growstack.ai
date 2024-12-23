@@ -15,7 +15,7 @@ function Banner() {
             <div className="w-full sm:w-1/2 ">
               <div className="bannerContent">
                 <span className="user">FEATURE</span>
-                <h2>All-in-one social media management tool powered by AI</h2>
+                <h2>Social Planner Hub</h2>
                 <p>
                   Create, schedule, publish, and track your social media growth
                   with GrowStack Social Media AI

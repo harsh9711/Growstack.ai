@@ -58,7 +58,7 @@ function Page() {
             <Image
               className="w-full h-full"
               src="/badge2.png"
-              alt="Apple Store"
+              alt="Chrome Store"
               width={180}
               height={400}
             />

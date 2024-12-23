@@ -30,11 +30,11 @@ const page = () => {
             <div className="w-full max-w-[700px] items-start gap-y-4 flex flex-col">
               <div className="max-w-3xl  brightness-95   ">
                 <h1 className="text-[26px] xl:text-[40px] max-w-2xl leading-tight sm:!text-left !text-center text-black ">
-                  <span className="font-semibold">Transform your lead </span>
-                  <br /> <span className="font-semibold">generation with </span>
-                  <br />
+                  <span className="font-semibold">Prospect Scrapping </span>
+                  <span className="font-semibold"> </span>
                   <span className="font-extralight">
-                    advanced prospect scraping
+                    Transform your lead generation with advanced prospect
+                    scraping
                   </span>
                 </h1>
                 <p className="text-[18px] text-black mt-4 w-full lg:max-w-[600px] sm:!text-left !text-center leading-tight font-light ">
@@ -151,8 +151,8 @@ const page = () => {
           </div>
         </div>
       </section>
-      <div className="2xl:flex xl:flex hidden bg-[#034737] z-[40] relative -top-40 xl:max-w-[1240px] max-w-[700px] max-h-[131px] h-full w-full rounded-[20px] items-center justify-center mx-auto text-white">
-        <div className="overflow-visible flex flex-row items-center gap-8 justify-center h-[131px]  w-full">
+      <div className="2xl:flex xl:flex hidden bg-[#034737] z-[40] relative -top-40 xl:max-w-[1240px] max-w-[700px] max-h-[111px] mt-10 h-full w-full rounded-[20px] items-center justify-center mx-auto text-white">
+        <div className="overflow-visible flex flex-row items-center gap-8 justify-center h-[111px]  w-full">
           <ExpandableCard
             heading="Essential data"
             para="Get key business details for informed decisions."

@@ -17,8 +17,8 @@ function Banner() {
               <div className="bannerContent">
                 <span className="user">GPT apps</span>
                 <h2>
-                  <span>Build a personalized GPT</span> using your comprehensive
-                  business content
+                  <span>Custom GPT</span> <br></br>Build a personalized GPT
+                  using your comprehensive business content
                 </h2>
                 <p>
                   Unleash the power of a custom GPT on your website—boost
