@@ -1,19 +1,10 @@
 "use client";
-<<<<<<< HEAD
-import React, { useState } from "react";
-=======
 import React from "react";
->>>>>>> 51fe43536edf9b0ad30d65213c30a96155e6b2ee
 import Footer from "@/components/footer/Footer";
 import DragFeatures from "@/components/home/drag-features/DragFeatures";
 import Faqs from "@/components/home/faq/Faqs";
 import FuturePlans from "@/components/home/futurePlans/FuturePlans";
 import OurProcess from "@/components/home/ourProcessNew/OurProcess";
-<<<<<<< HEAD
-import Premium from "@/components/home/premium/Premium";
-=======
-// import Premium from "@/components/home/premium/Premium";
->>>>>>> 51fe43536edf9b0ad30d65213c30a96155e6b2ee
 import WhyChoose from "@/components/home/whyChoose/WhyChoose";
 import Navbar from "@/components/navbar/Navbar";
 import Animation from "../animation/page";
