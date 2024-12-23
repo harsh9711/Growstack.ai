@@ -12,7 +12,19 @@ import {
 import { useRouter } from "next/navigation";
 const axios = require('axios');
 import { API_URL } from "@/lib/api";
-
+import { authenticateUser } from "@/utils/paraGonAuth";
+import instance from "@/config/axios.config";
+import { paragon } from "@useparagon/connect";
+const integrationsResponse = {
+  authenticated: true,
+  integrations: {
+    whatsapp: { enabled: false },
+    facebookpages: { enabled: false },
+    linkedin: { enabled: true },
+    googlesheets: { enabled: false },
+    gmail: { enabled: true },
+  },
+};
 export default function AiAgent() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
@@ -21,12 +33,18 @@ export default function AiAgent() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const categories = [];
+  const [paragonDetails, setParagonDetails] = useState<ParagonUserDetails>({});
+  interface ParagonUserDetails {
+    [key: string]: any; // Adjust this based on the actual structure of `paragon.getUser()`
+  }
   interface Agent {
+    image: string | undefined;
     name: string;
     description: string;
     users: number;
     agentId: string;
   }
+
   useEffect(() => {
     const fetchAgents = async () => {
       setLoading(true);
@@ -34,12 +52,12 @@ export default function AiAgent() {
         const response = await axios.get(`${API_URL}/agents/api/v1/`);
 
         if (response.data.message === "Agents fetched successfully") {
-          // Ensure the data is an array of Agent objects
           setAgents(response.data.data.map((agent: any) => ({
             name: agent.name,
             description: agent.description,
             users: agent.users,
             agentId: agent.agentId,
+            image:agent.image
           })));
         } else {
           throw new Error("Failed to fetch agents.");
@@ -70,7 +88,6 @@ export default function AiAgent() {
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen mt-4">
-      {/* Sidebar */}
       <aside className="w-full lg:w-[300px] lg:h-1/4  bg-white p-6 shadow-lg rounded-2xl mb-6 lg:mb-0">
         <div className="space-y-6">
           <ul>
@@ -146,36 +163,40 @@ export default function AiAgent() {
                 className="bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden"
               >
                 <div className="bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100 p-3 flex justify-between items-center relative">
-                  <GptIcon className="w-12 h-12 absolute top-6 left-4 rounded-lg" />
-                  <span className="text-gray-600 text-sm font-small ml-auto">
-                    {agent.users} 786
+                  {agent.image ?    <img className="w-12 h-12 absolute top-6 left-4 rounded-lg"
+                    src={agent.image}
+                    alt="arrow"
+                  /> : <GptIcon className="w-12 h-12 absolute top-6 left-4 rounded-lg" />}
+               
+                  <span className="text-gray-600 text-sm font-small ml-auto mt-4">
+                    {agent.users} 
                   </span>
                 </div>
                 <div className="p-4 flex flex-col">
-                <h3
-  className="text-md mt-4 font-semibold text-gray-800"
-  style={{
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    whiteSpace: "nowrap",
-  }}
->
-  {agent.name}
-</h3>
+                  <h3
+                    className="text-md mt-4 font-semibold text-gray-800"
+                    style={{
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {agent.name}
+                  </h3>
 
                   <div className="flex items-center justify-between">
-                  <p
-  className="text text-sm text-gray-500"
-  style={{
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    display: "-webkit-box",
-    WebkitLineClamp: 2,
-    WebkitBoxOrient: "vertical",
-  }}
->
-  {agent.description}
-</p>
+                    <p
+                      className="text text-sm text-gray-500"
+                      style={{
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        display: "-webkit-box",
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: "vertical",
+                      }}
+                    >
+                      {agent.description}
+                    </p>
 
                     <button
                       onClick={() => {
