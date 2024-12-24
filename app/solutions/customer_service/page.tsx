@@ -23,7 +23,7 @@ const page = () => {
   return (
     <main className="bg-white overflow-hidden">
       <Navbar
-        logoUrl="/white.png"
+        logoUrl="/logo/growstack1.png"
         logoAlt="Custom Logo"
         backgroundColor="white"
       />

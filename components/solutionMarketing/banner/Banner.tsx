@@ -20,7 +20,7 @@ const Banner: React.FC = () => {
               <div className="bannerContent">
                 <span className="user">Growstack for MARKETING Team</span>
                 <h2 className="solsheading">
-                  <span>AI marketing and sales app</span> <br /> with GrowStack{" "}
+                  <span>AI Marketing and Sales Apps</span> <br /> with GrowStack{" "}
                   <img
                     src="/images_growstack/solutions/curveArrow.svg"
                     alt="arrow"

@@ -488,7 +488,7 @@ export default function TextToVideoPage() {
                     "Design Your Unique Avatar for Engaging Masterclasses,
                     Personal<br></br> Branding, and Internal Training!"
                   </div>
-                  <div className="flex flex-row gap-3 w-full items-center justify-center">
+                  {/* <div className="flex flex-row gap-3 w-full items-center justify-center">
                     <div className="h-[170px] w-[140px] flex items-center justify-center">
                       <Image src={avatarImg1} alt="avatar1" />
                     </div>
@@ -504,7 +504,7 @@ export default function TextToVideoPage() {
                     <div className="h-[170px] w-[140px] flex items-center justify-center">
                       <Image src={avatarImg5} alt="avatar1" />
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

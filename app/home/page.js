@@ -143,7 +143,6 @@ function Page() {
         {" "}
         <Premium />
       </section>
-      <SixCardTab />
       <SixCardSwitch />
       <section className="sm:px-0 px-6 py-10 sm:py-40 ">
         {" "}
@@ -155,6 +154,7 @@ function Page() {
         <Cta2 />{" "}
       </section>
       <Faqs />
+      <SixCardTab />
       <Footer />
     </React.Fragment>
   );

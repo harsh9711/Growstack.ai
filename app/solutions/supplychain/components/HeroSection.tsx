@@ -11,10 +11,10 @@ const HeroSection = () => {
       data-aos="fade-in"
       data-aos-duration="2000"
       data-aos-delay="500"
-      className="max-h-screen  bg-[#034737] 2xl:bg-transparent mx:  w-full mb-10 2xl:mb-20  items-center justify-center mx-auto"
+      className="max-h-screen bg-[#2DA771] 2xl:bg-transparent mx:  w-full mb-10 2xl:mb-20  items-center justify-center mx-auto"
     >
       <Navbar
-        logoUrl="/white.png"
+        logoUrl="/logo/growstack1.png"
         logoAlt="Custom Logo"
         backgroundColor="white"
       />
@@ -36,11 +36,11 @@ const HeroSection = () => {
                 className="text-[26px] xl:text-[40px] 2xl:text-[48px] w-full leading-normal text-white"
               >
                 <span className="font-semibold w-full 2xl:whitespace-nowrap">
-                  Revolutionize Your Supply Chain
+                  Supply Chain
                 </span>
                 <br />
                 <span className="font-light 2xl:whitespace-nowrap">
-                  operations with Growstack
+                  Revolutionize Your Supply Chain operations with Growstack
                 </span>
               </h1>
               <p

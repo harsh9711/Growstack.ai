@@ -6,7 +6,7 @@ import SocialLinks from "./socialLinks/SocialLinks";
 import styles from "./navbar.module.scss";
 
 function Navbar({
-  logoUrl = "/imagelogo.svg",
+  logoUrl = "/logo/growstack1.png",
   logoAlt = "logo",
   backgroundColor = "",
 }) {
@@ -19,7 +19,7 @@ function Navbar({
         <div className={styles.flex}>
           <div className={styles.flext}>
             <Link href="/" className={styles.logo}>
-              <Image src={logoUrl} alt={logoAlt} width={100} height={100} />
+              <Image src={logoUrl} alt={logoAlt} width={100} height={50} />
             </Link>
           </div>
           <div className={styles.items}>

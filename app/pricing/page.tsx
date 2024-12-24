@@ -1,17 +1,13 @@
 "use client";
 
-import Image from "next/image";
 import Navbar from "@/components/navbar/Navbar";
 import HeroSection from "./components/HeroSection";
-import MainBox from "./components/MainBox";
 import PricingNew from "./components/PricingNew";
 import Footer from "@/components/footer/Footer";
 // import TickIcon from "./TickIcon";
 // import DashIcon from "./DashIcon";
-import { ContentBoxProps } from "@/types/Box";
 import "aos/dist/aos.css";
-import React, { useEffect, useLayoutEffect, useState } from "react";
-import AOS from "aos";
+import React from "react";
 import "aos/dist/aos.css";
 
 const PricingPage: React.FC = () => {
@@ -19,7 +15,7 @@ const PricingPage: React.FC = () => {
     <div className="flex flex-col">
       <div className="relative z-40">
         <Navbar
-          logoUrl="/white.png"
+          logoUrl="/logo/growstack1.png"
           logoAlt="Custom Logo"
           backgroundColor="white"
         />

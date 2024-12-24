@@ -12,7 +12,6 @@ import SecondBox2 from "./components/SecondBox2";
 import SixCard from "./components/SixCard";
 import Footer from "@/components/footer/Footer";
 
-
 const page = () => {
   useEffect(() => {
     AOS.init({ duration: 500 });
@@ -21,27 +20,13 @@ const page = () => {
     <main className="bg-white overflow-hidden max-w-[1920px] w-full mx-auto">
       <section className=" w-full  rounded-b-[60px] sm:rounded-b-[0px] items-center justify-center mx-auto">
         <Navbar
-          logoUrl="/white.png"
+          logoUrl="/logo/growstack1.png"
           logoAlt="Custom Logo"
           backgroundColor="white"
         />
 
         <HeroSection />
       </section>
-      {/* <section className="sm:p-0 px-6 sm:pt-32  pt-10 mx-auto flex flex-col items-center max-w-[1520px] w-full">
-        <div className="  flex flex-col gap-y-6 items-center sm:items-start">
-          <div className="bg-[#03473714] py-2 px-3.5 flex sm:items-start items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit ">
-            Customer stories
-          </div>
-          <div className="flex sm:text-start text-center flex-col gap-y-4">
-            <h2 className="font-light text-[26px] xl:text-[40px]">
-              <span className="font-bold">Beat competition, </span>
-              lower acquisition costs
-            </h2>
-          </div>{" "}
-          <SecondBox />
-        </div>
-      </section> */}
       <section className="sm:px-0 px-6 pt-10  max-w-[1200px] mx-auto flex flex-col items-start  sm:pt-32">
         <div className="  flex flex-col  mb-4 sm:mb-10 w-full max-w-[1120px] gap-y-6 items-start">
           <div className="bg-[#03473714] py-2 px-3.5 flex sm:items-start items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit ">

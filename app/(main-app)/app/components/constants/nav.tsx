@@ -51,7 +51,7 @@ const navLinks: NavLink[] = [
       },
       {
         icon: <TextToVideoIcon />,
-        name: "Text to avatar",
+        name: "AI Text to avatar",
         href: ALL_ROUTES.TEXT_TO_AVATAR,
       },
       {

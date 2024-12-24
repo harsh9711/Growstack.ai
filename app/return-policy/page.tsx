@@ -12,7 +12,7 @@ const rrpPage: React.FC = () => {
     <div className="flex flex-col">
       <div className="relative z-40">
         <Navbar
-          logoUrl="/white.png"
+          logoUrl="/logo/growstack1.png"
           logoAlt="Custom Logo"
           backgroundColor="white"
         />

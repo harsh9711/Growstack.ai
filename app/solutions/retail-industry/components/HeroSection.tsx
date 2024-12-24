@@ -22,11 +22,11 @@ const HeroSection = () => {
               data-aos-duration="1500"
               className="text-[26px] xl:text-[40px] 2xl:text-[48px] w-full leading-normal text-white"
             >
-              <span className="font-semibold">
-                Transform your retail experience
+              <span className="font-semibold">Retail</span>
+              <br></br>
+              <span className="font-light">
+                Transform your retail experience with GrowStack
               </span>
-              {"   "}
-              <span className="font-light">with GrowStack</span>
             </h1>
             <p
               data-aos="fade-right"
@@ -34,8 +34,8 @@ const HeroSection = () => {
               className="text-[16px] 2xl:text-[18px] text-white mt-4 w-full max-w-[600px] leading-normal font-light"
             >
               Empower your retail operations with AI-driven solutions for
-              enhanced customer engagement, streamlined processesand
-              data-driven insights.{" "}
+              enhanced customer engagement, streamlined processesand data-driven
+              insights.{" "}
             </p>
 
             <div className="flex flex-col gap-20 mt-10">

@@ -146,4 +146,3 @@ export { default as AgentSideImage } from "@/public/aiAgent/agentSideImage.svg";
 export { default as AgentNavigationIcon } from "@/public/aiAgent/agentNavigationIcon.svg";
 export { default as AiAgentIcon } from "@/public/aiAgent/AIAgentsIcon.svg";
 export { default as MyAIAgents } from "@/public/aiAgent/MyAIAgents.svg";
-

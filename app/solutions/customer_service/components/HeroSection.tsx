@@ -23,10 +23,10 @@ const HeroSection = () => {
                 data-aos-duration="1500"
                 className="text-[26px] xl:text-[48px] w-full leading-normal text-white"
               >
-                <span className="font-semibold">Elevate customer </span>
+                <span className="font-semibold">Customer Service</span>
                 <br />
                 <span className="font-light 2xl:whitespace-nowrap">
-                  service with advanced
+                  Elevate customer service with advanced
                 </span>
                 <br />
                 <span className="font-extralight text-[#61C453] 2xl:whitespace-nowrap">
