@@ -69,7 +69,7 @@ export const extractParameterValues = (parameters: { [key: string]: any }) => {
 
   Object?.entries(parameters).forEach(([key, param]) => {
     if (key !== "nextParameter") {
-      result[key] = param.value;
+      result[key] = param.value || "";
     }
     // result[key] = param.value;
   });
@@ -202,21 +202,19 @@ export const resolveWorkflowNodes = (nodes?: WorkflowNodeState[]) => {
       }
     }
 
-    const updatedSubNodes =
+    const updatedSubNodes2 =
       node.type === "form"
-        ? (node.nodeMasterId as any).subNodes.map((sn: any) => {
-            const matchingSubNode = node.subNodes.find(
+        ? node.subNodes.map((sn: any) => {
+            const matchingSubNode = (node.nodeMasterId as any).subNodes.find(
               (subNode: any) => subNode.nodeMasterId === sn.nodeMasterId
-            ) as { parameters?: { [key: string]: any } } | undefined;
-
+            );
             const updatedSubNodeParameters = Object.entries(
               sn.parameters
             ).reduce(
               (acc: { [key: string]: any }, [key, param]: [string, any]) => {
                 acc[key] = {
-                  ...(typeof param === "object" && param !== null ? param : {}),
-                  value:
-                    matchingSubNode?.parameters?.[key] || param?.value || "",
+                  ...matchingSubNode?.parameters?.[key],
+                  value: sn.parameters?.[key] || "",
                 };
                 return acc;
               },
@@ -224,15 +222,15 @@ export const resolveWorkflowNodes = (nodes?: WorkflowNodeState[]) => {
             );
 
             return {
-              ...(typeof matchingSubNode === "object" &&
-              matchingSubNode !== null
-                ? matchingSubNode
-                : {}),
-              nodeMasterId: sn.nodeMasterId,
-              name: sn.name || "",
+              ...matchingSubNode,
               parameters: updatedSubNodeParameters,
             };
           })
+        : [];
+
+    const updatedSubNodes =
+      node.type === "form"
+        ? [...(node.nodeMasterId as any).subNodes, ...updatedSubNodes2]
         : node.subNodes;
 
     return {

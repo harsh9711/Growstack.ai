@@ -19,6 +19,9 @@ import {
 } from "@/types/workflows";
 import DeleteConfirmationModal from "../../modals/deletemodal/DeleteModal";
 import { useSnackbar } from "../../snackbar/SnackbarContext";
+import { setSignInStatus } from "@/lib/features/workflow/nodeAuth.slice";
+import { useSelector } from "react-redux";
+import { authenticateUser } from "@/utils/paraGonAuth";
 
 const ApolloNodes = memo(
   ({
@@ -32,6 +35,15 @@ const ApolloNodes = memo(
 
     const { success } = useSnackbar();
     const { setNodes, setEdges } = useReactFlow();
+    const [isSignedUp, setIsSignedUp] = useState(false);
+
+    const handleSignIn = (platform: string, data: any) => {
+      // Set the user as signed in for a particular platform
+      dispatch(setSignInStatus({ platform, data, status: true }));
+    };
+
+    const isApolloSignedIn = useSelector((state: any) => state?.nodeAuth["apollo"]);
+
     const dispatch = useAppDispatch();
     const { workFlowData } = useAppSelector(state => state.workflows);
     const { nodes, isLoading } = useAppSelector(state => state.nodes);
@@ -214,6 +226,39 @@ const ApolloNodes = memo(
       setIsEdit(!isEdit);
     };
 
+    const handleApolloSignIn = async () => {
+      try {
+
+        if (connectedEmail.enabled) return;
+
+        setConnectionLoading(true);
+
+        const timeoutId = setTimeout(() => {
+          setConnectionLoading(false);
+        }, 8000);
+
+        const result = await authenticateUser("apollo");
+        clearTimeout(timeoutId);
+
+        if (result && result.credentialStatus === "VALID") {
+          handleSignIn("apollo", result);
+          setConnectedEmail(result);
+          setIsSignedUp(true);
+        }
+      } catch (error) {
+        console.log("---error---", error);
+      } finally {
+        setConnectionLoading(false);
+      }
+    };
+
+    useEffect(() => {
+      if (isApolloSignedIn?.status) {
+        setConnectedEmail(isApolloSignedIn?.data);
+        setIsSignedUp(true);
+      }
+    }, [isApolloSignedIn]);
+
     return (
       <div>
         <section className="node-box relative">
@@ -335,7 +380,7 @@ const ApolloNodes = memo(
 
           {isDropdownOpen && (
             <div className="node-inner-wrapper bg-white p-4 border-2 border-[#2DA771] rounded-[20px] w-[400px] absolute left-1/2 transform -translate-x-1/2">
-              <div className="heading-button-box rounded-[16px] mb-2 p-4 bg-[#FFE6FF] flex justify-between items-center overflow-hidden">
+               <div className="heading-button-box rounded-[16px] mb-2 p-4 bg-[#FFE6FF] flex justify-between items-center overflow-hidden">
                 <div className="short-text-heading">
                   <img
                     src="/svgs/apollo.svg"
@@ -347,8 +392,39 @@ const ApolloNodes = memo(
                     {node?.data?.label ?? "Apollo"}
                   </h4>
                 </div>
+                {isSignedUp ? (
+                  <div className="user-connected-info relative">
+                    <span className="connected-text absolute top-[-17px] right-[-20px] bg-[#2DA771] p-2 rounded-l-[20px]  w-[100px] inline-block  text-[12px] font-medium text-white">
+                      Connected
+                    </span>
+
+                    <div className="user-mail relative mt-1 translate-y-[20px]">
+                      <div className="online-status-div absolute w-[6px] h-[6px] bg-[#2DA771] rounded-full left-[-14px] top-[5px]"></div>
+                      <p className="text-[11px] text-[#5A5963]">
+                        {connectedEmail?.providerId || "NO EMAIL"}
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="signin-button-box">
+                    <button
+                      onClick={handleApolloSignIn}
+                      className="p-4 text-white text-[16px] bg-[#2DA771] rounded-[20px] w-[100px]"
+                    >
+                      {connectionLoading ? (
+                        <div className="flex justify-center items-center">
+                          <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
+                        </div>
+                      ) : (
+                        "Sign In"
+                      )}
+                    </button>
+                  </div>
+                )}
               </div>
 
+              
+             
               <div className={`node-content-wrapper relative `}>
                 <div className="action-box">
                   <>
