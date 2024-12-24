@@ -454,7 +454,7 @@ const uploadDetails = () => {
                                 </svg>
                               </div>
                               <button onClick={() => {
-                                if (!details.enabled) handleConnect(name);
+                                if (details.enabled) handleConnect(name);
                               }} className="border-2 bg-green-600 border-green-600 text-white p-1 rounded-full hover:bg-green-600 hover:text-white transition">
                                 connected
                               </button>

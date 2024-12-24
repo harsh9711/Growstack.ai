@@ -167,6 +167,7 @@ export default function AiAgent() {
                     src={agent.image}
                     alt="arrow"
                   /> : <GptIcon className="w-12 h-12 absolute top-6 left-4 rounded-lg" />}
+
                
                   <span className="text-gray-600 text-sm font-small ml-auto mt-4">
                     {agent.users} 

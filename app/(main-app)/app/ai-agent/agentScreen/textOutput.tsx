@@ -11,10 +11,12 @@ import Swal from "sweetalert2";
 import rehypeRaw from "rehype-raw";
 
 interface DataItem {
+  variableExtras: (variableValue: string, variableExtras: any) => React.ReactNode;
   _id: string;
   variableName: string;
   variableType: string;
   variableValue: string;
+  needToSelect: boolean;
 }
 
 const KeywordInsights = ({ runnerAgentId }: { runnerAgentId: string }) => {
@@ -22,6 +24,7 @@ const KeywordInsights = ({ runnerAgentId }: { runnerAgentId: string }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [expanded, setExpanded] = useState<string | null>(null); // State to track expanded accordion
+  const [selectedRows, setSelectedRows] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,8 +55,6 @@ const KeywordInsights = ({ runnerAgentId }: { runnerAgentId: string }) => {
             };
           });
 
-          // Optionally toggle accordion for new items
-          fetchedData.result.forEach((item: { _id: string; }) => toggleAccordion(item._id));
         }
 
         // Stop polling if the status is "COMPLETED"
@@ -62,7 +63,7 @@ const KeywordInsights = ({ runnerAgentId }: { runnerAgentId: string }) => {
           setLoading(false);
 
         }
-        else if(fetchedData.status === "FAILED"){
+        else if (fetchedData.status === "FAILED") {
           await Swal.fire({
             title: "Workflow",
             text: "The workflow has failed. Please check the fields and try again.",
@@ -71,7 +72,7 @@ const KeywordInsights = ({ runnerAgentId }: { runnerAgentId: string }) => {
             confirmButtonText: "Ok",
             cancelButtonText: "No",
           });
-          
+
           clearInterval(intervalId);
           setLoading(false);
         }
@@ -89,42 +90,129 @@ const KeywordInsights = ({ runnerAgentId }: { runnerAgentId: string }) => {
     return () => clearInterval(intervalId);
   }, [runnerAgentId]);
 
-
-  const renderCSVTable = (csvData: string) => {
+  const handleSubmit = async () => {
+    const cleanedRows = selectedRows.map(({ rowIndex, ...rest }) => rest)
+    const cleanedRowsdata = cleanedRows.map((row, index) => {
+      const job = row.selectedValues[index] || {}; // Handle case where selectedValues might be empty
+      return {
+        "title": job.title || "No Title Provided", // Fallback if title is missing
+        "company_name": job.company_name || "Unknown Company", // Fallback if company_name is missing
+        "description": job.description || "No Description Available" // Fallback if description is missing
+      };
+    });
+    const payload = {
+      "selectedJobsData": cleanedRowsdata
+    }
+    const response = await axios.post(
+      `${API_URL}/agents/api/v1/run/resume/${runnerAgentId}`, payload,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+  };
+  const renderCSVTable = (csvData: string, extraItems: any) => {
     const rows = csvData.split("\n");
-    const headers = rows[0].split(",").map(header => header.trim());
+    const headers = rows[0].split(",").map((header) => header.trim());
     const bodyRows = rows.slice(1);
+    const handleCheckboxChange = (rowIndex: number, cells: string[]) => {
+      const selectedValues = extraItems.fieldToSelect.map((field: string) => {
+        const fieldIndex = headers.indexOf(field);
+        return { [field]: cells[fieldIndex] };
+      });
+
+      // Toggle selection
+      setSelectedRows((prevSelected) => {
+        if (prevSelected.some((item) => item.rowIndex === rowIndex)) {
+          return prevSelected.filter((item) => item.rowIndex !== rowIndex); // Deselect
+        } else {
+          return [...prevSelected, { rowIndex, selectedValues }]; // Select
+        }
+      });
+    };
+    const isLink = (text: string) => {
+      const urlRegex = /^(https?:\/\/[^\s]+)/i;
+      return urlRegex.test(text);
+    };
+
 
     return (
-<div className="overflow-x-auto h-[400px]">
-  <table className="table-auto w-full border-collapse border border-gray-300 mt-4">
-    <thead className="sticky top-0 bg-gray-100 z-10">
-      <tr>
-        {headers.map((header, index) => (
-          <th key={index} className="border border-gray-300 p-3 text-left font-semibold text-gray-700">
-            {header}
-          </th>
-        ))}
-      </tr>
-    </thead>
-    <tbody className="max-h-[calc(500px-40px)] overflow-y-auto"> {/* Adjusting body height */}
-      {bodyRows.map((row, rowIndex) => {
-        const cells = parseCSVRow(row);
-        return (
-          <tr key={rowIndex} className={rowIndex % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-            {cells.map((cell, cellIndex) => (
-              <td key={cellIndex} className="border border-gray-300 p-3 text-gray-600">
-                {cell}
-              </td>
-            ))}
-          </tr>
-        );
-      })}
-    </tbody>
-  </table>
-</div>
+      <div className="h-[400px] overflow-visible">
+        {selectedRows && selectedRows}
+        <div className="max-h-[500px] snap-both overflow-visible">
+          <table className=" w-full border-collapse border border-gray-300 mt-4">
+            <thead className="sticky top-0 bg-gray-100 ">
+              <tr>
+                {extraItems?.needToSelect && (
+                  <th className="border border-gray-300 p-3"></th>
+                )} {/* Add checkbox header */}
+                {headers.map((header, index) => (
+                  <th
+                    key={index}
+                    className="border border-gray-300 p-3 text-left font-semibold text-gray-700"
+                  >
+                    <Markdown
+                      remarkPlugins={[remarkGfm]}
+                      rehypePlugins={[rehypeRaw]}
+                    >
+                      {header.replace(/["']/g, "").trim()}
 
-    
+                    </Markdown>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {bodyRows.map((row, rowIndex) => {
+                const cells = parseCSVRow(row);
+                return (
+                  <tr
+                    key={rowIndex}
+                    className={rowIndex % 2 === 0 ? "bg-white" : "bg-gray-50"}
+                  >
+                    {extraItems?.needToSelect && (
+                      <td className="border border-gray-300 p-3 text-gray-600">
+                        <input
+                          type="checkbox"
+                          onChange={() => handleCheckboxChange(rowIndex, cells)}
+                        />
+                      </td>
+                    )}
+                    {cells.map((cell: string, cellIndex: number) => (
+                      <td
+                        key={cellIndex}
+                        className="border border-gray-300 p-3 text-gray-600"
+                      >
+                        {isLink(cell) ? (
+                          <a
+                            href={cell}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:underline"
+                          >
+                            {cell}
+                          </a>
+                        ) : (
+                          <Markdown
+                            remarkPlugins={[remarkGfm]}
+                            rehypePlugins={[rehypeRaw]}
+                          >
+                            {cell}
+                          </Markdown>
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                );
+              })}
+            </tbody>
+
+          </table>
+        </div>
+
+
+      </div>
     );
   };
 
@@ -145,8 +233,11 @@ const KeywordInsights = ({ runnerAgentId }: { runnerAgentId: string }) => {
       <div className="flex justify-between items-center border-b pb-4">
         <h1 className="text-xl font-semibold">Output:</h1>
       </div>
+
+
+
       <div className="mt-4">
-        {data?.result?.map((item) => (
+        {data?.result?.map((item: any) => (
           <div key={item._id} className="mb-6">
             <h1 className="font-medium text-gray-900">
               <b>{item.variableName}</b>
@@ -162,14 +253,24 @@ const KeywordInsights = ({ runnerAgentId }: { runnerAgentId: string }) => {
               </button>
               {expanded === item._id && (
                 <div className="p-4  overflow-y-auto mt-1 transition-all duration-300 ease-in-out bg-white border border-gray-300 rounded-lg shadow-md">
-                  {item.variableType === "CSV" && item.variableValue && renderCSVTable(item.variableValue)}
-                  {item.variableType === "STRING" && item.variableValue && (
-               <Markdown 
-               remarkPlugins={[remarkGfm]} 
-               rehypePlugins={[rehypeRaw]}
-             >
-               {item.variableValue}
-             </Markdown>
+                  {item.variableType === "CSV" && item.variableValue && renderCSVTable(item.variableValue, item.variableExtras)}
+                  {item?.variableExtras?.needToSelect && (
+                    <div className="mt-4">
+                      <button type="button"
+                        onClick={handleSubmit}
+                        className="bg-blue-500 text-white py-2 px-4 rounded"
+                      >
+                        Submit
+                      </button>
+                    </div>
+                  )}
+                  {(item.variableType === "STRING" || item.variableType === "LONG_TEXT") && item.variableValue && (
+                    <Markdown
+                      remarkPlugins={[remarkGfm]}
+                      rehypePlugins={[rehypeRaw]}
+                    >
+                      {item.variableValue}
+                    </Markdown>
                   )}
                 </div>
               )}
