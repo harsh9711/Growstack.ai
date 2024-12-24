@@ -48,10 +48,10 @@ const page = () => {
                   data-aos-duration="1500"
                   className="text-[26px] xl:text-[48px]   w-full leading-normal text-black"
                 >
-                  <span className="font-semibold">Transform your sales</span>
+                  <span className="font-semibold">Sales</span>
                   <br />{" "}
                   <span className="font-light 2xl:whitespace-nowrap">
-                    process with Growstack
+                    Transform your sales process with Growstack
                   </span>
                 </h1>
                 <p

@@ -16,7 +16,7 @@ const HeroSection = () => {
       <div className="relative z-40">
         {" "}
         <Navbar
-          logoUrl="/white.png"
+          logoUrl="/logo/growstack1.png"
           logoAlt="Custom Logo"
           backgroundColor="transparent"
         />
@@ -158,12 +158,12 @@ const HeroSection = () => {
                   data-aos-duration="1500"
                   className="text-[26px] xl:text-[48px] w-full leading-normal text-center item-center justify-center text-black"
                 >
-                  <span className=" font-light w-full 2xl:whitespace-nowrap">
-                    Transform your IT
+                  <span className="font-semibold 2xl:whitespace-nowrap">
+                    Information Technology
                   </span>
                   <br />
-                  <span className=" font-semibold 2xl:whitespace-nowrap">
-                    with AI-Powered solutions
+                  <span className="font-light w-full 2xl:whitespace-nowrap">
+                    Transform your IT with AI-Powered solutions
                   </span>
                 </h1>
                 <svg

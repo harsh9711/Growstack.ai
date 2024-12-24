@@ -44,11 +44,13 @@ interface IProps {
   selectedAiModel: string;
   setSelectedAiModel: React.Dispatch<React.SetStateAction<string>>;
   messagesData: any;
+  assistantSummary: string;
 }
 
 export default function Topbar({
   assistant,
   conversation,
+  assistantSummary,
   isSidebarOpen,
   setIsSidebarOpen,
   isHistoryOpen,
@@ -133,6 +135,14 @@ export default function Topbar({
           <div>
             <h2 className="text-lg font-semibold sm:text-xl">
               {assistant.role}
+              <div className="relative group">
+                <p className="font-light truncate max-w-xl">
+                  {assistantSummary}
+                </p>
+                <div className="absolute left-0 top-full mt-1 text-justify text-[15px] hidden group-hover:block bg-white text-black font-light p-2 rounded-md shadow-lg z-10 w-auto max-w-xl min-w-[250px] h-auto">
+                  {assistantSummary}
+                </div>
+              </div>
             </h2>
           </div>
         </div>

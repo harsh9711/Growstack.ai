@@ -32,10 +32,10 @@ const HeroSection: React.FC = () => {
                 <div className="  items-center flex flex-col gap-y-4 justify-center  mx-auto ">
                   <h1 className="xl:text-[40px] 2xl:text-[48px] text-[24px]   leading-12 flex flex-col  items-center justify-center text-[#14171B] bg-clip-text ">
                     <span className="font-semibold text-center">
-                      Maximize efficiency
+                      Small Businesses
                     </span>
                     <span className="font-light text-center">
-                      with all-in-one AI marketing
+                      Maximize efficiency with all-in-one AI marketing
                     </span>
                   </h1>
 
@@ -43,7 +43,7 @@ const HeroSection: React.FC = () => {
                     Growstack's all-in-one AI marketing platform is designed for
                     small businesses facing tight budgets and limited manpower.
                     Our suite of AI-powered tools automates content creation,
-                    optimizes marketing workflows  and enhances customer
+                    optimizes marketing workflows and enhances customer
                     interactions, enabling small businesses to achieve
                     significant marketing efficiency and drive growth.
                   </p>

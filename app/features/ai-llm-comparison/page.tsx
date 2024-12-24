@@ -1,15 +1,16 @@
 "use client";
 import { ArrowRight } from "lucide-react";
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import Navbar from "@/components/navbar/Navbar";
 import "../../../styles/myanimation.css";
-import Footer from "@/components/footer/Footer";
 import Link from "next/link";
-import CardResponsive from "./component/CardResponsive";
-import Benefits from "./component/Benefits";
-import Faq from "./component/Faq";
 import Image from "next/image";
-import Card from "./component/Card";
+
+const Benefits = lazy(() => import("./component/Benefits"));
+const CardResponsive = lazy(() => import("./component/CardResponsive"));
+const Faq = lazy(() => import("./component/Faq"));
+const Card = lazy(() => import("./component/Card"));
+const Footer = lazy(() => import("@/components/footer/Footer"));
 
 const page = () => {
   return (
@@ -24,13 +25,14 @@ const page = () => {
               <div className="w-full max-w-[700px] items-center sm:items-start gap-y-4 flex flex-col">
                 <div className="bg-[#03473714]   text-[#034737] hover:shadow-md whitespace-nowrap justify-center py-2 px-4 flex items-center text-center text-[10px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[140px]">
                   AI LLM Comparison
-                </div>{" "}
+                </div>
                 <div className=" w-full brightness-95   ">
-                  <h1 className="text-[26px] max-w-[357px] xl:text-[40px] leading-tight  sm:!text-left !text-center text-black ">
-                    <span className="font-semibold">
-                      Choose the best AI model
+                  <h1 className="text-[26px] max-w-[457px] xl:text-[40px] leading-tight  sm:!text-left !text-center text-black ">
+                    <span className="font-semibold">AI LLM Comparison</span>
+                    <br></br>
+                    <span className="font-extralight ml-2">
+                      Choose the best AI model for your needs
                     </span>
-                    <span className="font-extralight ml-2">for your needs</span>
                   </h1>
                   <p className="text-[12px] sm:text-[18px] text-black mt-4 w-full lg:max-w-[600px] sm:!text-left !text-center gap-4 flex flex-col leading-tight font-light ">
                     <span>
@@ -210,13 +212,19 @@ const page = () => {
         </div>
       </section>
       <section className="2xl:flex xl:flex hidden sm:pt-20 items-center justify-center mx-auto">
-        <Card />
+        <Suspense>
+          <Card />
+        </Suspense>
       </section>
       <section className="flex 2xl:hidden xl:hidden  items-center justify-center mx-auto p-6">
-        <CardResponsive />
+        <Suspense>
+          <CardResponsive />
+        </Suspense>
       </section>
       <section className="px-6 sm:px-10 ">
-        <Benefits />
+        <Suspense>
+          <Benefits />
+        </Suspense>
       </section>
 
       <section className="items-center justify-center flex flex-col  sm:py-20  overflow-hidden ">
@@ -229,9 +237,13 @@ const page = () => {
             className="w-full overflow-hidden  absolute translate-y-[500px] -rotate-6 z-0"
           />
         </div>
-        <Faq />
+        <Suspense>
+          <Faq />
+        </Suspense>
       </section>
-      <Footer />
+      <Suspense>
+        <Footer />
+      </Suspense>
     </main>
   );
 };

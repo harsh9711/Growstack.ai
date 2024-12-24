@@ -1,19 +1,19 @@
 "use client";
 import { ArrowRight } from "lucide-react";
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import Navbar from "@/components/navbar/Navbar";
 import "../../../styles/myanimation.css";
-import Footer from "@/components/footer/Footer";
 import Link from "next/link";
-import CardResponsive from "./component/CardResponsive";
-import Benefits from "./component/Benefits";
 import Faq from "./component/Faq";
 import Image from "next/image";
-import Card from "./component/Card";
-import Cases from "./component/Cases";
-import SixCard from "./component/SixCard";
-import OneCard from "./component/OneCard";
-import SecondLastCard from "./component/SecondLastCard";
+
+const Cases = lazy(() => import("./component/Cases"));
+const Benefits = lazy(() => import("./component/Benefits"));
+const SixCard = lazy(() => import("./component/SixCard"));
+const Footer = lazy(() => import("@/components/footer/Footer"));
+const OneCard = lazy(() => import("./component/OneCard"));
+const SecondLastCard = lazy(() => import("./component/SecondLastCard"));
+
 interface ExpandableCardProps {
   heading: string;
   para: string;
@@ -47,14 +47,10 @@ const page = () => {
                 </div>
                 <div className="w-full brightness-95" data-aos="fade-right">
                   <h1 className="text-[26px] max-w-[500px] xl:text-[40px]  leading-tight sm:!text-left !text-center text-black">
-                    <span className="font-semibold">
-                      From idea to
-                      <br />
-                      <span> engaging content in</span>
-                    </span>
+                    <span className="font-semibold">AI Content Wizard</span>
                     <br />
                     <span className="font-extralight">
-                      minutes - powered by AI
+                      From idea to minutes - powered by AI engaging content in
                     </span>
                   </h1>
                   <p className="text-[12px] sm:text-[18px] text-black mt-4 w-full lg:max-w-[600px] sm:!text-left !text-center gap-4 flex flex-col leading-tight font-light">
@@ -129,20 +125,30 @@ const page = () => {
       </section>
 
       <section className=" pt-6 sm:pt-10 sm:px-6 p-0 items-center justify-center mx-auto">
-        <Cases />
+        <Suspense>
+          <Cases />
+        </Suspense>
       </section>
 
       <section className="px-6 sm:px-10  sm:pt-20">
-        <Benefits />
+        <Suspense>
+          <Benefits />
+        </Suspense>
       </section>
       <section className=" pt-40 sm:pt-20 sm:px-0 px-6 items-center justify-center mx-auto">
-        <SixCard />
+        <Suspense>
+          <SixCard />
+        </Suspense>
       </section>
       <section className="sm:pt-20 pt-10 sm:px-0 px-6  items-center justify-center mx-auto">
-        <OneCard />
+        <Suspense>
+          <OneCard />
+        </Suspense>
       </section>
       <section className="sm:pt-20 pt-10 sm:px-10 px-0  ">
-        <SecondLastCard />
+        <Suspense>
+          <SecondLastCard />
+        </Suspense>
       </section>
 
       <section className="items-center sm:px-0 px-6   justify-center flex flex-col  sm:py-20  overflow-hidden ">
@@ -155,9 +161,13 @@ const page = () => {
             className="w-full overflow-hidden  absolute translate-y-[500px] -rotate-6 z-0"
           />
         </div>
-        <Faq />
+        <Suspense>
+          <Faq />
+        </Suspense>
       </section>
-      <Footer />
+      <Suspense>
+        <Footer />
+      </Suspense>
     </main>
   );
 };

@@ -16,7 +16,7 @@ const RectangleCard: React.FC<RectangleCardProps> = ({
 }) => {
   return (
     <div
-      className={`bg-[#F9F9F9] p-6 mb-10 sm:mb-60 max-w-[1240px] mx-auto items-center justify-center  flex relative sm:py-20 h-full rounded-[20px] `}
+      className={`bg-[#F9F9F9] p-6 mb-10 sm:mb-30 max-w-[1240px] mx-auto items-center justify-center  flex relative sm:py-20 h-full rounded-[20px] `}
     >
       <div className="max-w-[988px] relative w-full flex  gap-10 flex-row justify-center items-center">
         <div>
@@ -75,7 +75,7 @@ const RectangleCardRight: React.FC<RectangleCardProps> = ({
   }, []);
   return (
     <div
-      className={`bg-[#F9F9F9] p-6 mb-10 sm:mb-60 max-w-[1240px] mx-auto items-center justify-center  flex relative sm:py-20 h-full rounded-[20px] `}
+      className={`bg-[#F9F9F9] p-6 mb-10 sm:mb-30 max-w-[1240px] mx-auto items-center justify-center  flex relative sm:py-20 h-full rounded-[20px] `}
     >
       <div className="max-w-[988px] relative w-full flex  gap-10 flex-row justify-center items-center">
         <div>
@@ -105,7 +105,7 @@ const RectangleCardRight: React.FC<RectangleCardProps> = ({
 const CardResponsive = () => {
   return (
     <div>
-      <div className="flex flex-col gap-y-10 sm:gap-y-48">
+      <div className="flex flex-col gap-y-10 sm:gap-y-28">
         <div className="text-black sm:items-start items-start justify-start flex flex-col gap-y-4">
           <div className="bg-[#03473714] text-[#034737] hover:shadow-md whitespace-nowrap justify-center py-2 2xl:px-4 flex items-center text-center text-[12px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[130px] 2xl:max-w-[151px]">
             Benefits

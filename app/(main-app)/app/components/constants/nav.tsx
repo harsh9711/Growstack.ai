@@ -10,15 +10,15 @@ import {
   ProductAiIcon,
   ShapeIcon,
   TextToVideoIcon,
-  AgentNavigationIcon
+  AgentNavigationIcon,
 } from "@/components/svgs";
 import { ALL_ROUTES } from "@/utils/constant";
 
-let navLinks: NavLink[] = [
+const navLinks: NavLink[] = [
   {
     icon: <DashboardIcon />,
     href: "/app",
-    title: "Dashboard",
+    title: "Home",
   },
 
   {
@@ -51,7 +51,7 @@ let navLinks: NavLink[] = [
       },
       {
         icon: <TextToVideoIcon />,
-        name: "Text to avatar",
+        name: "AI Text to avatar",
         href: ALL_ROUTES.TEXT_TO_AVATAR,
       },
       {
@@ -60,7 +60,7 @@ let navLinks: NavLink[] = [
         href: ALL_ROUTES.AI_BACKGROUND_GENERATOR,
       },
     ],
-    title: "AI Studio",
+    title: "Features",
   },
   {
     icon: <AnalyseIcon />,
@@ -71,7 +71,7 @@ let navLinks: NavLink[] = [
         href: ALL_ROUTES.WORKFLOW_DASHBOARD,
       },
       {
-        icon:<AgentNavigationIcon width={24} height={24} />,
+        icon: <AgentNavigationIcon width={24} height={24} />,
         name: "AI agent",
         href: ALL_ROUTES.AI_AGENT,
       },
@@ -84,6 +84,5 @@ let navLinks: NavLink[] = [
   //   title: "Publish",
   // },
 ];
-
 
 export default navLinks;

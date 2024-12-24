@@ -1,14 +1,21 @@
 "use client";
 import { ArrowRight } from "lucide-react";
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import Navbar from "@/components/navbar/Navbar";
-import Footer from "@/components/footer/Footer";
 import Link from "next/link";
-import Card from "./component/Card";
-import CardResponsive from "./component/CardResponsive";
-import Benefits from "./component/Benefits";
-import Faq from "./component/Faq";
 import Image from "next/image";
+
+const Footer = lazy(() => import("@/components/footer/Footer"));
+const Card = lazy(() => import("./component/Card"));
+const CardResponsive = lazy(() => import("./component/CardResponsive"));
+const Benefits = lazy(() => import("./component/Benefits"));
+const Faq = lazy(() => import("./component/Faq"));
+
+const LoadingSpinner = () => (
+  <div className="flex items-center justify-center w-full h-40">
+    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#034737]"></div>
+  </div>
+);
 
 const page = () => {
   return (
@@ -26,12 +33,10 @@ const page = () => {
             <div className="w-full max-w-[700px] items-start gap-y-4 flex flex-col">
               <div className="max-w-3xl brightness-95" data-aos="fade-right">
                 <h1 className="text-[26px] xl:text-[40px] max-w-xl leading-tight sm:!text-left !text-center text-black">
-                  <span className="font-semibold">
-                    Keep your conversations private
-                  </span>
+                  <span className="font-semibold">AI Secured Chat</span>
+                  <br></br>
                   <span className="font-extralight">
-                    {" "}
-                    with AI-driven security
+                    Keep your conversations private with AI-driven security
                   </span>
                 </h1>
                 <p className="text-[18px] text-black mt-4 flex gap-6 flex-col w-full lg:max-w-[600px] sm:!text-left !text-center leading-tight font-light">
@@ -82,28 +87,42 @@ const page = () => {
       </section>
 
       <section>
-        <Benefits />
-      </section>
-      <section className="2xl:flex xl:flex hidden  sm:pt-32 items-center justify-center mx-auto">
-        <Card />
-      </section>
-      <section className="flex 2xl:hidden xl:hidden pt-20 sm:pt-0   items-center justify-center mx-auto p-6">
-        <CardResponsive />
+        <Suspense fallback={<LoadingSpinner />}>
+          <Benefits />
+        </Suspense>
       </section>
 
-      <section className="items-center justify-center flex flex-col sm:py-20  overflow-hidden ">
-        <div className="items-center justify-center flex flex-col gap-y-4  overflow-hidden ">
+      <section className="2xl:flex xl:flex hidden sm:pt-32 items-center justify-center mx-auto">
+        <Suspense fallback={<LoadingSpinner />}>
+          <Card />
+        </Suspense>
+      </section>
+
+      <section className="flex 2xl:hidden xl:hidden pt-20 sm:pt-0 items-center justify-center mx-auto p-6">
+        <Suspense fallback={<LoadingSpinner />}>
+          <CardResponsive />
+        </Suspense>
+      </section>
+
+      <section className="items-center justify-center flex flex-col sm:py-20 overflow-hidden">
+        <div className="items-center justify-center flex flex-col gap-y-4 overflow-hidden">
           <Image
             src="/solutions/design.svg"
             width={1000}
             height={1800}
             alt="arrow"
-            className="w-full overflow-hidden  absolute translate-y-[500px] -rotate-6 z-0"
+            className="w-full overflow-hidden absolute translate-y-[500px] -rotate-6 z-0"
+            loading="lazy"
           />
         </div>
-        <Faq />
+        <Suspense fallback={<LoadingSpinner />}>
+          <Faq />
+        </Suspense>
       </section>
-      <Footer />
+
+      <Suspense fallback={<LoadingSpinner />}>
+        <Footer />
+      </Suspense>
     </main>
   );
 };

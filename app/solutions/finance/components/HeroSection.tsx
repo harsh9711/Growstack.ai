@@ -14,7 +14,7 @@ const HeroSection = () => {
       className="2xl:bg-[url('/animation3.png')] lg:bg-[url('/animation3.png')] md:bg-[url('/animation3.png')]xl:bg-[url('/animation3.png')]  h-full bg-gradient-to-b from-[#EFEBFA] to-[#FFFFFF] bg-cover  w-full mb-10 2xl:mb-20 items-center  bg-[100%] justify-center mx-auto"
     >
       <Navbar
-        logoUrl="/white.png"
+        logoUrl="/logo/growstack1.png"
         logoAlt="Custom Logo"
         backgroundColor="transparent"
       />
@@ -36,11 +36,11 @@ const HeroSection = () => {
                 className="text-[26px] xl:text-[48px] w-full leading-normal text-black"
               >
                 <span className="font-semibold w-full 2xl:whitespace-nowrap">
-                  Transform finance operations{" "}
+                  Finance
                 </span>
                 <br />
                 <span className="font-light 2xl:whitespace-nowrap">
-                  with AI-Powered solutions
+                  Transform finance operations with AI-Powered solutions
                 </span>
               </h1>
               <p

@@ -19,17 +19,17 @@ import { useRouter } from "next-nprogress-bar";
 import { ALL_ROUTES } from "@/utils/constant";
 import { RootState } from "@/lib/store";
 import { useSelector } from "react-redux";
-import { getUserFriendlyPlanName } from "@/lib/utils";
-import { PlanName } from "@/types/enums";
 import { ProductAiIcon } from "@/components/svgs";
 
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { currentPlan } = useSelector((rootState: RootState) => rootState.auth);
+  const { user, currentPlan } = useSelector(
+    (rootState: RootState) => rootState.auth
+  );
   useEffect(() => {
-    const userId = localStorage.getItem('user_id');
+    const userId = localStorage.getItem("user_id");
     const publishHref = "/app/publish/scheduler/quick-posting";
     if (
       userId === "675998d505fdf746bb21bd27" &&
@@ -162,21 +162,27 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-5">
-          <button
-            className="group relative inline-flex items-center bg-[#2DA771] h-12 gap-2 px-4 rounded-lg text-white font-semibold overflow-hidden"
-            onClick={() => {
-              window.location.href = ALL_ROUTES.UPGRADE;
-            }}
-          >
-            <span className="text-md text-nowrap flex flex-row gap-x-2 font-medium">
-              Upgrade
-            </span>
-          </button>
-          <div>
+          {!(
+            currentPlan?.plan_name === "Automation Hub" ||
+            user?.user_type === "ADMIN"
+          ) && (
+            <button
+              className="group relative inline-flex items-center bg-[#2DA771] h-12 gap-2 px-4 rounded-lg text-white font-semibold overflow-hidden"
+              onClick={() => {
+                window.location.href = ALL_ROUTES.UPGRADE;
+              }}
+            >
+              <span className="text-md text-nowrap flex flex-row gap-x-2 font-medium">
+                Upgrade
+              </span>
+            </button>
+          )}
+
+          {/* <div>
             <span className="text-md">
               {getUserFriendlyPlanName(currentPlan?.plan_name as PlanName)}
             </span>
-          </div>
+          </div> */}
           <div className="lg:hidden">
             <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
               <IoIosMenu size={30} />

@@ -25,8 +25,10 @@ const HeroSection = () => {
               className="text-[26px] xl:text-[40px] 2xl:text-[48px] text-center sm:text-start   w-full leading-normal text-black"
             >
               <span className="font-semibold">
-                Unlock the future of media & publishing
-                <span className="font-light"> with AI solutions</span>
+                Healthcare<br></br>
+                <span className="font-light">
+                  Unlock the future of media & publishing with AI solutions
+                </span>
               </span>{" "}
             </h1>
             <p

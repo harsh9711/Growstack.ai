@@ -18,13 +18,10 @@ function Page() {
       <Banner />
       <VideoSolution />
       <ElevateBrand />
-      {/* <VideoCreated /> */}
-      {/* <VideoTemplate /> */}
       <AiProduct />
       <AiSlider />
       <CoreProduct />
       <Editing />
-      {/* <CustomerStories />  */}
       <Faqs />
       <Footer />
     </React.Fragment>

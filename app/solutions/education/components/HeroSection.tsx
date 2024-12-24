@@ -16,7 +16,7 @@ const HeroSection = () => {
       <div className="relative z-40">
         {" "}
         <Navbar
-          logoUrl="/white.png"
+          logoUrl="/logo/growstack1.png"
           logoAlt="Custom Logo"
           backgroundColor="transparent"
         />

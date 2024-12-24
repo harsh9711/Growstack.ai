@@ -39,7 +39,7 @@ const Benefits = () => {
 
   return (
     <div
-      className="max-w-[1760px] py-20 flex flex-col items-center gap-y-8 justify-center rounded-[60px] mx-auto w-full sm:max-h-[594px] h-full bg-[#13745D]"
+      className="max-w-[1760px] py-20 flex flex-col items-center gap-y-8 justify-center rounded-[60px] mx-auto w-full sm:max-h-[594px] h-full bg-[#2DA771]"
       data-aos="flip-left" // Rotate the whole green container first
       data-aos-duration="1500" // Rotation duration
     >

@@ -20,8 +20,7 @@ const Banner: React.FC = () => {
               <div className="bannerContent">
                 <span className="user">Growstack for MARKETING Team</span>
                 <h2 className="solsheading">
-                  <span>Transform your marketing strategy</span> <br /> with
-                  GrowStack{" "}
+                  <span>AI Marketing and Sales Apps</span> <br /> with GrowStack{" "}
                   <img
                     src="/images_growstack/solutions/curveArrow.svg"
                     alt="arrow"
@@ -51,22 +50,6 @@ const Banner: React.FC = () => {
                     </button>{" "}
                   </Link>
                 </div>
-
-                <div className="sale"></div>
-                {/* <div className="store">
-                  <Link href="/register">
-                    <img
-                      src="/images_growstack/banner/playStore.svg"
-                      alt="banner"
-                    />
-                  </Link>
-                  <Link href="/register">
-                    <img
-                      src="/images_growstack/banner/apple.svg"
-                      alt="banner"
-                    />
-                  </Link>
-                </div> */}
               </div>
             </div>
             <div>

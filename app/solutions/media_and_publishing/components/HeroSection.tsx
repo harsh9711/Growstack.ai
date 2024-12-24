@@ -25,8 +25,10 @@ const HeroSection = () => {
               className="text-[26px] xl:text-[40px] 2xl:text-[48px] text-center sm:text-start   w-full leading-normal text-white"
             >
               <span className="font-semibold">
-                Unlock the future of media & publishing
-                <span className="font-light"> with AI solutions</span>
+                Media & Publishing<br></br>
+                <span className="font-light">
+                  Unlock the future of media & publishing with AI solutions
+                </span>
               </span>{" "}
             </h1>
             <p
@@ -58,31 +60,6 @@ const HeroSection = () => {
                   </button>
                 </Link>
               </div>
-
-              {/* <div
-              data-aos="fade-right"
-              data-aos-duration="1500"
-              className="flex  flex-wrap gap-4"
-            >
-              <button className="flex items-center gap-2   text-primary-green rounded-xl">
-                <Image
-                  className="w-full  h-full"
-                  src="/play2.png"
-                  alt="Apple"
-                  width={180}
-                  height={400}
-                />
-              </button>
-              <button className="flex items-center gap-2   text-primary-green rounded-xl">
-                <Image
-                  className="w-full  h-full "
-                  src="/apple2.png"
-                  alt="Apple"
-                  width={180}
-                  height={400}
-                />
-              </button>
-            </div> */}
             </div>
           </div>
         </div>
