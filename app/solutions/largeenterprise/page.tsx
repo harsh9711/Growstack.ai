@@ -36,10 +36,10 @@ const Home = () => {
                 <div className="  items-center flex flex-col gap-y-4 justify-center  mx-auto ">
                   <h1 className="text-[24px] xl:text-[40px] 2xl:xl:text-[48px]  leading-tight flex flex-col  items-center justify-center bg-gradient-to-b from-black to-black/30 bg-clip-text text-transparent">
                     <span className="font-semibold text-center">
-                      Streamline complex
+                      Large Enterprise
                     </span>
                     <span className="font-light text-center">
-                      operation's with advance AI solutions
+                      Streamline complex operation's with advance AI solutions
                     </span>
                   </h1>
 
@@ -53,7 +53,7 @@ const Home = () => {
                     <div className="flex flex-row gap-8 ">
                       <Link href="/auth/register" className="no-underline">
                         {" "}
-                        <button className="bg-[#034737] text-white font-medium flex items-center gap-2 py-4 px-7 rounded-xl hover:font-bold shadow-md shadow-[#00000025]">
+                        <button className="bg-[#2Da771] text-white font-medium flex items-center gap-2 py-4 px-7 rounded-xl hover:font-bold shadow-md shadow-[#00000025]">
                           Free trial <ArrowRight />
                         </button>
                       </Link>

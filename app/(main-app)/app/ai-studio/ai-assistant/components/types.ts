@@ -5,6 +5,7 @@ export interface Assistant {
   role: string;
   slug: string;
   welcome_message: string;
+  summary: string;
 }
 
 export interface Chat {

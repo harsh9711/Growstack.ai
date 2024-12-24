@@ -525,15 +525,32 @@ export default function ChatComponent() {
             onValueChange={handleBrandVoiceSelection}
           >
             <SelectTrigger className="h-12 bg-[#2DA771] text-white border-0 rounded-xl flex items-center justify-between px-4">
-              <div className="flex items-center gap-2">
-                <span className="min-w-fit">
-                  <Wave />
-                </span>
-                {selectedBrandVoice
-                  ? brandVoices.find(voice => voice._id === selectedBrandVoice)
-                      ?.brand_name
-                  : "Brand Voice"}
-              </div>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="flex items-center gap-2">
+                      <span className="min-w-fit">
+                        <Wave />
+                      </span>
+                      <div className="flex items-center">
+                        {selectedBrandVoice
+                          ? brandVoices.find(
+                              voice => voice._id === selectedBrandVoice
+                            )?.brand_name
+                          : "Brand Voice"}
+
+                        {/* <Info
+                          size={18}
+                          className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
+                        /> */}
+                      </div>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom" className="bg-white">
+                    <p>create brand for your company.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>

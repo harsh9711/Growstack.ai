@@ -1,15 +1,9 @@
 import React from "react";
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
-import HeroSection from "../HeroSection";
 import Image from "next/image";
 import { blogs } from "../../blogs";
 import Link from "next/link";
-import ContentBox from "../ContentBox";
-import HeroSectionAi from "../content/HeroSectionAi";
-import ContentBoxAi from "../content/ContentBoxAI";
-import HeroSectionCo from "../content/HeroSectionCo";
-import ContentBoxCo from "../content/ContentBoxCo";
 import HeroSectionGame from "../content/HeroSectionAiGame";
 import ContentBoxGame from "../content/ContentBoxGame";
 
@@ -18,7 +12,7 @@ const BlogpageAI = () => {
     <div className="flex flex-col">
       <div className="sticky top-0 z-40">
         <Navbar
-          logoUrl="/white.png"
+          logoUrl="/logo/growstack1.png"
           logoAlt="Custom Logo"
           backgroundColor="white"
         />

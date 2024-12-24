@@ -18,7 +18,7 @@ function Banner() {
               <div className="bannerContent">
                 <span className="user">AI assistants</span>
                 <h2 className="mtitle">
-                  <span>AI powered</span> <br />{" "}
+                  <span>Marketing and Sales</span> <br />{" "}
                   <h2 className="assist">assistants</h2>
                 </h2>
                 <p>

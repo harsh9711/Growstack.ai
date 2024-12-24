@@ -22,11 +22,12 @@ const HeroSection = () => {
               data-aos-duration="1500"
               className="text-[26px] xl:text-[40px] 2xl:text-[48px]   w-full leading-normal text-black"
             >
-              <span className="font-semibold">
-                Streamline decision making and operations
-              </span>
+              <span className="font-semibold">Leadership</span>
               <br />{" "}
-              <span className="font-light">with Growstack's AI solutions </span>
+              <span className="font-light">
+                Streamline decision making and operations with Growstack's AI
+                solutions{" "}
+              </span>
             </h1>
             <p
               data-aos="fade-right"

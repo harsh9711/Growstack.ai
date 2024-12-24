@@ -38,6 +38,7 @@ const AssistantsChats: React.FC<PageProps> = ({
   const [selectedAiModel, setSelectedAiModel] = useState(
     aiModelOptions[0].models[0].value
   );
+  const [assistantSummary, setAssistantSummary] = useState("");
   const [newChat, setNewChat] = useState(true);
   const [convId, setConvId] = useState("");
   useEffect(() => {
@@ -47,6 +48,7 @@ const AssistantsChats: React.FC<PageProps> = ({
           `/ai/api/v1/assistant/${assistant_id}/${newChat}`
         );
         setAssistantConversation(response.data.data.convo);
+        setAssistantSummary(response.data.data.assistant.summary);
         setConvId(response.data.data.convo._id);
       } catch (error: any) {
         console.error("Error fetching assistant data:", error);
@@ -132,6 +134,8 @@ const AssistantsChats: React.FC<PageProps> = ({
     setSelectedLanguage(language);
   };
 
+  console.log(assistantSummary);
+
   return (
     <div
       className={`flex-1 flex !bg-white shadow-box border ${isSidebarOpen ? "overflow-hidden" : ""} ${isHistoryOpen ? "overflow-hidden" : ""}`}
@@ -162,6 +166,7 @@ const AssistantsChats: React.FC<PageProps> = ({
           selectedLanguage={selectedLanguage}
           switchLanguage={switchLanguage}
           setSelectedAiModel={setSelectedAiModel}
+          assistantSummary={assistantSummary}
           selectedAiModel={selectedAiModel}
           messagesData={messagesData}
         />

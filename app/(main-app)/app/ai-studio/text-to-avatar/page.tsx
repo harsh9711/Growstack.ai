@@ -32,7 +32,7 @@ interface PlanUsage {
   plan_type: string;
   stripe_subscription_id: string;
   usage_amount: number;
-  usage:any
+  usage: any;
 }
 const VideoTable: React.FC<{
   videos: Array<{
@@ -290,8 +290,8 @@ export default function TextToVideoPage() {
     }
   };
   useEffect(() => {
-    fetchPlanUsage()
-  },[])
+    fetchPlanUsage();
+  }, []);
   useEffect(() => {
     fetchData();
 
@@ -344,22 +344,22 @@ export default function TextToVideoPage() {
       editedAt: template.updatedAt,
       videoUrl: template.doc_content.video_url,
     }));
-    const fetchPlanUsage = async () => {
-      try {
-        const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
-        const data: PlanUsage = response.data.data;
-        setPlanUsage(data);
-      } catch (error: any) {
-        if (error.response) {
-          toast.error(error.response.data.message);
-        } else {
-          toast.error(error.message);
-        }
-        console.error("Error fetching plan usage:", error);
-      } finally {
-        setLoading(false);
+  const fetchPlanUsage = async () => {
+    try {
+      const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
+      const data: PlanUsage = response.data.data;
+      setPlanUsage(data);
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
       }
-    };
+      console.error("Error fetching plan usage:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
   const handleNavigation = async () => {
     try {
       if (
@@ -371,7 +371,8 @@ export default function TextToVideoPage() {
         return;
       } else if (
         user?.user_type !== "ADMIN" &&
-        (currentPlan?.usage?.no_of_text_to_avatar ?? 0) <= 0 && (planUsage?.usage_amount ?? 0) <= 0
+        (currentPlan?.usage?.no_of_text_to_avatar ?? 0) <= 0 &&
+        (planUsage?.usage_amount ?? 0) <= 0
       ) {
         toast.error("Text to Avatar Credits Are Over");
         setIsUpgradeModalOpen(true);
@@ -382,23 +383,37 @@ export default function TextToVideoPage() {
     } catch (error) {
       console.log(error);
     }
-
-
   };
 
   return (
     <Fragment>
-      
       <div className="grid justify-items-end">
         <div className="flex">
-        <svg width="14" height="21" viewBox="0 0 14 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M5.75349 1H12.4815L8.23221 7.01975H12.4815L2.3541 18.2802L5.8243 10.6316H2L5.75349 1Z" fill="#F9DE6F" stroke="#F9DE6F" stroke-width="0.791016" stroke-miterlimit="10"/>
-</svg> &nbsp;<h1 className="text ">
-Your Credits Balance is :<strong style={{color:"#2DA771"}}> {(((Number(planUsage?.usage_amount) || 0)* 100) + (Number(planUsage?.usage?.no_of_text_to_avatar) || 0)) }
-</strong>
-        </h1>
+          <svg
+            width="14"
+            height="21"
+            viewBox="0 0 14 21"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M5.75349 1H12.4815L8.23221 7.01975H12.4815L2.3541 18.2802L5.8243 10.6316H2L5.75349 1Z"
+              fill="#F9DE6F"
+              stroke="#F9DE6F"
+              stroke-width="0.791016"
+              stroke-miterlimit="10"
+            />
+          </svg>{" "}
+          &nbsp;
+          <h1 className="text ">
+            Your Credits Balance is :
+            <strong style={{ color: "#2DA771" }}>
+              {" "}
+              {(Number(planUsage?.usage_amount) || 0) * 100 +
+                (Number(planUsage?.usage?.no_of_text_to_avatar) || 0)}
+            </strong>
+          </h1>
         </div>
-   
       </div>
       <main>
         <div className="grid grid-cols-1 gap-5 mt-8">
@@ -473,7 +488,7 @@ Your Credits Balance is :<strong style={{color:"#2DA771"}}> {(((Number(planUsage
                     "Design Your Unique Avatar for Engaging Masterclasses,
                     Personal<br></br> Branding, and Internal Training!"
                   </div>
-                  <div className="flex flex-row gap-3 w-full items-center justify-center">
+                  {/* <div className="flex flex-row gap-3 w-full items-center justify-center">
                     <div className="h-[170px] w-[140px] flex items-center justify-center">
                       <Image src={avatarImg1} alt="avatar1" />
                     </div>
@@ -489,7 +504,7 @@ Your Credits Balance is :<strong style={{color:"#2DA771"}}> {(((Number(planUsage
                     <div className="h-[170px] w-[140px] flex items-center justify-center">
                       <Image src={avatarImg5} alt="avatar1" />
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

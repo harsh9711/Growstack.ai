@@ -47,14 +47,10 @@ const page = () => {
                 </div>
                 <div className="w-full brightness-95" data-aos="fade-right">
                   <h1 className="text-[26px] max-w-[500px] xl:text-[40px]  leading-tight sm:!text-left !text-center text-black">
-                    <span className="font-semibold">
-                      From idea to
-                      <br />
-                      <span> engaging content in</span>
-                    </span>
+                    <span className="font-semibold">AI Content Wizard</span>
                     <br />
                     <span className="font-extralight">
-                      minutes - powered by AI
+                      From idea to minutes - powered by AI engaging content in
                     </span>
                   </h1>
                   <p className="text-[12px] sm:text-[18px] text-black mt-4 w-full lg:max-w-[600px] sm:!text-left !text-center gap-4 flex flex-col leading-tight font-light">

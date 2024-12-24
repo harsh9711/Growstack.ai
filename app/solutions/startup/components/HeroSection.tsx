@@ -27,10 +27,10 @@ const HeroSection = () => {
                 data-aos-duration="1500"
                 className="text-[40px] 2xl:text-[48px] sm:items-start sm:text-start text-center items-center w-full leading-tight text-white"
               >
-                <span className="font-semibold">Supercharge growth</span>
+                <span className="font-semibold">Startup</span>
                 <br />
                 <span className="font-light 2xl:whitespace-nowrap">
-                  and market penetration{" "}
+                  Supercharge growth and market penetration{" "}
                 </span>
                 <br />
                 <span className="font-light 2xl:whitespace-nowrap">
@@ -128,8 +128,7 @@ const HeroSection = () => {
           </h1>
           <p className="text-[16px] 2xl:text-[18px] text-white mt-4 w-full  leading-tight font-light">
             Explore how Growstack's innovative AI solutions empower startups to
-            overcome challenges, streamline operations and achieve rapid
-            growth.
+            overcome challenges, streamline operations and achieve rapid growth.
           </p>
         </div>
       </div>
