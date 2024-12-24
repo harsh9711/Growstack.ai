@@ -82,7 +82,9 @@ function Editing() {
                     <h4 className="text-lg sm:text-start text-center font-bold text-gray-900 mb-1">
                       {item.title}
                     </h4>
-                    <p className="text-sm sm:text-start text-center text-gray-600">{item.desc}</p>
+                    <p className="text-sm sm:text-start text-center text-gray-600">
+                      {item.desc}
+                    </p>
                   </div>
                 </div>
               </div>

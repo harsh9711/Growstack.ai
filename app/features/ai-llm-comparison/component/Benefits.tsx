@@ -45,7 +45,7 @@ const Benefits = () => {
 
   return (
     <div
-      className="max-w-[1760px] py-20 flex flex-col items-start gap-y-8 justify-center rounded-[60px] mx-auto w-full sm:max-h-[594px] h-full bg-[#14171B]"
+      className="max-w-[1760px] py-20 flex flex-col items-start gap-y-8 justify-center rounded-[60px] mx-auto w-full sm:max-h-[594px] h-full bg-[#2DA771]"
       data-aos="flip-left"
       data-aos-duration="1500"
     >
