@@ -27,6 +27,7 @@ import LinkedinNode from "./integrations/LinkedinNode";
 import FanOut from "./fanOut";
 import ApolloNodes from "./integrations/ApolloNodes";
 import AutoBoundNode from "./integrations/AutoBound";
+import CreateRecordNode from "./integrations/CreateRecord";
 
 export const initialNodes: AppNode[] = [
   {
@@ -70,6 +71,7 @@ export const nodeTypes = {
   linkedin: LinkedinNode,
   fanout: FanOut,
   apollo: ApolloNodes,
-  autobound: AutoBoundNode
+  autobound: AutoBoundNode,
+  salesforce: CreateRecordNode
 
 } satisfies NodeTypes;

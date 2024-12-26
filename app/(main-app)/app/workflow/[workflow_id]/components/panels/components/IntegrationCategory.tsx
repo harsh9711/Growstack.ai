@@ -31,14 +31,13 @@ const IntegrationCategory = ({ setNodes, setSelectedCategory }: any): React.Reac
   if ((masterNode && !masterNode.length) || !masterNode) {
     return <div>Data not found</div>;
   }
-
   const generalData = masterNode?.filter(
     item =>
       item.category.toLowerCase() === "integration" &&
-      (item.type === "gmail" || item.type === "linkedin" || item.type === "apollo" || item.type === "autobound")
+      (item.type === "gmail" || item.type === "linkedin" || item.type === "apollo" || item.type === "autobound" || item.type === "salesforce")
   );
 
-  // console.log("generalData", generalData);
+  // console.log("masterNode", generalData);
 
   const modifiedNodes = generalData?.map(convertNodeData);
 

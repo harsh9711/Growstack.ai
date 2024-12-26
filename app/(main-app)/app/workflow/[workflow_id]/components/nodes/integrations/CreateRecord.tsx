@@ -1,29 +1,20 @@
 import React, { memo, useState, useEffect, useCallback } from "react";
-import { Handle, Position, type NodeProps, useReactFlow } from "@xyflow/react";
 import { GmailNodeProps } from "../types";
+import { useAppDispatch } from "@/lib/hooks";
+import { useAppSelector } from "@/lib/hooks";
+import { Handle, NodeProps, Position, useReactFlow } from "@xyflow/react";
+import { useSnackbar } from "../../snackbar/SnackbarContext";
 import DynamicInput from "../../DynamicInputs";
+import { deleteNodeById, removeNodeById, updateNodeById, updateNodeDescription, updateNodeParameter } from "@/lib/features/workflow/node.slice";
+import { IntegrationResultProps, VariableNameProps, WorkflowNodeState } from "@/types/workflows";
 import { extractParameterValues } from "@/utils/dataResolver";
 import { getVariableName, isSpecialType } from "@/utils/helper";
-import {
-  deleteNodeById,
-  removeNodeById,
-  updateNodeById,
-  updateNodeDescription,
-  updateNodeParameter,
-} from "@/lib/features/workflow/node.slice";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import {
-  IntegrationResultProps,
-  VariableNameProps,
-  WorkflowNodeState,
-} from "@/types/workflows";
 import DeleteConfirmationModal from "../../modals/deletemodal/DeleteModal";
-import { useSnackbar } from "../../snackbar/SnackbarContext";
-import { setSignInStatus } from "@/lib/features/workflow/nodeAuth.slice";
-import { useSelector } from "react-redux";
 import { authenticateUser } from "@/utils/paraGonAuth";
+import { useSelector } from "react-redux";
+import { setSignInStatus } from "@/lib/features/workflow/nodeAuth.slice";
 
-const ApolloNodes = memo(
+const CreateRecordNode = memo(
   ({
     data,
     isConnectable,
@@ -31,18 +22,8 @@ const ApolloNodes = memo(
     positionAbsoluteX,
     positionAbsoluteY,
   }: NodeProps<GmailNodeProps>) => {
-    // const { parameters, nodeMasterId } = data;
-
     const { success } = useSnackbar();
     const { setNodes, setEdges } = useReactFlow();
-    const [isSignedUp, setIsSignedUp] = useState(false);
-
-    const handleSignIn = (platform: string, data: any) => {
-      // Set the user as signed in for a particular platform
-      dispatch(setSignInStatus({ platform, data, status: true }));
-    };
-
-    const isApolloSignedIn = useSelector((state: any) => state?.nodeAuth["apollo"]);
 
     const dispatch = useAppDispatch();
     const { workFlowData } = useAppSelector(state => state.workflows);
@@ -51,30 +32,31 @@ const ApolloNodes = memo(
     const node = useAppSelector(state =>
       state.nodes.nodes.find(node => node.id === id)
     );
-
     const [isEdit, setIsEdit] = useState(true);
-
     const [isActionModalShow, setIsActionModalShow] = useState(false);
-
     const [description, setDescription] = useState(data?.descriptions || "");
-
     const [connectionLoading, setConnectionLoading] = useState(false);
     const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
-
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [activeAction, setActiveAction] = useState<string>("");
     const [openDeleteConfirmationModal, setOpenDeleteConfirmationModal] =
       useState(false);
     const [variableNames, setVariableNames] = useState<VariableNameProps[]>([]);
     const [focusedInputKey, setFocusedInputKey] = useState<string | null>(null);
-
     const [connectedEmail, setConnectedEmail] =
       useState<IntegrationResultProps>({} as IntegrationResultProps);
-
     const [dependencies, setDependencies] = useState<
       { key: string; nodeId: string }[]
     >([]);
+    const [isSignedUp, setIsSignedUp] = useState(false);
 
+    const handleSignIn = (platform: string, data: any) => {
+      // Set the user as signed in for a particular platform
+      dispatch(setSignInStatus({ platform, data, status: true }));
+    };
+
+
+    const isSalesforceSignedIn = useSelector((state: any) => state?.nodeAuth["salesforce"]);
     // ON OUTSIDE CLICK CLOSE ACTION MODAL
     const handleOutsideClick = (e: MouseEvent) => {
       const modal = document.getElementById("node-action-modal");
@@ -169,8 +151,8 @@ const ApolloNodes = memo(
         requiredParams.forEach(param => {
           const key = node?.data?.parameters
             ? Object.keys(node.data.parameters).find(
-                k => node.data.parameters?.[k] === param
-              )
+              k => node.data.parameters?.[k] === param
+            )
             : undefined;
           if (key && !param.value) {
             dispatch(
@@ -226,8 +208,9 @@ const ApolloNodes = memo(
       setIsEdit(!isEdit);
     };
 
-    const handleApolloSignIn = async () => {
+    const handleSalesforceSignIn = async () => {
       try {
+        console.log("salesforce sign in");
 
         if (connectedEmail.enabled) return;
 
@@ -235,13 +218,14 @@ const ApolloNodes = memo(
 
         const timeoutId = setTimeout(() => {
           setConnectionLoading(false);
+          console.log("Authentication timeout, stopping loading state");
         }, 8000);
 
-        const result = await authenticateUser("apollo");
+        const result = await authenticateUser("salesforce");
         clearTimeout(timeoutId);
 
         if (result && result.credentialStatus === "VALID") {
-          handleSignIn("apollo", result);
+          handleSignIn("salesforce", result);
           setConnectedEmail(result);
           setIsSignedUp(true);
         }
@@ -253,19 +237,19 @@ const ApolloNodes = memo(
     };
 
     useEffect(() => {
-      if (isApolloSignedIn?.status) {
-        setConnectedEmail(isApolloSignedIn?.data);
+      if (isSalesforceSignedIn?.status) {
+        setConnectedEmail(isSalesforceSignedIn?.data);
         setIsSignedUp(true);
       }
-    }, [isApolloSignedIn]);
-
+    }, [isSalesforceSignedIn]);
+    
     return (
       <div>
         <section className="node-box relative">
           <div className="node-top-box relative">
             <div className="node-name-text-description text-center mb-3">
               <h4 className="text-sm font-medium text-[#2DA771]">
-                {node?.data?.label ?? "Apollo"}
+                { "Salesforce"}
               </h4>
 
               <textarea
@@ -293,7 +277,7 @@ const ApolloNodes = memo(
                   className="w-[140px] mx-auto"
                 />
                 <img
-                  src="/svgs/apollo.svg"
+                  src="/svgs/salesforce.svg"
                   alt="foreground icon"
                   className="w-[40px] mx-auto absolute top-[50px] left-0 right-0"
                 />
@@ -380,16 +364,18 @@ const ApolloNodes = memo(
 
           {isDropdownOpen && (
             <div className="node-inner-wrapper bg-white p-4 border-2 border-[#2DA771] rounded-[20px] w-[400px] absolute left-1/2 transform -translate-x-1/2">
-               <div className="heading-button-box rounded-[16px] mb-2 p-4 bg-[#FFE6FF] flex justify-between items-center overflow-hidden">
+
+
+              <div className="heading-button-box rounded-[16px] mb-2 p-4 bg-[#FFE6FF] flex justify-between items-center overflow-hidden">
                 <div className="short-text-heading">
                   <img
-                    src="/svgs/apollo.svg"
+                    src="/svgs/salesforce.svg"
                     alt="node icon"
                     className="w-[20px] mb-2"
                   />
 
                   <h4 className="text-sm font-medium text-[#14171B]">
-                    {node?.data?.label ?? "Apollo"}
+                    {node?.data?.label ?? "Create Record"}
                   </h4>
                 </div>
                 {isSignedUp ? (
@@ -408,7 +394,7 @@ const ApolloNodes = memo(
                 ) : (
                   <div className="signin-button-box">
                     <button
-                      onClick={handleApolloSignIn}
+                      onClick={handleSalesforceSignIn}
                       className="p-4 text-white text-[16px] bg-[#2DA771] rounded-[20px] w-[100px]"
                     >
                       {connectionLoading ? (
@@ -423,49 +409,35 @@ const ApolloNodes = memo(
                 )}
               </div>
 
-              
-             
               <div className={`node-content-wrapper relative `}>
                 <div className="action-box">
                   <>
                     <h3 className="text-[16px] font-medium text-[#14171B] mb-4">
-                      Actions
+                      {node?.data?.label || "Create Record"}
                     </h3>
                   </>
                   <>
                     {node?.data?.parameters &&
-                      Object.entries(node.data.parameters)
-                        .filter(([key]: any) => {
-                          // Always show keywords and variableName
-                          if (
-                            key === "keywords" ||
-                            key === "variableName" ||
-                            key === "searchCriteria"
-                          )
-                            return true;
+                      Object.entries(node.data.parameters).map(
+                        ([key, param]) => {
 
-                          // Check if searchCriteria exists and includes the current key
-                          const searchCriteria =
-                            node.data.parameters?.searchCriteria?.value || [];
-                          return searchCriteria.includes(key);
-                        })
-                        .map(([key, param]) => {
                           return (
                             <DynamicInput
                               key={key}
                               inputKey={key}
                               param={param}
                               handleInputChange={
-                                isEdit ? handleInputChange : () => {}
+                                isEdit ? handleInputChange : () => { }
                               }
                               variableNames={variableNames}
                               focusedInputKey={focusedInputKey}
                               setFocusedInputKey={setFocusedInputKey}
                             />
                           );
-                        })}
+                        }
+                      )}
 
-                    {/* <div className="advance-option-button-box mb-3">
+                    <div className="advance-option-button-box mb-3">
                       <button
                         onClick={handleToggleAdvancedOptions}
                         className="w-full text-center bg-transparent border-0 underline text-[12px] text-[#2DA771]"
@@ -474,7 +446,7 @@ const ApolloNodes = memo(
                           ? "Hide Advanced Options"
                           : "Show Advanced Options"}
                       </button>
-                    </div> */}
+                    </div>
 
                     {isEdit ? (
                       <div className="submit-button">
@@ -507,7 +479,6 @@ const ApolloNodes = memo(
             </div>
           )}
         </section>
-
         <DeleteConfirmationModal
           openDeleteConfirmationModal={openDeleteConfirmationModal}
           onCloseDeleteConfirmationModal={() =>
@@ -520,4 +491,4 @@ const ApolloNodes = memo(
   }
 );
 
-export default ApolloNodes;
+export default CreateRecordNode;

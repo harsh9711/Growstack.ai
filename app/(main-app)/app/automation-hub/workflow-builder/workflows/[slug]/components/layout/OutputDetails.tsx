@@ -1,12 +1,13 @@
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
-import { ChevronDown, ChevronUp, Copy, RefreshCw } from "lucide-react";
+import { ChevronDown, ChevronUp, Copy, RefreshCw, Share } from "lucide-react";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
 import toast from "react-hot-toast";
 import axios from "axios";
 import instance, { automation, CustomAxiosInstance } from "@/config/axios.config";
+import SocialMedialModal from "@/app/(main-app)/app/ai-studio/custom-gpts/new/components/SocialMedialModal";
 
 const OutputDetails = ({
   outputDetailsData,
@@ -19,7 +20,7 @@ const OutputDetails = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isRejectLoading, setIsRejectLoading] = useState(false);
   const [isApproveLoading, setIsApproveLoading] = useState(false);
-
+  const [isOpen, setIsOpen] = useState({ open: false, value: {} });
   const toggleAccordion = (index: any) => {
     setOpenIndex(openIndex === index ? null : index);
   };
@@ -185,6 +186,26 @@ const OutputDetails = ({
       return JSON.stringify(value);
     }
   }
+
+  const formatShareData = (value: any) => {
+    let formattedContent = '';
+    
+    if (typeof value === 'string') {
+        formattedContent = value;
+    } else if (typeof value === 'object' && value !== null) {
+        formattedContent = Object.entries(value)
+            .map(([key, val]) => `${key}: ${val}`)
+            .join('\n');
+    } else {
+        formattedContent = JSON.stringify(value);
+    }
+
+    return {
+        title: 'Share Content',
+        text: formattedContent,
+        url: window.location.href
+    };
+};
   return (
     <>
       <div className="w-full bg-white border-l-4 border-[#FB8491] rounded-lg shadow-md p-4 relative overflow-hidden">
@@ -383,7 +404,7 @@ const OutputDetails = ({
                           // }
                           return (
                             <div>
-                              {item?.value ? renderValue(item.value) : <pre>{JSON.stringify(item, null, 2)}</pre>}
+                              {item?.value ? renderValue(item.value) : <pre>{JSON.stringify(item.value, null, 2)}</pre>}
                             </div>)
                         })()}
                       </div>
@@ -412,6 +433,12 @@ const OutputDetails = ({
                             onClick={() => handleRerun(item?.nodeMasterId)}
                           >
                             <RefreshCw color="#4B465C" />
+                          </button>
+                          <button
+                            className=""
+                            onClick={() => setIsOpen({ open: true, value: item?.value })}
+                          >
+                            <Share color="#4B465C" />
                           </button>
                         </div>
                         {item?.approvalRequired === "true" &&
@@ -462,6 +489,12 @@ const OutputDetails = ({
             );
           })}
         </div>
+        {isOpen?.open === true &&
+          <SocialMedialModal
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            shareData={formatShareData(isOpen.value)}
+          />}
       </div>
     </>
   );

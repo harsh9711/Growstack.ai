@@ -126,20 +126,30 @@ export const prepareNodesPayload = (
       description: node.data.description || "",
       type: node.type,
     };
+    let subNodes: any[] = node.data?.subNodes as any[];
 
-
-    if (node.data?.subNodes && node.data.subNodes?.length > 0) {
-      const filteredSubNodes = node.data.subNodes
-        .map(subNode => ({
-          nodeMasterId: subNode.nodeMasterId,
-          parameters: extractParameterValues(subNode.parameters),
-          name: subNode?.name ?? "form-node"
-        }))
-        .filter(subNode =>
-          Object.values(subNode.parameters).some((param: any) => {
-            return param;
-          })
+    if (node.type === "form") {
+      subNodes = subNodes.filter((item, index, self) => {
+        return (
+          self.findIndex(i => i.nodeMasterId === item.nodeMasterId) !== index
         );
+      });
+    }
+
+    if (subNodes && subNodes?.length > 0) {
+      const filteredSubNodes = subNodes
+        .map(subNode => {
+          return {
+            nodeMasterId: subNode.nodeMasterId,
+            parameters: extractParameterValues(subNode.parameters),
+            name: subNode?.name ?? "form-node",
+          };
+        })
+        .filter(subNode => {
+          return Object.values(subNode.parameters).some((param: any) => {
+            return param;
+          });
+        });
 
       nodePayload.subNodes =
         filteredSubNodes.length > 0 ? filteredSubNodes : [];
