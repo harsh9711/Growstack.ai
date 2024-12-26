@@ -18,16 +18,12 @@ interface GroupedIntegrations {
   [key: string]: NodeData[];
 }
 
-
 const IntegrationCategory = ({ setNodes, setSelectedCategory }: any): React.ReactElement => {
   const dispatch = useAppDispatch();
   const [searchQuery, setSearchQuery] = useState("");
-
-
   const { masterNode } = useAppSelector(state => state.masterNode);
   const { workFlowData } = useAppSelector(state => state.workflows);
   const { nodes } = useAppSelector(state => state.nodes);
-
   if ((masterNode && !masterNode.length) || !masterNode) {
     return <div>Data not found</div>;
   }
@@ -54,19 +50,19 @@ const IntegrationCategory = ({ setNodes, setSelectedCategory }: any): React.Reac
 
   const filterGeneralsBySearch = (integrations: GroupedIntegrations): GroupedIntegrations => {
     if (!searchQuery) return integrations;
-    
+
     const filteredGenerals: GroupedIntegrations = {};
-    
+
     Object.keys(integrations).forEach((subCategory) => {
-      const filteredItems = integrations[subCategory].filter((item: NodeData) => 
+      const filteredItems = integrations[subCategory].filter((item: NodeData) =>
         item.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
-      
+
       if (filteredItems.length > 0) {
         filteredGenerals[subCategory] = filteredItems;
       }
     });
-    
+
     return filteredGenerals;
   };
 
@@ -139,8 +135,6 @@ const IntegrationCategory = ({ setNodes, setSelectedCategory }: any): React.Reac
       console.error("Error adding node:", error);
     }
   };
-
-
 
   const handleDragStart = (event: React.DragEvent, item: NodeState) => {
     dispatch(addNodeData(item));
@@ -277,7 +271,7 @@ const IntegrationCategory = ({ setNodes, setSelectedCategory }: any): React.Reac
                       draggable={false}
                     />
                   )}
-                  <p className="text-sm leading-5 font-medium text-[#020817] mt-2">
+                  <p className="text-sm text-center leading-5 font-medium text-[#020817] mt-2">
                     {item.name}
                   </p>
                 </div>

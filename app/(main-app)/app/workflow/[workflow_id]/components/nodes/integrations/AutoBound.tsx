@@ -53,6 +53,7 @@ const AutoBoundNode = memo(
       useState(false);
     const [variableNames, setVariableNames] = useState<VariableNameProps[]>([]);
     const [focusedInputKey, setFocusedInputKey] = useState<string | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const [connectedEmail, setConnectedEmail] =
       useState<IntegrationResultProps>({} as IntegrationResultProps);
@@ -120,8 +121,29 @@ const AutoBoundNode = memo(
     );
 
     const handleNextClick = async () => {
-      if (!node?.data?.parameters) return;
+      const contactEmail = node?.data?.parameters?.contactEmail?.value;
+      const contactLinkedInURL = node?.data?.parameters?.contactLinkedInURL?.value;
+      const senderEmail = node?.data?.parameters?.senderEmail?.value;
+      const senderLinkedinUrl = node?.data?.parameters?.senderLinkedInURL?.value;
 
+
+      if (!contactEmail && !contactLinkedInURL ) {
+        console.log("error: Either contactEmail or contactLinkedInURL is required");
+        setErrorMessage("Either contactEmail or contactLinkedInURL is required");
+        return;
+      }else {
+        setErrorMessage(null); 
+      }
+
+      if (!senderEmail && !senderLinkedinUrl) {
+        console.log("error: Either senderEmail or senderLinkedinUrl is required")
+        setErrorMessage("error: Either senderEmail or senderLinkedinUrl is required");
+        return;
+      }else {
+        setErrorMessage(null); 
+      }
+
+      if (!node?.data?.parameters) return;
       const requiredParams = Object.values(node.data.parameters).filter(
         param => param.required
       );
@@ -355,6 +377,11 @@ const AutoBoundNode = memo(
                     </h3>
                   </>
                   <>
+                    {errorMessage && (
+                      <div className="error-message text-red-500 text-sm mt-2">
+                        {errorMessage} {/* Display error message */}
+                      </div>
+                    )}
                     {node?.data?.parameters &&
                       Object.entries(node.data.parameters).map(
                         ([key, param]) => {
