@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import axios from "axios";
 import KeywordInsights from "../agentScreen/textOutput";
 import { FaArrowLeft, FaChevronDown, FaChevronUp, FaLink } from "react-icons/fa";
 import { z } from "zod";
@@ -72,12 +71,7 @@ const uploadDetails = () => {
 
   async function getAgentById(agentId: string): Promise<AgentDetails | null> {
     try {
-      const response = await axios.get(`${API_URL}/agents/api/v1/${agentId}`, {
-        headers: {
-          'Content-Type': 'application/json',
-
-        },
-      });
+      const response = await instance.get(`${API_URL}/agents/api/v1/${agentId}`);
       if (response.status === 200) {
         paragonStatus(response.data.data.toolsRequired)
         return response.data.data as AgentDetails;
@@ -270,14 +264,9 @@ const uploadDetails = () => {
       inputs: inputData,
     };
     try {
-      const response = await axios.post(
+      const response = await instance.post(
         `${API_URL}/agents/api/v1/run/${agent}`,
-        bodyData,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
+        bodyData
       );
 
       // Handle the response (e.g., show success or output)

@@ -1,14 +1,13 @@
 
 import React, { useEffect, useState } from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
-import axios from "axios";
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { API_URL } from "@/lib/api";
 import DotsLoader from "@/components/DotLoader";
-import { Dot } from "lucide-react";
 import Swal from "sweetalert2";
 import rehypeRaw from "rehype-raw";
+import instance from "@/config/axios.config";
 
 interface DataItem {
   variableExtras: (variableValue: string, variableExtras: any) => React.ReactNode;
@@ -32,13 +31,8 @@ const KeywordInsights = ({ runnerAgentId }: { runnerAgentId: string }) => {
         setLoading(true);
         setError(null);
 
-        const response = await axios.get(
-          `${API_URL}/agents/api/v1/run/status/${runnerAgentId}`,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
+        const response = await instance.get(
+          `${API_URL}/agents/api/v1/run/status/${runnerAgentId}`
         );
 
         const fetchedData = response.data.data;
@@ -103,13 +97,8 @@ const KeywordInsights = ({ runnerAgentId }: { runnerAgentId: string }) => {
     const payload = {
       "selectedJobsData": cleanedRowsdata
     }
-    const response = await axios.post(
-      `${API_URL}/agents/api/v1/run/resume/${runnerAgentId}`, payload,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
+    const response = await instance.post(
+      `${API_URL}/agents/api/v1/run/resume/${runnerAgentId}`, payload
     );
   };
   const renderCSVTable = (csvData: string, extraItems: any) => {
@@ -117,6 +106,7 @@ const KeywordInsights = ({ runnerAgentId }: { runnerAgentId: string }) => {
     const headers = rows[0].split(",").map((header) => header.trim());
     const bodyRows = rows.slice(1);
     const handleCheckboxChange = (rowIndex: number, cells: string[]) => {
+      // Get the selected fields based on `fieldToSelect`
       const selectedValues = extraItems.fieldToSelect.map((field: string) => {
         const fieldIndex = headers.indexOf(field);
         return { [field]: cells[fieldIndex] };
@@ -139,7 +129,6 @@ const KeywordInsights = ({ runnerAgentId }: { runnerAgentId: string }) => {
 
     return (
       <div className="h-[400px] overflow-visible">
-        {selectedRows && selectedRows}
         <div className="max-h-[500px] snap-both overflow-visible">
           <table className=" w-full border-collapse border border-gray-300 mt-4">
             <thead className="sticky top-0 bg-gray-100 ">
@@ -252,18 +241,10 @@ const KeywordInsights = ({ runnerAgentId }: { runnerAgentId: string }) => {
                 {expanded === item._id ? <FaChevronUp /> : <FaChevronDown />}
               </button>
               {expanded === item._id && (
+                <>
                 <div className="p-4  overflow-y-auto mt-1 transition-all duration-300 ease-in-out bg-white border border-gray-300 rounded-lg shadow-md">
                   {item.variableType === "CSV" && item.variableValue && renderCSVTable(item.variableValue, item.variableExtras)}
-                  {item?.variableExtras?.needToSelect && (
-                    <div className="mt-4">
-                      <button type="button"
-                        onClick={handleSubmit}
-                        className="bg-blue-500 text-white py-2 px-4 rounded"
-                      >
-                        Submit
-                      </button>
-                    </div>
-                  )}
+                 
                   {(item.variableType === "STRING" || item.variableType === "LONG_TEXT") && item.variableValue && (
                     <Markdown
                       remarkPlugins={[remarkGfm]}
@@ -273,6 +254,18 @@ const KeywordInsights = ({ runnerAgentId }: { runnerAgentId: string }) => {
                     </Markdown>
                   )}
                 </div>
+                {item?.variableExtras?.needToSelect && (
+                    <div className="mt-4">
+                      <button type="button"
+                        onClick={handleSubmit}
+                        className="bg-blue-500 text-white py-2 px-4 rounded"
+                      >
+                        Submit
+                      </button>
+                    </div>
+                  )}
+                </>
+
               )}
             </div>
           </div>

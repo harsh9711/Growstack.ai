@@ -49,7 +49,7 @@ export default function AiAgent() {
     const fetchAgents = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`${API_URL}/agents/api/v1/`);
+        const response = await instance.get(`${API_URL}/agents/api/v1/`);
 
         if (response.data.message === "Agents fetched successfully") {
           setAgents(response.data.data.map((agent: any) => ({
