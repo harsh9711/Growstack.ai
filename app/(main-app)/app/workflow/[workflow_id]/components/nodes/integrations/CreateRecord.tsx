@@ -6,13 +6,15 @@ import { Handle, NodeProps, Position, useReactFlow } from "@xyflow/react";
 import { useSnackbar } from "../../snackbar/SnackbarContext";
 import DynamicInput from "../../DynamicInputs";
 import { deleteNodeById, removeNodeById, updateNodeById, updateNodeDescription, updateNodeParameter } from "@/lib/features/workflow/node.slice";
-import { IntegrationResultProps, VariableNameProps, WorkflowNodeState } from "@/types/workflows";
+import { IntegrationResultProps, NodeParameter, VariableNameProps, WorkflowNodeState } from "@/types/workflows";
 import { extractParameterValues } from "@/utils/dataResolver";
 import { getVariableName, isSpecialType } from "@/utils/helper";
 import DeleteConfirmationModal from "../../modals/deletemodal/DeleteModal";
 import { authenticateUser } from "@/utils/paraGonAuth";
 import { useSelector } from "react-redux";
 import { setSignInStatus } from "@/lib/features/workflow/nodeAuth.slice";
+import { paragon } from "@useparagon/connect";
+// import { getOutputFields } from "@/lib/features/workflow/outputFields.slice";
 
 const CreateRecordNode = memo(
   ({
@@ -49,6 +51,9 @@ const CreateRecordNode = memo(
       { key: string; nodeId: string }[]
     >([]);
     const [isSignedUp, setIsSignedUp] = useState(false);
+    const [outputFields ,setOutputFields] = useState()
+    const [paragonResult, setParagonResult] = useState<any>(false);
+    const [outputFieldsOptions, setOutputFieldsOptions] = useState<any[]>([]); 
 
     const handleSignIn = (platform: string, data: any) => {
       // Set the user as signed in for a particular platform
@@ -57,7 +62,6 @@ const CreateRecordNode = memo(
 
 
     const isSalesforceSignedIn = useSelector((state: any) => state?.nodeAuth["salesforce"]);
-    // ON OUTSIDE CLICK CLOSE ACTION MODAL
     const handleOutsideClick = (e: MouseEvent) => {
       const modal = document.getElementById("node-action-modal");
       if (modal && !modal.contains(e.target as Node)) {
@@ -114,7 +118,6 @@ const CreateRecordNode = memo(
       },
       [dispatch, id, nodes, variableNames, isEdit]
     );
-
     const handleNextClick = async () => {
       if (!node?.data?.parameters) return;
 
@@ -124,7 +127,7 @@ const CreateRecordNode = memo(
       const allRequiredParamsFilled = requiredParams.every(
         param => param?.value
       );
-
+      
       if (allRequiredParamsFilled) {
         const updatedValue = extractParameterValues(node.data.parameters);
         try {
@@ -208,22 +211,18 @@ const CreateRecordNode = memo(
       setIsEdit(!isEdit);
     };
 
-    const handleSalesforceSignIn = async () => {
+    const handleSalesforceSignIn = async (defaultSignIn = false) => {
       try {
-        console.log("salesforce sign in");
 
-        if (connectedEmail.enabled) return;
-
+        // if (connectedEmail.enabled) return;
         setConnectionLoading(true);
-
         const timeoutId = setTimeout(() => {
           setConnectionLoading(false);
           console.log("Authentication timeout, stopping loading state");
         }, 8000);
 
-        const result = await authenticateUser("salesforce");
+        const result = await authenticateUser("salesforce", defaultSignIn);
         clearTimeout(timeoutId);
-
         if (result && result.credentialStatus === "VALID") {
           handleSignIn("salesforce", result);
           setConnectedEmail(result);
@@ -236,13 +235,75 @@ const CreateRecordNode = memo(
       }
     };
 
+    const userDetails = async () => {
+      const result = await paragon.getUser();
+      console.log("result resultresultresultresult", result)
+      if(result && 'integrations' in result && result.integrations?.salesforce?.enabled){
+        setParagonResult(true); 
+
+      }else{
+        setParagonResult(false)
+      }
+    }
+    useEffect(() => {
+      userDetails();
+  }, [isSalesforceSignedIn, paragonResult, setIsSignedUp, handleSalesforceSignIn]);
+
+
     useEffect(() => {
       if (isSalesforceSignedIn?.status) {
         setConnectedEmail(isSalesforceSignedIn?.data);
         setIsSignedUp(true);
       }
     }, [isSalesforceSignedIn]);
-    
+
+  const getOutputFields = async () => {
+    try {
+      console.log('paragon', paragon);
+      const response = await paragon.request("salesforce", "/sobjects/Account/describe/", {
+        method: "GET",
+        body: undefined,
+        headers: undefined
+      });
+
+      if (response && typeof response === 'object' && "fields" in response) {
+
+        // Check if the node label is "Search Record by SOQL Query"
+        if (node?.data?.label === "Search Record by SOQL Query") {
+          // const outputOptions = response.fields.map(field => ({
+            const outputOptions = (response.fields as Array<{ name: string }>).map(field => ({
+            label: field.name, 
+            value: field.name  
+          }));
+
+          // Set the outputFieldsOptions state
+          setOutputFieldsOptions(outputOptions);
+        }
+      }
+    } catch (err) {
+      console.log("error", err);
+    }
+  };
+
+  useEffect(() => {
+    getOutputFields();
+  }, [node?.data?.label]);
+
+  const updatedParameters = Object.fromEntries(
+    Object.entries(node?.data?.parameters || {}).map(([key, param]) => {
+      if (key === 'outputFields' && node?.data?.label === "Search Record by SOQL Query") {
+        return [
+          key,
+          {
+            ...param,
+            options: outputFieldsOptions, 
+          }
+        ];
+      }
+      return [key, param]; 
+    })
+  );
+
     return (
       <div>
         <section className="node-box relative">
@@ -333,7 +394,6 @@ const CreateRecordNode = memo(
                 >
                   +
                 </Handle>
-
                 <Handle
                   type="source"
                   position={Position.Left}
@@ -364,8 +424,6 @@ const CreateRecordNode = memo(
 
           {isDropdownOpen && (
             <div className="node-inner-wrapper bg-white p-4 border-2 border-[#2DA771] rounded-[20px] w-[400px] absolute left-1/2 transform -translate-x-1/2">
-
-
               <div className="heading-button-box rounded-[16px] mb-2 p-4 bg-[#FFE6FF] flex justify-between items-center overflow-hidden">
                 <div className="short-text-heading">
                   <img
@@ -378,9 +436,9 @@ const CreateRecordNode = memo(
                     {node?.data?.label ?? "Create Record"}
                   </h4>
                 </div>
-                {isSignedUp ? (
+                {paragonResult && isSignedUp ? (
                   <div className="user-connected-info relative">
-                    <span className="connected-text absolute top-[-17px] right-[-20px] bg-[#2DA771] p-2 rounded-l-[20px]  w-[100px] inline-block  text-[12px] font-medium text-white">
+                    <span onClick={() => handleSalesforceSignIn(true)} className="connected-text absolute top-[-17px] right-[-20px] bg-[#2DA771] cursor-pointer p-2 rounded-l-[20px]  w-[100px] inline-block  text-[12px] font-medium text-white">
                       Connected
                     </span>
 
@@ -394,7 +452,7 @@ const CreateRecordNode = memo(
                 ) : (
                   <div className="signin-button-box">
                     <button
-                      onClick={handleSalesforceSignIn}
+                      onClick={() => handleSalesforceSignIn(false)}
                       className="p-4 text-white text-[16px] bg-[#2DA771] rounded-[20px] w-[100px]"
                     >
                       {connectionLoading ? (
@@ -409,7 +467,11 @@ const CreateRecordNode = memo(
                 )}
               </div>
 
-              <div className={`node-content-wrapper relative `}>
+              
+              <div className={`node-content-wrapper relative ${!isSignedUp || !paragonResult
+                  ? "before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-white before:opacity-[45%]"
+                  : ""
+                  }`}>
                 <div className="action-box">
                   <>
                     <h3 className="text-[16px] font-medium text-[#14171B] mb-4">
@@ -417,15 +479,15 @@ const CreateRecordNode = memo(
                     </h3>
                   </>
                   <>
-                    {node?.data?.parameters &&
-                      Object.entries(node.data.parameters).map(
+                    {updatedParameters &&
+                      Object.entries(updatedParameters).map(
                         ([key, param]) => {
-
                           return (
                             <DynamicInput
                               key={key}
                               inputKey={key}
-                              param={param}
+                              // param={param}
+                              param={param as NodeParameter}  
                               handleInputChange={
                                 isEdit ? handleInputChange : () => { }
                               }

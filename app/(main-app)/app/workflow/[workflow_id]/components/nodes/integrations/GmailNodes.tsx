@@ -25,6 +25,7 @@ import { useSnackbar } from "../../snackbar/SnackbarContext";
 import { authenticateUser } from "@/utils/paraGonAuth";
 import { setSignInStatus } from "@/lib/features/workflow/nodeAuth.slice";
 import { useSelector } from "react-redux";
+import { paragon } from "@useparagon/connect";
 
 // const TriggerData = [
 //   {
@@ -81,8 +82,10 @@ const GmailNode = memo(
     );
 
     const [isSignedUp, setIsSignedUp] = useState(false);
+    // const [isSignedUp, setIsSignedUp] = useState(() => {
+    //   return localStorage.getItem('gmailSignedIn') === 'true';
+    // });
     const [isEdit, setIsEdit] = useState(true);
-
     const [isActionModalShow, setIsActionModalShow] = useState(false);
 
     const [description, setDescription] = useState(data?.descriptions || "");
@@ -96,6 +99,8 @@ const GmailNode = memo(
       useState(false);
     const [variableNames, setVariableNames] = useState<VariableNameProps[]>([]);
     const [focusedInputKey, setFocusedInputKey] = useState<string | null>(null);
+    const [paragonResult, setParagonResult] = useState<any>(false);
+
 
     const [connectedEmail, setConnectedEmail] =
       useState<IntegrationResultProps>({} as IntegrationResultProps);
@@ -284,8 +289,8 @@ const GmailNode = memo(
         requiredParams.forEach(param => {
           const key = node?.data?.parameters
             ? Object.keys(node.data.parameters).find(
-                k => node.data.parameters?.[k] === param
-              )
+              k => node.data.parameters?.[k] === param
+            )
             : undefined;
           if (key && !param.value) {
             dispatch(
@@ -319,8 +324,6 @@ const GmailNode = memo(
       success(`The ${data?.label} node has been successfully deleted`);
     };
 
-
-
     const handleInput = (event: { target: any }) => {
       const textarea = event.target;
       textarea.style.height = "auto";
@@ -340,11 +343,12 @@ const GmailNode = memo(
       setIsActionModalShow(false);
     };
 
-    const handleGmailSignIn = async () => {
+
+    const handleGmailSignIn = async (defaultSignIn = false) => {
       try {
         console.log("gmail sign in");
 
-        if (connectedEmail.enabled) return;
+        // if (connectedEmail.enabled) return;
 
         setConnectionLoading(true);
 
@@ -353,13 +357,22 @@ const GmailNode = memo(
           console.log("Authentication timeout, stopping loading state");
         }, 8000);
 
-        const result = await authenticateUser("gmail");
+        const result = await authenticateUser("gmail", defaultSignIn);
+        console.log("result", result)
         clearTimeout(timeoutId);
 
-        if (result && result.credentialStatus === "VALID") {
+        // const paragonResult = await paragon.getUser();
+        // console.log("paragonResult", paragonResult)
+        console.log("result", result)
+
+        if (result && result.credentialStatus === "VALID" ) {
           handleSignIn("gmail", result);
           setConnectedEmail(result);
           setIsSignedUp(true);
+          // localStorage.setItem('gmailSignedIn', 'true'); 
+        }else{
+          setIsSignedUp(false)
+          // localStorage.setItem('gmailSignedIn', 'false'); 
         }
       } catch (error) {
         console.log("---error---", error);
@@ -368,6 +381,8 @@ const GmailNode = memo(
       }
     };
 
+
+
     const handleActiveAction = (action: string) => {
       setActiveAction(action);
     };
@@ -375,6 +390,18 @@ const GmailNode = memo(
     const handleEditClick = () => {
       setIsEdit(!isEdit);
     };
+
+    const userDetails = async () => {
+      const result = await paragon.getUser();
+      if(result && 'integrations' in result && result.integrations?.gmail?.enabled){
+        setParagonResult(true); 
+      }else{
+        setParagonResult(false)
+      }
+    }
+    useEffect(() => {
+      userDetails();
+  }, [isGmailSignedIn, paragonResult, setIsSignedUp, handleGmailSignIn]);
 
     useEffect(() => {
       if (isGmailSignedIn?.status) {
@@ -470,7 +497,6 @@ const GmailNode = memo(
                 >
                   +
                 </Handle>
-
                 <Handle
                   type="source"
                   position={Position.Left}
@@ -512,9 +538,11 @@ const GmailNode = memo(
                   <h4 className="text-sm font-medium text-[#14171B]">Gmail</h4>
                 </div>
 
-                {isSignedUp ? (
+                {paragonResult && isSignedUp ? (
                   <div className="user-connected-info relative">
-                    <span className="connected-text absolute top-[-17px] right-[-20px] bg-[#2DA771] p-2 rounded-l-[20px]  w-[100px] inline-block  text-[12px] font-medium text-white">
+                    <span className="connected-text absolute top-[-17px] right-[-20px] bg-[#2DA771] p-2 rounded-l-[20px]  w-[100px] inline-block  text-[12px] font-medium text-white"
+                      onClick={() => handleGmailSignIn(true)}
+                    >
                       Connected
                     </span>
 
@@ -528,7 +556,7 @@ const GmailNode = memo(
                 ) : (
                   <div className="signin-button-box">
                     <button
-                      onClick={handleGmailSignIn}
+                      onClick={() => handleGmailSignIn(false)}
                       className="p-4 text-white text-[16px] bg-[#2DA771] rounded-[20px] w-[100px]"
                     >
                       {connectionLoading ? (
@@ -560,11 +588,10 @@ const GmailNode = memo(
               </div> */}
 
               <div
-                className={`node-content-wrapper relative ${
-                  !isSignedUp
-                    ? "before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-white before:opacity-[45%]"
-                    : ""
-                }`}
+                className={`node-content-wrapper relative ${!isSignedUp || !paragonResult
+                  ? "before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-white before:opacity-[45%]"
+                  : ""
+                  }`}
               >
                 {/* <div className="trigger-box">
                   <h3 className="text-[16px] font-medium text-[#14171B] mb-4">
@@ -650,7 +677,7 @@ const GmailNode = memo(
                                 inputKey={key}
                                 param={param}
                                 handleInputChange={
-                                  isEdit ? handleInputChange : () => {}
+                                  isEdit ? handleInputChange : () => { }
                                 }
                                 variableNames={variableNames}
                                 focusedInputKey={focusedInputKey}

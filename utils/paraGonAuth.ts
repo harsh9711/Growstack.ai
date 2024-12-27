@@ -3,7 +3,7 @@ import { API_URL } from "@/lib/api";
 import { paragon } from "@useparagon/connect";
 import Swal from "sweetalert2";
 
-export const authenticateUser = async (integrationType: string) => {
+export const authenticateUser = async (integrationType: string, defaultSignIn = false) => {
   try {
     const response = await instance.post(
       `${API_URL}/users/api/v1/connectors/connect`,
@@ -16,7 +16,9 @@ export const authenticateUser = async (integrationType: string) => {
     );
 
     const user: any = { ...paragon.getUser() };
-    if (user.authenticated && !user.integrations[integrationType]?.enabled) {
+    console.log("user", defaultSignIn)
+
+    if(user.authenticated && defaultSignIn) {
       const result = await Swal.fire({
         title: "Integration not enabled",
         text: `Would you like to enable this ${integrationType} integration? `,
@@ -27,9 +29,25 @@ export const authenticateUser = async (integrationType: string) => {
       });
 
       if (result.isConfirmed) {
-      const paragonResult =   await paragon.connect(integrationType, {});
+        const paragonResult = await paragon.connect(integrationType, {});
 
-      console.log('-----paragonResult-----', paragonResult)
+        console.log('-----paragonResult-----', paragonResult)
+      }
+    }
+    if (user.authenticated && !user.integrations[integrationType]?.enabled ) {
+      const result = await Swal.fire({
+        title: "Integration not enabled",
+        text: `Would you like to enable this ${integrationType} integration? `,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+      });
+
+      if (result.isConfirmed) {
+        const paragonResult = await paragon.connect(integrationType, {});
+
+        console.log('-----paragonResult-----', paragonResult)
       }
     } else {
       return user?.integrations[integrationType];

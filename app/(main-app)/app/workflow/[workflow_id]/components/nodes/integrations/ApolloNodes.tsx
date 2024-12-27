@@ -392,35 +392,7 @@ const ApolloNodes = memo(
                     {node?.data?.label ?? "Apollo"}
                   </h4>
                 </div>
-                {isSignedUp ? (
-                  <div className="user-connected-info relative">
-                    <span className="connected-text absolute top-[-17px] right-[-20px] bg-[#2DA771] p-2 rounded-l-[20px]  w-[100px] inline-block  text-[12px] font-medium text-white">
-                      Connected
-                    </span>
-
-                    <div className="user-mail relative mt-1 translate-y-[20px]">
-                      <div className="online-status-div absolute w-[6px] h-[6px] bg-[#2DA771] rounded-full left-[-14px] top-[5px]"></div>
-                      <p className="text-[11px] text-[#5A5963]">
-                        {connectedEmail?.providerId || "NO EMAIL"}
-                      </p>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="signin-button-box">
-                    <button
-                      onClick={handleApolloSignIn}
-                      className="p-4 text-white text-[16px] bg-[#2DA771] rounded-[20px] w-[100px]"
-                    >
-                      {connectionLoading ? (
-                        <div className="flex justify-center items-center">
-                          <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
-                        </div>
-                      ) : (
-                        "Sign In"
-                      )}
-                    </button>
-                  </div>
-                )}
+               
               </div>
 
               
