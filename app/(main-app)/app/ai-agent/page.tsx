@@ -91,7 +91,7 @@ export default function AiAgent() {
       <aside className="w-full lg:w-[300px] lg:h-1/4  bg-white p-6 shadow-lg rounded-2xl mb-6 lg:mb-0">
         <div className="space-y-6">
           <ul>
-            <li>
+            {/* <li>
               <a
                 href="#"
                 className="w-full text-gray-700 bg-gray-200 py-2 px-4 mb-4 rounded-lg font-medium flex items-center"
@@ -100,7 +100,7 @@ export default function AiAgent() {
                 Create new AI agent
                 <ChevroRight className="ml-auto " />
               </a>
-            </li>
+            </li> */}
             <li>
               <a
                 href="#"
@@ -111,7 +111,7 @@ export default function AiAgent() {
                 <ChevroRight className="ml-auto text-white" />
               </a>
             </li>
-            <li>
+            {/* <li>
               <a
                 href="#"
                 className="flex items-center py-2 px-4 text-gray-700 hover:bg-gray-100 rounded-lg font-medium"
@@ -120,7 +120,7 @@ export default function AiAgent() {
                 My AI agents
                 <ChevroRight className="ml-auto" />
               </a>
-            </li>
+            </li> */}
           </ul>
         </div>
       </aside>
