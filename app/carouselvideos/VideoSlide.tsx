@@ -83,7 +83,6 @@ const VideoSlide: React.FC<VideoSlideProps> = ({
       <video
         ref={handleVideoRef}
         loop
-        muted
         playsInline
         className="w-full h-full sm:h-[500px] object-cover rounded-2xl"
       >
