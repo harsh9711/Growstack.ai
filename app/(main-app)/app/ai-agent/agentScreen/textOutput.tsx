@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 import rehypeRaw from "rehype-raw";
 import instance from "@/config/axios.config";
 import LinkedInUI from "./LinkedInUI";
+import toast from "react-hot-toast";
 
 interface DataItem {
   variableExtras: (variableValue: string, variableExtras: any) => React.ReactNode;
@@ -60,10 +61,14 @@ const KeywordInsights = ({ runnerAgentId }: { runnerAgentId: string }) => {
   
         if (fetchedData.status === "FAILED") {
           console.warn("The workflow has failed. Please check the fields and try again.");
+          setLoading(false); // Ensure loading state is reset
+          clearInterval(intervalId);
+          toast.error("Please re-run the agent.");
         }
       } catch (error) {
         console.error("Error fetching data:", error);
         setError("Failed to load data.");
+        setLoading(false); // Ensure loading state is reset
       } finally {
         setLoading(false); // Ensure loading state is reset
       }
