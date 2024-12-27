@@ -83,6 +83,7 @@ const VideoSlide: React.FC<VideoSlideProps> = ({
       <video
         ref={handleVideoRef}
         loop
+        muted
         playsInline
         className="w-full h-full sm:h-[500px] object-cover rounded-2xl"
       >
@@ -95,7 +96,7 @@ const VideoSlide: React.FC<VideoSlideProps> = ({
         onClick={handlePlayVideo}
       >
         {playingVideoIndex !== index && (
-          <div className="w-16 h-16 bg-[#2DA771] rounded-full ring-4 ring-white grid place-items-center hover:bg-[#2DA771]/90 transition-all duration-300">
+          <div className="w-10 h-10 bg-[#2DA771] rounded-full ring-3 ring-white grid place-items-center hover:bg-[#2DA771]/90 transition-all duration-300">
             <svg
               className="ml-1 w-6 h-6"
               viewBox="0 0 16 18"
@@ -117,9 +118,9 @@ const VideoSlide: React.FC<VideoSlideProps> = ({
           onClick={handleStopVideo}
         >
           <Pause
-            size={20}
+            size={10}
             color="white"
-            className="w-16 h-16 bg-[#2DA771] rounded-full ring-4 ring-white grid place-items-center hover:bg-[#2DA771]/90 transition-all duration-300"
+            className="w-10 h-10 bg-[#2DA771] rounded-full ring-3 ring-white grid place-items-center hover:bg-[#2DA771]/90 transition-all duration-300"
           />
         </div>
       )}
