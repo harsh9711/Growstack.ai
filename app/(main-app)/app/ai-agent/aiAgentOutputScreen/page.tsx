@@ -75,7 +75,6 @@ const uploadDetails = () => {
     try {
       const response = await instance.get(`${API_URL}/agents/api/v1/${agentId}`);
       if (response.status === 200) {
-        console.log("response.data.data.toolsRequired",response.data.data.toolsRequired)
         paragonStatus(response.data.data.toolsRequired)
         return response.data.data as AgentDetails;
 
