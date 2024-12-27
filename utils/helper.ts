@@ -53,9 +53,9 @@ export const getVariableName = (nodes: NodeState[], position: number) => {
     .flatMap(nds => {
       const mainNodeVariable = nds.data?.parameters?.variableName?.value
         ? {
-            nodeId: nds.id,
-            variableName: nds.data.parameters.variableName.value,
-          }
+          nodeId: nds.id,
+          variableName: nds.data.parameters.variableName.value,
+        }
         : null;
 
       const subNodeVariables =
@@ -65,9 +65,9 @@ export const getVariableName = (nodes: NodeState[], position: number) => {
               subNode.parameters?.variableName?.value;
             return subNodeVariableValue
               ? {
-                  nodeId: subNode.nodeMasterId,
-                  variableName: subNodeVariableValue,
-                }
+                nodeId: subNode.nodeMasterId,
+                variableName: subNodeVariableValue,
+              }
               : null;
           })
           .filter(Boolean) || [];
@@ -204,17 +204,24 @@ export const isValidEdges = (
 
 export const validateNodes = (nodes: NodeState[]) => {
   for (const node of nodes) {
-
     if (node.type === 'form') {
       continue;
     }
 
+    // const requiredParams = Object.entries(node.data.parameters)
+    //   .filter(([key, param]) => key !== "nextParameter" && param.required)
+    //   .map(([key, param]) => param);
+    // const req = Object.entries(node.data.parameters).filter(([key, param]) => key)
+    // console.log("req", req)
     const requiredParams = Object.entries(node.data.parameters)
-      .filter(([key, param]) => key !== "nextParameter" && param.required)
+      .filter(([key, param]) =>
+        key !== "nextParameter" &&
+        param.required &&
+        (param.label || param.type)   // Ensure label or type is not empty
+      )
       .map(([key, param]) => param);
 
     const allRequiredParamsFilled = requiredParams.every(param => param?.value);
-    console.log("requiredParams", requiredParams);
     if (!allRequiredParamsFilled) {
       return {
         isValid: false,

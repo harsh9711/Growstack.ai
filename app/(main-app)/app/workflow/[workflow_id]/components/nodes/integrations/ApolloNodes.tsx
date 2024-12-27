@@ -144,7 +144,18 @@ const ApolloNodes = memo(
       );
 
       if (allRequiredParamsFilled) {
-        const updatedValue = extractParameterValues(node.data.parameters);
+        const updatedValue: Record<string, any> = extractParameterValues(node.data.parameters);
+
+        const excludedKeys = ["keywords", "variableName", "searchCriteria"];
+        const searchCriteria = updatedValue.searchCriteria || [];
+    
+        // Set fields not in searchCriteria to an empty string
+        Object.keys(updatedValue).forEach((key) => {
+          if (!excludedKeys.includes(key) && !searchCriteria.includes(key)) {
+            updatedValue[key] = ""; // Set to empty string
+          }
+        });
+    
         try {
           const bodyPayload = {
             workflowId: workFlowData._id,

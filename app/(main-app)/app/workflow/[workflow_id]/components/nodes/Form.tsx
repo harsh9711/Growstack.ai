@@ -18,6 +18,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { extractParameterValues } from "@/utils/dataResolver";
 import DeleteConfirmationModal from "../modals/deletemodal/DeleteModal";
 import { useSnackbar } from "../snackbar/SnackbarContext";
+import { convertToUnderscore } from "@/utils/helper";
 
 interface OptionsProps {
   value: string;
@@ -57,6 +58,7 @@ const Form = ({
 
   const [showAdvancedOptions, setShowAdvancedOptions] = useState<number[]>([]);
 
+
   const [currentSubNodes, setCurrentSubNodes] = useState<SubNodeProps[]>(
     initialSubNodes?.length > 0
       ? initialSubNodes
@@ -79,6 +81,7 @@ const Form = ({
   const [isActionModalShow, setIsActionModalShow] = useState(false);
   const [updatedOptions, setUpdatedOptions] = useState<OptionsProps[]>([]);
   const [loadingNodes, setLoadingNodes] = useState<Record<string, any>>({});
+  const [variableName, setVariableName] = useState<string>("");
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -112,7 +115,7 @@ const Form = ({
                 ...currentSub.parameters,
                 variableName: {
                   ...currentSub.parameters.variableName,
-                  value,
+                  value: convertToUnderscore(value),
                 },
                 inputLabel: {
                   ...currentSub.parameters.inputLabel,
@@ -582,7 +585,7 @@ const Form = ({
                           <h4 className="text-[#14171B] flex items-center gap-2 font-medium text-sm">
                             Variable name:{" "}
                             <span className="bg-[#FFE6FF] text-[#14171B] text-[12px] rounded-[20px] font-medium pt-3 pb-3 pr-4 pl-4">
-                              {subNode?.parameters.variableName.value}
+                              {convertToUnderscore(subNode?.parameters.variableName.value)}
                             </span>
                           </h4>
                         </div>
