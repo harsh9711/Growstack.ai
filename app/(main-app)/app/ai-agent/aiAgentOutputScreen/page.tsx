@@ -75,6 +75,7 @@ const uploadDetails = () => {
     try {
       const response = await instance.get(`${API_URL}/agents/api/v1/${agentId}`);
       if (response.status === 200) {
+        console.log("response.data.data.toolsRequired",response.data.data.toolsRequired)
         paragonStatus(response.data.data.toolsRequired)
         return response.data.data as AgentDetails;
 
@@ -96,39 +97,36 @@ const uploadDetails = () => {
     isRequired: z.boolean().optional(),
   });
 
-  const paragonStatus = async (platforms: string[]): Promise<void> => {
+  const paragonStatus = async (platforms: string[]) => {
     try {
       const response = await instance.post(`/users/api/v1/connectors/connect`, {});
       const token = response?.data?.data?.token;
-  
       if (!token) {
         throw new Error("Authentication token is missing in the response");
       }
-      let user: any;
-      if (process.env.NEXT_PUBLIC_NEXT_PUBLIC_PARAGON_PROJECT_ID) {
-        await paragon.authenticate(process.env.NEXT_PUBLIC_NEXT_PUBLIC_PARAGON_PROJECT_ID , token);
-        user = { ...paragon.getUser() };
-  
-        if (!user?.integrations || typeof user.integrations !== "object") {
-          throw new Error("User integrations are missing or invalid");
-        }
+      await paragon.authenticate(
+        process.env.NEXT_PUBLIC_PARAGON_PROJECT_ID || "2dc0dcd7-005c-4c8e-a04a-3dfa9c69352e",
+        token
+      );
+
+      const user: any = { ...paragon.getUser() };
+      if (!user?.integrations || typeof user.integrations !== "object") {
+        throw new Error("User integrations are missing or invalid");
       }
-  
-      if (user) {
-        const filteredIntegrations = Object.keys(user.integrations)
-          .filter((key) =>
-            platforms.some((platform) => key.toLowerCase() === platform.toLowerCase())
-          )
-          .reduce<Record<string, any>>((acc, key) => {
-            acc[key] = user.integrations[key]; // Retain the matching key-value pairs
-            return acc;
-          }, {});
-  
-        setParagonDetails(filteredIntegrations);
-      }
+
+      // Filter the integrations by matching keys with requested platforms (case-insensitive)
+      const filteredIntegrations = Object.keys(user.integrations)
+        .filter((key) =>
+          platforms.some((platform) => key.toLowerCase() === platform.toLowerCase())
+        )
+        .reduce((acc, key) => {
+          acc[key] = user.integrations[key]; // Retain the matching key-value pairs
+          return acc;
+        }, {} as Record<string, any>);
+      setParagonDetails(filteredIntegrations);
     } catch (error: any) {
       console.error("Error in paragonStatus:", error.message || error);
-      throw error; 
+      throw error; // Re-throw the error if it needs to be handled elsewhere
     }
   };
   interface Input {
