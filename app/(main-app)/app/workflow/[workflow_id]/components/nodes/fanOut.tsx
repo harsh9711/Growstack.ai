@@ -41,7 +41,7 @@ const FanOut = ({
   );
 
   const nodeMaster = useAppSelector(state =>
-    state.masterNode.masterNode.filter(
+    state?.masterNode?.masterNode?.filter(
       node =>
         node.category?.toLowerCase() === "integration" ||
         node.category?.toLowerCase() === "llms" ||

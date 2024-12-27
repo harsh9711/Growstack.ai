@@ -50,7 +50,7 @@ import { SnackbarProvider } from "./components/snackbar/SnackbarContext";
 import { debounce } from "lodash";
 import { NodeState } from "@/types/workflows";
 
-interface DragEvent extends React.DragEvent<HTMLDivElement> {}
+interface DragEvent extends React.DragEvent<HTMLDivElement> { }
 interface PageProps {
   params: {
     workflow_id: string;
@@ -67,13 +67,12 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
     nodes: reduxNode,
   } = useAppSelector(state => state.nodes);
   const { workFlowData } = useAppSelector(state => state.workflows);
-  const [nodes, setNodes, onNodesChange] = useNodesState([]);
+  const [nodes, setNodes, onNodesChange] = useNodesState<any>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [activeTab, setActiveTab] = useState(0);
   const [selectedExecutionId, setSelectedExecutionId] = useState<string>("");
   const [isFromTimeline, setFromTimeline] = useState(false);
   const [isLockCanvas, setIsLockCanvas] = useState<boolean>(true);
-
   const handleViewDetails = (executionId: string) => {
     setSelectedExecutionId(executionId);
     localStorage.setItem("workflowActiveTab", "1");
@@ -85,7 +84,7 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
   useEffect(() => {
     dispatch(getMasterNodes());
     getWorkFlowDetails();
-    return () => {};
+    return () => { };
   }, [dispatch, workflow_id]);
 
   const saveData = () => {
@@ -423,7 +422,40 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
   );
 
   const onDragNode = useCallback(
-    (updatedNodes: any) => {
+    async (node: any) => {
+      console.log("node in callback", node)
+      // const bodyPayload = {
+      //   name: workFlowData?.name,
+      //   description: workFlowData?.description || "",
+      //   edges: edges,
+      //   nodes: prepareNodesPayload(node, workFlowData._id || ""),
+      // };
+      // console.log("bodyPayload ------", bodyPayload)
+
+      // dispatch(
+      //   updateWorkFlowById({
+      //     id: workflow_id || "",
+      //     data: bodyPayload,
+      //   })
+      // );
+      const resultAction = await dispatch(getWorkFlowById(workflow_id));
+      // console.log("resultAction", resultAction)
+
+      const result = unwrapResult(resultAction);
+      // console.log("result", result)
+      const updatedNode = resolveWorkflowNodes(result.nodes);
+      console.log("updated", updatedNode)
+      // const updatedNodes: any = updatedNode.map((n: any) =>
+      //   n.id === node.id ? { ...n, position: node.position } : n
+      // );
+      const updatedNodes: any = updatedNode.map((n: any) => {
+        // Find the corresponding node in the node array
+        const matchingNode = node.find((nd: any) => nd.id === n.id);
+        // If a matching node is found, update its position
+        return matchingNode ? { ...n, position: matchingNode.position } : n;
+      });
+
+
       const bodyPayload = {
         name: workFlowData?.name,
         description: workFlowData?.description || "",
@@ -436,6 +468,7 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
           data: bodyPayload,
         })
       );
+      
     },
     [nodes, edges]
   );
@@ -451,6 +484,7 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
         }}
         timeline={isFromTimeline}
         setIsFromTimeline={setFromTimeline}
+
       />
       {activeTab === 0 && (
         <div className="reactflow-wrapper h-[calc(100vh-140px)] w-full">
@@ -470,9 +504,10 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
             onNodesDelete={onNodesDelete}
             onNodeDragStop={(event, node: any) => {
               const updatedNodes: any = nodes.map((n: any) =>
-                n.id === node.id ? { ...n, position: node.position } : n
+                n.id === node.id ? { ...node, position: node.position } : n
               );
               onDragNode(updatedNodes);
+              // onDragNode(node)
             }}
             nodesDraggable={isLockCanvas}
             nodesConnectable={isLockCanvas}

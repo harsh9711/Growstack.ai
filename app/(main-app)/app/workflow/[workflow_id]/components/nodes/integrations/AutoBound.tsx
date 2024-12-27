@@ -19,11 +19,8 @@ import {
 } from "@/types/workflows";
 import DeleteConfirmationModal from "../../modals/deletemodal/DeleteModal";
 import { useSnackbar } from "../../snackbar/SnackbarContext";
-import { setSignInStatus } from "@/lib/features/workflow/nodeAuth.slice";
-import { useSelector } from "react-redux";
-import { authenticateUser } from "@/utils/paraGonAuth";
 
-const ApolloNodes = memo(
+const AutoBoundNode = memo(
   ({
     data,
     isConnectable,
@@ -31,19 +28,8 @@ const ApolloNodes = memo(
     positionAbsoluteX,
     positionAbsoluteY,
   }: NodeProps<GmailNodeProps>) => {
-    // const { parameters, nodeMasterId } = data;
-
     const { success } = useSnackbar();
     const { setNodes, setEdges } = useReactFlow();
-    const [isSignedUp, setIsSignedUp] = useState(false);
-
-    const handleSignIn = (platform: string, data: any) => {
-      // Set the user as signed in for a particular platform
-      dispatch(setSignInStatus({ platform, data, status: true }));
-    };
-
-    const isApolloSignedIn = useSelector((state: any) => state?.nodeAuth["apollo"]);
-
     const dispatch = useAppDispatch();
     const { workFlowData } = useAppSelector(state => state.workflows);
     const { nodes, isLoading } = useAppSelector(state => state.nodes);
@@ -67,6 +53,7 @@ const ApolloNodes = memo(
       useState(false);
     const [variableNames, setVariableNames] = useState<VariableNameProps[]>([]);
     const [focusedInputKey, setFocusedInputKey] = useState<string | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const [connectedEmail, setConnectedEmail] =
       useState<IntegrationResultProps>({} as IntegrationResultProps);
@@ -134,8 +121,29 @@ const ApolloNodes = memo(
     );
 
     const handleNextClick = async () => {
-      if (!node?.data?.parameters) return;
+      const contactEmail = node?.data?.parameters?.contactEmail?.value;
+      const contactLinkedInURL = node?.data?.parameters?.contactLinkedInURL?.value;
+      const senderEmail = node?.data?.parameters?.senderEmail?.value;
+      const senderLinkedinUrl = node?.data?.parameters?.senderLinkedInURL?.value;
 
+
+      if (!contactEmail && !contactLinkedInURL ) {
+        console.log("error: Either contactEmail or contactLinkedInURL is required");
+        setErrorMessage("Either contactEmail or contactLinkedInURL is required");
+        return;
+      }else {
+        setErrorMessage(null); 
+      }
+
+      if (!senderEmail && !senderLinkedinUrl) {
+        console.log("error: Either senderEmail or senderLinkedinUrl is required")
+        setErrorMessage("error: Either senderEmail or senderLinkedinUrl is required");
+        return;
+      }else {
+        setErrorMessage(null); 
+      }
+
+      if (!node?.data?.parameters) return;
       const requiredParams = Object.values(node.data.parameters).filter(
         param => param.required
       );
@@ -144,18 +152,7 @@ const ApolloNodes = memo(
       );
 
       if (allRequiredParamsFilled) {
-        const updatedValue: Record<string, any> = extractParameterValues(node.data.parameters);
-
-        const excludedKeys = ["keywords", "variableName", "searchCriteria"];
-        const searchCriteria = updatedValue.searchCriteria || [];
-    
-        // Set fields not in searchCriteria to an empty string
-        Object.keys(updatedValue).forEach((key) => {
-          if (!excludedKeys.includes(key) && !searchCriteria.includes(key)) {
-            updatedValue[key] = ""; // Set to empty string
-          }
-        });
-    
+        const updatedValue = extractParameterValues(node.data.parameters);
         try {
           const bodyPayload = {
             workflowId: workFlowData._id,
@@ -180,8 +177,8 @@ const ApolloNodes = memo(
         requiredParams.forEach(param => {
           const key = node?.data?.parameters
             ? Object.keys(node.data.parameters).find(
-                k => node.data.parameters?.[k] === param
-              )
+              k => node.data.parameters?.[k] === param
+            )
             : undefined;
           if (key && !param.value) {
             dispatch(
@@ -237,46 +234,13 @@ const ApolloNodes = memo(
       setIsEdit(!isEdit);
     };
 
-    const handleApolloSignIn = async () => {
-      try {
-
-        if (connectedEmail.enabled) return;
-
-        setConnectionLoading(true);
-
-        const timeoutId = setTimeout(() => {
-          setConnectionLoading(false);
-        }, 8000);
-
-        const result = await authenticateUser("apollo");
-        clearTimeout(timeoutId);
-
-        if (result && result.credentialStatus === "VALID") {
-          handleSignIn("apollo", result);
-          setConnectedEmail(result);
-          setIsSignedUp(true);
-        }
-      } catch (error) {
-        console.log("---error---", error);
-      } finally {
-        setConnectionLoading(false);
-      }
-    };
-
-    useEffect(() => {
-      if (isApolloSignedIn?.status) {
-        setConnectedEmail(isApolloSignedIn?.data);
-        setIsSignedUp(true);
-      }
-    }, [isApolloSignedIn]);
-
     return (
       <div>
         <section className="node-box relative">
           <div className="node-top-box relative">
             <div className="node-name-text-description text-center mb-3">
               <h4 className="text-sm font-medium text-[#2DA771]">
-                {node?.data?.label ?? "Apollo"}
+                {node?.data?.label ?? "Autobound"}
               </h4>
 
               <textarea
@@ -304,7 +268,7 @@ const ApolloNodes = memo(
                   className="w-[140px] mx-auto"
                 />
                 <img
-                  src="/svgs/apollo.svg"
+                  src="/svgs/mail.svg"
                   alt="foreground icon"
                   className="w-[40px] mx-auto absolute top-[50px] left-0 right-0"
                 />
@@ -391,23 +355,20 @@ const ApolloNodes = memo(
 
           {isDropdownOpen && (
             <div className="node-inner-wrapper bg-white p-4 border-2 border-[#2DA771] rounded-[20px] w-[400px] absolute left-1/2 transform -translate-x-1/2">
-               <div className="heading-button-box rounded-[16px] mb-2 p-4 bg-[#FFE6FF] flex justify-between items-center overflow-hidden">
+              <div className="heading-button-box rounded-[16px] mb-2 p-4 bg-[#FFE6FF] flex justify-between items-center overflow-hidden">
                 <div className="short-text-heading">
                   <img
-                    src="/svgs/apollo.svg"
+                    src="/svgs/mail.svg"
                     alt="node icon"
                     className="w-[20px] mb-2"
                   />
 
                   <h4 className="text-sm font-medium text-[#14171B]">
-                    {node?.data?.label ?? "Apollo"}
+                    {node?.data?.label ?? "Autobound"}
                   </h4>
                 </div>
-               
               </div>
 
-              
-             
               <div className={`node-content-wrapper relative `}>
                 <div className="action-box">
                   <>
@@ -416,39 +377,32 @@ const ApolloNodes = memo(
                     </h3>
                   </>
                   <>
+                    {errorMessage && (
+                      <div className="error-message text-red-500 text-sm mt-2">
+                        {errorMessage} {/* Display error message */}
+                      </div>
+                    )}
                     {node?.data?.parameters &&
-                      Object.entries(node.data.parameters)
-                        .filter(([key]: any) => {
-                          // Always show keywords and variableName
-                          if (
-                            key === "keywords" ||
-                            key === "variableName" ||
-                            key === "searchCriteria"
-                          )
-                            return true;
+                      Object.entries(node.data.parameters).map(
+                        ([key, param]) => {
 
-                          // Check if searchCriteria exists and includes the current key
-                          const searchCriteria =
-                            node.data.parameters?.searchCriteria?.value || [];
-                          return searchCriteria.includes(key);
-                        })
-                        .map(([key, param]) => {
                           return (
                             <DynamicInput
                               key={key}
                               inputKey={key}
                               param={param}
                               handleInputChange={
-                                isEdit ? handleInputChange : () => {}
+                                isEdit ? handleInputChange : () => { }
                               }
                               variableNames={variableNames}
                               focusedInputKey={focusedInputKey}
                               setFocusedInputKey={setFocusedInputKey}
                             />
                           );
-                        })}
+                        }
+                      )}
 
-                    {/* <div className="advance-option-button-box mb-3">
+                    <div className="advance-option-button-box mb-3">
                       <button
                         onClick={handleToggleAdvancedOptions}
                         className="w-full text-center bg-transparent border-0 underline text-[12px] text-[#2DA771]"
@@ -457,7 +411,7 @@ const ApolloNodes = memo(
                           ? "Hide Advanced Options"
                           : "Show Advanced Options"}
                       </button>
-                    </div> */}
+                    </div>
 
                     {isEdit ? (
                       <div className="submit-button">
@@ -503,4 +457,4 @@ const ApolloNodes = memo(
   }
 );
 
-export default ApolloNodes;
+export default AutoBoundNode;
