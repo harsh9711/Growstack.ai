@@ -8,6 +8,7 @@ import DotsLoader from "@/components/DotLoader";
 import Swal from "sweetalert2";
 import rehypeRaw from "rehype-raw";
 import instance from "@/config/axios.config";
+import LinkedInUI from "./LinkedInUI";
 
 interface DataItem {
   variableExtras: (variableValue: string, variableExtras: any) => React.ReactNode;
@@ -24,7 +25,6 @@ const KeywordInsights = ({ runnerAgentId }: { runnerAgentId: string }) => {
   const [error, setError] = useState<string | null>(null);
   const [expanded, setExpanded] = useState<string | null>(null); // State to track expanded accordion
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -222,9 +222,6 @@ const KeywordInsights = ({ runnerAgentId }: { runnerAgentId: string }) => {
       <div className="flex justify-between items-center border-b pb-4">
         <h1 className="text-xl font-semibold">Output:</h1>
       </div>
-
-
-
       <div className="mt-4">
         {data?.result?.map((item: any) => (
           <div key={item._id} className="mb-6">
@@ -242,19 +239,22 @@ const KeywordInsights = ({ runnerAgentId }: { runnerAgentId: string }) => {
               </button>
               {expanded === item._id && (
                 <>
-                <div className="p-4  overflow-y-auto mt-1 transition-all duration-300 ease-in-out bg-white border border-gray-300 rounded-lg shadow-md">
-                  {item.variableType === "CSV" && item.variableValue && renderCSVTable(item.variableValue, item.variableExtras)}
-                 
-                  {(item.variableType === "STRING" || item.variableType === "LONG_TEXT") && item.variableValue && (
-                    <Markdown
-                      remarkPlugins={[remarkGfm]}
-                      rehypePlugins={[rehypeRaw]}
-                    >
-                      {item.variableValue}
-                    </Markdown>
-                  )}
-                </div>
-                {item?.variableExtras?.needToSelect && (
+                  <div className="p-4  overflow-y-auto mt-1 transition-all duration-300 ease-in-out bg-white border border-gray-300 rounded-lg shadow-md">
+                    {item.variableType === "CSV" && item.variableValue && renderCSVTable(item.variableValue, item.variableExtras)}
+
+                    {(item.variableType === "STRING" || item.variableType === "LONG_TEXT") && item.variableValue && (
+                      <Markdown
+                        remarkPlugins={[remarkGfm]}
+                        rehypePlugins={[rehypeRaw]}
+                      >
+                        {item.variableValue}
+                      </Markdown>
+                    )}
+                    {item.variableType === "LINKEDIN_DATA" && item.variableValue && (
+                      <LinkedInUI profileData={item.variableValue} />
+                    )}
+                  </div>
+                  {item?.variableExtras?.needToSelect && (
                     <div className="mt-4">
                       <button type="button"
                         onClick={handleSubmit}
@@ -270,7 +270,7 @@ const KeywordInsights = ({ runnerAgentId }: { runnerAgentId: string }) => {
             </div>
           </div>
         ))}
-
+        {/* <LinkedInUI profileData={profileData} /> */}
         {loading && <>{'Loading Remaning items '}<DotsLoader /></>}
       </div>
     </div>
