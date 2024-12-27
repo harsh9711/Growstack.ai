@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 import rehypeRaw from "rehype-raw";
 import instance from "@/config/axios.config";
 import LinkedInUI from "./LinkedInUI";
+import toast from "react-hot-toast";
 
 interface DataItem {
   variableExtras: (variableValue: string, variableExtras: any) => React.ReactNode;
@@ -26,63 +27,60 @@ const KeywordInsights = ({ runnerAgentId }: { runnerAgentId: string }) => {
   const [expanded, setExpanded] = useState<string | null>(null); // State to track expanded accordion
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
   useEffect(() => {
+    let intervalId: NodeJS.Timeout;
+  
     const fetchData = async () => {
       try {
         setLoading(true);
         setError(null);
-
+  
         const response = await instance.get(
           `${API_URL}/agents/api/v1/run/status/${runnerAgentId}`
         );
-
+  
         const fetchedData = response.data.data;
-
+  
         // Only update the state with new data
         if (fetchedData?.result) {
           setData((prevData) => {
             const newItems = fetchedData.result.filter(
-              (item: { _id: string; }) => !prevData?.result?.some((prevItem) => prevItem._id === item._id)
+              (item: { _id: string }) =>
+                !prevData?.result?.some((prevItem) => prevItem._id === item._id)
             );
             return {
               ...fetchedData,
               result: [...(prevData?.result || []), ...newItems],
             };
           });
-
         }
-
-        // Stop polling if the status is "COMPLETED"
-        if (fetchedData.status === "COMPLETED") {
+  
+        // Stop polling if the status is "COMPLETED" or "FAILED"
+        if (fetchedData.status === "COMPLETED" || fetchedData.status === "FAILED") {
           clearInterval(intervalId);
-          setLoading(false);
-
         }
-        else if (fetchedData.status === "FAILED") {
-          await Swal.fire({
-            title: "Workflow",
-            text: "The workflow has failed. Please check the fields and try again.",
-            icon: "warning",
-            showCancelButton: false,
-            confirmButtonText: "Ok",
-            cancelButtonText: "No",
-          });
-
+  
+        if (fetchedData.status === "FAILED") {
+          console.warn("The workflow has failed. Please check the fields and try again.");
+          setLoading(false); // Ensure loading state is reset
           clearInterval(intervalId);
-          setLoading(false);
+          toast.error("Please re-run the agent.");
         }
       } catch (error) {
         console.error("Error fetching data:", error);
         setError("Failed to load data.");
+        setLoading(false); // Ensure loading state is reset
       } finally {
+        setLoading(false); // Ensure loading state is reset
       }
     };
-
+  
     fetchData(); // Initial fetch
-
-    const intervalId = setInterval(fetchData, 5000);
-
-    return () => clearInterval(intervalId);
+  
+    intervalId = setInterval(fetchData, 5000);
+  
+    return () => clearInterval(intervalId); // Cleanup on unmount or dependency change
   }, [runnerAgentId]);
+  
 
   const handleSubmit = async () => {
     const cleanedRows = selectedRows.map(({ rowIndex, ...rest }) => rest)
