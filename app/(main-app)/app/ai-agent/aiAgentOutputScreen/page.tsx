@@ -347,7 +347,7 @@ const uploadDetails = () => {
             <label className="text-md text-black mb-2 flex items-center">
               {input.variableDisplayName}
               {isRequired && <span className="text-red-500 ml-1">*</span>}
-              {input.variableValidation[0] === "URL" && (
+              {input.variableValidation === "URL" && (
                 <span className="ml-2 text-gray-500">
                   {/* Replace with your desired icon */}
                   <InputLinkIcon />
