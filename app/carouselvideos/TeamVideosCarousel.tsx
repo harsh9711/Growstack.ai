@@ -69,7 +69,8 @@ const TeamVideosCarousel: React.FC = () => {
           </div>
           <div className="bg-emerald-900/30 text-emerald-400 rounded-full px-4 py-2">
             <span>
-              0{playingVideoIndex !== null ? playingVideoIndex + 1 : 1}/{teamvideos.length}
+              0{playingVideoIndex !== null ? playingVideoIndex + 1 : 1}/
+              {teamvideos.length}
             </span>
             {/* / <span>{teamvideos.length}</span> */}
           </div>
