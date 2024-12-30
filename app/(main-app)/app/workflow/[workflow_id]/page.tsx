@@ -473,6 +473,8 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
     [nodes, edges]
   );
 
+  const proOptions = { hideAttribution: true };
+
   return (
     <div className="reactflow-wrapper h-[100vh] w-full" ref={reactFlowWrapper}>
       <TopRightPanel2nd
@@ -499,6 +501,7 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
             onConnect={onConnect}
             onConnectEnd={onConnectEnd}
             onDrop={onDrop}
+            proOptions={proOptions}
             onDragOver={onDragOver}
             connectionLineComponent={ConnectionLine}
             onNodesDelete={onNodesDelete}

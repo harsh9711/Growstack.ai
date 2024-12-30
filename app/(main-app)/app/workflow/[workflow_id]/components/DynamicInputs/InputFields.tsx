@@ -48,7 +48,7 @@ const InputFields: React.FC<DynamicInputProps> = ({
                 {focusedInputKey === inputKey &&
                     variableNames &&
                     variableNames.length > 0 && (
-                        <ul className="absolute top-full left-0 mt-1 w-full bg-white shadow-lg rounded-[10px] z-10 overflow-hidden border">
+                        <ul className="absolute top-[49%] left-[17px] mt-1 w-full bg-white shadow-lg rounded-[10px] z-10 overflow-hidden border">
                             {variableNames.map((value: any, index: any) => (
                                 <li
                                     key={index}
