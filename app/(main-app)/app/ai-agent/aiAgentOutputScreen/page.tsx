@@ -224,6 +224,7 @@ const uploadDetails = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const error = Object.values(errors).some((err) => err !== '');
+    console.log("error",error)
     if (error) {
       return;
     }
@@ -257,10 +258,10 @@ const uploadDetails = () => {
         setExpandedOutput(true)
         setOutput(response.data); // Store response data in state
       } else {
-        setErrors({ general: 'Failed to run the agent' });
+        // setErrors({ general: 'Failed to run the agent' });
       }
     } catch (error) {
-      setErrors({ general: 'Error executing the agent' });
+      // setErrors({ general: 'Error executing the agent' });
       console.error('Error executing the agent:', error);
     }
   };
@@ -391,7 +392,7 @@ const uploadDetails = () => {
       <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
         {/* Top Section */}
         <div className="col-span-1 md:col-span-3">
-          <div className="w-full rounded-2xl border-2 border-l-8 border-l-green-500">
+          <div className="w-full rounded-2xl border-2 border-l-8 border-l-yellow-500">
             <div className="flex justify-between gap-6">
               <div className="flex-1 md:mr-6 text-center md:text-left mt-4">
                 <p className="ml-2 text text-sm text-gray-500">Agent Name & Description</p>
@@ -467,15 +468,12 @@ const uploadDetails = () => {
                 </div>
               </div>
             </div>
-
-
           </div>
         </div>
 
-        {/* Input Parameters */}
         <div className="col-span-1 flex flex-col">
           <div>
-            <div className="w-full rounded-2xl border-2 flex flex-col h-full border-l-8 border-l-yellow-400">
+            <div className="w-full rounded-2xl border-2 flex flex-col h-full border-l-8 border-l-red-400">
               <button
                 type="button"
                 onClick={() => setExpandedInput((prev) => !prev)}
@@ -484,11 +482,9 @@ const uploadDetails = () => {
                 <span className="text font-bold">{expandedInput}Input Parameters</span>
                 <span>{expandedInput ? <FaChevronUp /> : <FaChevronDown />}</span>
               </button>
-              {/* Keep the card structure visible, toggle content inside */}
               <div className="p-4 overflow-y-auto flex-grow">
                 {renderInputs()}
               </div>
-              {/* Submit Button after renderInputs */}
               {!expandedInput && (
                 <div className="mt-4 flex justify-center">
                   <button
@@ -502,11 +498,9 @@ const uploadDetails = () => {
             </div>
           </div>
         </div>
-        {/* Output Details */}
-
         <div className="col-span-2 flex flex-col">
           <div>
-            <div className="w-full rounded-2xl border-2 flex flex-col h-full border-l-8 border-l-red-500">
+            <div className="w-full rounded-2xl border-2 flex flex-col h-full border-l-8 border-l-green-500">
               <button
                 type="button"
                 onClick={() => setExpandedOutput((prev) => !prev)}
@@ -516,6 +510,11 @@ const uploadDetails = () => {
                 <span>{expandedOutput ? <FaChevronUp /> : <FaChevronDown />}</span>
               </button>
               <div className="p-6"></div>
+              {!output && <>
+             <div className="text-center mb-4">
+             <h1><strong>No output details available</strong></h1>
+              </div> 
+            </>}
               {expandedOutput && (
                 <div className="p-2 ">
                   {output && (
@@ -528,7 +527,6 @@ const uploadDetails = () => {
               )}
             </div>
           </div>
-
         </div>
       </div>
     </form>
