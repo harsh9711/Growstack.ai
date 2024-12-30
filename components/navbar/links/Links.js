@@ -139,11 +139,6 @@ const links = [
         path: "/solutions/retail-industry",
         img: "/navbar/14.svg",
       },
-      // {
-      //   title: "Insurance",
-      //   path: "/solutions/insurance",
-      //   img: "/navbar/15.svg",
-      // },
       {
         title: "Healthcare",
         path: "/solutions/healthcare",
@@ -159,30 +154,12 @@ const links = [
         path: "/solutions/media_and_publishing",
         img: "/navbar/18.svg",
       },
-      // {
-      //   title: "Real Estate",
-      //   path: "/solutions/real-estate",
-      //   img: "/navbar/19.svg",
-      // },
-      // {
-      //   title: "Education",
-      //   path: "/solutions/education",
-      //   img: "/navbar/20.svg",
-      // },
     ],
   },
-  // {
-  //   title: "GTM",
-  //   path: "/gtm",
-  // },
   {
     title: "Pricing",
     path: "/pricing",
   },
-  // {
-  //   title: "Resources",
-  //   path: "/resources",
-  // },
   {
     title: "FAQs",
     path: "/faq",

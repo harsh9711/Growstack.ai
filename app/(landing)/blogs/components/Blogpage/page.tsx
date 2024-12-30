@@ -12,7 +12,7 @@ const Blogpage = () => {
     <div className="flex flex-col">
       <div className="sticky top-0 z-40">
         <Navbar
-          logoUrl="/white.png"
+          logoUrl="/logo/growstack1.png"
           logoAlt="Custom Logo"
           backgroundColor="white"
         />

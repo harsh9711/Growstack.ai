@@ -29,6 +29,8 @@ import { useSnackbar } from "../../snackbar/SnackbarContext";
 import { authenticateUser } from "@/utils/paraGonAuth";
 import { useSelector } from "react-redux";
 import { setSignInStatus } from "@/lib/features/workflow/nodeAuth.slice";
+import { paragon } from "@useparagon/connect";
+
 
 const ActionData = [
   {
@@ -66,20 +68,18 @@ const LinkedinNode = memo(
     );
 
     const [isSignedUp, setIsSignedUp] = useState(false);
+    const [paragonResult, setParagonResult] = useState<any>(false);
+
     const [isEdit, setIsEdit] = useState(true);
-
     const [isActionModalShow, setIsActionModalShow] = useState(false);
-
     const [connectionLoading, setConnectionLoading] = useState(false);
     const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
-
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [activeAction, setActiveAction] = useState<string>("");
     const [openDeleteConfirmationModal, setOpenDeleteConfirmationModal] =
       useState(false);
     const [variableNames, setVariableNames] = useState<VariableNameProps[]>([]);
     const [focusedInputKey, setFocusedInputKey] = useState<string | null>(null);
-
     const [connectedLinkedin, setConnectedLinkedin] =
       useState<IntegrationResultProps>({} as IntegrationResultProps);
 
@@ -272,8 +272,8 @@ const LinkedinNode = memo(
         requiredParams.forEach(param => {
           const key = node?.data?.parameters
             ? Object.keys(node.data.parameters).find(
-                k => node.data.parameters?.[k] === param
-              )
+              k => node.data.parameters?.[k] === param
+            )
             : undefined;
           if (key && !param.value) {
             dispatch(
@@ -328,11 +328,11 @@ const LinkedinNode = memo(
       setIsActionModalShow(false);
     };
 
-    const handleLinkedinSignIn = async () => {
+    const handleLinkedinSignIn = async (defaultSignIn = false) => {
       try {
         console.log("linkedin sign in");
 
-        if (connectedLinkedin.enabled) return;
+        // if (connectedLinkedin.enabled) return;
 
         setConnectionLoading(true);
 
@@ -341,7 +341,7 @@ const LinkedinNode = memo(
           console.log("Authentication timeout, stopping loading state");
         }, 8000);
 
-        const result = await authenticateUser("linkedin");
+        const result = await authenticateUser("linkedin", defaultSignIn);
 
         clearTimeout(timeoutId);
 
@@ -349,6 +349,8 @@ const LinkedinNode = memo(
           setConnectedLinkedin(result);
           setIsSignedUp(true);
           handleSignIn("linkedIn", result);
+        } else {
+          setIsSignedUp(false)
         }
       } catch (error) {
         console.log("---error---", error);
@@ -356,6 +358,19 @@ const LinkedinNode = memo(
         setConnectionLoading(false);
       }
     };
+
+    const userDetails = async () => {
+      const result = await paragon.getUser();
+      if (result && 'integrations' in result && result.integrations?.linkedin?.enabled) {
+        setParagonResult(true);
+      } else {
+        setParagonResult(false)
+      }
+      console.log("user function called")
+    }
+    useEffect(() => {
+      userDetails();
+    }, [isLinkedInSignIn, paragonResult, setIsSignedUp, handleLinkedinSignIn]);
 
     const handleActiveAction = (action: string) => {
       setActiveAction(action);
@@ -503,9 +518,11 @@ const LinkedinNode = memo(
                   </h4>
                 </div>
 
-                {isSignedUp ? (
+                {paragonResult && isSignedUp ? (
                   <div className="user-connected-info relative">
-                    <span className="connected-text absolute top-[-17px] right-[-20px] bg-[#2DA771] p-2 rounded-l-[20px]  w-[100px] inline-block  text-[12px] font-medium text-white">
+                    <span className="connected-text absolute top-[-17px] right-[-20px] bg-[#2DA771] cursor-pointer p-2 rounded-l-[20px]  w-[100px] inline-block  text-[12px] font-medium text-white"
+                      onClick={() => handleLinkedinSignIn(true)}
+                    >
                       Connected
                     </span>
 
@@ -519,7 +536,7 @@ const LinkedinNode = memo(
                 ) : (
                   <div className="signin-button-box">
                     <button
-                      onClick={handleLinkedinSignIn}
+                      onClick={() => handleLinkedinSignIn(false)}
                       className="p-4 text-white text-[16px] bg-[#2DA771] rounded-[20px] w-[100px]"
                     >
                       {connectionLoading ? (
@@ -550,11 +567,10 @@ const LinkedinNode = memo(
               </div> */}
 
               <div
-                className={`node-content-wrapper relative ${
-                  !isSignedUp
+                className={`node-content-wrapper relative ${!isSignedUp || !paragonResult
                     ? "before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-white before:opacity-[45%]"
                     : ""
-                }`}
+                  }`}
               >
                 <div className="action-box">
                   <h3 className="text-[16px] font-medium text-[#14171B] mb-4">
@@ -605,7 +621,7 @@ const LinkedinNode = memo(
                                 inputKey={key}
                                 param={param}
                                 handleInputChange={
-                                  isEdit ? handleInputChange : () => {}
+                                  isEdit ? handleInputChange : () => { }
                                 }
                                 variableNames={variableNames}
                                 focusedInputKey={focusedInputKey}

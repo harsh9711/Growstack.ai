@@ -19,6 +19,9 @@ import {
 } from "@/types/workflows";
 import DeleteConfirmationModal from "../../modals/deletemodal/DeleteModal";
 import { useSnackbar } from "../../snackbar/SnackbarContext";
+import { setSignInStatus } from "@/lib/features/workflow/nodeAuth.slice";
+import { useSelector } from "react-redux";
+import { authenticateUser } from "@/utils/paraGonAuth";
 
 const ApolloNodes = memo(
   ({
@@ -32,6 +35,15 @@ const ApolloNodes = memo(
 
     const { success } = useSnackbar();
     const { setNodes, setEdges } = useReactFlow();
+    const [isSignedUp, setIsSignedUp] = useState(false);
+
+    const handleSignIn = (platform: string, data: any) => {
+      // Set the user as signed in for a particular platform
+      dispatch(setSignInStatus({ platform, data, status: true }));
+    };
+
+    const isApolloSignedIn = useSelector((state: any) => state?.nodeAuth["apollo"]);
+
     const dispatch = useAppDispatch();
     const { workFlowData } = useAppSelector(state => state.workflows);
     const { nodes, isLoading } = useAppSelector(state => state.nodes);
@@ -132,7 +144,18 @@ const ApolloNodes = memo(
       );
 
       if (allRequiredParamsFilled) {
-        const updatedValue = extractParameterValues(node.data.parameters);
+        const updatedValue: Record<string, any> = extractParameterValues(node.data.parameters);
+
+        const excludedKeys = ["keywords", "variableName", "searchCriteria"];
+        const searchCriteria = updatedValue.searchCriteria || [];
+    
+        // Set fields not in searchCriteria to an empty string
+        Object.keys(updatedValue).forEach((key) => {
+          if (!excludedKeys.includes(key) && !searchCriteria.includes(key)) {
+            updatedValue[key] = ""; // Set to empty string
+          }
+        });
+    
         try {
           const bodyPayload = {
             workflowId: workFlowData._id,
@@ -213,6 +236,39 @@ const ApolloNodes = memo(
     const handleEditClick = () => {
       setIsEdit(!isEdit);
     };
+
+    const handleApolloSignIn = async () => {
+      try {
+
+        if (connectedEmail.enabled) return;
+
+        setConnectionLoading(true);
+
+        const timeoutId = setTimeout(() => {
+          setConnectionLoading(false);
+        }, 8000);
+
+        const result = await authenticateUser("apollo");
+        clearTimeout(timeoutId);
+
+        if (result && result.credentialStatus === "VALID") {
+          handleSignIn("apollo", result);
+          setConnectedEmail(result);
+          setIsSignedUp(true);
+        }
+      } catch (error) {
+        console.log("---error---", error);
+      } finally {
+        setConnectionLoading(false);
+      }
+    };
+
+    useEffect(() => {
+      if (isApolloSignedIn?.status) {
+        setConnectedEmail(isApolloSignedIn?.data);
+        setIsSignedUp(true);
+      }
+    }, [isApolloSignedIn]);
 
     return (
       <div>
@@ -335,7 +391,7 @@ const ApolloNodes = memo(
 
           {isDropdownOpen && (
             <div className="node-inner-wrapper bg-white p-4 border-2 border-[#2DA771] rounded-[20px] w-[400px] absolute left-1/2 transform -translate-x-1/2">
-              <div className="heading-button-box rounded-[16px] mb-2 p-4 bg-[#FFE6FF] flex justify-between items-center overflow-hidden">
+               <div className="heading-button-box rounded-[16px] mb-2 p-4 bg-[#FFE6FF] flex justify-between items-center overflow-hidden">
                 <div className="short-text-heading">
                   <img
                     src="/svgs/apollo.svg"
@@ -347,8 +403,11 @@ const ApolloNodes = memo(
                     {node?.data?.label ?? "Apollo"}
                   </h4>
                 </div>
+               
               </div>
 
+              
+             
               <div className={`node-content-wrapper relative `}>
                 <div className="action-box">
                   <>

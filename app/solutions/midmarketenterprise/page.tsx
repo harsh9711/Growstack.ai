@@ -24,7 +24,7 @@ const page = () => {
       <span className="relatvie z-20">
         <Navbar logoUrl="/imagelogo.svg" logoAlt="Custom Logo" />
       </span>
-      <section className="bg-[#034737] rounded-b-[60px] sm:rounded-b-[0px] w-full  mb-20">
+      <section className="bg-[#2DA771] rounded-b-[60px] sm:rounded-b-[0px] w-full  mb-20">
         <div className="relative flex items-center max-w-[1220px] 2xl:max-w-[1350px] 2xl:p-0 p-4 w-full 2xl:max-h-[1112px] sm:max-h-[800px]  h-full justify-center mx-auto">
           <div className="w-full flex flex-row justify-between brightness-110 relative   items-center mt-10 mb-4 sm:mb-10  2xl:mt-32 2xl:mb-60">
             <div className="w-full max-w-[700px] gap-y-4 flex flex-col">
@@ -34,8 +34,11 @@ const page = () => {
 
               <div className="max-w-3xl  brightness-95   ">
                 <h1 className="text-[26px] xl:text-[40px] max-w-2xl leading-tight sm:!text-left !text-center text-white ">
-                  <span className="font-semibold">Conquer resources </span>
-                  <br /> <span className="font-light">constraints with </span>
+                  <span className="font-semibold">MidMarket Enterprise</span>
+                  <br />{" "}
+                  <span className="font-light">
+                    Conquer resources constraints with{" "}
+                  </span>
                   <br />
                   <span className="font-light">AI tools </span>
                 </h1>

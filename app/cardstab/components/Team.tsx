@@ -539,7 +539,7 @@ const Box = () => {
         <div
           key={index}
           data-aos="fade-up"
-          className="relative text-black bg-[#FFFFFF]  rounded-[20px] hover:shadow-lg p-4 text-center sm:text-start items-center sm:items-start transition-transform duration-500 ease-in-out w-full max-w-[610px] border-2     flex flex-col gap-y-2 justify-between group overflow-hidden"
+          className="relative text-black bg-[#FFFFFF] border-[#2DA771] rounded-[20px] hover:shadow-lg p-4 text-center sm:text-start items-center sm:items-start transition-transform duration-500 ease-in-out w-full max-w-[610px] border-2     flex flex-col gap-y-2 justify-between group overflow-hidden"
         >
           <div className=" fill-black group-hover:fill-primary-lightgreen">
             {item.imageUrl}

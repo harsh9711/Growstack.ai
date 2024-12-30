@@ -53,9 +53,9 @@ export const getVariableName = (nodes: NodeState[], position: number) => {
     .flatMap(nds => {
       const mainNodeVariable = nds.data?.parameters?.variableName?.value
         ? {
-            nodeId: nds.id,
-            variableName: nds.data.parameters.variableName.value,
-          }
+          nodeId: nds.id,
+          variableName: nds.data.parameters.variableName.value,
+        }
         : null;
 
       const subNodeVariables =
@@ -65,9 +65,9 @@ export const getVariableName = (nodes: NodeState[], position: number) => {
               subNode.parameters?.variableName?.value;
             return subNodeVariableValue
               ? {
-                  nodeId: subNode.nodeMasterId,
-                  variableName: subNodeVariableValue,
-                }
+                nodeId: subNode.nodeMasterId,
+                variableName: subNodeVariableValue,
+              }
               : null;
           })
           .filter(Boolean) || [];
@@ -126,20 +126,30 @@ export const prepareNodesPayload = (
       description: node.data.description || "",
       type: node.type,
     };
+    let subNodes: any[] = node.data?.subNodes as any[];
 
-
-    if (node.data?.subNodes && node.data.subNodes?.length > 0) {
-      const filteredSubNodes = node.data.subNodes
-        .map(subNode => ({
-          nodeMasterId: subNode.nodeMasterId,
-          parameters: extractParameterValues(subNode.parameters),
-          name: subNode?.name ?? "form-node"
-        }))
-        .filter(subNode =>
-          Object.values(subNode.parameters).some((param: any) => {
-            return param;
-          })
+    if (node.type === "form") {
+      subNodes = subNodes.filter((item, index, self) => {
+        return (
+          self.findIndex(i => i.nodeMasterId === item.nodeMasterId) !== index
         );
+      });
+    }
+
+    if (subNodes && subNodes?.length > 0) {
+      const filteredSubNodes = subNodes
+        .map(subNode => {
+          return {
+            nodeMasterId: subNode.nodeMasterId,
+            parameters: extractParameterValues(subNode.parameters),
+            name: subNode?.name ?? "form-node",
+          };
+        })
+        .filter(subNode => {
+          return Object.values(subNode.parameters).some((param: any) => {
+            return param;
+          });
+        });
 
       nodePayload.subNodes =
         filteredSubNodes.length > 0 ? filteredSubNodes : [];
@@ -194,17 +204,24 @@ export const isValidEdges = (
 
 export const validateNodes = (nodes: NodeState[]) => {
   for (const node of nodes) {
-
     if (node.type === 'form') {
       continue;
     }
 
+    // const requiredParams = Object.entries(node.data.parameters)
+    //   .filter(([key, param]) => key !== "nextParameter" && param.required)
+    //   .map(([key, param]) => param);
+    // const req = Object.entries(node.data.parameters).filter(([key, param]) => key)
+    // console.log("req", req)
     const requiredParams = Object.entries(node.data.parameters)
-      .filter(([key, param]) => key !== "nextParameter" && param.required)
+      .filter(([key, param]) =>
+        key !== "nextParameter" &&
+        param.required &&
+        (param.label || param.type)   // Ensure label or type is not empty
+      )
       .map(([key, param]) => param);
 
     const allRequiredParamsFilled = requiredParams.every(param => param?.value);
-    console.log("requiredParams", requiredParams);
     if (!allRequiredParamsFilled) {
       return {
         isValid: false,

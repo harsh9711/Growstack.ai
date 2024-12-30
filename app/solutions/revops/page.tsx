@@ -8,7 +8,6 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import GridComponent from "./components/GridBoxes";
 import GridComponentSecond from "./components/GridBoxes2";
-import ImageGalleryLineResponsive from "./components/ImageGallerylineresponsive";
 import LoadingBar from "./components/Loading";
 import MarketingStreamline from "./components/marketingStreamline/MarketingStreamline";
 import Footer from "@/components/footer/Footer";
@@ -46,10 +45,10 @@ const page = () => {
                   data-aos-duration="1500"
                   className="text-[26px] xl:text-[40px] 2xl:text-[48px]   w-full leading-normal text-black"
                 >
-                  <span className="font-semibold">Optimize your revenue </span>
+                  <span className="font-semibold">Revops</span>
                   <br />{" "}
                   <span className="font-light 2xl:whitespace-nowrap">
-                    strategy with Growstack
+                    Optimize your revenue strategy with Growstack
                   </span>
                 </h1>
                 <p

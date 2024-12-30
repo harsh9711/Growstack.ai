@@ -23,7 +23,7 @@ const page = () => {
     <main className="bg-white overflow-hidden max-w-[1920px] w-full mx-auto">
       <section className=" w-full  rounded-b-[60px] sm:rounded-b-[0px] items-center justify-center mx-auto">
         <Navbar
-          logoUrl="/white.png"
+          logoUrl="/logo/growstack1.png"
           logoAlt="Custom Logo"
           backgroundColor="white"
         />

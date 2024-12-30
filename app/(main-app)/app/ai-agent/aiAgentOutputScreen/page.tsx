@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import axios from "axios";
 import KeywordInsights from "../agentScreen/textOutput";
 import { FaArrowLeft, FaChevronDown, FaChevronUp, FaLink } from "react-icons/fa";
 import { z } from "zod";
@@ -12,6 +11,9 @@ import {
 import instance from "@/config/axios.config";
 import toast from "react-hot-toast";
 import { paragon } from "@useparagon/connect";
+import LinkedInUI from "../agentScreen/LinkedInUI";
+import dotenv from "dotenv";
+dotenv.config();
 const uploadDetails = () => {
   interface AgentDetails {
     name: string;
@@ -43,7 +45,6 @@ const uploadDetails = () => {
   const [expandedOutput, setExpandedOutput] = useState(false);
   const [showSubmit, setShowSubmit] = useState(false);
   const [paragonDetails, setParagonDetails] = useState<ParagonUserDetails>({});
-
   useEffect(() => {
     const agentId: any = searchParams.get("agentId");
     const agentName = searchParams.get("agentName");
@@ -72,12 +73,7 @@ const uploadDetails = () => {
 
   async function getAgentById(agentId: string): Promise<AgentDetails | null> {
     try {
-      const response = await axios.get(`${API_URL}/agents/api/v1/${agentId}`, {
-        headers: {
-          'Content-Type': 'application/json',
-
-        },
-      });
+      const response = await instance.get(`${API_URL}/agents/api/v1/${agentId}`);
       if (response.status === 200) {
         paragonStatus(response.data.data.toolsRequired)
         return response.data.data as AgentDetails;
@@ -132,10 +128,6 @@ const uploadDetails = () => {
       throw error; // Re-throw the error if it needs to be handled elsewhere
     }
   };
-
-
-
-
   interface Input {
     variableName: string;
     variableDisplayName: string;
@@ -194,33 +186,22 @@ const uploadDetails = () => {
         else if (input.variableType === "FILE" && !file) {
           updatedErrors[input.variableName] = `${input.variableDisplayName} is required.`;
         }
-
-        // Only update errors if any error has been added
         if (updatedErrors[input.variableName]) {
           setErrors(updatedErrors);
         }
       }
-
-
-      // Only proceed if value is not null
       if (value !== null) {
         inputSchema.parse(parsedInput);
-
-        // Check if the value exceeds the character limit
         if (input.variableLimit && value.length > input.variableLimit) {
           updatedErrors[input.variableName] = `${input.variableDisplayName} exceeds the character limit of ${input.variableLimit}.`;
           setErrors(updatedErrors);
           return;
         }
-
-        // Validate email if applicable
         if (input.variableValidation === "EMAIL" && value) {
           if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) {
             updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid email.`;
           }
         }
-
-        // Validate URL if applicable
         if (input.variableValidation === "URL" && value) {
           if (!/^https?:\/\/[^\s$.?#].[^\s]*$/.test(value)) {
             updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid URL.`;
@@ -242,7 +223,6 @@ const uploadDetails = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Check if there are any errors before proceeding
     const error = Object.values(errors).some((err) => err !== '');
     if (error) {
       return;
@@ -250,14 +230,12 @@ const uploadDetails = () => {
 
     const missingRequiredFields = inputs.filter((input) => input.isRequired && !input.value);
     if (missingRequiredFields.length > 0) {
-      const updatedErrors: Errors = {};  // Use an object to map variable names to error messages
+      const updatedErrors: Errors = {};
 
       missingRequiredFields.forEach((input) => {
         updatedErrors[input.variableName] = `${input.variableDisplayName} is required.`;
       });
-
       setErrors(updatedErrors);
-      // return;
     }
 
     setErrors({});
@@ -270,17 +248,11 @@ const uploadDetails = () => {
       inputs: inputData,
     };
     try {
-      const response = await axios.post(
+      const response = await instance.post(
         `${API_URL}/agents/api/v1/run/${agent}`,
-        bodyData,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
+        bodyData
       );
 
-      // Handle the response (e.g., show success or output)
       if (response.status === 200) {
         setExpandedOutput(true)
         setOutput(response.data); // Store response data in state
@@ -297,11 +269,9 @@ const uploadDetails = () => {
     let longTextInput: JSX.Element | null = null;
     const shortTextInputs: JSX.Element[] = [];
 
-    // Separate short, long text inputs, and file inputs
     inputs.forEach((input, index) => {
       const isRequired = input.isRequired;
 
-      // For long text input
       if (input.variableType === "LONG_TEXT") {
         longTextInput = (
           <div key={index} className="mb-4 flex flex-col w-full">
@@ -403,7 +373,6 @@ const uploadDetails = () => {
       console.error(`Failed to connect to ${integrationType}:`, error);
     }
   };
-
   return (
     <form onSubmit={handleSubmit}>
       {/* Back Button */}
@@ -454,17 +423,17 @@ const uploadDetails = () => {
                                 </svg>
                               </div>
                               <button onClick={() => {
-                                if (!details.enabled) handleConnect(name);
+                                if (details.enabled) handleConnect(name);
                               }} className="border-2 bg-green-600 border-green-600 text-white p-1 rounded-full hover:bg-green-600 hover:text-white transition">
                                 connected
                               </button>
                               <div className="flex">
                                 <div className="mt-2 mr-2">
-                                <svg width="6" height="7" viewBox="0 0 6 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                  <circle cx="3" cy="3.5" r="3" fill="#2DA771" />
-                                </svg>
+                                  <svg width="6" height="7" viewBox="0 0 6 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="3" cy="3.5" r="3" fill="#2DA771" />
+                                  </svg>
                                 </div>
-                              
+
                                 {details.allCredentials[0].providerId.split('@')[0]}
                               </div>
 
@@ -476,7 +445,7 @@ const uploadDetails = () => {
                           <main className="flex items-center space-x-6">
                             <div className="flex items-center space-x-3">
                               <div className="flex justify-center items-center">
-                              <svg width="28" height="22" viewBox="0 0 28 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <svg width="28" height="22" viewBox="0 0 28 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                                   <path d="M1.90909 21.5035H6.36366V10.6853L3.44673 5.5918L0 5.91254V19.5944C0 20.6491 0.854328 21.5035 1.90909 21.5035Z" fill="#0085F7" />
                                   <path d="M21.6406 21.5035H26.0952C27.15 21.5035 28.0043 20.6491 28.0043 19.5944V5.91254L24.5625 5.5918L21.6407 10.6853V21.5035H21.6406Z" fill="#00A94B" />
                                   <path d="M21.6323 2.41422L19.0156 7.40735L21.6323 10.687L27.9959 5.91422V3.36879C27.9959 1.00946 25.3025 -0.33804 23.4141 1.07787L21.6323 2.41422Z" fill="#FFBC00" />
@@ -567,3 +536,4 @@ const uploadDetails = () => {
 };
 
 export default uploadDetails;
+

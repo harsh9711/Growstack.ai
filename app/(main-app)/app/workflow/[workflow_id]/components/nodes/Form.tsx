@@ -18,6 +18,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { extractParameterValues } from "@/utils/dataResolver";
 import DeleteConfirmationModal from "../modals/deletemodal/DeleteModal";
 import { useSnackbar } from "../snackbar/SnackbarContext";
+import { convertToUnderscore } from "@/utils/helper";
 
 interface OptionsProps {
   value: string;
@@ -45,19 +46,26 @@ const Form = ({
   const { setNodes, setEdges } = useReactFlow();
   const dispatch = useAppDispatch();
   const { workFlowData } = useAppSelector(state => state.workflows);
-
-  const initialSubNodes = (node?.data?.subNodes || []).filter(subNode =>
-    Object.values(subNode.parameters).some(param => param.value)
+  const initialSubNodes = (node?.data?.subNodes || []).filter(
+    (item, index, self) => {
+      return (
+        self.findIndex(i => i.nodeMasterId === item.nodeMasterId) !== index
+      );
+    }
   );
 
   const { success } = useSnackbar();
 
-  const [showAdvancedOptions, setShowAdvancedOptions] = useState<{
-    [key: string]: boolean;
-  }>({});
+  const [showAdvancedOptions, setShowAdvancedOptions] = useState<number[]>([]);
 
-  const [currentSubNodes, setCurrentSubNodes] =
-    useState<SubNodeProps[]>(initialSubNodes);
+
+  const [currentSubNodes, setCurrentSubNodes] = useState<SubNodeProps[]>(
+    initialSubNodes?.length > 0
+      ? initialSubNodes
+      : node?.data?.subNodes?.[0]
+        ? [node.data.subNodes[0]]
+        : []
+  );
 
   // console.log("currentSubNodes------>", currentSubNodes);
 
@@ -73,6 +81,7 @@ const Form = ({
   const [isActionModalShow, setIsActionModalShow] = useState(false);
   const [updatedOptions, setUpdatedOptions] = useState<OptionsProps[]>([]);
   const [loadingNodes, setLoadingNodes] = useState<Record<string, any>>({});
+  const [variableName, setVariableName] = useState<string>("");
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -95,20 +104,63 @@ const Form = ({
   };
 
   const handleInputChange = useCallback(
-    (key: any, type: any, value: any, nodeMasterId: any) => {
-      console.log("key-->", key, "type-->", type, "value-->", value);
+    (key: any, type: any, value: any, nodeMasterId: any, index: number) => {
+      const updatedData = currentSubNodes?.map((currentSub, idx) => {
+        // if (currentSub.nodeMasterId === nodeMasterId) {
+        if (idx === index) {
+          if (key === "inputLabel") {
+            return {
+              ...currentSub,
+              parameters: {
+                ...currentSub.parameters,
+                variableName: {
+                  ...currentSub.parameters.variableName,
+                  value: convertToUnderscore(value),
+                },
+                inputLabel: {
+                  ...currentSub.parameters.inputLabel,
+                  value,
+                },
+              },
+            };
+          }
+          return {
+            ...currentSub,
+            parameters: {
+              ...currentSub.parameters,
+              [key]: {
+                ...currentSub?.parameters?.[key],
+                value,
+              },
+            },
+          };
+        }
+        return currentSub;
+      });
+
+      setCurrentSubNodes(updatedData);
+      const nodeId = `id${Math.floor(Math.random() * 1000)}`;
       dispatch(
-        updateSubNodeParameter({ nodeId: id, key, type, value, nodeMasterId })
+        updateSubNodeParameter({
+          nodeId: nodeId,
+          key,
+          type,
+          value,
+          nodeMasterId,
+        })
       );
     },
-    [dispatch, node, id]
+    [dispatch, node, id, currentSubNodes]
   );
 
-  const handleToggleAdvancedOptions = (nodeId: string) => {
-    setShowAdvancedOptions(prevState => ({
-      ...prevState,
-      [nodeId]: !prevState[nodeId],
-    }));
+  const handleToggleAdvancedOptions = (index: number) => {
+    if (showAdvancedOptions?.includes(index)) {
+      setShowAdvancedOptions(
+        prevState => prevState && prevState.filter(item => item !== index)
+      );
+    } else {
+      setShowAdvancedOptions([...showAdvancedOptions, index]);
+    }
   };
 
   const handleAddSubNode = (node: SubNodeProps) => {
@@ -123,14 +175,23 @@ const Form = ({
     "File Upload": "uploadfile-single.svg",
     CheckList: "checklist-single.svg",
   };
-
-  const options = (subNodes ?? []).map(node => ({
-    value: node.nodeMasterId,
-    label: node.name,
-    imageUrl:
-      imageMapping[node.name as keyof typeof imageMapping] ||
-      "add-option-icon.svg",
-  }));
+  const seenNodeMasterIds = new Set();
+  const options = (subNodes ?? [])
+    .filter(item => {
+      const isUnique = !seenNodeMasterIds.has(item.nodeMasterId);
+      if (isUnique) {
+        seenNodeMasterIds.add(item.nodeMasterId);
+        return true;
+      }
+      return false;
+    })
+    ?.map(node => ({
+      value: node.nodeMasterId,
+      label: node.name,
+      imageUrl:
+        imageMapping[node.name as keyof typeof imageMapping] ||
+        "add-option-icon.svg",
+    }));
 
   const handleChange = (event: {
     target: { value: React.SetStateAction<string> };
@@ -164,36 +225,14 @@ const Form = ({
     success(`The ${data?.label} node has been successfully deleted`);
   };
 
-  const handleDeleteSubNode = async (index: number, nodeMasterId: string) => {
-    console.log("Deleting node at index:", index);
-
+  const handleNextClick = async (subNodesData?: SubNodeProps[]) => {
     if (!node?.data?.subNodes) return;
-
-    setIsOpenDeleteModal(prevState => ({
-      ...prevState,
-      [index]: false,
-    }));
-
-    setCurrentSubNodes(prevSubNodes =>
-      prevSubNodes.filter((subNds, i) => subNds.nodeMasterId !== nodeMasterId)
-    );
-
-    dispatch(
-      resetSubNodeParameter({
-        nodeId: id,
-        nodeMasterId: nodeMasterId,
-      })
-    );
-  };
-
-  const handleNextClick = async () => {
-    if (!node?.data?.subNodes) return;
-
+    const updatedSUbNod = subNodesData || currentSubNodes;
     const subNodesToValidate = node.data.subNodes.filter(subNode =>
-      currentSubNodes.some(cs => cs.nodeMasterId === subNode.nodeMasterId)
+      updatedSUbNod.some(cs => cs.nodeMasterId === subNode.nodeMasterId)
     );
 
-    const allSubNodesValid = subNodesToValidate.every(subNode => {
+    const allSubNodesValid = updatedSUbNod.every(subNode => {
       const requiredParams = Object.values(subNode.parameters).filter(
         param => param.required
       );
@@ -210,10 +249,10 @@ const Form = ({
       }));
 
       const updatedData = node.data.subNodes.filter(subNode =>
-        currentSubNodes.some(cs => cs.nodeMasterId === subNode.nodeMasterId)
+        updatedSUbNod.some(cs => cs.nodeMasterId === subNode.nodeMasterId)
       );
 
-      const subNodes = updatedData.map(subNode => ({
+      const subNodes = updatedSUbNod.map(subNode => ({
         nodeMasterId: subNode.nodeMasterId,
         parameters: extractParameterValues(subNode.parameters),
       }));
@@ -266,6 +305,27 @@ const Form = ({
     }
   };
 
+  const handleDeleteSubNode = async (index: number, nodeMasterId: string) => {
+    console.log("Deleting node at index:", index);
+
+    if (!node?.data?.subNodes) return;
+
+    setIsOpenDeleteModal(prevState => ({
+      ...prevState,
+      [index]: false,
+    }));
+
+    const updatedSUbNod = currentSubNodes?.filter((subNds, i) => i !== index);
+
+    setCurrentSubNodes(prevSubNodes =>
+      prevSubNodes.filter((subNds, i) => i !== index)
+    );
+
+    handleNextClick(updatedSUbNod);
+    setTimeout(() => {
+      setIsEdit(true);
+    }, 1000);
+  };
 
   const handleOpenActionModal = () => {
     setIsActionModalShow(!isActionModalShow);
@@ -303,12 +363,7 @@ const Form = ({
   };
 
   const handleUpdateOptions = useCallback(() => {
-    setUpdatedOptions(
-      options?.filter(
-        (subNode: any) =>
-          !currentSubNodes.some(cs => cs.nodeMasterId === subNode.value)
-      ) || []
-    );
+    setUpdatedOptions(options || []);
   }, [currentSubNodes]);
 
   useEffect(() => {
@@ -445,119 +500,116 @@ const Form = ({
 
             <div className="form-box">
               {node?.data?.subNodes &&
-                node?.data?.subNodes
-                  ?.filter(subNode =>
-                    currentSubNodes.some(
-                      cs => cs.nodeMasterId === subNode.nodeMasterId
-                    )
-                  )
-                  ?.map((subNode, index) => (
-                    <div key={index}>
-                      <div className="short-text-heading flex items-center justify-between gap-4 mb-2">
-                        <h3 className="text-sm text-[#14171B] font-medium">
-                          {subNode.name}
-                        </h3>
+                currentSubNodes?.map((subNode, index) => (
+                  <div key={index}>
+                    <div className="short-text-heading flex items-center justify-between gap-4 mb-2">
+                      <h3 className="text-sm text-[#14171B] font-medium">
+                        {subNode.name}
+                      </h3>
 
-                        <div
-                          className="relative inline-block"
-                          ref={dropdownRef}
+                      <div className="relative inline-block" ref={dropdownRef}>
+                        <button
+                          onClick={() => toggleDropdown(index)}
+                          disabled={!isEdit}
                         >
-                          <button
-                            onClick={() => toggleDropdown(index)}
-                            disabled={!isEdit}
-                          >
-                            <img
-                              src="/assets/node_icon/dots-vertical.svg"
-                              alt="dots icon"
-                            />
-                          </button>
+                          <img
+                            src="/assets/node_icon/dots-vertical.svg"
+                            alt="dots icon"
+                          />
+                        </button>
 
-                          {isOpenDeleteModal[index] && (
-                            <div className="absolute right-0 mt-2 w-48 bg-white rounded-[15px] border-[1px] border-[#E8E8E8] shadow-2xl z-50">
-                              <ul className="py-2">
-                                <li className="px-4 py-2 cursor-pointer">
-                                  <button
-                                    onClick={() =>
-                                      handleDeleteSubNode(
-                                        index,
-                                        subNode.nodeMasterId
-                                      )
-                                    }
-                                    className="delete-button flex items-center gap-2 text-[15px] text-[#212833] font-medium w-full cursor-pointer"
-                                  >
-                                    <img
-                                      src="/assets/node_icon/trash.svg"
-                                      alt="dots icon"
-                                    />
-                                    Delete
-                                  </button>
-                                </li>
-                              </ul>
-                            </div>
-                          )}
-                        </div>
+                        {isOpenDeleteModal[index] && (
+                          <div className="absolute right-0 mt-2 w-48 bg-white rounded-[15px] border-[1px] border-[#E8E8E8] shadow-2xl z-50">
+                            <ul className="py-2">
+                              <li className="px-4 py-2 cursor-pointer">
+                                <button
+                                  onClick={() =>
+                                    handleDeleteSubNode(
+                                      index,
+                                      subNode.nodeMasterId
+                                    )
+                                  }
+                                  className="delete-button flex items-center gap-2 text-[15px] text-[#212833] font-medium w-full cursor-pointer"
+                                >
+                                  <img
+                                    src="/assets/node_icon/trash.svg"
+                                    alt="dots icon"
+                                  />
+                                  Delete
+                                </button>
+                              </li>
+                            </ul>
+                          </div>
+                        )}
                       </div>
-                      <div className="form-box">
-                        {subNode.parameters &&
-                          Object.entries(subNode.parameters)
-                            .filter(
-                              ([key, param]: any) =>
-                                param.required ||
-                                showAdvancedOptions[subNode.nodeMasterId]
-                            )
-                            .map(([key, param]: any) => {
-                              return (
-                                <DynamicInput
-                                  key={key}
-                                  inputKey={key}
-                                  param={param}
-                                  handleInputChange={
-                                    isEdit
-                                      ? (key, type, value) =>
+                    </div>
+                    <div className="form-box">
+                      {console.log(
+                        "showAdvancedOptions >> ",
+                        subNode.parameters,
+                        showAdvancedOptions
+                      )}
+                      {subNode.parameters &&
+                        Object.entries(subNode.parameters)
+                          .filter(([key, param]: any) => {
+                            console.log("index :>> ", index);
+                            return (
+                              param.required ||
+                              showAdvancedOptions?.includes(index)
+                            );
+                          })
+                          .map(([key, param]: any) => {
+                            return (
+                              <DynamicInput
+                                key={key}
+                                inputKey={key}
+                                param={param}
+                                handleInputChange={
+                                  isEdit
+                                    ? (key, type, value) =>
                                         handleInputChange(
                                           key,
                                           type,
                                           value,
-                                          subNode.nodeMasterId
+                                          subNode.nodeMasterId,
+                                          index
                                         )
-                                      : () => { }
-                                  }
-                                />
-                              );
-                            })}
+                                    : () => {}
+                                }
+                              />
+                            );
+                          })}
 
-                        {subNode?.parameters?.variableName?.value && (
-                          <div className="text-box mb-5">
-                            <h4 className="text-[#14171B] flex items-center gap-2 font-medium text-sm">
-                              Variable name:{" "}
-                              <span className="bg-[#FFE6FF] text-[#14171B] text-[12px] rounded-[20px] font-medium pt-3 pb-3 pr-4 pl-4">
-                                {subNode?.parameters.variableName.value}
-                              </span>
-                            </h4>
-                          </div>
-                        )}
-                      </div>
-
-                      <div className="advance-option-button-box mb-3">
-                        <button
-                          onClick={() =>
-                            handleToggleAdvancedOptions(subNode.nodeMasterId)
-                          }
-                          className="w-full text-center bg-transparent border-0 underline text-[12px] text-[#2DA771]"
-                        >
-                          {showAdvancedOptions[subNode.nodeMasterId]
-                            ? "Hide Advanced Options"
-                            : "Show Advanced Options"}
-                        </button>
-                      </div>
+                      {subNode?.parameters?.variableName?.value && (
+                        <div className="text-box mb-5">
+                          <h4 className="text-[#14171B] flex items-center gap-2 font-medium text-sm">
+                            Variable name:{" "}
+                            <span className="bg-[#FFE6FF] text-[#14171B] text-[12px] rounded-[20px] font-medium pt-3 pb-3 pr-4 pl-4">
+                              {convertToUnderscore(subNode?.parameters.variableName.value)}
+                            </span>
+                          </h4>
+                        </div>
+                      )}
                     </div>
-                  ))}
+
+                    <div className="advance-option-button-box mb-3">
+                      <button
+                        onClick={() => handleToggleAdvancedOptions(index)}
+                        className="w-full text-center bg-transparent border-0 underline text-[12px] text-[#2DA771]"
+                      >
+                        {showAdvancedOptions?.includes(index)
+                          ? "Hide Advanced Options"
+                          : "Show Advanced Options"}
+                      </button>
+                    </div>
+                  </div>
+                ))}
 
               {currentSubNodes.length > 0 && (
                 <div className="submit-button">
                   {isEdit ? (
                     <button
-                      onClick={handleNextClick}
+                      onClick={() => handleNextClick()}
                       className="bg-[#2DA771] text-white text-sm font-medium p-3 w-full rounded-[10px]"
                       disabled={
                         node ? loadingNodes[node.data.nodeMasterId] : false
