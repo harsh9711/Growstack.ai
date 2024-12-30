@@ -89,7 +89,12 @@ const uploadDetails = () => {
     variableName: z.string(),
     variableDisplayName: z.string(),
     value: z.string(),
-    variableValidation: z.array(z.enum(["EMAIL", "TEXT", "LONG_TEXT", "URL", "PDF", "DOCX"])).optional(),
+    variableValidation:  z
+    .union([
+      z.array(z.enum(["EMAIL", "TEXT", "LONG_TEXT", "URL", "PDF", "DOCX"])),
+      z.enum(["EMAIL", "TEXT", "LONG_TEXT", "URL", "PDF", "DOCX"]),
+    ])
+    .optional(),
     variableLimit: z.number().optional(),
     isRequired: z.boolean().optional(),
   });
@@ -188,7 +193,7 @@ const uploadDetails = () => {
         }
         if (updatedErrors[input.variableName]) {
           setErrors(updatedErrors);
-          return;
+          // return;
         }
       }
   
@@ -216,15 +221,15 @@ const uploadDetails = () => {
             updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid URL.`;
           }
         }
-  console.log("input.variableValidation",input.variableValidation)
-        // File type validation for PDF and DOCX
-        if (input.variableType === "FILE" && file) {
-          const allowedExtensions = ["pdf", "docx"];
-          const fileExtension = file.name.split(".").pop()?.toLowerCase();
-          if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
-            updatedErrors[input.variableName] = `${input.variableDisplayName} must be a PDF or DOCX file.`;
-          }
-        }
+  // console.log("input.variableValidation",input.variableValidation)
+  //       // File type validation for PDF and DOCX
+  //       if (input.variableType === "FILE" && file) {
+  //         const allowedExtensions = ["pdf", "docx"];
+  //         const fileExtension = file.name.split(".").pop()?.toLowerCase();
+  //         if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
+  //           updatedErrors[input.variableName] = `${input.variableDisplayName} must be a PDF or DOCX file.`;
+  //         }
+  //       }
   
         updatedInputs[index].value = value;
         setInputs(updatedInputs);
@@ -234,7 +239,7 @@ const uploadDetails = () => {
       }
   
       setInputs(updatedInputs); // Update the state with the new inputs array
-      setErrors(updatedErrors); // Update the errors state
+      // setErrors(updatedErrors); // Update the errors state
     } catch (err: any) {
       updatedErrors[input.variableName] = err.message || err.errors[0].message;
       setErrors(updatedErrors);
