@@ -12,11 +12,12 @@ import {
   TextToVideoIcon,
   AgentNavigationIcon,
 } from "@/components/svgs";
+import HomeIcon from "@/components/svgs/home";
 import { ALL_ROUTES } from "@/utils/constant";
 
 const navLinks: NavLink[] = [
   {
-    icon: <DashboardIcon />,
+    icon: <HomeIcon />,
     href: "/app",
     title: "Home",
   },

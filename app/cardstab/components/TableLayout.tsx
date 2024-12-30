@@ -41,7 +41,7 @@ const TabLayout: React.FC<TabLayoutProps> = () => {
   return (
     <main className="sm:py-12">
       <div className="w-full flex flex-col items-center justify-center mx-auto gap-8">
-        <div className="flex sm:flex-col md:flex-row w-full gap-3 items-center justify-center">
+        <div className="flex flex-col md:flex-row w-full gap-3 items-center justify-center">
           <div className="flex flex-col w-full gap-5">
             <div className="w-full flex items-center justify-center">
               <div
