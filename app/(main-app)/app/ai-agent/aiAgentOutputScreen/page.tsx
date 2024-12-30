@@ -39,11 +39,9 @@ const uploadDetails = () => {
   const [errors, setErrors] = useState<Errors>({});
   const [output, setOutput] = useState<OutputData | null>(null);
   const [file, setFile] = useState(null);
-  const [showKeywordInsights, setShowKeywordInsights] = useState(false);
   const [agent, setAgent] = useState("")
   const [expandedInput, setExpandedInput] = useState(false);
   const [expandedOutput, setExpandedOutput] = useState(false);
-  const [showSubmit, setShowSubmit] = useState(false);
   const [paragonDetails, setParagonDetails] = useState<ParagonUserDetails>({});
   useEffect(() => {
     const agentId: any = searchParams.get("agentId");
@@ -91,7 +89,7 @@ const uploadDetails = () => {
     variableName: z.string(),
     variableDisplayName: z.string(),
     value: z.string(),
-    variableValidation: z.enum(["EMAIL", "TEXT", "LONG_TEXT", "URL"]).optional(),
+    variableValidation: z.array(z.enum(["EMAIL", "TEXT", "LONG_TEXT", "URL", "PDF", "DOCX"])).optional(),
     variableLimit: z.number().optional(),
     isRequired: z.boolean().optional(),
   });
@@ -132,40 +130,44 @@ const uploadDetails = () => {
     variableName: string;
     variableDisplayName: string;
     value: string;
-    variableValidation?: string;
+    variableValidation?: any;
     variableLimit?: number;
     isRequired: boolean;
     variableType: string;
     variablePlaceholder: string
   }
 
-  const handleInputChange = async (index: number, value: string | null, file: File | null) => {
-    let fileURL
+  const handleInputChange = async (
+    index: number,
+    value: string | null,
+    file: File | null
+  ) => {
+    let fileURL;
     if (file) {
       const formData = new FormData();
       formData.append("document", file);
-
+  
       try {
         // Make the API call to upload the file
         const response = await instance.post(
           `${API_URL}/users/api/v1/file/upload`,
           formData
         );
-        value = response.data.data.fileUrl
-        // Set the file URL in the state
+        value = response.data.data.fileUrl; // Set the file URL in the value
       } catch (error) {
-        toast.error("Error uploading avatar");
+        toast.error("Error uploading file");
+        return;
       }
     }
-
-    const updatedInputs: Input[] = [...inputs]; // Type 'Input[]' for the inputs array
+  
+    const updatedInputs: Input[] = [...inputs]; // Clone the inputs array
     const input = updatedInputs[index];
     type Errors = Record<string, string>;
-
+  
     // Reset specific input error
-    const updatedErrors: Errors = { ...errors };  // Type 'Errors' for the errors object
+    const updatedErrors: Errors = { ...errors }; // Clone the errors object
     updatedErrors[input.variableName] = "";
-
+  
     const parsedInput = {
       variableName: input.variableName,
       variableDisplayName: input.variableDisplayName,
@@ -174,11 +176,9 @@ const uploadDetails = () => {
       variableLimit: input.variableLimit,
       isRequired: input.isRequired,
     };
-
+  
     try {
-      // Check if required field is empty
       if (input.isRequired) {
-        // If it's a text input (value), check if it is empty
         if (input.variableType !== "FILE" && !value) {
           updatedErrors[input.variableName] = `${input.variableDisplayName} is required.`;
         }
@@ -188,37 +188,60 @@ const uploadDetails = () => {
         }
         if (updatedErrors[input.variableName]) {
           setErrors(updatedErrors);
+          return;
         }
       }
+  
+      // Validate and update the value
       if (value !== null) {
         inputSchema.parse(parsedInput);
+  
+        // Check character limit
         if (input.variableLimit && value.length > input.variableLimit) {
           updatedErrors[input.variableName] = `${input.variableDisplayName} exceeds the character limit of ${input.variableLimit}.`;
           setErrors(updatedErrors);
           return;
         }
-        if (input.variableValidation === "EMAIL" && value) {
+  
+        // Email validation
+        if (input.variableValidation?.includes("EMAIL") && value) {
           if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) {
             updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid email.`;
           }
         }
-        if (input.variableValidation === "URL" && value) {
+  
+        // URL validation
+        if (input.variableValidation?.includes("URL") && value) {
           if (!/^https?:\/\/[^\s$.?#].[^\s]*$/.test(value)) {
             updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid URL.`;
           }
         }
-
+  console.log("input.variableValidation",input.variableValidation)
+        // File type validation for PDF and DOCX
+        if (input.variableType === "FILE" && file) {
+          const allowedExtensions = ["pdf", "docx"];
+          const fileExtension = file.name.split(".").pop()?.toLowerCase();
+          if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
+            updatedErrors[input.variableName] = `${input.variableDisplayName} must be a PDF or DOCX file.`;
+          }
+        }
+  
         updatedInputs[index].value = value;
         setInputs(updatedInputs);
-      } else if (file) {
+      } else {
+        // // Clear the value if null
+        // updatedInputs[index].value = "";
       }
-
-      setErrors(updatedErrors);
+  
+      setInputs(updatedInputs); // Update the state with the new inputs array
+      setErrors(updatedErrors); // Update the errors state
     } catch (err: any) {
       updatedErrors[input.variableName] = err.message || err.errors[0].message;
       setErrors(updatedErrors);
     }
   };
+  
+  
 
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -241,6 +264,7 @@ const uploadDetails = () => {
     setErrors({});
 
     const inputData: { [key: string]: any } = {};
+    console.log("inputData",inputData)
     inputs.forEach((input) => {
       inputData[input.variableName] = input.value;
     });
@@ -323,7 +347,7 @@ const uploadDetails = () => {
             <label className="text-md text-black mb-2 flex items-center">
               {input.variableDisplayName}
               {isRequired && <span className="text-red-500 ml-1">*</span>}
-              {input.variableValidation === "URL" && (
+              {input.variableValidation[0] === "URL" && (
                 <span className="ml-2 text-gray-500">
                   {/* Replace with your desired icon */}
                   <InputLinkIcon />
@@ -391,7 +415,7 @@ const uploadDetails = () => {
       <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
         {/* Top Section */}
         <div className="col-span-1 md:col-span-3">
-          <div className="w-full rounded-2xl border-2 border-l-8 border-l-green-500">
+          <div className="w-full rounded-2xl border-2 border-l-8 border-l-yellow-500">
             <div className="flex justify-between gap-6">
               <div className="flex-1 md:mr-6 text-center md:text-left mt-4">
                 <p className="ml-2 text text-sm text-gray-500">Agent Name & Description</p>
@@ -475,7 +499,7 @@ const uploadDetails = () => {
         {/* Input Parameters */}
         <div className="col-span-1 flex flex-col">
           <div>
-            <div className="w-full rounded-2xl border-2 flex flex-col h-full border-l-8 border-l-yellow-400">
+            <div className="w-full rounded-2xl border-2 flex flex-col h-full border-l-8 border-l-red-500">
               <button
                 type="button"
                 onClick={() => setExpandedInput((prev) => !prev)}
@@ -489,7 +513,6 @@ const uploadDetails = () => {
                 {renderInputs()}
               </div>
               {/* Submit Button after renderInputs */}
-              {!expandedInput && (
                 <div className="mt-4 flex justify-center">
                   <button
                     type="submit"
@@ -498,7 +521,6 @@ const uploadDetails = () => {
                     Analyze
                   </button>
                 </div>
-              )}
             </div>
           </div>
         </div>
@@ -506,7 +528,7 @@ const uploadDetails = () => {
 
         <div className="col-span-2 flex flex-col">
           <div>
-            <div className="w-full rounded-2xl border-2 flex flex-col h-full border-l-8 border-l-red-500">
+            <div className="w-full rounded-2xl border-2 flex flex-col h-full border-l-8 border-l-green-500">
               <button
                 type="button"
                 onClick={() => setExpandedOutput((prev) => !prev)}
@@ -516,6 +538,11 @@ const uploadDetails = () => {
                 <span>{expandedOutput ? <FaChevronUp /> : <FaChevronDown />}</span>
               </button>
               <div className="p-6"></div>
+              {!output && <>
+             <div className="text-center mb-4">
+             <h1><strong>No output details available</strong></h1>
+              </div> 
+            </>}
               {expandedOutput && (
                 <div className="p-2 ">
                   {output && (
@@ -526,6 +553,7 @@ const uploadDetails = () => {
 
                 </div>
               )}
+       
             </div>
           </div>
 

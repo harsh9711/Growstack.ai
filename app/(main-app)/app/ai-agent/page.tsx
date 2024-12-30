@@ -57,7 +57,7 @@ export default function AiAgent() {
             description: agent.description,
             users: agent.users,
             agentId: agent.agentId,
-            image:agent.image
+            image: agent.image
           })));
         } else {
           throw new Error("Failed to fetch agents.");
@@ -91,16 +91,6 @@ export default function AiAgent() {
       <aside className="w-full lg:w-[300px] lg:h-1/4  bg-white p-6 shadow-lg rounded-2xl mb-6 lg:mb-0">
         <div className="space-y-6">
           <ul>
-            {/* <li>
-              <a
-                href="#"
-                className="w-full text-gray-700 bg-gray-200 py-2 px-4 mb-4 rounded-lg font-medium flex items-center"
-              >
-                <Plus className="mr-2 text text-md" />
-                Create new AI agent
-                <ChevroRight className="ml-auto " />
-              </a>
-            </li> */}
             <li>
               <a
                 href="#"
@@ -111,16 +101,6 @@ export default function AiAgent() {
                 <ChevroRight className="ml-auto text-white" />
               </a>
             </li>
-            {/* <li>
-              <a
-                href="#"
-                className="flex items-center py-2 px-4 text-gray-700 hover:bg-gray-100 rounded-lg font-medium"
-              >
-                <MyAIAgents className="mr-2 text text-md" />
-                My AI agents
-                <ChevroRight className="ml-auto" />
-              </a>
-            </li> */}
           </ul>
         </div>
       </aside>
@@ -153,29 +133,38 @@ export default function AiAgent() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 rounded-2xl">
           {loading ? (
-            <p className="text-gray-500 col-span-full">Loading agents...</p>
+            // Skeleton loader for agents
+            Array(6).fill(6, 1, 6).map((_, index) => (
+              <div key={index} className="bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
+                <div className="bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100 p-3 flex justify-between items-center relative">
+                  <div className="w-12 h-12 bg-gray-300 rounded-lg animate-pulse absolute top-6 left-4"></div>
+                  <div className="w-24 h-4 bg-gray-300 rounded animate-pulse ml-auto mt-4"></div>
+                </div>
+                <div className="p-4 flex flex-col">
+                  <div className="w-3/4 h-6 bg-gray-300 rounded animate-pulse mt-4"></div>
+                  <div className="flex items-center justify-between mt-4">
+                    <div className="w-32 h-4 bg-gray-300 rounded animate-pulse"></div>
+                    <div className="w-20 h-8 bg-gray-300 rounded animate-pulse"></div>
+                  </div>
+                </div>
+              </div>
+            ))
           ) : error ? (
             <p className="text-red-500 col-span-full">{error}</p>
           ) : filteredAgents.length > 0 ? (
             filteredAgents.map((agent, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden"
-              >
+              <div key={index} className="bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
                 <div className="bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100 p-3 flex justify-between items-center relative">
-                  {agent.image ?    <img className="w-12 h-12 absolute top-6 left-4 rounded-lg"
-                    src={agent.image}
-                    alt="arrow"
-                  /> : <GptIcon className="w-12 h-12 absolute top-6 left-4 rounded-lg" />}
-
-               
-                  <span className="text-gray-600 text-sm font-small ml-auto mt-4">
-                    {agent.users} 
-                  </span>
+                  {agent.image ? (
+                    <img className="w-12 h-12 absolute top-6 left-4 rounded-lg" src={agent.image} alt="Agent" />
+                  ) : (
+                    <GptIcon className="w-12 h-12 absolute top-6 left-4 rounded-lg" />
+                  )}
+                  <span className="text-gray-600 text-sm font-small ml-auto mt-4">{agent.users}</span>
                 </div>
                 <div className="p-4 flex flex-col">
                   <h3
-                    className="text-md mt-4 font-semibold text-gray-800"
+                    className="text-md mt-7 font-semibold text-gray-800"
                     style={{
                       overflow: "hidden",
                       textOverflow: "ellipsis",
@@ -184,10 +173,9 @@ export default function AiAgent() {
                   >
                     {agent.name}
                   </h3>
-
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between mt-4">
                     <p
-                      className="text text-sm text-gray-500"
+                      className="text-sm text-gray-500"
                       style={{
                         overflow: "hidden",
                         textOverflow: "ellipsis",
@@ -198,7 +186,6 @@ export default function AiAgent() {
                     >
                       {agent.description}
                     </p>
-
                     <button
                       onClick={() => {
                         handleAgentSelect(agent.name);
@@ -206,7 +193,7 @@ export default function AiAgent() {
                       }}
                       className="ml-4 px-6 py-2 text-green-500 border border-green-500 rounded-lg hover:bg-[#2DA771] hover:text-white transition"
                     >
-                      Hire
+                      Recruit
                     </button>
                   </div>
                 </div>
@@ -215,7 +202,9 @@ export default function AiAgent() {
           ) : (
             <p className="text-gray-500 col-span-full">No agents match your search query.</p>
           )}
+
         </div>
+
       </main>
     </div>
   );
