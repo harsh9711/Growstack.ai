@@ -118,7 +118,7 @@ const Login = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <div className=" flex flex-col xl:flex-row h-screen overflow-y-auto gap-10">
+      <div className=" flex flex-col xl:flex-row max-h-[95%] gap-10">
         <LoginBackgroundImg
           className="absolute bottom-0 left-0 h-auto"
           style={{ zoom: "0.65", marginTop: "0px" }}
@@ -133,7 +133,7 @@ const Login = () => {
                 width={180}
                 className="max-h-14"
               />
-              <div className="space-y-6 w-full">
+              <div className="space-y-3 w-full">
                 <div className="space-y-3">
                   <h1 className="text-3xl font-bold text-center md:text-left">
                     Sign in to your account

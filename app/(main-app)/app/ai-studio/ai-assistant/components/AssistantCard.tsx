@@ -14,12 +14,10 @@ export default function AssistantCard({ avatar, name, role, id }: Assistant) {
           className="group-hover:scale-110 transition-all duration-300 min-h-[255px] w-full object-cover max-h-[255px]"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black z-[1] flex flex-col justify-end text-white p-4 gap-2">
-          {/* <h1 className="text-xl font-semibold text-center">{name}</h1> */}
           <div>
-            <p className="text-center text-white text-opacity-80 text-sm">
+            <p className="text-center text-white font-bold text-opacity-80 text-sm">
               {role}
             </p>
-
           </div>
         </div>
       </div>
