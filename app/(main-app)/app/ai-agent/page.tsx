@@ -88,27 +88,11 @@ export default function AiAgent() {
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen mt-4">
-      <aside className="w-full lg:w-[300px] lg:h-1/4  bg-white p-6 shadow-lg rounded-2xl mb-6 lg:mb-0">
-        <div className="space-y-6">
-          <ul>
-            <li>
-              <a
-                href="#"
-                className="flex items-center py-2 bg-[#2DA771] mb-4 px-4 text-white rounded-lg font-medium"
-              >
-                <AiAgentIcon className="mr-2 text text-md" />
-                AI Agents
-                <ChevroRight className="ml-auto text-white" />
-              </a>
-            </li>
-          </ul>
-        </div>
-      </aside>
 
 
 
       {/* Main Content */}
-      <main className="lg:w-3/4 w-full p-6">
+      <main className=" w-full p-6 ">
         {/* Header Section */}
         <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 mb-6">
           <div className="col-span-1 lg:col-span-4">
@@ -131,7 +115,7 @@ export default function AiAgent() {
             />
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 rounded-2xl">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 rounded-2xl">
           {loading ? (
             // Skeleton loader for agents
             Array(6).fill(6, 1, 6).map((_, index) => (

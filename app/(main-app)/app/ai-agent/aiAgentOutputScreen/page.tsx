@@ -258,8 +258,6 @@ const uploadDetails = () => {
               updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid PDF file.`;
             }
           }
-        
-          // Check for DOCX validation
           if (input.variableValidation?.includes("DOCX") && value) {
             if (!/^https?:\/\/[^\s$.?#].[^\s]*\.docx$/i.test(value)) {
               updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid DOCX file.`;
