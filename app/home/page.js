@@ -35,7 +35,7 @@ function Page() {
       <div className="bg-[#F5F5F5] w-full h-full">
         <AnimationStory />
         <div className="sm:flex hidden relative mx-auto p-6 sm:p-0  -translate-y-20 items-center justify-center flex-col sm:flex-row gap-4">
-          <button className="flex items-center gap-4 bg-black rounded-xl py-2 px-4 w-fit">
+          <button className="flex items-center h-[60px] gap-4 bg-black rounded-xl py-2 px-4 w-fit">
             <div className="flex-shrink-0">
               <img
                 src="/google-play.svg"
@@ -44,16 +44,14 @@ function Page() {
               />
             </div>
             <div className="flex flex-col items-start">
-              <span className="text-white font-light text-[14px]">
-                GET IT ON
-              </span>
-              <span className="text-white font-semibold text-[25px]">
+              <p className="text-white font-light text-[12px]">GET IT ON</p>
+              <p className="text-white font-semibold text-[24px]">
                 Google Play
-              </span>
+              </p>
             </div>
           </button>
 
-          <button className="flex items-center gap-4 bg-black rounded-xl py-2 px-4 w-fit">
+          <button className="flex items-center h-[60px] gap-4 bg-black rounded-xl py-2 px-4 w-fit">
             <div className="flex-shrink-0">
               <img
                 src="/apple-home.svg"
@@ -62,15 +60,13 @@ function Page() {
               />
             </div>
             <div className="flex flex-col items-start">
-              <span className="text-white font-light text-[14px]">
+              <p className="text-white font-light text-[12px]">
                 DOWNLOAD ON THE
-              </span>
-              <span className="text-white font-semibold text-[25px]">
-                App Store
-              </span>
+              </p>
+              <p className="text-white font-semibold text-[24px]">App Store</p>
             </div>
           </button>
-          <button className="flex items-center gap-4 bg-black rounded-xl py-2 px-4 w-fit">
+          <button className="flex items-center h-[60px] gap-4 bg-black rounded-xl py-2 px-4 w-fit">
             <div className="flex-shrink-0">
               <img
                 src="/web-store.png"
@@ -79,12 +75,10 @@ function Page() {
               />
             </div>
             <div className="flex flex-col items-start">
-              <span className="text-white font-light text-[14px]">
-                GET IT ON
-              </span>
-              <span className="text-white font-semibold text-[25px]">
+              <p className="text-white font-light text-[12px]">GET IT ON</p>
+              <p className="text-white font-semibold text-[24px]">
                 Chrome Web Store
-              </span>
+              </p>
             </div>
           </button>
         </div>

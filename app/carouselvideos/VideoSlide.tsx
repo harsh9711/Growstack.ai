@@ -57,29 +57,6 @@ const VideoSlide: React.FC<VideoSlideProps> = ({
     };
   }, [onStopVideo]);
 
-  const handlePlayVideo = async () => {
-    if (localVideoRef.current) {
-      try {
-        // Explicitly load the video before playing
-        await localVideoRef.current.load();
-        // Use play() as a promise for better error handling
-        await localVideoRef.current.play();
-        onPlayVideo();
-        setIsPlaying(true);
-      } catch (error) {
-        console.error("Error playing video:", error);
-      }
-    }
-  };
-
-  const handleStopVideo = () => {
-    if (localVideoRef.current) {
-      localVideoRef.current.pause();
-      onStopVideo();
-      setIsPlaying(false);
-    }
-  };
-
   return (
     <div
       className={`relative group transition-all duration-300 rounded-2xl ${
@@ -90,11 +67,10 @@ const VideoSlide: React.FC<VideoSlideProps> = ({
     >
       <video
         ref={handleVideoRef}
-        loop
         playsInline
-        preload="metadata" // Add preload attribute
-        webkit-playsinline="true" // Add webkit-playsinline
-        x-webkit-airplay="allow" // Add x-webkit-airplay
+        webkit-playsinline="true"
+        x-webkit-airplay="allow"
+        preload="auto"
         className="w-full h-full sm:h-[500px] object-cover rounded-2xl"
       >
         <source src={item.videoUrl} type="video/mp4" />
@@ -103,7 +79,7 @@ const VideoSlide: React.FC<VideoSlideProps> = ({
 
       <div
         className="absolute inset-0 flex items-center justify-center cursor-pointer"
-        onClick={handlePlayVideo}
+        onClick={onPlayVideo}
       >
         {playingVideoIndex !== index && (
           <div className="w-10 h-10 bg-[#2DA771] rounded-full ring-3 ring-white grid place-items-center hover:bg-[#2DA771]/90 transition-all duration-300">
@@ -125,7 +101,7 @@ const VideoSlide: React.FC<VideoSlideProps> = ({
       {playingVideoIndex === index && (
         <div
           className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer"
-          onClick={handleStopVideo}
+          onClick={onStopVideo}
         >
           <Pause
             size={10}
