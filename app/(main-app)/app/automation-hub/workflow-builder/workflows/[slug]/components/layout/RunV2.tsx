@@ -2,7 +2,10 @@
 
 import Motion from "@/components/Motion";
 import Spinner from "@/components/Spinner";
-import instance, { automation, CustomAxiosInstance } from "@/config/axios.config";
+import instance, {
+  automation,
+  CustomAxiosInstance,
+} from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import clsx from "clsx";
 import { Clock, ChevronDown, ChevronUp, Info } from "lucide-react";
@@ -153,7 +156,10 @@ const Run: React.FC<any> = ({
                   display_name: formParameters?.inputLabel || "Untitled Field",
                   description: formParameters?.description || "",
                   placeholder: formParameters?.placeholder || "",
-                  default_value: formParameters?.variableName === "boolean" ? false : formParameters?.defaultValue || "",
+                  default_value:
+                    formParameters?.variableName === "boolean"
+                      ? false
+                      : formParameters?.defaultValue || "",
                   variableName: formParameters?.variableName || "",
                   type: inputType,
                   list_values: formParameters?.options || [],
@@ -368,13 +374,16 @@ const Run: React.FC<any> = ({
     }
   }, [pollingWorkflowExec, executionId]);
 
-  const handleFileUploaded = useCallback((fileUrl: string, idx: number) => {
-    setWorkFlowData((prevWorkFlowData: any) => {
-      const updatedInputs = [...prevWorkFlowData.input_configs];
-      updatedInputs[idx].default_value = fileUrl;
-      return { ...prevWorkFlowData, input_configs: updatedInputs };
-    });
-  }, [workFlowData]);
+  const handleFileUploaded = useCallback(
+    (fileUrl: string, idx: number) => {
+      setWorkFlowData((prevWorkFlowData: any) => {
+        const updatedInputs = [...prevWorkFlowData.input_configs];
+        updatedInputs[idx].default_value = fileUrl;
+        return { ...prevWorkFlowData, input_configs: updatedInputs };
+      });
+    },
+    [workFlowData]
+  );
 
   const handleChangeInput = (value: string, idx: number) => {
     const updatedInputs = [...workFlowData.input_configs];
@@ -410,7 +419,9 @@ const Run: React.FC<any> = ({
       // const response = await CustomAxiosInstance().get(
       //   `/workflow/${workflowId}/stats`
       // );
-      const response = await instance.get(`${automation}/workflow/${workflowId}/stats`);
+      const response = await instance.get(
+        `${automation}/workflow/${workflowId}/stats`
+      );
       setWorkflowStatsData(response?.data);
     } catch (error: any) {
       if (error?.response) {
@@ -499,8 +510,9 @@ const Run: React.FC<any> = ({
                   </div>
                 </div>
                 <div
-                  className={`${IsInputParameterOpen ? "block" : "hidden"
-                    } transition-opacity`}
+                  className={`${
+                    IsInputParameterOpen ? "block" : "hidden"
+                  } transition-opacity`}
                 >
                   {workFlowData?.input_configs &&
                     workFlowData?.input_configs?.length > 0 &&
@@ -519,7 +531,6 @@ const Run: React.FC<any> = ({
                               {input?.required && (
                                 <span className="text-red-500">*</span>
                               )}
-
                               {input?.description?.length > 0 && (
                                 <div className="relative" key={idx}>
                                   {/* Info icon */}
@@ -550,10 +561,10 @@ const Run: React.FC<any> = ({
                                     "string" && <p>{matchingOutput.value}</p>}
                                   {typeof matchingOutput?.value ===
                                     "boolean" && (
-                                      <p>
-                                        {matchingOutput.value ? "True" : "False"}
-                                      </p>
-                                    )}
+                                    <p>
+                                      {matchingOutput.value ? "True" : "False"}
+                                    </p>
+                                  )}
                                   {typeof matchingOutput?.value ===
                                     "number" && <p>{matchingOutput.value}</p>}
                                   {Array.isArray(matchingOutput?.value) &&
@@ -568,7 +579,7 @@ const Run: React.FC<any> = ({
                                     )}
                                   {!Array.isArray(matchingOutput?.value) &&
                                     typeof matchingOutput?.value ===
-                                    "object" && (
+                                      "object" && (
                                       <pre>
                                         {JSON.stringify(
                                           matchingOutput.value,
@@ -638,25 +649,38 @@ const Run: React.FC<any> = ({
                                   default:
                                     return (
                                       <>
-                                        <input
-                                          type={
-                                            input?.type === "number"
-                                              ? "number"
-                                              : input?.type === "textarea"
-                                                ? "textarea"
+                                        {input?.type === "textarea" ? (
+                                          <textarea
+                                            placeholder={input?.placeholder}
+                                            className="resize-none border p-3 h-[120px] w-full border-gray-100 bg-[#F9F9F9] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green/60 transition"
+                                            value={input?.default_value}
+                                            onChange={e =>
+                                              handleChangeInput(
+                                                e.target.value,
+                                                idx
+                                              )
+                                            }
+                                            required={input?.required}
+                                          />
+                                        ) : (
+                                          <input
+                                            type={
+                                              input?.type === "number"
+                                                ? "number"
                                                 : "text"
-                                          }
-                                          placeholder={input?.placeholder}
-                                          className="w-full p-4 h-[46px] border border-gray-100 bg-[#F9F9F9] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green/60 transition"
-                                          value={input?.default_value}
-                                          onChange={e =>
-                                            handleChangeInput(
-                                              e.target.value,
-                                              idx
-                                            )
-                                          }
-                                          required={input?.required}
-                                        />
+                                            }
+                                            placeholder={input?.placeholder}
+                                            className="w-full p-4 h-[46px] border border-gray-100 bg-[#F9F9F9] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green/60 transition"
+                                            value={input?.default_value}
+                                            onChange={e =>
+                                              handleChangeInput(
+                                                e.target.value,
+                                                idx
+                                              )
+                                            }
+                                            required={input?.required}
+                                          />
+                                        )}
                                       </>
                                     );
                                 }

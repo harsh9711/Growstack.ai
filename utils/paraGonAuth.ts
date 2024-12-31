@@ -20,8 +20,8 @@ export const authenticateUser = async (integrationType: string, defaultSignIn = 
 
     if(user.authenticated && defaultSignIn) {
       const result = await Swal.fire({
-        title: "Integration not enabled",
-        text: `Would you like to enable this ${integrationType} integration? `,
+        title: "Integration enabled",
+        text: `Would you like to change this ${integrationType} configuration? `,
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Yes",
