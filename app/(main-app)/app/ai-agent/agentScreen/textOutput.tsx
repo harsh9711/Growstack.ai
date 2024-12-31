@@ -101,6 +101,7 @@ const KeywordInsights = ({ runnerAgentId }: { runnerAgentId: string }) => {
     const response = await instance.post(
       `${API_URL}/agents/api/v1/run/resume/${runnerAgentId}`, payload
     );
+    toast.success("Submitted the resume for re-run.")
   };
   const renderCSVTable = (csvData: string, extraItems: any) => {
     const rows = csvData.split("\n");

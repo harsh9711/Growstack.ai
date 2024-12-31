@@ -201,6 +201,24 @@ const uploadDetails = () => {
             updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid URL.`;
           }
         }
+        if (input.variableValidation?.includes("PDF") && value) {
+          if (!/^https?:\/\/[^\s$.?#].[^\s]*\.pdf$/i.test(value)) {
+            updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid PDF file.`;
+          }
+        }
+        if (input.variableValidation?.includes("DOCX") && value) {
+          if (!/^https?:\/\/[^\s$.?#].[^\s]*\.docx$/i.test(value)) {
+            updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid DOCX file.`;
+          }
+        }
+
+        if (input.variableValidation?.includes("PDF","DOCX") && value) {
+          if (!/^https?:\/\/[^\s$.?#].[^\s]*\.(pdf|docx)$/i.test(value)) {
+            updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid PDF or DoCX file.`;
+          }
+        }
+        
+        
   
         if (input.variableValidation?.includes("NUMBER") && value) {
           if (isNaN(Number(value))) {
@@ -225,14 +243,10 @@ const uploadDetails = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  
-    // Check for any existing validation errors
     const hasErrors = Object.values(errors).some((err) => err !== '');
     if (hasErrors) {
       return;
     }
-  
-    // Validate missing required fields
     const updatedErrors: Errors = {};
     const missingRequiredFields = inputs.filter((input) => input.isRequired && !input.value);
     if (missingRequiredFields.length > 0) {
@@ -240,13 +254,10 @@ const uploadDetails = () => {
         updatedErrors[input.variableName] = `${input.variableDisplayName} is required.`;
       });
       setErrors(updatedErrors);
-      return; // Stop submission if there are missing fields
+      return; 
     }
   
-    // Clear errors if all validations pass
     setErrors({});
-  
-    // Prepare input data for API request
     const inputData: { [key: string]: any } = {};
     inputs.forEach((input) => {
       inputData[input.variableName] = input.value;
@@ -264,18 +275,13 @@ const uploadDetails = () => {
       );
   
       if (response.status === 200) {
-        // Handle successful response
         setExpandedOutput(true);
-        setOutput(response.data); // Store response data in state
-      } else {
-        // Handle non-200 responses
-        setErrors({ general: 'Failed to run the agent. Please try again later.' });
-      }
+        setOutput(response.data); 
+      } 
     } catch (error: any) {
-      // Handle API errors
       const errorMessage =
         error.response?.data?.message || 'Error executing the agent. Please try again.';
-      setErrors({ general: errorMessage });
+      toast.error(errorMessage)
       console.error('Error executing the agent:', error);
     }
   };
