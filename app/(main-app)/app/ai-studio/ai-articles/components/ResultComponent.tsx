@@ -275,9 +275,11 @@ const ResultComponent: React.FC<ResultComponentProps> = ({
           </TwitterShareButton>
           <LinkedinShareButton url={socialURL ? socialURL : ""} title={"GrowstackAI"}>
             <LinkedinIcon size={40} round />
+            
           </LinkedinShareButton>
           <WhatsappShareButton url={socialURL ? socialURL : ""}title={"GrowstackAI"}>
             <WhatsappIcon size={40} round />
+            
           </WhatsappShareButton>
             <CopyToClipboard text={socialURL ? socialURL : ""} onCopy={handleCopy}>
             <img
@@ -286,6 +288,12 @@ const ResultComponent: React.FC<ResultComponentProps> = ({
               style={{ width: "30px", height: "30px", cursor: "pointer",margin: "auto"}}
             />
           </CopyToClipboard>
+          
+      {copied && (
+        <span style={{ color: "green", marginTop: "10px", display: "block" }}>
+          Copied!
+        </span>
+      )}
         </div>
         </div>
       )}
@@ -317,11 +325,6 @@ const ResultComponent: React.FC<ResultComponentProps> = ({
 </svg>
       </div>
 
-      {copied && (
-        <span style={{ color: "green", marginTop: "10px", display: "block" }}>
-          Copied!
-        </span>
-      )}
     </div>
           </div>
         </div>
