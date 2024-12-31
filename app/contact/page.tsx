@@ -497,8 +497,8 @@ const Contact = () => {
             </div>
           </div>
         </div>
-        <svg
-          className="xl:flex hidden absolute left-0 top-80 z-0"
+        <svg style={{zIndex:-1}}
+          className="xl:flex hidden absolute left-0 top-80 -z-1"
           width="479"
           height="703"
           viewBox="0 0 479 703"
