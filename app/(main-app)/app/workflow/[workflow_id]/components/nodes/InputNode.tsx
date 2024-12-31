@@ -115,7 +115,7 @@ const InputNode = ({ data, id }: NodeProps<ShortTextNodeProps>) => {
                                         onClick={handleEditClick}
                                         className="bg-[#2DA771] text-white text-sm font-medium p-3 w-full rounded-[10px]"
                                     >
-                                        Next
+                                        Save
                                     </button>
                                 </div>
                             </div>

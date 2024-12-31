@@ -1,4 +1,3 @@
-// components/VideoSlide.tsx
 import React, { useRef, useEffect, useState } from "react";
 import { Pause } from "lucide-react";
 
@@ -24,14 +23,12 @@ const VideoSlide: React.FC<VideoSlideProps> = ({
   const [isPlaying, setIsPlaying] = useState(false);
   const localVideoRef = useRef<HTMLVideoElement | null>(null);
 
-  // Combine the local ref with the parent's ref
   const handleVideoRef = (el: HTMLVideoElement | null) => {
     localVideoRef.current = el;
     videoRef(el);
   };
 
   useEffect(() => {
-    // Handle visibility for auto-pause when scrolling out
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
       const [entry] = entries;
       if (
@@ -60,16 +57,27 @@ const VideoSlide: React.FC<VideoSlideProps> = ({
     };
   }, [onStopVideo]);
 
-  // Override play video to set local playing state
-  const handlePlayVideo = () => {
-    onPlayVideo();
-    setIsPlaying(true);
+  const handlePlayVideo = async () => {
+    if (localVideoRef.current) {
+      try {
+        // Explicitly load the video before playing
+        await localVideoRef.current.load();
+        // Use play() as a promise for better error handling
+        await localVideoRef.current.play();
+        onPlayVideo();
+        setIsPlaying(true);
+      } catch (error) {
+        console.error("Error playing video:", error);
+      }
+    }
   };
 
-  // Override stop video to set local playing state
   const handleStopVideo = () => {
-    onStopVideo();
-    setIsPlaying(false);
+    if (localVideoRef.current) {
+      localVideoRef.current.pause();
+      onStopVideo();
+      setIsPlaying(false);
+    }
   };
 
   return (
@@ -84,6 +92,9 @@ const VideoSlide: React.FC<VideoSlideProps> = ({
         ref={handleVideoRef}
         loop
         playsInline
+        preload="metadata" // Add preload attribute
+        webkit-playsinline="true" // Add webkit-playsinline
+        x-webkit-airplay="allow" // Add x-webkit-airplay
         className="w-full h-full sm:h-[500px] object-cover rounded-2xl"
       >
         <source src={item.videoUrl} type="video/mp4" />
