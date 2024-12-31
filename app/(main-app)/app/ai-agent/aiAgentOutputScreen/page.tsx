@@ -241,9 +241,29 @@ const uploadDetails = () => {
           }
         }
 
-        if (input.variableValidation?.some((v: string) => ["PDF", "DOCX"].includes(v)) && value) {
+    
+      
+        // If both PDF and DOCX are present, check if the file matches either
+        if (
+          input.variableValidation?.includes("PDF") &&
+          input.variableValidation?.includes("DOCX") &&
+          value
+        ) {
           if (!/^https?:\/\/[^\s$.?#].[^\s]*\.(pdf|docx)$/i.test(value)) {
-            updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid ${input.variableValidation} file.`;
+            updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid PDF or DOCX file.`;
+          }
+        }else{
+          if (input.variableValidation?.includes("PDF") && value) {
+            if (!/^https?:\/\/[^\s$.?#].[^\s]*\.pdf$/i.test(value)) {
+              updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid PDF file.`;
+            }
+          }
+        
+          // Check for DOCX validation
+          if (input.variableValidation?.includes("DOCX") && value) {
+            if (!/^https?:\/\/[^\s$.?#].[^\s]*\.docx$/i.test(value)) {
+              updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid DOCX file.`;
+            }
           }
         }
         if (input.variableValidation?.includes("NUMBER") && value) {
