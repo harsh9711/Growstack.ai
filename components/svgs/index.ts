@@ -149,5 +149,3 @@ export { default as MyAIAgents } from "@/public/aiAgent/MyAIAgents.svg";
 export { default as BackIcon } from "@/public/aiAgent/backIcon.svg";
 export { default as SearchIcon } from "@/public/aiAgent/search-normal.svg";
 export { default as InputLinkIcon } from "@/public/aiAgent/LinkIcon.svg";
-
-

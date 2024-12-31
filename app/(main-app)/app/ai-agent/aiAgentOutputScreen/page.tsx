@@ -39,11 +39,9 @@ const uploadDetails = () => {
   const [errors, setErrors] = useState<Errors>({});
   const [output, setOutput] = useState<OutputData | null>(null);
   const [file, setFile] = useState(null);
-  const [showKeywordInsights, setShowKeywordInsights] = useState(false);
   const [agent, setAgent] = useState("")
   const [expandedInput, setExpandedInput] = useState(false);
   const [expandedOutput, setExpandedOutput] = useState(false);
-  const [showSubmit, setShowSubmit] = useState(false);
   const [paragonDetails, setParagonDetails] = useState<ParagonUserDetails>({});
   useEffect(() => {
     const agentId: any = searchParams.get("agentId");
@@ -91,7 +89,12 @@ const uploadDetails = () => {
     variableName: z.string(),
     variableDisplayName: z.string(),
     value: z.string(),
-    variableValidation: z.enum(["EMAIL", "TEXT", "LONG_TEXT", "URL"]).optional(),
+    variableValidation:  z
+    .union([
+      z.array(z.enum(["EMAIL", "TEXT", "LONG_TEXT", "URL", "PDF", "DOCX","DATE","PHONE_NUMBER","NUMBER"])),
+      z.enum(["EMAIL", "TEXT", "LONG_TEXT", "URL", "PDF", "DOCX","DATE","PHONE_NUMBER","NUMBER"]),
+    ])
+    .optional(),
     variableLimit: z.number().optional(),
     isRequired: z.boolean().optional(),
   });
@@ -132,146 +135,164 @@ const uploadDetails = () => {
     variableName: string;
     variableDisplayName: string;
     value: string;
-    variableValidation?: string;
+    variableValidation?: any;
     variableLimit?: number;
     isRequired: boolean;
     variableType: string;
     variablePlaceholder: string
   }
 
-  const handleInputChange = async (index: number, value: string | null, file: File | null) => {
-    let fileURL
+  const handleInputChange = async (
+    index: number,
+    value: string | null,
+    file: File | null
+  ) => {
     if (file) {
       const formData = new FormData();
       formData.append("document", file);
-
+  
       try {
         // Make the API call to upload the file
         const response = await instance.post(
           `${API_URL}/users/api/v1/file/upload`,
           formData
         );
-        value = response.data.data.fileUrl
-        // Set the file URL in the state
+        value = response.data.data.fileUrl; // Set the file URL in the value
       } catch (error) {
-        toast.error("Error uploading avatar");
+        toast.error("Error uploading file");
+        return;
       }
     }
-
-    const updatedInputs: Input[] = [...inputs]; // Type 'Input[]' for the inputs array
+  
+    const updatedInputs: Input[] = [...inputs]; // Clone the inputs array
     const input = updatedInputs[index];
     type Errors = Record<string, string>;
-
+    const updatedErrors: Errors = { ...errors }; // Clone the errors object
+  
     // Reset specific input error
-    const updatedErrors: Errors = { ...errors };  // Type 'Errors' for the errors object
     updatedErrors[input.variableName] = "";
-
-    const parsedInput = {
-      variableName: input.variableName,
-      variableDisplayName: input.variableDisplayName,
-      value: value,
-      variableValidation: input.variableValidation,
-      variableLimit: input.variableLimit,
-      isRequired: input.isRequired,
-    };
-
+  
     try {
-      // Check if required field is empty
-      if (input.isRequired) {
-        // If it's a text input (value), check if it is empty
-        if (input.variableType !== "FILE" && !value) {
-          updatedErrors[input.variableName] = `${input.variableDisplayName} is required.`;
-        }
-        // If it's a file input, check if the file is missing
-        else if (input.variableType === "FILE" && !file) {
-          updatedErrors[input.variableName] = `${input.variableDisplayName} is required.`;
-        }
-        if (updatedErrors[input.variableName]) {
-          setErrors(updatedErrors);
-        }
-      }
+      // Real-time validation
       if (value !== null) {
-        inputSchema.parse(parsedInput);
+        inputSchema.parse({
+          variableName: input.variableName,
+          variableDisplayName: input.variableDisplayName,
+          value: value,
+          variableValidation: input.variableValidation,
+          variableLimit: input.variableLimit,
+          isRequired: input.isRequired,
+        });
+  
+        // Character limit validation
         if (input.variableLimit && value.length > input.variableLimit) {
           updatedErrors[input.variableName] = `${input.variableDisplayName} exceeds the character limit of ${input.variableLimit}.`;
-          setErrors(updatedErrors);
-          return;
         }
-        if (input.variableValidation === "EMAIL" && value) {
+  
+        // Other validations (email, URL, phone, etc.)
+        if (input.variableValidation?.includes("EMAIL") && value) {
           if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) {
             updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid email.`;
           }
         }
-        if (input.variableValidation === "URL" && value) {
+  
+        if (input.variableValidation?.includes("URL") && value) {
           if (!/^https?:\/\/[^\s$.?#].[^\s]*$/.test(value)) {
             updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid URL.`;
           }
         }
+        if (input.variableValidation?.includes("PDF") && value) {
+          if (!/^https?:\/\/[^\s$.?#].[^\s]*\.pdf$/i.test(value)) {
+            updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid PDF file.`;
+          }
+        }
+        if (input.variableValidation?.includes("DOCX") && value) {
+          if (!/^https?:\/\/[^\s$.?#].[^\s]*\.docx$/i.test(value)) {
+            updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid DOCX file.`;
+          }
+        }
 
-        updatedInputs[index].value = value;
-        setInputs(updatedInputs);
-      } else if (file) {
+        if (input.variableValidation?.includes("PDF","DOCX") && value) {
+          if (!/^https?:\/\/[^\s$.?#].[^\s]*\.(pdf|docx)$/i.test(value)) {
+            updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid PDF or DoCX file.`;
+          }
+        }
+        
+        
+  
+        if (input.variableValidation?.includes("NUMBER") && value) {
+          if (isNaN(Number(value))) {
+            updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid number.`;
+          }
+        }
       }
-
+  
+      // Update the value
+      updatedInputs[index].value = value || "";
+  
+      // Update states
+      setInputs(updatedInputs);
       setErrors(updatedErrors);
     } catch (err: any) {
       updatedErrors[input.variableName] = err.message || err.errors[0].message;
       setErrors(updatedErrors);
     }
   };
+  
 
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const error = Object.values(errors).some((err) => err !== '');
-    if (error) {
+    const hasErrors = Object.values(errors).some((err) => err !== '');
+    if (hasErrors) {
       return;
     }
-
+    const updatedErrors: Errors = {};
     const missingRequiredFields = inputs.filter((input) => input.isRequired && !input.value);
     if (missingRequiredFields.length > 0) {
-      const updatedErrors: Errors = {};
-
       missingRequiredFields.forEach((input) => {
         updatedErrors[input.variableName] = `${input.variableDisplayName} is required.`;
       });
       setErrors(updatedErrors);
+      return; 
     }
-
+  
     setErrors({});
-
     const inputData: { [key: string]: any } = {};
     inputs.forEach((input) => {
       inputData[input.variableName] = input.value;
     });
+  
     const bodyData = {
       inputs: inputData,
     };
+  
     try {
+      // Make the API call
       const response = await instance.post(
         `${API_URL}/agents/api/v1/run/${agent}`,
         bodyData
       );
-
+  
       if (response.status === 200) {
-        setExpandedOutput(true)
-        setOutput(response.data); // Store response data in state
-      } else {
-        setErrors({ general: 'Failed to run the agent' });
-      }
-    } catch (error) {
-      setErrors({ general: 'Error executing the agent' });
+        setExpandedOutput(true);
+        setOutput(response.data); 
+      } 
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.message || 'Error executing the agent. Please try again.';
+      toast.error(errorMessage)
       console.error('Error executing the agent:', error);
     }
   };
-
+  
   const renderInputs = () => {
     let longTextInput: JSX.Element | null = null;
     const shortTextInputs: JSX.Element[] = [];
-
+  
     inputs.forEach((input, index) => {
       const isRequired = input.isRequired;
-
+  
       if (input.variableType === "LONG_TEXT") {
         longTextInput = (
           <div key={index} className="mb-4 flex flex-col w-full">
@@ -279,7 +300,7 @@ const uploadDetails = () => {
               {input.variableDisplayName} {isRequired && <span className="text-red-500">*</span>}
             </label>
             <textarea
-              style={{ fontSize: '12px' }}
+              style={{ fontSize: "12px" }}
               placeholder={input.variablePlaceholder || "Enter details..."}
               value={input.value || ""}
               onChange={(e) => handleInputChange(index, e.target.value, null)}
@@ -292,7 +313,6 @@ const uploadDetails = () => {
           </div>
         );
       } else if (input.variableType === "FILE") {
-        // For file input
         shortTextInputs.push(
           <div key={index} className="mb-4 flex flex-col w-full relative">
             <label className="text-md text-black mb-2">
@@ -317,7 +337,7 @@ const uploadDetails = () => {
           </div>
         );
       } else {
-        // For short text input
+        // For short text inputs
         shortTextInputs.push(
           <div key={index} className="mb-4 flex flex-col w-full relative">
             <label className="text-md text-black mb-2 flex items-center">
@@ -325,15 +345,22 @@ const uploadDetails = () => {
               {isRequired && <span className="text-red-500 ml-1">*</span>}
               {input.variableValidation === "URL" && (
                 <span className="ml-2 text-gray-500">
-                  {/* Replace with your desired icon */}
                   <InputLinkIcon />
                 </span>
               )}
             </label>
             <div className="relative">
               <input
-                type="text"
-                style={{ fontSize: '12px', paddingLeft: "1rem" }}
+                type={
+                  input.variableValidation === "EMAIL"
+                    ? "email"
+                    : input.variableValidation === "NUMBER"
+                    ? "number"
+                    : input.variableValidation === "PHONE_NUMBER"
+                    ? "tel"
+                    : "text"
+                }
+                style={{ fontSize: "12px", paddingLeft: "1rem" }}
                 placeholder={input.variablePlaceholder || "Enter text..."}
                 value={input.value || ""}
                 onChange={(e) => handleInputChange(index, e.target.value, null)}
@@ -346,9 +373,8 @@ const uploadDetails = () => {
           </div>
         );
       }
-
     });
-
+  
     return (
       <>
         {!expandedInput ? (
@@ -360,12 +386,13 @@ const uploadDetails = () => {
         ) : (
           <div className="flex flex-col gap-4">
             {/* Display only a portion of short text inputs initially */}
-            {/* {shortTextInputs.slice(0, 2)} */}
+            {shortTextInputs.slice(0, 2)}
           </div>
         )}
       </>
     );
   };
+  
   const handleConnect = async (integrationType: string) => {
     try {
       await paragon.connect(integrationType, {});
@@ -391,7 +418,7 @@ const uploadDetails = () => {
       <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
         {/* Top Section */}
         <div className="col-span-1 md:col-span-3">
-          <div className="w-full rounded-2xl border-2 border-l-8 border-l-green-500">
+          <div className="w-full rounded-2xl border-2 border-l-8 border-l-yellow-500">
             <div className="flex justify-between gap-6">
               <div className="flex-1 md:mr-6 text-center md:text-left mt-4">
                 <p className="ml-2 text text-sm text-gray-500">Agent Name & Description</p>
@@ -475,7 +502,7 @@ const uploadDetails = () => {
         {/* Input Parameters */}
         <div className="col-span-1 flex flex-col">
           <div>
-            <div className="w-full rounded-2xl border-2 flex flex-col h-full border-l-8 border-l-yellow-400">
+            <div className="w-full rounded-2xl border-2 flex flex-col h-full border-l-8 border-l-red-500">
               <button
                 type="button"
                 onClick={() => setExpandedInput((prev) => !prev)}
@@ -489,7 +516,6 @@ const uploadDetails = () => {
                 {renderInputs()}
               </div>
               {/* Submit Button after renderInputs */}
-              {!expandedInput && (
                 <div className="mt-4 flex justify-center">
                   <button
                     type="submit"
@@ -498,7 +524,6 @@ const uploadDetails = () => {
                     Analyze
                   </button>
                 </div>
-              )}
             </div>
           </div>
         </div>
@@ -506,7 +531,7 @@ const uploadDetails = () => {
 
         <div className="col-span-2 flex flex-col">
           <div>
-            <div className="w-full rounded-2xl border-2 flex flex-col h-full border-l-8 border-l-red-500">
+            <div className="w-full rounded-2xl border-2 flex flex-col h-full border-l-8 border-l-green-500">
               <button
                 type="button"
                 onClick={() => setExpandedOutput((prev) => !prev)}
@@ -516,6 +541,11 @@ const uploadDetails = () => {
                 <span>{expandedOutput ? <FaChevronUp /> : <FaChevronDown />}</span>
               </button>
               <div className="p-6"></div>
+              {!output && <>
+             <div className="text-center mb-4">
+             <h1><strong>No output details available</strong></h1>
+              </div> 
+            </>}
               {expandedOutput && (
                 <div className="p-2 ">
                   {output && (
@@ -526,6 +556,7 @@ const uploadDetails = () => {
 
                 </div>
               )}
+       
             </div>
           </div>
 

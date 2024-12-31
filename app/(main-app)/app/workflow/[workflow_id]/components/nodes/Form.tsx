@@ -1,10 +1,17 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { Handle, Position, useReactFlow, type NodeProps } from "@xyflow/react";
+import {
+  Handle,
+  Position,
+  useNodesState,
+  useReactFlow,
+  type NodeProps,
+} from "@xyflow/react";
 import { FormNodeProps } from "./types";
 import { AddFieldDropdown } from "../inputsFields";
 import DynamicInput from "../DynamicInputs";
 import { SubNodeProps, WorkflowNodeState } from "@/types/workflows";
 import {
+  addNode,
   addVariable,
   deleteNodeById,
   removeNodeById,
@@ -15,10 +22,15 @@ import {
   updateSubNodeParameter,
 } from "@/lib/features/workflow/node.slice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { extractParameterValues } from "@/utils/dataResolver";
+import {
+  extractParameterValues,
+  resolveWorkflowNodes,
+} from "@/utils/dataResolver";
 import DeleteConfirmationModal from "../modals/deletemodal/DeleteModal";
 import { useSnackbar } from "../snackbar/SnackbarContext";
 import { convertToUnderscore } from "@/utils/helper";
+import { getWorkFlowById } from "@/lib/features/workflow/workflow.slice";
+import { unwrapResult } from "@reduxjs/toolkit";
 
 interface OptionsProps {
   value: string;
@@ -43,7 +55,8 @@ const Form = ({
     state.nodes.nodes.find(node => node.id === id)
   );
 
-  const { setNodes, setEdges } = useReactFlow();
+  const { setNodes: setNodes2, setEdges } = useReactFlow();
+  const [_, setNodes, onNodesChange] = useNodesState<any>([]);
   const dispatch = useAppDispatch();
   const { workFlowData } = useAppSelector(state => state.workflows);
   const initialSubNodes = (node?.data?.subNodes || []).filter(
@@ -57,7 +70,7 @@ const Form = ({
   const { success } = useSnackbar();
 
   const [showAdvancedOptions, setShowAdvancedOptions] = useState<number[]>([]);
-
+  const [isSaveNodes, setIsSaveNodes] = useState<boolean>(false);
 
   const [currentSubNodes, setCurrentSubNodes] = useState<SubNodeProps[]>(
     initialSubNodes?.length > 0
@@ -213,7 +226,7 @@ const Form = ({
   };
 
   const handleDeleteNode = () => {
-    setNodes(nds => nds.filter(nds => nds.id !== id));
+    setNodes2(nds => nds.filter(nds => nds.id !== id));
     setEdges((edges: any[]) => {
       const updatedEdges = edges.filter(
         (edge: any) => edge?.source !== id && edge?.target !== id
@@ -224,6 +237,32 @@ const Form = ({
     dispatch(deleteNodeById(id));
     success(`The ${data?.label} node has been successfully deleted`);
   };
+  
+  const getWorkFlowDetails = async () => {
+    if (!workFlowData._id) return;
+    try {
+      const resultAction = await dispatch(
+        getWorkFlowById(workFlowData._id)
+      );
+      const result = unwrapResult(resultAction);
+      const updatedNodes = resolveWorkflowNodes(result.nodes);
+      // @ts-ignore
+      setNodes(updatedNodes);
+      // @ts-ignore
+      setEdges(result.edges || []);
+      // @ts-ignore
+      dispatch(addNode(updatedNodes));
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  useEffect(() => {
+    if(isSaveNodes) {
+      setIsSaveNodes(false);
+      getWorkFlowDetails();
+    }
+  }, [id, workFlowData._id,  isSaveNodes]);
 
   const handleNextClick = async (subNodesData?: SubNodeProps[]) => {
     if (!node?.data?.subNodes) return;
@@ -279,6 +318,8 @@ const Form = ({
           ...prevState,
           [node.data.nodeMasterId]: false,
         }));
+        setIsSaveNodes(true);
+
       } catch (error: any) {
         console.error("error-->", error?.message);
         setLoadingNodes(prevState => ({
@@ -287,6 +328,7 @@ const Form = ({
         }));
       }
     } else {
+      setIsSaveNodes(true);
       subNodesToValidate.forEach(subNode => {
         Object.entries(subNode.parameters).forEach(([key, param]) => {
           if (param.required && !param.value) {
