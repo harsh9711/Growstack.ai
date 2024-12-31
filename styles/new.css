@@ -34,7 +34,7 @@
   }
   body {
     font-family: 'PoppinsRegular' !important;
-    overflow-x: clip;
+    /* overflow-x: clip; */
     /* background: #f4f7f9; */
   }
   
