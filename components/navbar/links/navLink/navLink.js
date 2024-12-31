@@ -260,7 +260,7 @@ const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
     );
   };
 
-  const renderNestedNavForFeatures = list => {
+  const renderNestedNavForAIStudio = list => {
     return (
       <div className="flex justify-between rounded-xl">
         <div className="flex flex-row w-[320px]">
@@ -329,7 +329,7 @@ const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
           className={
             item.title === "Solutions"
               ? "submenusolutions"
-              : "" || item.title === "Features"
+              : "" || item.title === "AI Studio"
                 ? "submenufeatures"
                 : "submenu"
           }
@@ -337,8 +337,8 @@ const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
         >
           {item.title === "Solutions"
             ? renderNestedNav(item.submenu)
-            : item.title === "Features"
-              ? renderNestedNavForFeatures(item.submenu)
+            : item.title === "AI Studio"
+              ? renderNestedNavForAIStudio(item.submenu)
               : item.submenu.map(sub => (
                   <Link
                     key={sub.title}
