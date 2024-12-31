@@ -120,7 +120,7 @@ const ProfileComponent: React.FC<{ profileData: any }> = ({ profileData }) => {
             <strong>Followers: </strong>{profileData[0].followers}
           </p>
           <p className="text-gray-500 text-sm">
-            <strong>Connections: </strong>{profileData[0].connections}
+            <strong>Connections: </strong>{profileData[0].connections}+
           </p>
           <p className="text-gray-500 text-sm">
             <strong>Current Company: </strong>{profileData[0].current_company.name}

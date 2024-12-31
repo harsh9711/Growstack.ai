@@ -231,7 +231,7 @@ const Boolean = ({ data, id, isConnectable }: NodeProps<BooleanNodeProps>) => {
                     onClick={handleNextClick}
                     className="bg-[#2DA771] text-white text-sm font-medium p-3 w-full rounded-[10px]"
                   >
-                    Next
+                    Save
                   </button>
                 </div>
               </div>

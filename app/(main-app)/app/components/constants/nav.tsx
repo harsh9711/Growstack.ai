@@ -61,7 +61,7 @@ const navLinks: NavLink[] = [
         href: ALL_ROUTES.AI_BACKGROUND_GENERATOR,
       },
     ],
-    title: "Features",
+    title: "AI Studio",
   },
   {
     icon: <AnalyseIcon />,
