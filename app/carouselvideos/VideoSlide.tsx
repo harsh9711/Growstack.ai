@@ -4,6 +4,7 @@ import { Pause } from "lucide-react";
 interface VideoSlideProps {
   item: {
     videoUrl: string;
+    poster: string;
   };
   index: number;
   playingVideoIndex: number | null;
@@ -71,6 +72,7 @@ const VideoSlide: React.FC<VideoSlideProps> = ({
         webkit-playsinline="true"
         x-webkit-airplay="allow"
         preload="auto"
+        poster={item.poster}
         className="w-full h-full sm:h-[500px] object-cover rounded-2xl"
       >
         <source src={item.videoUrl} type="video/mp4" />
