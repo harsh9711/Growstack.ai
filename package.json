@@ -141,6 +141,7 @@
         "@types/node": "^20",
         "@types/react": "^18",
         "@types/react-beautiful-dnd": "^13.1.8",
+        "@types/react-copy-to-clipboard": "^5.0.7",
         "@types/react-csv": "^1.1.10",
         "@types/react-dom": "^18",
         "@types/react-slick": "^0.23.13",
