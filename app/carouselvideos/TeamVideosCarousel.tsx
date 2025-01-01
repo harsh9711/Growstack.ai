@@ -1,41 +1,104 @@
 "use client";
 import React, { useRef, useState, useEffect } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import { Autoplay } from "swiper/modules";
 import { teamvideos } from "@/types/data";
 import VideoSlide from "./VideoSlide";
 
-const TeamVideosCarousel: React.FC = () => {
+const TeamVideosCarousel = () => {
   const [playingVideoIndex, setPlayingVideoIndex] = useState<number | null>(
     null
   );
-  const swiperRef = useRef<any>(null);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
-  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [isIOS, setIsIOS] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const autoScrollInterval = useRef<NodeJS.Timeout>();
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
-  // Detect iOS device on component mount
+  // Calculate how many items to show based on screen size
+  const getItemsPerView = () => {
+    if (typeof window === "undefined") return 4;
+    if (window.innerWidth < 640) return 1;
+    if (window.innerWidth < 1024) return 2;
+    if (window.innerWidth < 1280) return 3;
+    return 4;
+  };
+
+  const [itemsPerView, setItemsPerView] = useState(4);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setItemsPerView(getItemsPerView());
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Create a duplicated array for infinite loop effect
+  const extendedVideos = [...teamvideos, ...teamvideos, ...teamvideos];
+
   useEffect(() => {
     const iOS =
       /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     setIsIOS(iOS);
   }, []);
 
+  useEffect(() => {
+    startAutoScroll();
+    return () => stopAutoScroll();
+  }, [playingVideoIndex]);
+
+  const startAutoScroll = () => {
+    stopAutoScroll();
+    if (playingVideoIndex === null) {
+      autoScrollInterval.current = setInterval(() => {
+        handleScrollNext();
+      }, 4000);
+    }
+  };
+
+  const stopAutoScroll = () => {
+    if (autoScrollInterval.current) {
+      clearInterval(autoScrollInterval.current);
+    }
+  };
+
+  const handleTransitionEnd = () => {
+    setIsTransitioning(false);
+    if (currentIndex >= teamvideos.length) {
+      setCurrentIndex(0);
+    } else if (currentIndex < 0) {
+      setCurrentIndex(teamvideos.length - 1);
+    }
+  };
+
+  const handleScrollNext = () => {
+    if (!isTransitioning) {
+      setIsTransitioning(true);
+      setCurrentIndex(prev => prev + 1);
+    }
+  };
+
+  const handleScrollPrev = () => {
+    if (!isTransitioning) {
+      setIsTransitioning(true);
+      setCurrentIndex(prev => prev - 1);
+    }
+  };
+
   const initializeVideo = async (video: HTMLVideoElement) => {
     if (isIOS) {
       try {
-        // iOS specific initialization
         video.playsInline = true;
         video.muted = true;
         video.preload = "auto";
         await video.load();
-        // Try to play immediately and mute to enable playback
         const playPromise = video.play();
         if (playPromise !== undefined) {
           await playPromise;
-          video.pause(); // Pause immediately after successful play attempt
-          video.currentTime = 0; // Reset to start
+          video.pause();
+          video.currentTime = 0;
         }
       } catch (error) {
         console.error("iOS video initialization error:", error);
@@ -45,40 +108,31 @@ const TeamVideosCarousel: React.FC = () => {
 
   const handlePlayVideo = async (index: number) => {
     try {
-      // Stop any currently playing video
+      stopAutoScroll();
+
       if (playingVideoIndex !== null && videoRefs.current[playingVideoIndex]) {
         videoRefs.current[playingVideoIndex]?.pause();
       }
 
       setPlayingVideoIndex(index);
 
-      // Stop Swiper autoplay
-      if (swiperRef.current) {
-        swiperRef.current.autoplay.stop();
-      }
-
       const videoElement = videoRefs.current[index];
       if (!videoElement) return;
 
       if (isIOS) {
-        // iOS specific play handling
         videoElement.currentTime = 0;
-        videoElement.muted = true; // Start muted on iOS
+        videoElement.muted = true;
         await videoElement.load();
-        await new Promise(resolve => setTimeout(resolve, 100)); // Small delay for iOS
+        await new Promise(resolve => setTimeout(resolve, 100));
 
         try {
           await videoElement.play();
-          // After successful play, unmute if possible
           videoElement.muted = false;
         } catch (error) {
-          console.error("iOS play error:", error);
-          // If normal play fails, keep muted and try again
           videoElement.muted = true;
           await videoElement.play();
         }
       } else {
-        // Android/other devices handling
         try {
           await videoElement.play();
         } catch (error) {
@@ -86,7 +140,11 @@ const TeamVideosCarousel: React.FC = () => {
         }
       }
 
-      // Pause all other videos
+      videoElement.onended = () => {
+        handleStopVideo();
+        handleScrollNext();
+      };
+
       videoRefs.current.forEach((video, idx) => {
         if (video && idx !== index) {
           video.pause();
@@ -104,12 +162,8 @@ const TeamVideosCarousel: React.FC = () => {
       video?.pause();
       if (video) video.currentTime = 0;
     }
-
     setPlayingVideoIndex(null);
-
-    if (swiperRef.current) {
-      swiperRef.current.autoplay.start();
-    }
+    startAutoScroll();
   };
 
   const handleVideoRef = (el: HTMLVideoElement | null, index: number) => {
@@ -117,6 +171,11 @@ const TeamVideosCarousel: React.FC = () => {
     if (el) {
       initializeVideo(el);
     }
+  };
+
+  const getTransformValue = () => {
+    const itemWidth = 100 / itemsPerView;
+    return `translateX(-${currentIndex * itemWidth}%)`;
   };
 
   return (
@@ -133,56 +192,56 @@ const TeamVideosCarousel: React.FC = () => {
           </div>
           <div className="bg-emerald-900/30 text-emerald-400 rounded-full px-4 py-2">
             <span>
-              0{playingVideoIndex !== null ? playingVideoIndex + 1 : 1}/
-              {teamvideos.length}
+              0
+              {playingVideoIndex !== null
+                ? playingVideoIndex + 1
+                : (currentIndex % teamvideos.length) + 1}
+              /{teamvideos.length}
             </span>
           </div>
         </div>
 
-        <Swiper
-          slidesPerView={4.5}
-          loop
-          spaceBetween={20}
-          autoplay={{
-            delay: 4000,
-            disableOnInteraction: false,
-          }}
-          speed={1000}
-          modules={[Autoplay]}
-          onSwiper={swiper => {
-            swiperRef.current = swiper;
-          }}
-          onSlideChange={({ activeIndex }) => {
-            setCurrentVideoIndex(activeIndex);
-            // Stop any playing video when sliding
-            handleStopVideo();
-          }}
-          breakpoints={{
-            320: { slidesPerView: 1.2, spaceBetween: 10 },
-            480: { slidesPerView: 1.5, spaceBetween: 15 },
-            640: { slidesPerView: 2.5, spaceBetween: 15 },
-            768: { slidesPerView: 2.5, spaceBetween: 20 },
-            1024: { slidesPerView: 3.5, spaceBetween: 20 },
-            1280: { slidesPerView: 4.5, spaceBetween: 20 },
-          }}
-          className="w-full"
-          watchSlidesProgress={true}
-          observer={true}
-          observeParents={true}
-        >
-          {teamvideos.map((item, index) => (
-            <SwiperSlide key={index}>
-              <VideoSlide
-                item={item}
-                index={index}
-                playingVideoIndex={playingVideoIndex}
-                videoRef={el => handleVideoRef(el, index)}
-                onPlayVideo={() => handlePlayVideo(index)}
-                onStopVideo={handleStopVideo}
-              />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+        <div className="relative overflow-hidden">
+          <button
+            onClick={handleScrollPrev}
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-emerald-900/30 text-emerald-400 p-2 rounded-full hover:bg-emerald-900/50 transition-colors"
+          >
+            ←
+          </button>
+
+          <div
+            ref={containerRef}
+            className="flex transition-transform duration-500 ease-in-out"
+            style={{
+              transform: getTransformValue(),
+            }}
+            onTransitionEnd={handleTransitionEnd}
+          >
+            {extendedVideos.map((item, index) => (
+              <div
+                key={index}
+                className={`flex-shrink-0 w-full md:w-1/2 lg:w-1/3 xl:w-1/4 px-2`}
+                style={{ transition: "opacity 0.3s ease-in-out" }}
+              >
+                <VideoSlide
+                  item={item}
+                  index={index}
+                  playingVideoIndex={playingVideoIndex}
+                  videoRef={el => handleVideoRef(el, index)}
+                  onPlayVideo={() => handlePlayVideo(index)}
+                  onStopVideo={handleStopVideo}
+                />
+              </div>
+            ))}
+          </div>
+
+          <button
+            onClick={handleScrollNext}
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-emerald-900/30 text-emerald-400 p-2 rounded-full hover:bg-emerald-900/50 transition-colors"
+          >
+            →
+          </button>
+        </div>
       </div>
     </div>
   );
