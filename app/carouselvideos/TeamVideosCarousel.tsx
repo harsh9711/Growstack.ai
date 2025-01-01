@@ -9,13 +9,12 @@ const TeamVideosCarousel = () => {
   );
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const [isIOS, setIsIOS] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const autoScrollInterval = useRef<NodeJS.Timeout>();
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
 
-  // Calculate how many items to show based on screen size
-  const getItemsPerView = () => {
+  // Calculate visible videos based on screen width
+  const getVisibleCount = () => {
     if (typeof window === "undefined") return 4;
     if (window.innerWidth < 640) return 1;
     if (window.innerWidth < 1024) return 2;
@@ -23,31 +22,35 @@ const TeamVideosCarousel = () => {
     return 4;
   };
 
-  const [itemsPerView, setItemsPerView] = useState(4);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setItemsPerView(getItemsPerView());
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  // Create a duplicated array for infinite loop effect
-  const extendedVideos = [...teamvideos, ...teamvideos, ...teamvideos];
+  const [visibleCount, setVisibleCount] = useState(getVisibleCount());
 
   useEffect(() => {
     const iOS =
       /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     setIsIOS(iOS);
+
+    const handleResize = () => {
+      setVisibleCount(getVisibleCount());
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Auto-scroll setup
   useEffect(() => {
-    startAutoScroll();
+    if (!isIOS) {
+      // Disable auto-scroll on iOS for better performance
+      startAutoScroll();
+    }
     return () => stopAutoScroll();
-  }, [playingVideoIndex]);
+  }, [playingVideoIndex, isIOS]);
+
+  const stopAutoScroll = () => {
+    if (autoScrollInterval.current) {
+      clearInterval(autoScrollInterval.current);
+    }
+  };
 
   const startAutoScroll = () => {
     stopAutoScroll();
@@ -57,34 +60,37 @@ const TeamVideosCarousel = () => {
       }, 4000);
     }
   };
-
-  const stopAutoScroll = () => {
-    if (autoScrollInterval.current) {
-      clearInterval(autoScrollInterval.current);
-    }
-  };
-
-  const handleTransitionEnd = () => {
-    setIsTransitioning(false);
-    if (currentIndex >= teamvideos.length) {
-      setCurrentIndex(0);
-    } else if (currentIndex < 0) {
-      setCurrentIndex(teamvideos.length - 1);
-    }
-  };
-
   const handleScrollNext = () => {
-    if (!isTransitioning) {
-      setIsTransitioning(true);
-      setCurrentIndex(prev => prev + 1);
-    }
+    setCurrentIndex(prev => (prev + 1) % teamvideos.length);
   };
 
   const handleScrollPrev = () => {
-    if (!isTransitioning) {
-      setIsTransitioning(true);
-      setCurrentIndex(prev => prev - 1);
+    setCurrentIndex(prev => (prev - 1 + teamvideos.length) % teamvideos.length);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.touches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (touchStart === null) return;
+
+    const currentTouch = e.touches[0].clientX;
+    const diff = touchStart - currentTouch;
+
+    if (Math.abs(diff) > 50) {
+      // Minimum swipe distance
+      if (diff > 0) {
+        handleScrollNext();
+      } else {
+        handleScrollPrev();
+      }
+      setTouchStart(null);
     }
+  };
+
+  const handleTouchEnd = () => {
+    setTouchStart(null);
   };
 
   const initializeVideo = async (video: HTMLVideoElement) => {
@@ -94,12 +100,6 @@ const TeamVideosCarousel = () => {
         video.muted = true;
         video.preload = "auto";
         await video.load();
-        const playPromise = video.play();
-        if (playPromise !== undefined) {
-          await playPromise;
-          video.pause();
-          video.currentTime = 0;
-        }
       } catch (error) {
         console.error("iOS video initialization error:", error);
       }
@@ -110,6 +110,7 @@ const TeamVideosCarousel = () => {
     try {
       stopAutoScroll();
 
+      // Stop any currently playing video
       if (playingVideoIndex !== null && videoRefs.current[playingVideoIndex]) {
         videoRefs.current[playingVideoIndex]?.pause();
       }
@@ -120,17 +121,13 @@ const TeamVideosCarousel = () => {
       if (!videoElement) return;
 
       if (isIOS) {
-        videoElement.currentTime = 0;
-        videoElement.muted = true;
-        await videoElement.load();
-        await new Promise(resolve => setTimeout(resolve, 100));
-
         try {
-          await videoElement.play();
-          videoElement.muted = false;
-        } catch (error) {
+          videoElement.currentTime = 0;
           videoElement.muted = true;
           await videoElement.play();
+          // Keep video muted on iOS for better playback reliability
+        } catch (error) {
+          console.error("iOS play error:", error);
         }
       } else {
         try {
@@ -140,11 +137,7 @@ const TeamVideosCarousel = () => {
         }
       }
 
-      videoElement.onended = () => {
-        handleStopVideo();
-        handleScrollNext();
-      };
-
+      // Pause all other videos
       videoRefs.current.forEach((video, idx) => {
         if (video && idx !== index) {
           video.pause();
@@ -163,7 +156,9 @@ const TeamVideosCarousel = () => {
       if (video) video.currentTime = 0;
     }
     setPlayingVideoIndex(null);
-    startAutoScroll();
+    if (!isIOS) {
+      startAutoScroll();
+    }
   };
 
   const handleVideoRef = (el: HTMLVideoElement | null, index: number) => {
@@ -173,9 +168,15 @@ const TeamVideosCarousel = () => {
     }
   };
 
-  const getTransformValue = () => {
-    const itemWidth = 100 / itemsPerView;
-    return `translateX(-${currentIndex * itemWidth}%)`;
+  // Calculate which videos should be visible
+  const visibleVideos = () => {
+    const videos = [...teamvideos];
+    const result = [];
+    for (let i = 0; i < visibleCount; i++) {
+      const index = (currentIndex + i) % videos.length;
+      result.push({ ...videos[index], originalIndex: index });
+    }
+    return result;
   };
 
   return (
@@ -192,43 +193,36 @@ const TeamVideosCarousel = () => {
           </div>
           <div className="bg-emerald-900/30 text-emerald-400 rounded-full px-4 py-2">
             <span>
-              0
-              {playingVideoIndex !== null
-                ? playingVideoIndex + 1
-                : (currentIndex % teamvideos.length) + 1}
-              /{teamvideos.length}
+              0{currentIndex + 1}/{teamvideos.length}
             </span>
           </div>
         </div>
 
-        <div className="relative overflow-hidden">
+        <div className="relative">
           <button
             onClick={handleScrollPrev}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-emerald-900/30 text-emerald-400 p-2 rounded-full hover:bg-emerald-900/50 transition-colors"
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-emerald-900/30 text-emerald-400 p-2 rounded-full"
           >
             ←
           </button>
 
           <div
-            ref={containerRef}
-            className="flex transition-transform duration-500 ease-in-out"
-            style={{
-              transform: getTransformValue(),
-            }}
-            onTransitionEnd={handleTransitionEnd}
+            className="flex gap-4 overflow-hidden touch-pan-y"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
           >
-            {extendedVideos.map((item, index) => (
+            {visibleVideos().map((item, index) => (
               <div
-                key={index}
-                className={`flex-shrink-0 w-full md:w-1/2 lg:w-1/3 xl:w-1/4 px-2`}
-                style={{ transition: "opacity 0.3s ease-in-out" }}
+                key={item.originalIndex}
+                className="flex-shrink-0 w-full md:w-1/2 lg:w-1/3 xl:w-1/4"
               >
                 <VideoSlide
                   item={item}
-                  index={index}
+                  index={item.originalIndex}
                   playingVideoIndex={playingVideoIndex}
-                  videoRef={el => handleVideoRef(el, index)}
-                  onPlayVideo={() => handlePlayVideo(index)}
+                  videoRef={el => handleVideoRef(el, item.originalIndex)}
+                  onPlayVideo={() => handlePlayVideo(item.originalIndex)}
                   onStopVideo={handleStopVideo}
                 />
               </div>
@@ -237,7 +231,7 @@ const TeamVideosCarousel = () => {
 
           <button
             onClick={handleScrollNext}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-emerald-900/30 text-emerald-400 p-2 rounded-full hover:bg-emerald-900/50 transition-colors"
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-emerald-900/30 text-emerald-400 p-2 rounded-full"
           >
             →
           </button>

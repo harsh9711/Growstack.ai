@@ -17,6 +17,7 @@ import AnimationStory from "../animationstory/page";
 import Image from "next/image";
 import TeamVideosCarousel from "../carouselvideos/TeamVideosCarousel";
 import dynamic from "next/dynamic";
+import { VideoSwiper } from "../carouselvideos/VideoSwiper";
 
 const Premium = dynamic(() => import("@/components/home/premium/Premium"), {
   ssr: false,
@@ -155,7 +156,8 @@ function Page() {
         </div>
       </div>
       <SixCardVideo />
-      <TeamVideosCarousel />
+      {/* <TeamVideosCarousel /> */}
+      <VideoSwiper />
       <Animation />
       <section className="sm:px-0 px-6 ">
         {" "}
