@@ -14,6 +14,12 @@ const Footer = lazy(() => import("@/components/footer/Footer"));
 const OneCard = lazy(() => import("./component/OneCard"));
 const SecondLastCard = lazy(() => import("./component/SecondLastCard"));
 
+const LoadingSpinner = () => (
+  <div className="flex items-center justify-center min-h-[200px]">
+    <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#2DA771]"></div>
+  </div>
+);
+
 interface ExpandableCardProps {
   heading: string;
   para: string;
@@ -125,28 +131,28 @@ const page = () => {
       </section>
 
       <section className=" pt-6 sm:pt-10 sm:px-6 p-0 items-center justify-center mx-auto">
-        <Suspense>
+        <Suspense fallback={<LoadingSpinner />}>
           <Cases />
         </Suspense>
       </section>
 
       <section className="px-6 sm:px-10  sm:pt-20">
-        <Suspense>
+        <Suspense fallback={<LoadingSpinner />}>
           <Benefits />
         </Suspense>
       </section>
       <section className=" pt-40 sm:pt-20 sm:px-0 px-6 items-center justify-center mx-auto">
-        <Suspense>
+        <Suspense fallback={<LoadingSpinner />}>
           <SixCard />
         </Suspense>
       </section>
       <section className="sm:pt-20 pt-10 sm:px-0 px-6  items-center justify-center mx-auto">
-        <Suspense>
+        <Suspense fallback={<LoadingSpinner />}>
           <OneCard />
         </Suspense>
       </section>
       <section className="sm:pt-20 pt-10 sm:px-10 px-0  ">
-        <Suspense>
+        <Suspense fallback={<LoadingSpinner />}>
           <SecondLastCard />
         </Suspense>
       </section>
@@ -161,11 +167,11 @@ const page = () => {
             className="w-full overflow-hidden  absolute translate-y-[500px] -rotate-6 z-0"
           />
         </div>
-        <Suspense>
+        <Suspense fallback={<LoadingSpinner />}>
           <Faq />
         </Suspense>
       </section>
-      <Suspense>
+      <Suspense fallback={<LoadingSpinner />}>
         <Footer />
       </Suspense>
     </main>
