@@ -41,7 +41,7 @@ export default function AssistantCard({ avatar, name, role, id, summary }: Assis
 
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black z-[1] flex flex-col justify-end text-white p-4 gap-2">
           <div>
-            <p className="text-center break-words text-white text-opacity-80 text-sm sm:text-base md:text-lg lg:text-xl">
+            <p className="text-center text-white font-bold text-opacity-80 text-sm sm:text-base md:text-lg lg:text-xl">
               {role}
             </p>
           </div>
