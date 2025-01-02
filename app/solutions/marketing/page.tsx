@@ -55,9 +55,7 @@ const Page: React.FC = () => {
     <React.Fragment>
       <div className="">
         <Navbar />
-        <Suspense fallback={<LoadingSpinner />}>
-          <Banner />
-        </Suspense>
+        <Banner />
         <Suspense fallback={<LoadingSpinner />}>
           <MarketingExpertise />
         </Suspense>
