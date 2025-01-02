@@ -36,7 +36,7 @@ const ImageGalleryResponsive = () => {
       src: "/images_growstack/solutions/aiEmail.svg",
       alt: "Image 3",
       id: 3,
-      source: "imageshown2",
+      source: "eswiper3",
       buttonText: "Design optimization",
     },
     {
