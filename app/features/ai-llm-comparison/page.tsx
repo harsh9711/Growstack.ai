@@ -12,6 +12,12 @@ const Faq = lazy(() => import("./component/Faq"));
 const Card = lazy(() => import("./component/Card"));
 const Footer = lazy(() => import("@/components/footer/Footer"));
 
+const LoadingSpinner = () => (
+  <div className="flex items-center justify-center min-h-[200px]">
+    <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#2DA771]"></div>
+  </div>
+);
+
 const page = () => {
   return (
     <main className="flex flex-col relative w-full overflow-hidden overflow-y-scroll mx-auto">
@@ -212,17 +218,17 @@ const page = () => {
         </div>
       </section>
       <section className="2xl:flex xl:flex hidden sm:pt-20 items-center justify-center mx-auto">
-        <Suspense>
+        <Suspense fallback={<LoadingSpinner />}>
           <Card />
         </Suspense>
       </section>
       <section className="flex 2xl:hidden xl:hidden  items-center justify-center mx-auto p-6">
-        <Suspense>
+        <Suspense fallback={<LoadingSpinner />}>
           <CardResponsive />
         </Suspense>
       </section>
       <section className="px-6 sm:px-10 ">
-        <Suspense>
+        <Suspense fallback={<LoadingSpinner />}>
           <Benefits />
         </Suspense>
       </section>
@@ -237,11 +243,11 @@ const page = () => {
             className="w-full overflow-hidden  absolute translate-y-[500px] -rotate-6 z-0"
           />
         </div>
-        <Suspense>
+        <Suspense fallback={<LoadingSpinner />}>
           <Faq />
         </Suspense>
       </section>
-      <Suspense>
+      <Suspense fallback={<LoadingSpinner />}>
         <Footer />
       </Suspense>
     </main>

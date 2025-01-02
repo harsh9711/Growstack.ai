@@ -41,7 +41,7 @@ const MobileNavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
 
       // Check if submenu goes beyond right side of screen
       if (navRect.left + submenuRect.width > windowWidth) {
-        setSubmenuPosition("right-0");
+        setSubmenuPosition("-left-7");
       }
       // Check if submenu goes beyond left side of screen
       else if (navRect.left - submenuRect.width < 0) {

@@ -199,7 +199,7 @@ const page = () => {
           <Cases />
         </Suspense>
       </section>
-      <section className="items-center justify-center flex flex-col py-20  overflow-hidden ">
+      <section className="items-center justify-center flex flex-col overflow-hidden ">
         <div className="items-center justify-center flex flex-col gap-y-4  overflow-hidden ">
           <Image
             src="/solutions/design.svg"
