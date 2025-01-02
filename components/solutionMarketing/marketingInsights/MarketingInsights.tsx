@@ -151,7 +151,7 @@ const LoadingBar: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col pb-40">
+    <div className="flex flex-col pb-10">
       <div className=" 2xl:items-start items-center justify-center flex flex-col gap-y-4 ">
         <div
           data-aos="fade-up"

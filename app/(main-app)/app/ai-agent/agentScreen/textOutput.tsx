@@ -19,8 +19,11 @@ interface DataItem {
   variableValue: string;
   needToSelect: boolean;
 }
-
-const KeywordInsights = ({ runnerAgentId }: { runnerAgentId: string }) => {
+interface KeywordInsightsProps {
+  runnerAgentId: string;
+  setLoader: (loading: boolean) => void;
+}
+const KeywordInsights: React.FC<KeywordInsightsProps> = ({ runnerAgentId, setLoader }) => {
   const [data, setData] = useState<{ result: DataItem[] } | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -31,6 +34,8 @@ const KeywordInsights = ({ runnerAgentId }: { runnerAgentId: string }) => {
     let intervalId: NodeJS.Timeout;
 
     const fetchData = async () => {
+      setLoader(true)
+
       try {
         setLoading(true);
         setError(null);
@@ -59,6 +64,7 @@ const KeywordInsights = ({ runnerAgentId }: { runnerAgentId: string }) => {
         // Stop polling if the status is "COMPLETED" or "FAILED"
         if (fetchedData.status === "COMPLETED") {
           clearInterval(intervalId);
+          setLoader(false)
           setLoading(false); // Ensure loading state is reset
         }
 
@@ -66,12 +72,14 @@ const KeywordInsights = ({ runnerAgentId }: { runnerAgentId: string }) => {
           console.warn("The workflow has failed. Please check the fields and try again.");
           setLoading(false); // Ensure loading state is reset
           clearInterval(intervalId);
+          setLoader(false)
           toast.error("Please re-run the agent.");
         }
       } catch (error) {
         console.error("Error fetching data:", error);
         setError("Failed to load data.");
         clearInterval(intervalId);
+        setLoader(false)
         setLoading(false); // Ensure loading state is reset
       } finally {
       }
@@ -101,6 +109,8 @@ const KeywordInsights = ({ runnerAgentId }: { runnerAgentId: string }) => {
     const response = await instance.post(
       `${API_URL}/agents/api/v1/run/resume/${runnerAgentId}`, payload
     );
+    setLoader(false)
+
     toast.success("Submitted the resume for re-run.")
   };
   const renderCSVTable = (csvData: string, extraItems: any) => {
@@ -293,3 +303,7 @@ const KeywordInsights = ({ runnerAgentId }: { runnerAgentId: string }) => {
 };
 
 export default KeywordInsights;
+function setLoader(arg0: boolean) {
+  throw new Error("Function not implemented.");
+}
+

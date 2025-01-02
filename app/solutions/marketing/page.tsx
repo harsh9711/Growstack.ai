@@ -1,24 +1,66 @@
 "use client";
-import React from "react";
+import React, { Suspense } from "react";
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
-import Banner from "@/components/solutionMarketing/banner/Banner";
-import MarketingExpertise from "@/components/solutionMarketing/marketingExpertise/MarketingExpertise";
-import MarketingEfficiency from "@/components/solutionMarketing/marketingEfficiency/MarketingEfficiency";
-import MarketingAutomate from "@/components/solutionMarketing/marketingAutomate/MarketingAutomate";
-import MarketingInsights from "@/components/solutionMarketing/marketingInsights/MarketingInsights";
-import MarketingTechnology from "@/components/solutionMarketing/marketingTechnology/MarketingTechnology";
-import MarketingStreamline from "@/components/solutionMarketing/marketingStreamline/MarketingStreamline";
-import ImageGallery from "@/components/solutionMarketing/marketingEfficiency/MarketingEfficiency";
-import ImageGalleryResponsive from "./ZoomEffectrespopnsive";
+
+// Lazy load components
+const Banner = React.lazy(
+  () => import("@/components/solutionMarketing/banner/Banner")
+);
+const MarketingExpertise = React.lazy(
+  () =>
+    import(
+      "@/components/solutionMarketing/marketingExpertise/MarketingExpertise"
+    )
+);
+const MarketingAutomate = React.lazy(
+  () =>
+    import("@/components/solutionMarketing/marketingAutomate/MarketingAutomate")
+);
+const MarketingInsights = React.lazy(
+  () =>
+    import("@/components/solutionMarketing/marketingInsights/MarketingInsights")
+);
+const MarketingTechnology = React.lazy(
+  () =>
+    import(
+      "@/components/solutionMarketing/marketingTechnology/MarketingTechnology"
+    )
+);
+const MarketingStreamline = React.lazy(
+  () =>
+    import(
+      "@/components/solutionMarketing/marketingStreamline/MarketingStreamline"
+    )
+);
+const ImageGallery = React.lazy(
+  () =>
+    import(
+      "@/components/solutionMarketing/marketingEfficiency/MarketingEfficiency"
+    )
+);
+const ImageGalleryResponsive = React.lazy(
+  () => import("./ZoomEffectrespopnsive")
+);
+
+// Loading fallback component
+const LoadingSpinner = () => (
+  <div className="flex items-center justify-center min-h-[200px]">
+    <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#2DA771]"></div>
+  </div>
+);
 
 const Page: React.FC = () => {
   return (
     <React.Fragment>
       <div className="">
         <Navbar />
-        <Banner />
-        <MarketingExpertise />
+        <Suspense fallback={<LoadingSpinner />}>
+          <Banner />
+        </Suspense>
+        <Suspense fallback={<LoadingSpinner />}>
+          <MarketingExpertise />
+        </Suspense>
         <section className="items-center justify-center mx-auto flex flex-col w-full bg-[url('/images_growstack/solutions/efficiencyBack.png')] bg-cover bg-[100%] bg-no-repeat">
           <div className="flex flex-col items-center justify-center sm:py-20 mx-auto overflow-hidden">
             <div className="w-full gap-y-4 flex flex-col items-center justify-center mx-auto ">
@@ -39,22 +81,33 @@ const Page: React.FC = () => {
             </div>
 
             <div>
-              {" "}
               <div className="2xl:flex xl:flex hidden mt-20 w-full h-full items-center justify-center mx-auto">
-                <ImageGallery />
+                <Suspense fallback={<LoadingSpinner />}>
+                  <ImageGallery />
+                </Suspense>
               </div>
-              <div className="2xl:hidden xl:hidden flex flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px] h-full justify-center mx-auto   items-center gap-4  ">
-                <ImageGalleryResponsive />
+              <div className="2xl:hidden xl:hidden flex flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px] h-full justify-center mx-auto items-center gap-4">
+                <Suspense fallback={<LoadingSpinner />}>
+                  <ImageGalleryResponsive />
+                </Suspense>
               </div>
             </div>
           </div>
         </section>
-        <MarketingAutomate />
-        <div className="w-full flex py-24  flex-col items-center justify-center">
-          <MarketingInsights />
+        <Suspense fallback={<LoadingSpinner />}>
+          <MarketingAutomate />
+        </Suspense>
+        <div className="w-full flex py-24 flex-col items-center justify-center">
+          <Suspense fallback={<LoadingSpinner />}>
+            <MarketingInsights />
+          </Suspense>
         </div>
-        <MarketingTechnology />
-        <MarketingStreamline />
+        <Suspense fallback={<LoadingSpinner />}>
+          <MarketingTechnology />
+        </Suspense>
+        <Suspense fallback={<LoadingSpinner />}>
+          <MarketingStreamline />
+        </Suspense>
         <Footer />
       </div>
     </React.Fragment>

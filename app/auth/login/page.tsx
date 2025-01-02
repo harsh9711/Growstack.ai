@@ -19,7 +19,7 @@ import { login } from "@/lib/features/auth/auth.slice";
 import { setCookie } from "cookies-next";
 import { useSearchParams } from "next/navigation";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { LoginBackgroundImg, LoginRightImg } from "@/components/svgs";
+import { LoginBackgroundImg, LoginRightImg, LoginRightImg2 } from "@/components/svgs";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import withUnAuthGuard from "@/components/guard/unAuthGuard";
@@ -34,6 +34,27 @@ const Login = () => {
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [fieldHeight, setFieldHeight] = useState("55px");
+  const [zoom, setZoom] = useState("1");
+  const [largeScreen, setLargeScreen] = useState(true);
+
+
+  useEffect(() => {
+    const handleResize = () => {
+      setFieldHeight(window.innerWidth <= 1422 ? "44px" : "55px");
+      setZoom(window.innerWidth <= 1422 ? "0.8" : "1")
+      setLargeScreen(window.innerWidth <= 1600 ? false : true)
+    };
+
+    // Set initial height based on window width
+    handleResize();
+
+    // Add resize event listener
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup event listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, []); // Empty dependency array ensures this effect runs once on mount
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -112,20 +133,20 @@ const Login = () => {
   };
 
   return (
-    <motion.main
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
-    >
-      <div className=" flex flex-col xl:flex-row max-h-[95%] gap-10">
-        <LoginBackgroundImg
-          className="absolute bottom-0 left-0 h-auto"
-          style={{ zoom: "0.65", marginTop: "0px" }}
-        />
-        <section className="w-full h-full flex justify-center items-center bg-white">
-          <div className="w-full max-w-2xl max-h-[840px] h-full p-14 bg-[#F7FAFC] rounded-[30px]">
-            <div className="slide-reveal w-full h-full max-w-[460px] mx-auto flex flex-col justify-between items-center md:items-start space-y-10">
+
+    <div className="grid grid-cols-1 md:grid-cols-2 h-screen">
+      <LoginBackgroundImg
+        className="absolute bottom-0 left-0 h-auto"
+        style={{ zoom: "0.65", marginTop: "0px" }}
+      />
+      {/* Left Section */}
+      <div className="flex justify-center">
+        <section
+          className="w-[65%] h-full flex justify-center items-center transform lg:scale-90"
+          style={{ zoom: zoom }} // Apply zoom directly with inline styles
+        >
+          <div className="w-full p-14 bg-[#F7FAFC] rounded-[30px]">
+            <div className="slide-reveal w-full h-full max-w-[660px] mx-auto flex flex-col items-center md:items-start space-y-10">
               <Image
                 src="/logo/growstack1.png"
                 alt="growstack"
@@ -135,7 +156,7 @@ const Login = () => {
               />
               <div className="space-y-3 w-full">
                 <div className="space-y-3">
-                  <h1 className="text-3xl font-bold text-center md:text-left">
+                  <h1 className="text-2xl font-bold text-center md:text-left  ">
                     Sign in to your account
                   </h1>
                   <p className="text-[#002030B2] text-base text-center md:text-left">
@@ -152,7 +173,7 @@ const Login = () => {
                       className={clsx(
                         "w-full h-full flex items-center gap-3 bg-white outline-none border border-[#00203056] rounded-xl px-4 transition-all focus-within:border-primary-green",
                         errors["email"] &&
-                          "border-rose-600 focus-within:border-rose-600"
+                        "border-rose-600 focus-within:border-rose-600"
                       )}
                     >
                       <svg
@@ -172,11 +193,12 @@ const Login = () => {
                       <div className="relative group space-y-2 cursor-text w-full">
                         <input
                           id="email"
-                          autoComplete="email"
-                          className="text-sm peer bg-white focus:ring-0 h-[60px] w-full"
+                          autoComplete="email" style={{ height: fieldHeight }}
+                          className={`text-sm peer bg-white focus:ring-0 w-full`}
                           placeholder="Enter your email..."
                           {...register("email")}
                         />
+
                       </div>
                     </div>
                     {errors.email && (
@@ -192,7 +214,7 @@ const Login = () => {
                       className={clsx(
                         "w-full h-full flex items-center gap-3 bg-white outline-none border border-[#00203056] rounded-xl px-4 transition-all focus-within:border-primary-green",
                         errors["password"] &&
-                          "border-rose-600 focus-within:border-rose-600"
+                        "border-rose-600 focus-within:border-rose-600"
                       )}
                     >
                       <svg
@@ -221,10 +243,8 @@ const Login = () => {
                           type={passwordVisible ? "text" : "password"}
                           id="password"
                           autoComplete="password"
-                          placeholder="Enter your password..."
-                          className={clsx(
-                            "text-sm peer focus:ring-0 h-[60px] w-full"
-                          )}
+                          placeholder="Enter your password..." style={{ height: fieldHeight }}
+                          className={`text-sm peer bg-white focus:ring-0  w-full`}
                           {...register("password")}
                         />
                         <span
@@ -267,8 +287,8 @@ const Login = () => {
                     </Link>
                   </div>
                   <button
-                    type="submit"
-                    className="bg-[#2DA771] hover:bg-[#2DA771]/90 text-white h-[60px] w-full rounded-xl flex justify-center items-center"
+                    type="submit" style={{ height: fieldHeight }}
+                    className={`bg-[#2DA771] hover:bg-[#2DA771]/90 text-white w-full rounded-xl flex justify-center items-center `}
                   >
                     {isPending ? <Spinner /> : "Login"}
                   </button>
@@ -281,8 +301,8 @@ const Login = () => {
                 </div>
                 <div className="space-y-3">
                   <Link
-                    href={`${API_URL}/users/api/v1/auth/facebook`}
-                    className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021] textDecorationNone"
+                    href={`${API_URL}/users/api/v1/auth/facebook`} style={{ height: fieldHeight }}
+                    className={`w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021] textDecorationNone`}
                   >
                     <Image
                       src="/icons/facebook.svg"
@@ -293,8 +313,8 @@ const Login = () => {
                     Continue with Facebook
                   </Link>
                   <Link
-                    href={`${API_URL}/users/api/v1/auth/google`}
-                    className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021] textDecorationNone"
+                    href={`${API_URL}/users/api/v1/auth/google`} style={{ height: fieldHeight }}
+                    className={`w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021] textDecorationNone `}
                   >
                     <Image
                       src="/icons/google.svg"
@@ -319,21 +339,25 @@ const Login = () => {
             </div>
           </div>
         </section>
-        <section className="w-full flex flex-col justify-center items-center p-5 py-12 md:py-20 gap-20 bg-[#F7FAFC] rounded-l-[60px]">
-          <div className="relative">
-            <h1
-              className="absolute text-2xl font-semibold top-10 "
-              style={{ marginLeft: "18.5rem" }}
-            >
-              Unlock the Power of AI
-            </h1>
-            <div className="scale-[0.6] md:scale-100">
-              <LoginRightImg />
-            </div>
-          </div>
-        </section>
       </div>
-    </motion.main>
+      {/* Right Section */}
+      <section className="hidden md:flex flex-col justify-center items-center text-center bg-[#F7FAFC]">
+        <div className="relative text-center flex justify-center items-center">
+          <h1 className="absolute text-2xl font-semibold top-10">
+            Unlock the Power of AI
+          </h1>
+          <div className="scale-[0.6] md:scale-75 lg:scale-100 ">
+            {largeScreen ? (
+              <LoginRightImg className="w-[100%] h-[100%]" />
+            ) : (
+              <LoginRightImg2 className="w-[100%] h-[100%]" />
+            )}
+          </div>
+        </div>
+
+      </section>
+    </div>
+
   );
 };
 

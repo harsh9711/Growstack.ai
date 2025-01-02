@@ -306,6 +306,7 @@ export const teamvideos = [
     name: "Narasimha Rao",
     role: "CEO,    Managing Director Balvantis Studio",
     Url: "https://www.linkedin.com/in/narasimha-vadde/",
+    poster: "/freelancer.png",
   },
   {
     id: 2,
@@ -314,6 +315,7 @@ export const teamvideos = [
     name: "Nagaraj Manne",
     role: "Web Developer",
     Url: "https://www.linkedin.com/in/nagaraj-manne-17168965/",
+    poster: "/channel.png",
   },
   {
     id: 3,
@@ -322,6 +324,7 @@ export const teamvideos = [
     name: "Ranjit Reddy",
     role: "SAP SD/(OTC)/ Logistics S4",
     Url: "https://linkedin.com/in/ranjith-annapu-828a241a2/",
+    poster: "/content.png",
   },
   {
     id: 4,
@@ -330,6 +333,7 @@ export const teamvideos = [
     name: "Anudeep Devata",
     role: "MBA, GDC, Ireland",
     Url: "https://www.linkedin.com/in/krishna-anudeep-41128b10b/",
+    poster: "/gamer.png",
   },
   {
     id: 5,
@@ -338,6 +342,7 @@ export const teamvideos = [
     name: "Narasimha Rao",
     role: "CEO,    Managing Director Balvantis Studio",
     Url: "https://www.linkedin.com/in/narasimha-vadde/",
+    poster: "/freelancer.png",
   },
   {
     id: 6,
@@ -346,6 +351,7 @@ export const teamvideos = [
     name: "Nagaraj Manne",
     role: "Web Developer",
     Url: "https://www.linkedin.com/in/nagaraj-manne-17168965/",
+    poster: "/channel.png",
   },
   {
     id: 7,
@@ -354,6 +360,7 @@ export const teamvideos = [
     name: "Ranjit Reddy",
     role: "SAP SD/(OTC)/ Logistics S4",
     Url: "https://linkedin.com/in/ranjith-annapu-828a241a2/",
+    poster: "/content.png",
   },
   {
     id: 8,
@@ -362,6 +369,7 @@ export const teamvideos = [
     name: "Anudeep Devata",
     role: "MBA, GDC, Ireland",
     Url: "https://www.linkedin.com/in/krishna-anudeep-41128b10b/",
+    poster: "/gamer.png",
   },
 ];
 // export const solutions = [

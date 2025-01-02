@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import { paragon } from "@useparagon/connect";
 import LinkedInUI from "../agentScreen/LinkedInUI";
 import dotenv from "dotenv";
+import DotsLoader from "@/components/DotLoader";
 dotenv.config();
 const uploadDetails = () => {
   interface AgentDetails {
@@ -43,6 +44,7 @@ const uploadDetails = () => {
   const [expandedInput, setExpandedInput] = useState(false);
   const [expandedOutput, setExpandedOutput] = useState(false);
   const [paragonDetails, setParagonDetails] = useState<ParagonUserDetails>({});
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     const agentId: any = searchParams.get("agentId");
     const agentName = searchParams.get("agentName");
@@ -69,11 +71,48 @@ const uploadDetails = () => {
     fetchAgentDetails();
   }, [searchParams]);
 
+  const fetchAgents = async () => {
+    try {
+      // Assuming searchParams is already defined, for example:
+      const searchParams = new URLSearchParams(window.location.search);
+
+      const agentId: string | null = searchParams.get("agentId");
+      const agentName: string | null = searchParams.get("agentName");
+
+      // Check if either agentId or agentName is missing
+      if (!agentId || !agentName) {
+        setErrors({ general: "Agent ID or Name is missing" });
+        return;
+      }
+
+      // Fetch agent details by ID
+      const agentDetails = await getAgentById(agentId);
+
+      // If agent details are found, update the state
+      if (agentDetails) {
+        setCurrentAgent(agentName);
+        setAgentDetails(agentDetails);
+        setInputs(agentDetails.inputs || []);
+        setErrors({}); // Reset errors
+      } else {
+        setAgentDetails(null);
+        setInputs([]);
+        setErrors({ general: "Agent not found" });
+      }
+    } catch (error) {
+      // Handle any errors that occur during the fetch
+      setErrors({ general: "An error occurred while fetching agent details" });
+      console.error(error);
+    }
+  };
+
+
   async function getAgentById(agentId: string): Promise<AgentDetails | null> {
     try {
       const response = await instance.get(`${API_URL}/agents/api/v1/${agentId}`);
       if (response.status === 200) {
         paragonStatus(response.data.data.toolsRequired)
+        paragonConnect()
         return response.data.data as AgentDetails;
 
       } else {
@@ -89,12 +128,12 @@ const uploadDetails = () => {
     variableName: z.string(),
     variableDisplayName: z.string(),
     value: z.string(),
-    variableValidation:  z
-    .union([
-      z.array(z.enum(["EMAIL", "TEXT", "LONG_TEXT", "URL", "PDF", "DOCX","DATE","PHONE_NUMBER","NUMBER"])),
-      z.enum(["EMAIL", "TEXT", "LONG_TEXT", "URL", "PDF", "DOCX","DATE","PHONE_NUMBER","NUMBER"]),
-    ])
-    .optional(),
+    variableValidation: z
+      .union([
+        z.array(z.enum(["EMAIL", "TEXT", "LONG_TEXT", "URL", "PDF", "DOCX", "DATE", "PHONE_NUMBER", "NUMBER"])),
+        z.enum(["EMAIL", "TEXT", "LONG_TEXT", "URL", "PDF", "DOCX", "DATE", "PHONE_NUMBER", "NUMBER"]),
+      ])
+      .optional(),
     variableLimit: z.number().optional(),
     isRequired: z.boolean().optional(),
   });
@@ -150,7 +189,7 @@ const uploadDetails = () => {
     if (file) {
       const formData = new FormData();
       formData.append("document", file);
-  
+
       try {
         // Make the API call to upload the file
         const response = await instance.post(
@@ -163,15 +202,16 @@ const uploadDetails = () => {
         return;
       }
     }
-  
+
+
     const updatedInputs: Input[] = [...inputs]; // Clone the inputs array
     const input = updatedInputs[index];
     type Errors = Record<string, string>;
     const updatedErrors: Errors = { ...errors }; // Clone the errors object
-  
+
     // Reset specific input error
     updatedErrors[input.variableName] = "";
-  
+
     try {
       // Real-time validation
       if (value !== null) {
@@ -183,53 +223,57 @@ const uploadDetails = () => {
           variableLimit: input.variableLimit,
           isRequired: input.isRequired,
         });
-  
+
         // Character limit validation
         if (input.variableLimit && value.length > input.variableLimit) {
           updatedErrors[input.variableName] = `${input.variableDisplayName} exceeds the character limit of ${input.variableLimit}.`;
         }
-  
-        // Other validations (email, URL, phone, etc.)
+
         if (input.variableValidation?.includes("EMAIL") && value) {
           if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) {
             updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid email.`;
           }
         }
-  
+
         if (input.variableValidation?.includes("URL") && value) {
           if (!/^https?:\/\/[^\s$.?#].[^\s]*$/.test(value)) {
             updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid URL.`;
           }
         }
-        if (input.variableValidation?.includes("PDF") && value) {
-          if (!/^https?:\/\/[^\s$.?#].[^\s]*\.pdf$/i.test(value)) {
-            updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid PDF file.`;
-          }
-        }
-        if (input.variableValidation?.includes("DOCX") && value) {
-          if (!/^https?:\/\/[^\s$.?#].[^\s]*\.docx$/i.test(value)) {
-            updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid DOCX file.`;
-          }
-        }
 
-        if (input.variableValidation?.includes("PDF","DOCX") && value) {
+    
+      
+        // If both PDF and DOCX are present, check if the file matches either
+        if (
+          input.variableValidation?.includes("PDF") &&
+          input.variableValidation?.includes("DOCX") &&
+          value
+        ) {
           if (!/^https?:\/\/[^\s$.?#].[^\s]*\.(pdf|docx)$/i.test(value)) {
-            updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid PDF or DoCX file.`;
+            updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid PDF or DOCX file.`;
+          }
+        }else{
+          if (input.variableValidation?.includes("PDF") && value) {
+            if (!/^https?:\/\/[^\s$.?#].[^\s]*\.pdf$/i.test(value)) {
+              updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid PDF file.`;
+            }
+          }
+          if (input.variableValidation?.includes("DOCX") && value) {
+            if (!/^https?:\/\/[^\s$.?#].[^\s]*\.docx$/i.test(value)) {
+              updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid DOCX file.`;
+            }
           }
         }
-        
-        
-  
         if (input.variableValidation?.includes("NUMBER") && value) {
           if (isNaN(Number(value))) {
             updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid number.`;
           }
         }
       }
-  
+
       // Update the value
       updatedInputs[index].value = value || "";
-  
+
       // Update states
       setInputs(updatedInputs);
       setErrors(updatedErrors);
@@ -238,8 +282,13 @@ const uploadDetails = () => {
       setErrors(updatedErrors);
     }
   };
-  
 
+  const paragonConnect = () => {
+    for (const [name, details] of Object.entries(paragonDetails)) {
+        return details.enabled; // Return true if any detail is enabled
+    }
+    return "not required";
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -254,30 +303,31 @@ const uploadDetails = () => {
         updatedErrors[input.variableName] = `${input.variableDisplayName} is required.`;
       });
       setErrors(updatedErrors);
-      return; 
+      return;
     }
-  
+
     setErrors({});
     const inputData: { [key: string]: any } = {};
     inputs.forEach((input) => {
       inputData[input.variableName] = input.value;
     });
-  
+
     const bodyData = {
       inputs: inputData,
     };
-  
+
     try {
       // Make the API call
       const response = await instance.post(
         `${API_URL}/agents/api/v1/run/${agent}`,
         bodyData
       );
-  
+
       if (response.status === 200) {
+        setOutput(null)
         setExpandedOutput(true);
-        setOutput(response.data); 
-      } 
+        setOutput(response.data);
+      }
     } catch (error: any) {
       const errorMessage =
         error.response?.data?.message || 'Error executing the agent. Please try again.';
@@ -285,14 +335,14 @@ const uploadDetails = () => {
       console.error('Error executing the agent:', error);
     }
   };
-  
+
   const renderInputs = () => {
     let longTextInput: JSX.Element | null = null;
     const shortTextInputs: JSX.Element[] = [];
-  
+
     inputs.forEach((input, index) => {
       const isRequired = input.isRequired;
-  
+
       if (input.variableType === "LONG_TEXT") {
         longTextInput = (
           <div key={index} className="mb-4 flex flex-col w-full">
@@ -355,10 +405,10 @@ const uploadDetails = () => {
                   input.variableValidation === "EMAIL"
                     ? "email"
                     : input.variableValidation === "NUMBER"
-                    ? "number"
-                    : input.variableValidation === "PHONE_NUMBER"
-                    ? "tel"
-                    : "text"
+                      ? "number"
+                      : input.variableValidation === "PHONE_NUMBER"
+                        ? "tel"
+                        : "text"
                 }
                 style={{ fontSize: "12px", paddingLeft: "1rem" }}
                 placeholder={input.variablePlaceholder || "Enter text..."}
@@ -374,7 +424,7 @@ const uploadDetails = () => {
         );
       }
     });
-  
+
     return (
       <>
         {!expandedInput ? (
@@ -392,14 +442,18 @@ const uploadDetails = () => {
       </>
     );
   };
-  
+
   const handleConnect = async (integrationType: string) => {
     try {
-      await paragon.connect(integrationType, {});
+      const Paragonresponse = await paragon.connect(integrationType, {});
+      getAgentById(agent)
+      fetchAgents(); // Call fetchAgents after the connection is successful
     } catch (error) {
       console.error(`Failed to connect to ${integrationType}:`, error);
     }
   };
+
+
   return (
     <form onSubmit={handleSubmit}>
       {/* Back Button */}
@@ -515,20 +569,49 @@ const uploadDetails = () => {
               <div className="p-4 overflow-y-auto flex-grow">
                 {renderInputs()}
               </div>
-              {/* Submit Button after renderInputs */}
-                <div className="mt-4 flex justify-center">
-                  <button
-                    type="submit"
-                    className="py-2 mb-4 px-8 bg-[#2DA771] text-sm text-white rounded-lg hover:bg-gray-800 focus:outline-none transition-colors duration-300"
-                  >
-                    Analyze
-                  </button>
-                </div>
+              <div>
+                {paragonConnect() === "not required" || paragonConnect() == true ? (
+                  <div className="mt-4 flex justify-center">
+                    <button disabled={isLoading}
+                      type="submit"
+                      className="py-2 mb-4 px-8 bg-[#2DA771] text-sm text-white rounded-lg hover:bg-gray-800 focus:outline-none transition-colors duration-300"
+                    >
+                      {isLoading ? (
+                        <div className="flex">
+                          {'Analyzing'}
+                          <div role="status">
+                            <svg
+                              aria-hidden="true"
+                              className="inline w-4 h-4 ml-1 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                              viewBox="0 0 100 101"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                fill="currentColor"
+                              />
+                              <path
+                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                fill="currentFill"
+                              />
+                            </svg>
+                            <span className="sr-only">Loading...</span>
+                          </div>
+                        </div>
+                      ) : (
+                        'Analyze'
+                      )}
+                    </button>
+                  </div>
+                ) : (
+                  <p className="text-center text-red-500 mb-3">Please connect to your Gmail account.</p>
+                )}
+              </div>
+
             </div>
           </div>
         </div>
-        {/* Output Details */}
-
         <div className="col-span-2 flex flex-col">
           <div>
             <div className="w-full rounded-2xl border-2 flex flex-col h-full border-l-8 border-l-green-500">
@@ -542,21 +625,21 @@ const uploadDetails = () => {
               </button>
               <div className="p-6"></div>
               {!output && <>
-             <div className="text-center mb-4">
-             <h1><strong>No output details available</strong></h1>
-              </div> 
-            </>}
+                <div className="text-center mb-4">
+                  <h1><strong>No output details available</strong></h1>
+                </div>
+              </>}
               {expandedOutput && (
                 <div className="p-2 ">
                   {output && (
                     <div className="mt-2 px-4">
-                      <KeywordInsights runnerAgentId={output.data.runnerAgentId} />
+                      <KeywordInsights runnerAgentId={output.data.runnerAgentId} setLoader={setIsLoading} />
                     </div>
                   )}
 
                 </div>
               )}
-       
+
             </div>
           </div>
 

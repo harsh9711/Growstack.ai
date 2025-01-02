@@ -10,7 +10,7 @@ const links = [
     path: "/",
   },
   {
-    title: "Features",
+    title: "AI Studio",
     path: "",
     submenu: [
       {

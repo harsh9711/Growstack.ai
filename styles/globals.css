@@ -409,7 +409,7 @@ html {
 body {
   overflow: auto;
   font-family: "PoppinsRegular" !important;
-  /* overflow-x: clip; */
+  overflow-x: unset;
 }
 
 .container {
