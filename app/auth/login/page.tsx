@@ -41,9 +41,9 @@ const Login = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      setFieldHeight(window.innerWidth <= 1280 ? "44px" : "55px");
-      setZoom(window.innerWidth <= 1280 ? "0.8" : "1")
-      setLargeScreen(window.innerWidth <= 1280 ? false : true)
+      setFieldHeight(window.innerWidth <= 1422 ? "44px" : "55px");
+      setZoom(window.innerWidth <= 1422 ? "0.8" : "1")
+      setLargeScreen(window.innerWidth <= 1600 ? false : true)
     };
 
     // Set initial height based on window width
@@ -340,7 +340,6 @@ const Login = () => {
           </div>
         </section>
       </div>
-
       {/* Right Section */}
       <section className="hidden md:flex flex-col justify-center items-center text-center bg-[#F7FAFC]">
         <div className="relative text-center flex justify-center items-center">

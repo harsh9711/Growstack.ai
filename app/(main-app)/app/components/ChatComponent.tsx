@@ -427,10 +427,11 @@ export default function ChatComponent() {
   }, []);
 
   return (
-    <div
-      className=" flex flex-col bg-white px-8 py-8 rounded-3xl border border-[#E8E8E8] min-h-[580px] h-full"
-      data-aos="fade-up"
-    >
+<div
+  className="flex flex-col bg-white px-8 py-8 rounded-3xl border border-[#E8E8E8] min-h-[580px] h-full"
+  data-aos="fade-up"
+>
+
       {isDashboardChatModalOpen && (
         <DashboardChatModal
           onClose={handleMouseLeave}
@@ -468,7 +469,7 @@ export default function ChatComponent() {
           </div>
         </div>
         <div className="flex flex-row items-center justify-center gap-3">
-          <div className="hidden xl:block">
+          <div className="hidden lg:block">
             <div className="flex ">
               <div className="flex items-center gap-2">
                 <TooltipProvider>
@@ -705,7 +706,7 @@ export default function ChatComponent() {
                     <p className="mt-3">How can I help you today?</p>
                   </div>
                 </div>
-                <div className="block xl:hidden">
+                <div className="block lg:hidden">
                   <div className="flex ">
                     <div className="flex items-center gap-2">
                       <TooltipProvider>
