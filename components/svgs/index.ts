@@ -99,6 +99,7 @@ export { default as Regenerate } from "@/public/Regenerate.svg";
 export { default as VerticalLineIcon } from "@/public/vertical-lineIcon.svg";
 export { default as LoginBackgroundImg } from "@/public/Login-Background.svg";
 export { default as LoginRightImg } from "@/public/register page image.svg";
+export { default as LoginRightImg2 } from "@/public/registerpageimage.svg";
 export { default as Edit } from "@/public/edit.svg";
 export { default as LogoIcon } from "@/public/svgs/logo.svg";
 export { default as Perplexity } from "@/public/svgs/Vector.svg";
