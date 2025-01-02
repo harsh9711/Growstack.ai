@@ -54,7 +54,6 @@ const ResultComponent: React.FC<ResultComponentProps> = ({
   const [inputValue, setInputValue] = useState(""); 
   const socialURL =localStorage.getItem("savedArticle") || null ;
   const dynamicContent = localStorage.getItem("payloadData") || "Check out GrowstackAI!";
-  const linkedinShareUrl = `https://www.linkedin.com/sharing/share-offsite/?mini=true&url=""&summary=${dynamicContent}&source=GrowstackAI`;
   const handleShare = async () => {    
     setIsPending(true);
     setShowPopup(showPopup?false:true)
@@ -281,7 +280,7 @@ const ResultComponent: React.FC<ResultComponentProps> = ({
           <TwitterShareButton url={dynamicContent || ""}>
             <XIcon size={40} round />
           </TwitterShareButton>
-          <LinkedinShareButton url={dynamicContent || ""} >
+          <LinkedinShareButton url={socialURL || "" } >
               <LinkedinIcon size={40} round />
             </LinkedinShareButton>
           <WhatsappShareButton url={dynamicContent ? dynamicContent : ""}>
