@@ -280,9 +280,9 @@ const ResultComponent: React.FC<ResultComponentProps> = ({
           <TwitterShareButton url={dynamicContent || ""}>
             <XIcon size={40} round />
           </TwitterShareButton>
-          <LinkedinShareButton url={socialURL || "" } >
+          {/* <LinkedinShareButton url={socialURL || "" } >
               <LinkedinIcon size={40} round />
-            </LinkedinShareButton>
+            </LinkedinShareButton> */}
           <WhatsappShareButton url={dynamicContent ? dynamicContent : ""}>
             <WhatsappIcon size={40} round />
           </WhatsappShareButton>
