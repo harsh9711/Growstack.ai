@@ -129,7 +129,7 @@ function Page() {
             />
           </div>
           <SixCard />
-          <div className="hidden md:flex  flex-col gap-y-28">
+          <div className="hidden md:flex flex-col gap-y-28">
             <Image
               className="float-animation-4"
               src="/15.svg"
