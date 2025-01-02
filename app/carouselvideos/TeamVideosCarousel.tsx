@@ -27,7 +27,7 @@ function App() {
   return (
     <div className="bg-[url('/backd.svg')] bg-cover bg-no-repeat py-12">
       <div className="max-w-6xl mx-auto px-4 mb-8">
-        <div className="flex justify-between items-center mb-12">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-12">
           <div className="space-y-4">
             <span className="bg-emerald-900/30 text-emerald-400 px-4 py-2 rounded-full text-sm font-medium">
               GrowStack Facts
@@ -38,9 +38,9 @@ function App() {
           </div>
           <div className="bg-emerald-900/30 text-emerald-400 rounded-full px-4 py-2">
             <span>
-              {playingVideoIndex !== null ? playingVideoIndex + 1 : 1}
-            </span>{" "}
-            / <span>{teamvideos.length}</span>
+              {playingVideoIndex !== null ? playingVideoIndex + 1 : 1}/
+              {teamvideos.length}
+            </span>
           </div>
         </div>
 
