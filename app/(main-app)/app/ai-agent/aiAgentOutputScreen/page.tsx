@@ -668,7 +668,7 @@ const uploadDetails = () => {
                           r="16"
                           fill="none"
                           className="stroke-current text-gray-200 dark:text-neutral-700"
-                          strokeWidth="5"
+                          strokeWidth="4"
                         ></circle>
 
                         {/* Dynamic Progress Circle */}
@@ -678,7 +678,7 @@ const uploadDetails = () => {
                           r="16"
                           fill="none"
                           className="stroke-current text-green-600 dark:text-blue-500"
-                          strokeWidth="5"
+                          strokeWidth="4"
                           strokeDasharray="100"
                           strokeDashoffset={100 - progressbar} // Dynamic Offset
                           strokeLinecap="round"
