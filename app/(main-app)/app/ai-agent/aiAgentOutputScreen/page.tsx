@@ -456,7 +456,8 @@ const uploadDetails = () => {
   return (
     <form onSubmit={handleSubmit}>
       {/* Back Button */}
-      <div className="flex items-center gap-2 mb-4">
+      <div className="flex flex justify-between items-center gap-2 mb-4">
+        <div className="flex items-center gap-2">
         <button
           type="button"
           onClick={() => window.history.back()}
@@ -467,15 +468,78 @@ const uploadDetails = () => {
           </svg>
         </button>
         <div className="flex items-center gap-2">
-   
-          <img src={agentDetails?.image || '/logo/growstack-mini1.png'} alt="agent" className="rounded-full" style={{width:"52px",height:"52px"}} />
+
+          <img src={agentDetails?.image || '/logo/growstack-mini1.png'} alt="agent" className="rounded-full" style={{ width: "52px", height: "52px" }} />
           <div className="flex flex-col">
             <strong><h1 className="text-2xl font-bold">{agentDetails?.name || "Agent not found"}</h1> </strong>
             <p className="text-xs">
               {agentDetails?.description || "No description available."}
             </p>
           </div>
+        </div>
+        </div>
+       <div></div>
+        <div className="flex mt-3 justify-end" >
+          {Object.entries(paragonDetails).map(([name, details]) => (
+            <>
+              {details.enabled ?
+                <div className="bg-pink-100 p-2 rounded-md flex items-center justify-center mr-5 mb-2">
+                  <main className="flex items-center space-x-6">
+                    <div className=" flex flex-col space-x-3">
+                      <div className="flex justify-center items-center mb-1">
+                        <svg width="28" height="22" viewBox="0 0 28 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M1.90909 21.5035H6.36366V10.6853L3.44673 5.5918L0 5.91254V19.5944C0 20.6491 0.854328 21.5035 1.90909 21.5035Z" fill="#0085F7" />
+                          <path d="M21.6406 21.5035H26.0952C27.15 21.5035 28.0043 20.6491 28.0043 19.5944V5.91254L24.5625 5.5918L21.6407 10.6853V21.5035H21.6406Z" fill="#00A94B" />
+                          <path d="M21.6323 2.41422L19.0156 7.40735L21.6323 10.687L27.9959 5.91422V3.36879C27.9959 1.00946 25.3025 -0.33804 23.4141 1.07787L21.6323 2.41422Z" fill="#FFBC00" />
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M6.36837 10.6868L3.875 5.41985L6.36837 2.41406L14.0047 8.14132L21.6411 2.41406V10.6868L14.0047 16.4141L6.36837 10.6868Z" fill="#FF4131" />
+                          <path d="M0 3.36879V5.91422L6.36366 10.687V2.41422L4.58183 1.07787C2.69341 -0.33804 0 1.00946 0 3.36879Z" fill="#E51C19" />
+                        </svg>
+                      </div>
+                      <button
+                        onClick={() => {
+                          if (details.enabled) handleConnect(name);
+                        }}
+                        className="border-2 bg-green-600 border-green-600 text-white text-sm pl-2 pr-2 rounded-full hover:bg-blue-600 hover:text-white transition"
+                      >
+                        Connected
+                      </button>
+                      <div className="flex">
+                        <div className="mt-2 mr-2">
+                          <svg width="6" height="7" viewBox="0 0 6 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="3" cy="3.5" r="3" fill="#2DA771" />
+                          </svg>
+                        </div>
 
+                        {details.allCredentials[0].providerId.split('@')[0]}
+                      </div>
+
+                    </div>
+                  </main>
+                </div>
+                :
+                <div className="bg-pink-100 p-5 rounded-md flex items-center justify-center mr-5">
+                  <main className="flex items-center space-x-6">
+                    <div className="flex items-center space-x-3">
+                      <div className="flex justify-center items-center">
+                        <svg width="28" height="22" viewBox="0 0 28 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M1.90909 21.5035H6.36366V10.6853L3.44673 5.5918L0 5.91254V19.5944C0 20.6491 0.854328 21.5035 1.90909 21.5035Z" fill="#0085F7" />
+                          <path d="M21.6406 21.5035H26.0952C27.15 21.5035 28.0043 20.6491 28.0043 19.5944V5.91254L24.5625 5.5918L21.6407 10.6853V21.5035H21.6406Z" fill="#00A94B" />
+                          <path d="M21.6323 2.41422L19.0156 7.40735L21.6323 10.687L27.9959 5.91422V3.36879C27.9959 1.00946 25.3025 -0.33804 23.4141 1.07787L21.6323 2.41422Z" fill="#FFBC00" />
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M6.36837 10.6868L3.875 5.41985L6.36837 2.41406L14.0047 8.14132L21.6411 2.41406V10.6868L14.0047 16.4141L6.36837 10.6868Z" fill="#FF4131" />
+                          <path d="M0 3.36879V5.91422L6.36366 10.687V2.41422L4.58183 1.07787C2.69341 -0.33804 0 1.00946 0 3.36879Z" fill="#E51C19" />
+                        </svg>
+                      </div>
+                      <span className="text-gray-600 text-2xl">&rarr;</span>
+                      <button onClick={() => {
+                        if (!details.enabled) handleConnect(name);
+                      }} className="border-none text-blue-600 px-4 py-2 rounded-full hover:bg-blue-600 hover:text-white transition">
+                        Sign In
+                      </button>
+                    </div>
+                  </main>
+                </div>}
+            </>
+          ))}
         </div>
       </div>
 
