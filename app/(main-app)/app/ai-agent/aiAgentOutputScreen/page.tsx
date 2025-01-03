@@ -431,7 +431,7 @@ const uploadDetails = () => {
 
     return (
       <>
-        <div className="grid grid-cols-3 gap-4 ml-4">
+        <div className="grid grid-cols-3 gap-4 ml-7">
           {/* Render all inputs in a column */}
           {shortTextInputs}
           {longTextInput}
@@ -551,7 +551,7 @@ const uploadDetails = () => {
               onClick={() => setExpandedInput((prev) => !prev)}
               className={`w-full text-left bg-[#2DA771] p-3 rounded-t-2xl  flex justify-between items-center ${!expandedInput ? "rounded-b-2xl" : ""}`}
             >
-              <span className="text-white text-base ml-5">{expandedInput}Input Parameters</span>
+              <span className="text-white text-base ml-7">{expandedInput}Input Parameters</span>
               <span>{expandedInput ? <FaChevronUp className="text-white mr-8" /> : <FaChevronDown className="text-white mr-8" />}</span>
             </button>
             {/* Keep the card structure visible, toggle content inside */}
@@ -712,7 +712,7 @@ const uploadDetails = () => {
           className={`w-full text-left bg-[#121212] p-3 h-15 rounded-t-2xl border-b flex justify-between items-center ${!expandedOutput ? "rounded-b-2xl" : ""}`}
         >
 
-          <span className="text-white text-base ml-5">{expandedOutput ? "Output Details" : "Output Details "}</span>
+          <span className="text-white text-base ml-7">{expandedOutput ? "Output Details" : "Output Details "}</span>
           <div></div>
           <div className="flex items-center gap-2">
             <div className="relative w-7 h-7 bg-[#FFFFFF] rounded-full flex items-center justify-end">
