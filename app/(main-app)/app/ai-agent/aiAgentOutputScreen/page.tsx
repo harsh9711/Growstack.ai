@@ -637,7 +637,7 @@ const uploadDetails = () => {
 
 
 
-            <span>{expandedOutput ? <FaChevronUp className="text-white mr-5" /> : <FaChevronDown className="text-white mr-5" />}</span>
+            <span>{expandedOutput ? <FaChevronUp className="text-white mr-8" /> : <FaChevronDown className="text-white mr-8" />}</span>
 
           </div>
         </button>
