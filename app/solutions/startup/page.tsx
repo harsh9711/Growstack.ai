@@ -1,17 +1,30 @@
 "use client";
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React, { useEffect, Suspense, lazy } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Navbar from "@/components/navbar/Navbar";
-import HeroSection from "./components/HeroSection";
-import ImageGalleryLineResponsive from "./components/ImageGallerylineresponsive";
-import LoadingBarSecond from "./components/LoadingBar";
-import MarketingStreamline from "./components/marketingStreamline/MarketingStreamline";
 import Footer from "@/components/footer/Footer";
-import GridComponent from "./components/GridBoxes";
-import ImageGalleryLine from "./components/ImageGalleryline";
-import GridComponentResponsive from "./components/GridBoxesresponsive";
+import HeroSection from "./components/HeroSection";
+
+const GridComponent = lazy(() => import("./components/GridBoxes"));
+const GridComponentResponsive = lazy(
+  () => import("./components/GridBoxesresponsive")
+);
+const ImageGalleryLine = lazy(() => import("./components/ImageGalleryline"));
+const ImageGalleryLineResponsive = lazy(
+  () => import("./components/ImageGallerylineresponsive")
+);
+const LoadingBarSecond = lazy(() => import("./components/LoadingBar"));
+const MarketingStreamline = lazy(
+  () => import("./components/marketingStreamline/MarketingStreamline")
+);
+
+const LoadingSpinner = () => (
+  <div className="flex items-center justify-center min-h-[200px]">
+    <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#2DA771]"></div>
+  </div>
+);
 
 const page = () => {
   useEffect(() => {
@@ -56,7 +69,9 @@ const page = () => {
               data-aos-delay="600"
               className="items-center 2xl:flex xl:hidden justify-center mx-auto relative 2xl:right-12 "
             >
-              <GridComponent />
+              <Suspense fallback={<LoadingSpinner />}>
+                <GridComponent />
+              </Suspense>
             </div>
             <div
               data-aos="fade-up"
@@ -64,17 +79,23 @@ const page = () => {
               data-aos-delay="600"
               className="items-center xl:flex hidden 2xl:hidden  justify-center mx-auto relative 2xl:right-12 "
             >
-              <GridComponentResponsive />
+              <Suspense fallback={<LoadingSpinner />}>
+                <GridComponentResponsive />
+              </Suspense>
             </div>
           </div>
         </div>
       </section>
       <section className="bg-black sm:bg-[url('/linetop.png')] bg-cover relative w-full 2xl:mt-20">
         <div className="2xl:flex xl:flex hidden flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px] h-full justify-center mx-auto   items-center gap-4  ">
-          <ImageGalleryLine />
+          <Suspense fallback={<LoadingSpinner />}>
+            <ImageGalleryLine />
+          </Suspense>
         </div>
         <div className="2xl:hidden xl:hidden flex flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px] h-full justify-center mx-auto   items-center gap-4  ">
-          <ImageGalleryLineResponsive />
+          <Suspense fallback={<LoadingSpinner />}>
+            <ImageGalleryLineResponsive />
+          </Suspense>
         </div>
       </section>
 
@@ -85,9 +106,9 @@ const page = () => {
           data-aos-delay="600"
           className="flex flex-col items-center justify-center gap-y-10"
         >
-          <div>
+          <Suspense fallback={<LoadingSpinner />}>
             <LoadingBarSecond />
-          </div>
+          </Suspense>
         </div>
       </section>
 
@@ -101,8 +122,9 @@ const page = () => {
             alt="image"
           />
         </div>
-
-        <MarketingStreamline />
+        <Suspense fallback={<LoadingSpinner />}>
+          <MarketingStreamline />
+        </Suspense>
       </section>
       <Footer />
     </main>

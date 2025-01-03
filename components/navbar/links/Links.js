@@ -14,39 +14,14 @@ const links = [
     path: "",
     submenu: [
       {
-        title: "AI Marketing and Sales Apps",
-        path: "/solutions/marketing",
-        img: "/navbar/22.svg",
+        title: "AI Content Wizard",
+        path: "/features/ai-content-wizard",
+        img: "/navbar/31.svg",
       },
       {
-        title: "Text to Avatar and AI Backdrop",
-        path: "/text-to-avatar-and-ai-backdrop",
-        img: "/navbar/23.svg",
-      },
-      {
-        title: "Marketing and Sales Assistants",
-        path: "/marketing-and-sales-assistant",
-        img: "/navbar/24.svg",
-      },
-      {
-        title: "Custom GPT",
+        title: "AI Custom GPT",
         path: "/custom-marketing-gpt-apps",
         img: "/navbar/26.svg",
-      },
-      {
-        title: "Social Planner Hub",
-        path: "/social-planner-hub",
-        img: "/navbar/27.svg",
-      },
-      {
-        title: "Prospect Scraping",
-        path: "/features/prospect-scraping-and-contacts",
-        img: "/navbar/28.svg",
-      },
-      {
-        title: "AI Secured Chat",
-        path: "/features/ai-secured-chat",
-        img: "/navbar/29.svg",
       },
       {
         title: "AI LLM Comparison",
@@ -54,9 +29,34 @@ const links = [
         img: "/navbar/30.svg",
       },
       {
-        title: "AI Content Wizard",
-        path: "/features/ai-content-wizard",
-        img: "/navbar/31.svg",
+        title: "AI Templates",
+        path: "/solutions/marketing",
+        img: "/navbar/22.svg",
+      },
+      {
+        title: "AI Secured Chat",
+        path: "/features/ai-secured-chat",
+        img: "/navbar/29.svg",
+      },
+      {
+        title: "AI Text to Avatar and AI Backdrop",
+        path: "/text-to-avatar-and-ai-backdrop",
+        img: "/navbar/23.svg",
+      },
+      {
+        title: "AI Assistants",
+        path: "/marketing-and-sales-assistant",
+        img: "/navbar/24.svg",
+      },
+      {
+        title: "AI Prospect Scraping",
+        path: "/features/prospect-scraping-and-contacts",
+        img: "/navbar/28.svg",
+      },
+      {
+        title: "AI Social Planner Hub",
+        path: "/social-planner-hub",
+        img: "/navbar/27.svg",
       },
     ],
   },
@@ -65,14 +65,34 @@ const links = [
     path: "",
     submenu: [
       {
+        title: "Business Operations",
+        path: "/solutions/operations",
+        img: "/navbar/6.svg",
+      },
+      {
+        title: "Customer Service",
+        path: "/solutions/customer_service",
+        img: "/navbar/4.svg",
+      },
+      {
+        title: "Finance",
+        path: "/solutions/finance",
+        img: "/navbar/5.svg",
+      },
+      {
+        title: "Information Technology",
+        path: "/solutions/It",
+        img: "/navbar/7.svg",
+      },
+      {
+        title: "Leadership",
+        path: "/solutions/leadership-team",
+        img: "/navbar/9.svg",
+      },
+      {
         title: "Marketing",
         path: "/solutions/marketing",
         img: "/navbar/1.svg",
-      },
-      {
-        title: "Sales",
-        path: "/solutions/sales",
-        img: "/navbar/2.svg",
       },
       {
         title: "Revops",
@@ -80,39 +100,15 @@ const links = [
         img: "/navbar/3.svg",
       },
       {
-        title: "Customer Service",
-        path: "/solutions/customer_service",
-        img: "/navbar/4.svg",
-      },
-
-      {
-        title: "Finance",
-        path: "/solutions/finance",
-
-        img: "/navbar/5.svg",
-      },
-      {
-        title: "Business Operations",
-        path: "/solutions/operations",
-        img: "/navbar/6.svg",
-      },
-      {
-        title: "Information Technology",
-        path: "/solutions/It",
-
-        img: "/navbar/7.svg",
+        title: "Sales",
+        path: "/solutions/sales",
+        img: "/navbar/2.svg",
       },
       {
         title: "Supply Chain",
         path: "/solutions/supplychain",
         img: "/navbar/8.svg",
       },
-      {
-        title: "Leadership",
-        path: "/solutions/leadership-team",
-        img: "/navbar/9.svg",
-      },
-
       {
         title: "Large Enterprise",
         path: "/solutions/largeenterprise",
@@ -130,14 +126,9 @@ const links = [
       },
       { title: "Startup", path: "/solutions/startup", img: "/navbar/12.svg" },
       {
-        title: "Technology",
-        path: "/solutions/technology-industry",
-        img: "/navbar/13.svg",
-      },
-      {
-        title: "Retail",
-        path: "/solutions/retail-industry",
-        img: "/navbar/14.svg",
+        title: "ECommerce",
+        path: "/solutions/ecommerce",
+        img: "/navbar/17.svg",
       },
       {
         title: "Healthcare",
@@ -145,14 +136,19 @@ const links = [
         img: "/navbar/16.svg",
       },
       {
-        title: "ECommerce",
-        path: "/solutions/ecommerce",
-        img: "/navbar/17.svg",
-      },
-      {
         title: "Media & Publishing",
         path: "/solutions/media_and_publishing",
         img: "/navbar/18.svg",
+      },
+      {
+        title: "Retail",
+        path: "/solutions/retail-industry",
+        img: "/navbar/14.svg",
+      },
+      {
+        title: "Technology",
+        path: "/solutions/technology-industry",
+        img: "/navbar/13.svg",
       },
     ],
   },

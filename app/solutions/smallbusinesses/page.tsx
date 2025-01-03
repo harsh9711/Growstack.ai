@@ -1,18 +1,32 @@
 "use client";
 import Image from "next/image";
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import { useInView } from "react-intersection-observer";
 import Navbar from "@/components/navbar/Navbar";
 import "swiper/css/navigation";
-import TestimonialsSlider from "./components/Slider";
-import LoadingBar from "./components/Loading";
-import HeroSection from "./components/Hero";
-import GridComponent from "./components/GridBoxes";
-import MarketingStreamline from "./components/marketingStreamline/MarketingStreamline";
-import ImageGalleryLineResponsive from "./components/ImageGalleryline";
-import ImageGalleryLineB from "./components/ImageGallerylineresponsive";
 import Footer from "@/components/footer/Footer";
-import GridComponentResponsive from "./components/GridBoxesResponsive";
+
+const HeroSection = lazy(() => import("./components/Hero"));
+const LoadingBar = lazy(() => import("./components/Loading"));
+const ImageGalleryLineB = lazy(
+  () => import("./components/ImageGallerylineresponsive")
+);
+const ImageGalleryLineResponsive = lazy(
+  () => import("./components/ImageGalleryline")
+);
+const GridComponent = lazy(() => import("./components/GridBoxes"));
+const GridComponentResponsive = lazy(
+  () => import("./components/GridBoxesResponsive")
+);
+const MarketingStreamline = lazy(
+  () => import("./components/marketingStreamline/MarketingStreamline")
+);
+
+const LoadingSpinner = () => (
+  <div className="flex items-center justify-center min-h-[200px]">
+    <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#2DA771]"></div>
+  </div>
+);
 
 const Home = () => {
   const totalItems = 5;
@@ -29,17 +43,21 @@ const Home = () => {
       </section>
       <section className="items-center justify-center mx-auto py-20   2xl:px-36">
         <div className="flex flex-col items-center gap-y-10  ">
-          <div>
+          <Suspense fallback={<LoadingSpinner />}>
             <LoadingBar />
-          </div>
+          </Suspense>
         </div>
       </section>
       <section className="  pt-20 overflow-hidden">
-        <div className=" 2xl:flex xl:flex hidden flex-col   max-h-[1163px] h-full justify-center mx-auto relative   bg-gradient-to-b to-[#ffffff]/30 from-[#61C453]/20  w-full   items-center gap-4  ">
-          <ImageGalleryLineB />
+        <div className=" 2xl:flex xl:flex hidden flex-col max-h-[1163px] h-full justify-center mx-auto relative   bg-gradient-to-b to-[#ffffff]/30 from-[#61C453]/20  w-full   items-center gap-4  ">
+          <Suspense fallback={<LoadingSpinner />}>
+            <ImageGalleryLineB />
+          </Suspense>
         </div>
-        <div className="2xl:hidden xl:hidden flex flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px]  bg-gradient-to-b to-[#ffffff]/30 from-[#61C453]/20 h-full justify-center mx-auto   items-center gap-4  ">
-          <ImageGalleryLineResponsive />
+        <div className="2xl:hidden xl:hidden flex flex-col 2xl:max-w-[1921px] w-full 2xl:max-h-[973px]  bg-gradient-to-b to-[#ffffff]/30 from-[#61C453]/20 h-full justify-center mx-auto   items-center gap-4  ">
+          <Suspense fallback={<LoadingSpinner />}>
+            <ImageGalleryLineResponsive />
+          </Suspense>
         </div>
       </section>
       <section className="relative  mx-auto items-center justify-center pt-6 2xl:pt-0 pb-10  2xl:px-auto">
@@ -58,11 +76,15 @@ const Home = () => {
             </h1>{" "}
           </div>
 
-          <div className="flex xl:hidden items-center justify-center mx-auto relative   ">
-            <GridComponent />
+          <div className="flex xl:hidden items-center justify-center mx-auto relative">
+            <Suspense fallback={<LoadingSpinner />}>
+              <GridComponent />
+            </Suspense>
           </div>
-          <div className="items-center xl:flex hidden justify-center mx-auto relative   ">
-            <GridComponentResponsive />
+          <div className="items-center xl:flex hidden justify-center mx-auto relative">
+            <Suspense fallback={<LoadingSpinner />}>
+              <GridComponentResponsive />
+            </Suspense>
           </div>
         </div>
       </section>
@@ -76,7 +98,9 @@ const Home = () => {
             alt="image"
           />
         </div>
-        <MarketingStreamline />{" "}
+        <Suspense fallback={<LoadingSpinner />}>
+          <MarketingStreamline />
+        </Suspense>
       </section>{" "}
       <Footer />
     </main>

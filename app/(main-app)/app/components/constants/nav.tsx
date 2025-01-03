@@ -27,22 +27,22 @@ const navLinks: NavLink[] = [
     sublinks: [
       {
         icon: <LayoutIcon />,
-        name: "AI  LLM comparison",
+        name: "AI LLM comparison",
         href: ALL_ROUTES.AI_PLAYGROUND,
       },
       {
         icon: <AiAppsIcon />,
-        name: "AI templates",
+        name: "AI Templates",
         href: ALL_ROUTES.AI_TEMPLATE,
       },
       {
         icon: <AiAssistantIcon />,
-        name: "AI assistant",
+        name: "AI Assistant",
         href: ALL_ROUTES.AI_ASSISTANT,
       },
       {
         icon: <ChatgptIcon />,
-        name: "AI custom GPT",
+        name: "AI Custom GPT",
         href: ALL_ROUTES.AI_CUSTOM_GPT,
       },
       {
@@ -52,12 +52,12 @@ const navLinks: NavLink[] = [
       },
       {
         icon: <TextToVideoIcon />,
-        name: "AI Text to avatar",
+        name: "AI Text to Avatar",
         href: ALL_ROUTES.TEXT_TO_AVATAR,
       },
       {
         icon: <ProductAiIcon />,
-        name: "AI backdrop",
+        name: "AI Backdrop",
         href: ALL_ROUTES.AI_BACKGROUND_GENERATOR,
       },
     ],
@@ -73,7 +73,7 @@ const navLinks: NavLink[] = [
       },
       {
         icon: <AgentNavigationIcon width={24} height={24} />,
-        name: "AI agent",
+        name: "AI Agent",
         href: ALL_ROUTES.AI_AGENT,
       },
     ],

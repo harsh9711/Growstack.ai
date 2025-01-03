@@ -1,22 +1,34 @@
 "use client";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
-import React, { useEffect } from "react";
-import GridComponent from "./components/GridBoxes";
-import ImageGalleryLine from "./components/ImageGalleryline";
+import React, { Suspense, useEffect } from "react";
 import Navbar from "@/components/navbar/Navbar";
-import LoadingBar from "./components/Loading";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import GridComponentSecond from "./components/GridBoxes2";
-import ImageGalleryLineResponsive from "./components/ImageGallerylineresponsive";
-import ImageGallery from "./components/ZoomEffect";
-import ImageGalleryResponsive from "./components/ZoomEffectrespopnsive";
-import MarketingStreamline from "./components/marketingStreamline/MarketingStreamline";
-import { motion, inView } from "framer-motion";
-import MarketingTechnology from "../largeenterprise/components/marketingTechnology/MarketingTechnology";
+const GridComponentSecond = React.lazy(() => import("./components/GridBoxes2"));
+const ImageGalleryLineResponsive = React.lazy(
+  () => import("./components/ImageGallerylineresponsive")
+);
+const ImageGallery = React.lazy(() => import("./components/ZoomEffect"));
+const ImageGalleryResponsive = React.lazy(
+  () => import("./components/ZoomEffectrespopnsive")
+);
+const GridComponent = React.lazy(() => import("./components/GridBoxes"));
+const ImageGalleryLine = React.lazy(
+  () => import("./components/ImageGalleryline")
+);
+const LoadingBar = React.lazy(() => import("./components/Loading"));
+const MarketingStreamline = React.lazy(
+  () => import("./components/marketingStreamline/MarketingStreamline")
+);
 import Link from "next/link";
 import Footer from "@/components/footer/Footer";
+
+const LoadingSpinner = () => (
+  <div className="flex items-center justify-center min-h-[200px]">
+    <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#2DA771]"></div>
+  </div>
+);
 
 const page = () => {
   useEffect(() => {
@@ -135,29 +147,35 @@ const page = () => {
             data-aos-delay="600"
             className="items-center justify-center mx-auto relative 2xl:right-12  2xl:top-4"
           >
-            <GridComponent />
+            <Suspense fallback={<LoadingSpinner />}>
+              <GridComponent />
+            </Suspense>
           </div>
         </div>
       </section>
-      <section className="bg-[#034737] mx-auto w-full flex items-center justify-center py-10 2xl:py-20 2xl:mt-20">
+      <section className="bg-[#2DA771] mx-auto w-full flex items-center justify-center py-10 2xl:py-20 2xl:mt-20">
         <div
           data-aos="fade-up"
           data-aos-duration="1800"
           data-aos-delay="600"
           className="flex flex-col items-center justify-center gap-y-10"
         >
-          <div>
+          <Suspense fallback={<LoadingSpinner />}>
             <LoadingBar />
-          </div>
+          </Suspense>
         </div>
       </section>
 
       <section className="relative w-full 2xl:mt-20">
-        <div className="2xl:flex  xl:flex hidden overflow-hidden   2xl:max-w-[1921px] w-full h-full justify-center mx-auto   items-center gap-4  ">
-          <ImageGalleryLine />
+        <div className="2xl:flex xl:flex hidden overflow-hidden   2xl:max-w-[1921px] w-full h-full justify-center mx-auto   items-center gap-4  ">
+          <Suspense fallback={<LoadingSpinner />}>
+            <ImageGalleryLine />
+          </Suspense>
         </div>
         <div className="2xl:hidden  xl:hidden flex 2xl:max-w-[1921px] w-full h-full justify-center mx-auto   items-center gap-4  ">
-          <ImageGalleryLineResponsive />
+          <Suspense fallback={<LoadingSpinner />}>
+            <ImageGalleryLineResponsive />
+          </Suspense>
         </div>
       </section>
       <section className="relative mx-auto w-full items-center justify-center xl:mt-0 mt-10 2xl:mt-0 py-20 bg-[#E2F0CB4D]">
@@ -197,10 +215,13 @@ const page = () => {
             data-aos-delay="600"
             className="items-center justify-center mx-auto relative 2xl:right-12 2xl:top-4 "
           >
-            <GridComponentSecond />
+            <Suspense fallback={<LoadingSpinner />}>
+              <GridComponentSecond />
+            </Suspense>
           </div>
         </div>
       </section>
+
       <section className="items-center flex flex-col justify-center mx-auto w-full py-20">
         <div className="w-full gap-y-4 flex flex-col items-center justify-center mx-auto ">
           <div
@@ -224,10 +245,14 @@ const page = () => {
         <div>
           {" "}
           <div className="2xl:flex xl:flex hidden mt-20 w-full h-full items-center justify-center mx-auto">
-            <ImageGallery />
+            <Suspense fallback={<LoadingSpinner />}>
+              <ImageGallery />
+            </Suspense>
           </div>
           <div className="2xl:hidden xl:hidden flex flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px] h-full justify-center mx-auto   items-center gap-4  ">
-            <ImageGalleryResponsive />
+            <Suspense fallback={<LoadingSpinner />}>
+              <ImageGalleryResponsive />
+            </Suspense>
           </div>
         </div>
       </section>
@@ -241,7 +266,9 @@ const page = () => {
             alt="image"
           />
         </div>
-        <MarketingStreamline />
+        <Suspense fallback={<LoadingSpinner />}>
+          <MarketingStreamline />
+        </Suspense>
       </section>
       <Footer />
     </main>

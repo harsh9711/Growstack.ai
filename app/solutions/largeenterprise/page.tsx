@@ -1,18 +1,34 @@
 "use client";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
-import React from "react";
+import React, { Suspense } from "react";
 import { useInView } from "react-intersection-observer";
 import Navbar from "@/components/navbar/Navbar";
 import { motion } from "framer-motion";
 import "swiper/css/navigation";
-import ImageGallery from "./components/ZoomEffect";
-import TestimonialsSlider from "./components/Slider";
-import MarketingTechnology from "./components/marketingTechnology/MarketingTechnology";
-import MarketingStreamline from "./components/marketingStreamline/MarketingStreamline";
-import ImageGalleryResponsive from "./components/ZoomEffectrespopnsive";
+// import ImageGallery from "./components/ZoomEffect";
+// import MarketingTechnology from "./components/marketingTechnology/MarketingTechnology";
+// import MarketingStreamline from "./components/marketingStreamline/MarketingStreamline";
+// import ImageGalleryResponsive from "./components/ZoomEffectrespopnsive";
 import Footer from "@/components/footer/Footer";
 import Link from "next/link";
+
+const LoadingSpinner = () => (
+  <div className="flex items-center justify-center min-h-[200px]">
+    <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#2DA771]"></div>
+  </div>
+);
+
+const MarketingTechnology = React.lazy(
+  () => import("./components/marketingTechnology/MarketingTechnology")
+);
+const ImageGallery = React.lazy(() => import("./components/ZoomEffect"));
+const ImageGalleryResponsive = React.lazy(
+  () => import("./components/ZoomEffectrespopnsive")
+);
+const MarketingStreamline = React.lazy(
+  () => import("./components/marketingStreamline/MarketingStreamline")
+);
 
 const Home = () => {
   const totalItems = 5;
@@ -105,7 +121,9 @@ const Home = () => {
         </div>
       </section>
       <section className="">
-        <MarketingTechnology />
+        <Suspense fallback={<LoadingSpinner />}>
+          <MarketingTechnology />
+        </Suspense>
       </section>
       <section className="">
         <div className="relative flex items-center w-full h-full py-10 2xl:py-40 bg-white overflow-hidden">
@@ -137,7 +155,7 @@ const Home = () => {
                   </p>
                   <Link href="/auth/register" className="no-underline">
                     {" "}
-                    <button className="bg-[#034737] text-white font-medium flex items-center gap-2 sm:py-4 sm:px-7 p-2 rounded-xl hover:font-bold shadow-md shadow-[#00000025]">
+                    <button className="bg-[#2DA771] text-white font-medium flex items-center gap-2 sm:py-4 sm:px-7 p-2 rounded-xl hover:font-bold shadow-md shadow-[#00000025]">
                       Free trial <ArrowRight />
                     </button>
                   </Link>
@@ -179,7 +197,7 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="bg-primary-green flex flex-col items-center justify-center py-20 overflow-hidden">
+      <section className="bg-[#2Da771] flex flex-col items-center justify-center py-20 overflow-hidden">
         <div className="w-full gap-y-4 flex flex-col items-center justify-center mx-auto ">
           <div className="bg-white/10 hover:shadow-md  whitespace-nowrap  text-white py-2 px-4 flex items-center text-center text-[12px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[135px]">
             Globalization
@@ -192,21 +210,20 @@ const Home = () => {
               </span>
               <span className="font-light text-center">global operations</span>
             </h1>
-            {/* <p className="text-center text-white/30 tracking-normal items-center justify-center w-full max-w-[1026px]">
-              In <span className="text-[#A9FF9B]">large enterprises,</span>{" "}
-              various teams collaborate to manage operations, develop
-              strategies, and handle day-to-day functions.
-            </p> */}
           </div>
         </div>
 
         <div>
           {" "}
           <div className="2xl:flex xl:flex hidden mt-20 w-full h-full items-center justify-center mx-auto">
-            <ImageGallery />
+            <Suspense fallback={<LoadingSpinner />}>
+              <ImageGallery />
+            </Suspense>
           </div>
           <div className="2xl:hidden xl:hidden flex flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px] h-full justify-center mx-auto   items-center gap-4  ">
-            <ImageGalleryResponsive />
+            <Suspense fallback={<LoadingSpinner />}>
+              <ImageGalleryResponsive />
+            </Suspense>
           </div>
         </div>
       </section>
@@ -221,8 +238,9 @@ const Home = () => {
             alt="image"
           />
         </div>
-
-        <MarketingStreamline />
+        <Suspense fallback={<LoadingSpinner />}>
+          <MarketingStreamline />
+        </Suspense>
       </section>
       <Footer />
     </main>
