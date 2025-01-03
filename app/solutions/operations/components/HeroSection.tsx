@@ -62,7 +62,7 @@ const HeroSection = ({
                   className="flex flex-row gap-8 items-center justify-center sm:items-start sm:justify-start group text-[12px] 2xl:text-[18px]"
                 >
                   <Link href="/auth/register" className="no-underline">
-                    <button className=" bg-[#034737] font-medium flex items-center gap-2 text-white 2xl:py-4 2xl:px-7 rounded-xl py-2 px-2 group-hover:font-bold shadow-md ">
+                    <button className=" bg-[#2DA771] font-medium flex items-center gap-2 text-white 2xl:py-4 2xl:px-7 rounded-xl py-2 px-2 group-hover:font-bold shadow-md ">
                       {primaryButtonText} <ArrowRight />
                     </button>
                   </Link>
@@ -74,31 +74,6 @@ const HeroSection = ({
                     </button>
                   </Link>
                 </div>
-
-                {/* <div
-                  data-aos="fade-right"
-                  data-aos-duration="1500"
-                  className="flex  flex-wrap gap-4"
-                >
-                  <button className="flex items-center gap-2 text-primary-green rounded-xl">
-                    <Image
-                      className="w-full h-full"
-                      src={playStoreImage}
-                      alt="Play Store"
-                      width={180}
-                      height={400}
-                    />
-                  </button>
-                  <button className="flex items-center gap-2 text-primary-green rounded-xl">
-                    <Image
-                      className="w-full h-full"
-                      src={appleStoreImage}
-                      alt="Apple Store"
-                      width={180}
-                      height={400}
-                    />
-                  </button>
-                </div> */}
               </div>
             </div>
           </div>

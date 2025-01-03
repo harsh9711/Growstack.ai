@@ -116,19 +116,19 @@ const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
             </div>
           </div>
 
-          {/* Button and Dropdown Container 1 - TEAM */}
+          {/* Button and Dropdown Container 3 - INDUSTRY */}
           <div className="flex relative">
             <div
-              onClick={() => handleSectionClick("team")}
+              onClick={() => handleSectionClick("industry")}
               className={`cursor-pointer bg-gradient-to-r w-[150px] min-w-[150px] h-12 flex items-center justify-center transition-all duration-300 transform ${
-                activeSection === "team"
+                activeSection === "industry"
                   ? "scale-110 text-[#2DA771] font-semibold"
                   : "scale-105 text-black font-light"
               }`}
             >
-              <h3 className="flex px-4 whitespace-nowrap text-sm w-full text-center">
+              <h3 className=" flex px-4 whitespace-nowrap text-sm w-full text-center">
                 <div className="w-full flex items-center justify-between px-2">
-                  Team
+                  Industry
                   <Image
                     src="/images_growstack/header/arrow.svg"
                     alt="arrow"
@@ -139,17 +139,17 @@ const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
               </h3>
             </div>
 
-            {/* Team Dropdown - Positioned to the right */}
+            {/* Industry Dropdown - Positioned to the right */}
             <div
               className={`absolute left-[160px] top-0 transform transition-all duration-300 ease-in-out origin-left ${
-                activeSection === "team"
+                activeSection === "industry"
                   ? "opacity-100 scale-x-100 translate-x-0"
                   : "opacity-0 scale-x-0 -translate-x-1/4 pointer-events-none"
               }`}
             >
               <div className="bg-white rounded-lg shadow-lg p-4 w-[300px]">
                 <div className="grid grid-cols-3 gap-1">
-                  {list.slice(0, 9).map(
+                  {list.slice(13).map(
                     (nav, index) =>
                       nav && (
                         <Link
@@ -189,19 +189,19 @@ const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
             </div>
           </div>
 
-          {/* Button and Dropdown Container 3 - INDUSTRY */}
+          {/* Button and Dropdown Container 1 - TEAM */}
           <div className="flex relative">
             <div
-              onClick={() => handleSectionClick("industry")}
+              onClick={() => handleSectionClick("team")}
               className={`cursor-pointer bg-gradient-to-r w-[150px] min-w-[150px] h-12 flex items-center justify-center transition-all duration-300 transform ${
-                activeSection === "industry"
+                activeSection === "team"
                   ? "scale-110 text-[#2DA771] font-semibold"
                   : "scale-105 text-black font-light"
               }`}
             >
-              <h3 className=" flex px-4 whitespace-nowrap text-sm w-full text-center">
+              <h3 className="flex px-4 whitespace-nowrap text-sm w-full text-center">
                 <div className="w-full flex items-center justify-between px-2">
-                  Industry
+                  Team
                   <Image
                     src="/images_growstack/header/arrow.svg"
                     alt="arrow"
@@ -212,17 +212,17 @@ const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
               </h3>
             </div>
 
-            {/* Industry Dropdown - Positioned to the right */}
+            {/* Team Dropdown - Positioned to the right */}
             <div
               className={`absolute left-[160px] top-0 transform transition-all duration-300 ease-in-out origin-left ${
-                activeSection === "industry"
+                activeSection === "team"
                   ? "opacity-100 scale-x-100 translate-x-0"
                   : "opacity-0 scale-x-0 -translate-x-1/4 pointer-events-none"
               }`}
             >
               <div className="bg-white rounded-lg shadow-lg p-4 w-[300px]">
                 <div className="grid grid-cols-3 gap-1">
-                  {list.slice(13).map(
+                  {list.slice(0, 9).map(
                     (nav, index) =>
                       nav && (
                         <Link

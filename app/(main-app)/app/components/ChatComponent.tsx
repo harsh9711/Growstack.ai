@@ -427,11 +427,10 @@ export default function ChatComponent() {
   }, []);
 
   return (
-<div
-  className="flex flex-col bg-white px-8 py-8 rounded-3xl border border-[#E8E8E8] min-h-[580px] h-full"
-  data-aos="fade-up"
->
-
+    <div
+      className="flex flex-col bg-white px-8 py-8 rounded-3xl border border-[#E8E8E8] min-h-[580px] h-full"
+      data-aos="fade-up"
+    >
       {isDashboardChatModalOpen && (
         <DashboardChatModal
           onClose={handleMouseLeave}
@@ -471,7 +470,7 @@ export default function ChatComponent() {
         <div className="flex flex-row items-center justify-center gap-3">
           <div className="hidden lg:block">
             <div className="flex ">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center justify-center gap-2">
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
@@ -491,7 +490,13 @@ export default function ChatComponent() {
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
-                <div className="text-md  text-nowrap font-medium">
+                <div className="text-md flex items-center justify-center gap-1 text-nowrap font-medium">
+                  <Image
+                    src="/secure-chat-icon.svg"
+                    alt="secure"
+                    width={30}
+                    height={30}
+                  />
                   Secure Chat
                 </div>
                 <Switch
@@ -513,7 +518,13 @@ export default function ChatComponent() {
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
-                <span className="text-md  text-nowrap flex flex-row gap-x-2 font-medium">
+                <span className="text-md text-nowrap flex items-center justify-center gap-x-2 font-medium">
+                  <Image
+                    src="/globe-icon.svg"
+                    alt="globe"
+                    height={30}
+                    width={30}
+                  />
                   Web chat
                 </span>
                 <Switch checked={enableWebAccess} onCheckedChange={onChange} />
@@ -728,7 +739,13 @@ export default function ChatComponent() {
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
-                      <div className="text-md  text-nowrap font-medium">
+                      <div className="text-md flex gap-1 text-nowrap font-medium">
+                        <Image
+                          src="/secure-chat-icon.svg"
+                          alt="secure"
+                          width={20}
+                          height={20}
+                        />
                         Secure Chat
                       </div>
                       <Switch

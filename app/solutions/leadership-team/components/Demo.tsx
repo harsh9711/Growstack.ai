@@ -6,7 +6,7 @@ const Demo = () => {
   return (
     <section className="flex flex-col  sm:p-0 p-4 gap-y-10 sm:mt-40 mt-10">
       <div
-        className="max-w-[1240px] mx-auto bg-primary-green py-10 w-full h-full rounded-[40px] flex flex-col gap-y-8 items-center justify-center text-white"
+        className="max-w-[1240px] mx-auto bg-[#2DA771] py-10 w-full h-full rounded-[40px] flex flex-col gap-y-8 items-center justify-center text-white"
         data-aos="fade-up"
       >
         <h2 className="sm:text-[42px] text-[28px] text-white">Book a demo</h2>

@@ -19,13 +19,13 @@ const Box: React.FC<RectangleCardProps> = ({
       className={`flex-grow max-w-[400px] rounded-[20px] bg-[#FFFFFF] border-[#E3E3E3] flex flex-col items-start justify-center text-black h-full`}
       data-aos="fade-right"
     >
-      <div className="relative w-full h-52"> 
+      <div className="relative w-full h-52">
         <Image
           src={imgsrc1}
-          layout="fill" 
-          objectFit="cover" 
+          layout="fill"
+          objectFit="cover"
           alt="image"
-          className="rounded-t-[20px]" 
+          className="rounded-t-[20px]"
         />
       </div>
       <div className="flex flex-col relative z-10 rounded-b-[20px] border p-6 gap-y-2 bg-white">
@@ -60,32 +60,32 @@ const Benefits = () => {
       firsttext: "Scheduler & content calendar:",
       secondtext:
         "Plan and manage marketing campaigns effectively to ensure consistent communication and promotions.",
-      imgsrc1: "/ecommerce/7.svg", 
+      imgsrc1: "/ecommerce/7.svg",
     },
     {
       firsttext: "Posting logs:",
       secondtext:
         "Track all content posted across platforms for better accountability and performance analysis.",
-      imgsrc1: "/ecommerce/8.svg", },
+      imgsrc1: "/ecommerce/8.svg",
+    },
     {
       firsttext: "Social media conversation hub:",
       secondtext:
         "Manage interactions and conversations across multiple social media channels from one central location.",
-      imgsrc1: "/ecommerce/9.svg", 
+      imgsrc1: "/ecommerce/9.svg",
     },
     {
       firsttext: "Social media analytics:",
       secondtext:
         "Monitor the performance of social media campaigns to adjust strategies as needed performance of social media .",
-      imgsrc1: "/ecommerce/10.svg", 
+      imgsrc1: "/ecommerce/10.svg",
     },
     {
       firsttext: "Prospect Scraping & LinkedIn agent:",
       secondtext:
         "Identify and gather information on potential customers and leads to enhance targeting.",
-      imgsrc1: "/ecommerce/11.svg", 
+      imgsrc1: "/ecommerce/11.svg",
     },
-  
   ];
 
   return (
@@ -115,7 +115,7 @@ const Benefits = () => {
             secondtext={feature.secondtext}
             imgsrc1={feature.imgsrc1}
             data-aos="fade-right"
-            data-aos-delay={index * 100} 
+            data-aos-delay={index * 100}
           />
         ))}
       </div>

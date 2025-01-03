@@ -199,7 +199,7 @@ const HeroSection = () => {
                 >
                   <Link href="/auth/register" className="no-underline">
                     {" "}
-                    <button className="bg-[#034737] font-medium flex items-center gap-2 text-white 2xl:py-4 2xl:px-7 rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
+                    <button className="bg-[#2Da771] font-medium flex items-center gap-2 text-white 2xl:py-4 2xl:px-7 rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
                       Free trial <ArrowRight />
                     </button>
                   </Link>
