@@ -139,11 +139,8 @@ export default function AiAgent() {
             filteredAgents.map((agent, index) => (
               <div key={index} className="bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
                 <div className="bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100 p-3 flex justify-between items-center relative">
-                  {agent.image ? (
-                    <img className="w-12 h-12 absolute top-6 left-4 rounded-lg" src={agent.image} alt="Agent" />
-                  ) : (
-                    <GptIcon className="w-12 h-12 absolute top-6 left-4 rounded-lg" />
-                  )}
+                    <img className="w-10 h-10 absolute top-6 left-4 rounded-lg" src={agent.image || '/logo/growstack-mini1.png'} alt="Agent" />
+               
                   <span className="text-gray-600 text-sm font-small ml-auto mt-4">{agent.users}</span>
                 </div>
                 <div className="p-4 flex flex-col">

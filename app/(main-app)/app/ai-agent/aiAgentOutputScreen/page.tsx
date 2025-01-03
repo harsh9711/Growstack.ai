@@ -20,6 +20,7 @@ const uploadDetails = () => {
     name: string;
     description: string;
     inputs?: any[];
+    image?: string;
   }
   interface Errors {
     [key: string]: string; // Define that the object can have string keys and string values
@@ -45,6 +46,8 @@ const uploadDetails = () => {
   const [expandedOutput, setExpandedOutput] = useState(false);
   const [paragonDetails, setParagonDetails] = useState<ParagonUserDetails>({});
   const [isLoading, setIsLoading] = useState(false);
+  const [progressbar, setProgressbar] = useState(0);
+
   useEffect(() => {
     const agentId: any = searchParams.get("agentId");
     const agentName = searchParams.get("agentName");
@@ -241,8 +244,8 @@ const uploadDetails = () => {
           }
         }
 
-    
-      
+
+
         // If both PDF and DOCX are present, check if the file matches either
         if (
           input.variableValidation?.includes("PDF") &&
@@ -252,7 +255,7 @@ const uploadDetails = () => {
           if (!/^https?:\/\/[^\s$.?#].[^\s]*\.(pdf|docx)$/i.test(value)) {
             updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid PDF or DOCX file.`;
           }
-        }else{
+        } else {
           if (input.variableValidation?.includes("PDF") && value) {
             if (!/^https?:\/\/[^\s$.?#].[^\s]*\.pdf$/i.test(value)) {
               updatedErrors[input.variableName] = `${input.variableDisplayName} is not a valid PDF file.`;
@@ -285,7 +288,7 @@ const uploadDetails = () => {
 
   const paragonConnect = () => {
     for (const [name, details] of Object.entries(paragonDetails)) {
-        return details.enabled; // Return true if any detail is enabled
+      return details.enabled; // Return true if any detail is enabled
     }
     return "not required";
   };
@@ -318,11 +321,12 @@ const uploadDetails = () => {
 
     try {
       // Make the API call
+      setOutput(null);
       const response = await instance.post(
         `${API_URL}/agents/api/v1/run/${agent}`,
         bodyData
       );
-
+      setExpandedInput(false);
       if (response.status === 200) {
         setOutput(null)
         setExpandedOutput(true);
@@ -346,7 +350,7 @@ const uploadDetails = () => {
       if (input.variableType === "LONG_TEXT") {
         longTextInput = (
           <div key={index} className="mb-4 flex flex-col w-full">
-            <label className="text-md text-black">
+            <label className="text-md mb-2 text-black font-medium">
               {input.variableDisplayName} {isRequired && <span className="text-red-500">*</span>}
             </label>
             <textarea
@@ -354,7 +358,7 @@ const uploadDetails = () => {
               placeholder={input.variablePlaceholder || "Enter details..."}
               value={input.value || ""}
               onChange={(e) => handleInputChange(index, e.target.value, null)}
-              className="w-full p-4 h-[120px] rounded-md focus:outline-none resize-none"
+              className="w-full bg-[#EFEFEF] p-4 h-[120px] rounded-xl focus:outline-none resize-none"
               rows={10}
             />
             {errors[input.variableName] && (
@@ -390,7 +394,7 @@ const uploadDetails = () => {
         // For short text inputs
         shortTextInputs.push(
           <div key={index} className="mb-4 flex flex-col w-full relative">
-            <label className="text-md text-black mb-2 flex items-center">
+            <label className="text-md text-black mb-2 flex items-center font-medium">
               {input.variableDisplayName}
               {isRequired && <span className="text-red-500 ml-1">*</span>}
               {input.variableValidation === "URL" && (
@@ -414,7 +418,7 @@ const uploadDetails = () => {
                 placeholder={input.variablePlaceholder || "Enter text..."}
                 value={input.value || ""}
                 onChange={(e) => handleInputChange(index, e.target.value, null)}
-                className="w-full p-4 rounded-md focus:outline-none"
+                className="w-full p-3 rounded-xl focus:outline-none bg-[#EFEFEF]"
               />
             </div>
             {errors[input.variableName] && (
@@ -427,18 +431,13 @@ const uploadDetails = () => {
 
     return (
       <>
-        {!expandedInput ? (
-          <div className="flex flex-col gap-4 overflow-auto max-h-[calc(100vh-120px)]">
-            {/* Render all inputs in a column */}
-            {shortTextInputs}
-            {longTextInput}
-          </div>
-        ) : (
-          <div className="flex flex-col gap-4">
-            {/* Display only a portion of short text inputs initially */}
-            {shortTextInputs.slice(0, 2)}
-          </div>
-        )}
+        <div className="grid grid-cols-3 gap-4 ml-7">
+          {/* Render all inputs in a column */}
+          {shortTextInputs}
+          {longTextInput}
+        </div>
+
+
       </>
     );
   };
@@ -457,21 +456,172 @@ const uploadDetails = () => {
   return (
     <form onSubmit={handleSubmit}>
       {/* Back Button */}
-      <div className="flex items-center gap-2 mb-4">
+      <div className="flex flex justify-between items-center gap-2 mb-4">
+        <div className="flex items-center gap-2">
         <button
           type="button"
           onClick={() => window.history.back()}
-          className="flex items-center bg-white text-black hover:bg-gray-100 border border-gray-300 rounded-2xl px-4 py-2 focus:outline-none"
+          className="flex items-center border-none mr-1"
         >
-          <BackIcon className="mr-2" />
-          <span className="text-sm font-medium">Back</span>
+          <svg width="35" height="35" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M34.0923 4.87836C34.6547 5.44094 34.9707 6.20387 34.9707 6.99936C34.9707 7.79485 34.6547 8.55778 34.0923 9.12036L19.2423 23.9704L34.0923 38.8204C34.6388 39.3862 34.9412 40.144 34.9344 40.9306C34.9275 41.7172 34.612 42.4696 34.0558 43.0258C33.4996 43.582 32.7471 43.8975 31.9605 43.9044C31.1739 43.9112 30.4161 43.6088 29.8503 43.0624L12.8793 26.0914C12.3169 25.5288 12.001 24.7659 12.001 23.9704C12.001 23.1749 12.3169 22.4119 12.8793 21.8494L29.8503 4.87836C30.4129 4.31595 31.1758 4 31.9713 4C32.7668 4 33.5298 4.31595 34.0923 4.87836Z" fill="black" />
+          </svg>
         </button>
+        <div className="flex items-center gap-2">
 
+          <img src={agentDetails?.image || '/logo/growstack-mini1.png'} alt="agent" className="rounded-full" style={{ width: "52px", height: "52px" }} />
+          <div className="flex flex-col">
+            <strong><h1 className="text-2xl font-bold">{agentDetails?.name || "Agent not found"}</h1> </strong>
+            <p className="text-xs">
+              {agentDetails?.description || "No description available."}
+            </p>
+          </div>
+        </div>
+        </div>
+       <div></div>
+        <div className="flex mt-3 justify-end" >
+          {Object.entries(paragonDetails).map(([name, details]) => (
+            <>
+              {details.enabled ?
+                <div className="bg-pink-100 p-2 rounded-md flex items-center justify-center mr-5 mb-2">
+                  <main className="flex items-center space-x-6">
+                    <div className=" flex flex-col space-x-3">
+                      <div className="flex justify-center items-center mb-1">
+                        <svg width="28" height="22" viewBox="0 0 28 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M1.90909 21.5035H6.36366V10.6853L3.44673 5.5918L0 5.91254V19.5944C0 20.6491 0.854328 21.5035 1.90909 21.5035Z" fill="#0085F7" />
+                          <path d="M21.6406 21.5035H26.0952C27.15 21.5035 28.0043 20.6491 28.0043 19.5944V5.91254L24.5625 5.5918L21.6407 10.6853V21.5035H21.6406Z" fill="#00A94B" />
+                          <path d="M21.6323 2.41422L19.0156 7.40735L21.6323 10.687L27.9959 5.91422V3.36879C27.9959 1.00946 25.3025 -0.33804 23.4141 1.07787L21.6323 2.41422Z" fill="#FFBC00" />
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M6.36837 10.6868L3.875 5.41985L6.36837 2.41406L14.0047 8.14132L21.6411 2.41406V10.6868L14.0047 16.4141L6.36837 10.6868Z" fill="#FF4131" />
+                          <path d="M0 3.36879V5.91422L6.36366 10.687V2.41422L4.58183 1.07787C2.69341 -0.33804 0 1.00946 0 3.36879Z" fill="#E51C19" />
+                        </svg>
+                      </div>
+                      <button
+                        onClick={() => {
+                          if (details.enabled) handleConnect(name);
+                        }}
+                        className="border-2 bg-green-600 border-green-600 text-white text-sm pl-2 pr-2 rounded-full hover:bg-blue-600 hover:text-white transition"
+                      >
+                        Connected
+                      </button>
+                      <div className="flex">
+                        <div className="mt-2 mr-2">
+                          <svg width="6" height="7" viewBox="0 0 6 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="3" cy="3.5" r="3" fill="#2DA771" />
+                          </svg>
+                        </div>
+
+                        {details.allCredentials[0].providerId.split('@')[0]}
+                      </div>
+
+                    </div>
+                  </main>
+                </div>
+                :
+                <div className="bg-pink-100 p-5 rounded-md flex items-center justify-center mr-5">
+                  <main className="flex items-center space-x-6">
+                    <div className="flex items-center space-x-3">
+                      <div className="flex justify-center items-center">
+                        <svg width="28" height="22" viewBox="0 0 28 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M1.90909 21.5035H6.36366V10.6853L3.44673 5.5918L0 5.91254V19.5944C0 20.6491 0.854328 21.5035 1.90909 21.5035Z" fill="#0085F7" />
+                          <path d="M21.6406 21.5035H26.0952C27.15 21.5035 28.0043 20.6491 28.0043 19.5944V5.91254L24.5625 5.5918L21.6407 10.6853V21.5035H21.6406Z" fill="#00A94B" />
+                          <path d="M21.6323 2.41422L19.0156 7.40735L21.6323 10.687L27.9959 5.91422V3.36879C27.9959 1.00946 25.3025 -0.33804 23.4141 1.07787L21.6323 2.41422Z" fill="#FFBC00" />
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M6.36837 10.6868L3.875 5.41985L6.36837 2.41406L14.0047 8.14132L21.6411 2.41406V10.6868L14.0047 16.4141L6.36837 10.6868Z" fill="#FF4131" />
+                          <path d="M0 3.36879V5.91422L6.36366 10.687V2.41422L4.58183 1.07787C2.69341 -0.33804 0 1.00946 0 3.36879Z" fill="#E51C19" />
+                        </svg>
+                      </div>
+                      <span className="text-gray-600 text-2xl">&rarr;</span>
+                      <button onClick={() => {
+                        if (!details.enabled) handleConnect(name);
+                      }} className="border-none text-blue-600 px-4 py-2 rounded-full hover:bg-blue-600 hover:text-white transition">
+                        Sign In
+                      </button>
+                    </div>
+                  </main>
+                </div>}
+            </>
+          ))}
+        </div>
       </div>
 
-      <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
-        {/* Top Section */}
-        <div className="col-span-1 md:col-span-3">
+      <div className="col-span-1 flex flex-col">
+        <div>
+          <div className="w-full rounded-2xl  flex flex-col h-full ">
+            <button
+              type="button"
+              onClick={() => setExpandedInput((prev) => !prev)}
+              className={`w-full text-left bg-[#2DA771] p-3 rounded-t-2xl  flex justify-between items-center ${!expandedInput ? "rounded-b-2xl" : ""}`}
+            >
+              <span className="text-white text-base ml-7">{expandedInput}Input Parameters</span>
+              <span>{expandedInput ? <FaChevronUp className="text-white mr-8" /> : <FaChevronDown className="text-white mr-8" />}</span>
+            </button>
+            {/* Keep the card structure visible, toggle content inside */}
+            <>
+              {expandedInput &&
+                <>
+                  <div className="p-4 flex-grow border-r-2 border-l-2 border-b-2 border-l-2 rounded-b-2xl">
+                    {renderInputs()}
+
+                    <div>
+                      {paragonConnect() === "not required" || paragonConnect() == true ? (
+                        <div className="mt-4 flex justify-center">
+                          <button disabled={isLoading}
+                            type="submit"
+                            className="py-2 w-full mb-4 px-8 bg-[#2DA771] text-sm text-white rounded-lg hover:bg-gray-800 focus:outline-none transition-colors duration-300 text-center items-center"
+                          >
+                            {isLoading ? (
+                              <div className="flex justify-center text-center items-center">
+                                {'Analyzing'}
+                                <div role="status">
+                                  <svg
+                                    aria-hidden="true"
+                                    className="inline w-4 h-4 ml-1 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                                    viewBox="0 0 100 101"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                      fill="currentColor"
+                                    />
+                                    <path
+                                      d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                      fill="currentFill"
+                                    />
+                                  </svg>
+                                  <span className="sr-only">Loading...</span>
+                                </div>
+                              </div>
+                            ) : (
+                              'Analyze'
+                            )}
+                          </button>
+                        </div>
+                      ) : (
+                        <p className="text-center text-red-500 mb-3">Please connect to your Gmail account.</p>
+                      )}
+                    </div>
+                  </div>
+                </>
+
+              }
+
+
+            </>
+
+
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+      {/* Top Section */}
+      {/* <div className="col-span-1 md:col-span-3">
           <div className="w-full rounded-2xl border-2 border-l-8 border-l-yellow-500">
             <div className="flex justify-between gap-6">
               <div className="flex-1 md:mr-6 text-center md:text-left mt-4">
@@ -551,100 +701,85 @@ const uploadDetails = () => {
 
 
           </div>
-        </div>
+        </div> */}
 
-        {/* Input Parameters */}
-        <div className="col-span-1 flex flex-col">
-          <div>
-            <div className="w-full rounded-2xl border-2 flex flex-col h-full border-l-8 border-l-red-500">
-              <button
-                type="button"
-                onClick={() => setExpandedInput((prev) => !prev)}
-                className="w-full text-left bg-gray-100 p-2 rounded-t-2xl border-b flex justify-between items-center"
+      {/* Input Parameters */}
+
+      <div className="w-full mt-3 rounded-2xl flex flex-col h-full">
+        <button
+          type="button"
+          onClick={() => setExpandedOutput((prev) => !prev)}
+          className={`w-full text-left bg-[#121212] p-3 h-15 rounded-t-2xl border-b flex justify-between items-center ${!expandedOutput ? "rounded-b-2xl" : ""}`}
+        >
+
+          <span className="text-white text-base ml-7">{expandedOutput ? "Output Details" : "Output Details "}</span>
+          <div></div>
+          <div className="flex items-center gap-2">
+            <div className="relative w-7 h-7 bg-[#FFFFFF] rounded-full flex items-center justify-end">
+              <svg
+                className="w-full h-full"
+                viewBox="0 0 36 36"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <span className="text font-bold">{expandedInput}Input Parameters</span>
-                <span>{expandedInput ? <FaChevronUp /> : <FaChevronDown />}</span>
-              </button>
-              {/* Keep the card structure visible, toggle content inside */}
-              <div className="p-4 overflow-y-auto flex-grow">
-                {renderInputs()}
-              </div>
-              <div>
-                {paragonConnect() === "not required" || paragonConnect() == true ? (
-                  <div className="mt-4 flex justify-center">
-                    <button disabled={isLoading}
-                      type="submit"
-                      className="py-2 mb-4 px-8 bg-[#2DA771] text-sm text-white rounded-lg hover:bg-gray-800 focus:outline-none transition-colors duration-300"
-                    >
-                      {isLoading ? (
-                        <div className="flex">
-                          {'Analyzing'}
-                          <div role="status">
-                            <svg
-                              aria-hidden="true"
-                              className="inline w-4 h-4 ml-1 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
-                              viewBox="0 0 100 101"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                                fill="currentColor"
-                              />
-                              <path
-                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                                fill="currentFill"
-                              />
-                            </svg>
-                            <span className="sr-only">Loading...</span>
-                          </div>
-                        </div>
-                      ) : (
-                        'Analyze'
-                      )}
-                    </button>
-                  </div>
+                {/* Full Background Circle */}
+                <circle
+                  cx="18"
+                  cy="18"
+                  r="16"
+                  fill="none"
+                  stroke="#e5e5e5" // Background circle color
+                  strokeWidth="1"
+                ></circle>
+
+                {/* Filled Arc for Progress */}
+                {progressbar === 100 ? (
+                  <circle
+                    cx="18"
+                    cy="18"
+                    r="16"
+                    fill="#2DA771" // Full progress color
+                    strokeWidth="0"
+                  ></circle>
                 ) : (
-                  <p className="text-center text-red-500 mb-3">Please connect to your Gmail account.</p>
+                  <path
+                    d={`M18 2 
+        A 16 16 0 ${progressbar > 50 ? 1 : 0} 0 
+        ${18 + 16 * Math.cos((2 * Math.PI * (1 - progressbar / 100)) - Math.PI / 2)} 
+        ${18 + 16 * Math.sin((2 * Math.PI * (1 - progressbar / 100)) - Math.PI / 2)}
+        L 18 18
+      `}
+                    fill="#2DA771" // Progress color
+                  ></path>
                 )}
-              </div>
-
+              </svg>
             </div>
-          </div>
-        </div>
-        <div className="col-span-2 flex flex-col">
-          <div>
-            <div className="w-full rounded-2xl border-2 flex flex-col h-full border-l-8 border-l-green-500">
-              <button
-                type="button"
-                onClick={() => setExpandedOutput((prev) => !prev)}
-                className="w-full text-left bg-gray-100 p-2 rounded-t-2xl border-b flex justify-between items-center"
-              >
-                <span className="text font-bold">{expandedOutput ? "Output Details" : "Output Details"}</span>
-                <span>{expandedOutput ? <FaChevronUp /> : <FaChevronDown />}</span>
-              </button>
-              <div className="p-6"></div>
-              {!output && <>
-                <div className="text-center mb-4">
-                  <h1><strong>No output details available</strong></h1>
-                </div>
-              </>}
-              {expandedOutput && (
-                <div className="p-2 ">
-                  {output && (
-                    <div className="mt-2 px-4">
-                      <KeywordInsights runnerAgentId={output.data.runnerAgentId} setLoader={setIsLoading} />
-                    </div>
-                  )}
 
+            <span>{expandedOutput ? <FaChevronUp className="text-white mr-5" /> : <FaChevronDown className="text-white mr-5" />}</span>
+
+          </div>
+        </button>
+        {expandedOutput && (
+          <div className="border-r-2 border-l-2 border-b-2 border-l-2 rounded-b-2xl">
+            {!output && <>
+              <div className="text-center mb-9 mt-8">
+                <h1><strong>No details available</strong></h1>
+              </div>
+            </>}
+            <div className="p-2 ">
+              {output && (
+                <div className="px-4">
+                  <KeywordInsights runnerAgentId={output.data.runnerAgentId} setLoader={setIsLoading} setProgressbar={setProgressbar} setProgressbarPercentage={setProgressbar} />
                 </div>
               )}
 
             </div>
+
           </div>
 
-        </div>
+        )}
+
       </div>
+
     </form>
   );
 };

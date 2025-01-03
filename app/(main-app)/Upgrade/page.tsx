@@ -279,7 +279,7 @@ const PricingPage: React.FC = () => {
               <div className="w-full flex gap-2 flex-1 relative">
                 {tabs.map((tab, index) => (
                   <div
-                    key={index}
+                    key={index} style={{fontSize: "17px",whiteSpace: "nowrap"}}
                     className={`w-full flex p-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${
                       selectedTabIndex === index
                         ? "!text-white font-semibold bg-[#034737] custom-transition rounded-xl"
