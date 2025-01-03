@@ -237,13 +237,13 @@ const PricingPage21: React.FC = () => {
       data-aos-duration="500"
       onClick={e => e.stopPropagation()}
     >
-      <section className="p-4 overflow-y-auto">
-        <div className="w-full border max-w-md flex gap-2 justify-center mx-auto item-center bg-[#F5F5F5] shadow-2xl shadow-gray-200 px-3 py-2 mt-4 rounded-xl">
-          <div className="w-full flex gap-2 flex-1 relative">
+      <section className="p-2 overflow-y-auto">
+        <div className="w-full border max-w-md flex gap-2 justify-center mx-auto item-center bg-[#F5F5F5] shadow-2xl shadow-gray-200 px-10 py-3 mt-4 rounded-xl">
+          <div className="w-full flex gap-2 flex-1 relative ">
             {tabs.map((tab, index) => (
               <div
-                key={index}
-                className={`w-full flex p-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${
+                key={index} style={{fontSize: "17px",whiteSpace: "nowrap"}}
+                className={`w-full flex p-4 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${
                   selectedTabIndex === index
                     ? "!text-white font-semibold bg-[#034737] custom-transition rounded-xl"
                     : "!text-[#034737]"
@@ -254,10 +254,10 @@ const PricingPage21: React.FC = () => {
               </div>
             ))}
           </div>
-          <h2
-            className="!text-[#034737] mt-2.5 text-center w-fit transition-opacity duration-300"
+          <h2 
+            className="!text-[#034737] mt-4 text-center w-fit transition-opacity duration-300 no-wrap"
             style={{
-              opacity: selectedTabIndex === 1 ? 1 : 0.3,
+              opacity: selectedTabIndex === 1 ? 1 : 0.3,whiteSpace: "nowrap"
             }}
           >
             (2 Months Free)
