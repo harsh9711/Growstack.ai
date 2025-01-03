@@ -518,7 +518,13 @@ export default function ChatComponent() {
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
-                <span className="text-md  text-nowrap flex flex-row gap-x-2 font-medium">
+                <span className="text-md text-nowrap flex items-center justify-center gap-x-2 font-medium">
+                  <Image
+                    src="/globe-icon.svg"
+                    alt="globe"
+                    height={30}
+                    width={30}
+                  />
                   Web chat
                 </span>
                 <Switch checked={enableWebAccess} onCheckedChange={onChange} />
