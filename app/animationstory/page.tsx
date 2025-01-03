@@ -67,13 +67,13 @@ const AnimationStory = () => {
             </span>
           </h1>
           <div className="flex flex-col text-center sm:text-start sm:text-[16px] md:text-[20px] font-semibold">
-            <h2 className="text-[#2DA771]">
+            <h2 className="text-[#2DA771] text-start">
               No More <span className="text-black">Silos</span>
             </h2>
-            <h2 className="text-[#2DA771]">
+            <h2 className="text-[#2DA771] text-start">
               No More <span className="text-black">Delays</span>
             </h2>
-            <h2 className="text-[#2DA771]">
+            <h2 className="text-[#2DA771] text-start">
               No More <span className="text-black">Limits</span>
             </h2>
             <div className="mt-2">
