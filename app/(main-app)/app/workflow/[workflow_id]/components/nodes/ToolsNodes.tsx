@@ -36,9 +36,7 @@ const ToolsNodes = memo(
 
     const { setNodes } = useReactFlow();
     const dispatch = useAppDispatch();
-    const { isLoading, nodes } = useAppSelector(
-      state => state.nodes
-    );
+    const { isLoading, nodes } = useAppSelector(state => state.nodes);
     const { workFlowData } = useAppSelector(state => state.workflows);
     const [isEdit, setIsEdit] = useState(true);
     const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
@@ -50,6 +48,7 @@ const ToolsNodes = memo(
     >([]);
 
     const [focusedInputKey, setFocusedInputKey] = useState<string | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     // added a code to add parent node id in dependencies
     // useEffect(() => {
@@ -194,6 +193,29 @@ const ToolsNodes = memo(
 
     const handleNextClick = async () => {
       if (!node?.data?.parameters) return;
+      
+        const blur = node?.data?.parameters?.blur?.value;
+        const removeBg = node?.data?.parameters?.remove?.value;
+        if (
+          !blur &&
+          !removeBg &&
+          node?.data?.label === "Image Background Processing"
+        ) {
+          setErrorMessage("either Blur or removeBg required");
+          return;
+        } else {
+          setErrorMessage(null);
+        }
+        if (
+          blur &&
+          removeBg &&
+          node?.data?.label === "Image Background Processing"
+        ) {
+          setErrorMessage("select only one");
+          return;
+        } else {
+          setErrorMessage(null);
+        }
 
       const requiredParams = Object.values(node.data.parameters).filter(
         param => param.required
@@ -317,7 +339,6 @@ const ToolsNodes = memo(
       setopenDeleteConfirmationModal(true);
       setIsActionModalShow(false);
     };
-
     return (
       <div>
         <section className="node-box relative">
@@ -327,6 +348,7 @@ const ToolsNodes = memo(
                 {" "}
                 {data?.label || ""}
               </h4>
+
               <textarea
                 value={node?.data?.description || ""}
                 onInput={handleInput}
@@ -460,7 +482,41 @@ const ToolsNodes = memo(
               </div>
 
               <div className="form-box">
+                {errorMessage && (
+                  <div className="error-message text-red-500 text-sm mt-2">
+                    {errorMessage}
+                  </div>
+                )}
                 {node?.data?.parameters &&
+                  node?.data?.label === "Image Background Processing" &&
+                  Object.entries(node?.data?.parameters).map(([key, param]) => {
+                    if (
+                      key === "color" &&
+                      node?.data?.parameters?.remove?.value !== true
+                    ) {
+                      return null; // Hide "color" if "remove" is not true
+                    }
+                    if (
+                      (key === "blurLevel" || key === "blurType") &&
+                      node?.data?.parameters?.blur?.value !== true
+                    ) {
+                      return null; // Hide "blurLevel" and "blurType" if "blur" is not true
+                    }
+                    return (
+                      <DynamicInput
+                        key={key}
+                        inputKey={key}
+                        param={param}
+                        handleInputChange={handleInputChange}
+                        variableNames={variableNames}
+                        focusedInputKey={focusedInputKey}
+                        setFocusedInputKey={setFocusedInputKey}
+                      />
+                    );
+                  })}
+                {node?.data?.parameters &&
+                  node?.data?.label &&
+                  node?.data?.label !== "Image Background Processing" &&
                   Object.entries(node?.data?.parameters)
                     .filter(
                       ([key, param]: any) =>
@@ -489,8 +545,10 @@ const ToolsNodes = memo(
                       : "Show Advanced Options"}
                   </button>
                 </div> */}
-                {node?.data?.parameters && 
-                  Object.values(node.data.parameters).some(param => !param.required) && (
+                {node?.data?.parameters &&
+                  Object.values(node.data.parameters).some(
+                    param => !param.required
+                  ) && (
                     <div className="advance-option-button-box mb-3">
                       <button
                         onClick={handleToggleAdvancedOptions}

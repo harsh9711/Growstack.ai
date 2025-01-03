@@ -14,6 +14,7 @@ import SmallCardFiled from "./SmallCard";
 import AdvanceDropDown from "./AdvanceDropDown";
 import VariableInputFields from "./VariableInputFiels";
 import MultiSelectCheckbox from "./MultiSelectCheckbox";
+import ColorPicker from "./ColorPicker";
 
 const DynamicInput: React.FC<DynamicInputProps> = ({
     param,
@@ -169,6 +170,14 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
                     inputKey={inputKey}
                     handleInputChange={handleInputChange}
                 />
+            );
+        case "color_picker":
+            return (
+              <ColorPicker
+                handleInputChange={handleInputChange}
+                param={param}
+                inputKey={inputKey}
+              />
             );
         default:
             return null;

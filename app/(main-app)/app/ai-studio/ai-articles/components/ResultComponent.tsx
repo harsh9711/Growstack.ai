@@ -52,8 +52,9 @@ const ResultComponent: React.FC<ResultComponentProps> = ({
   const [open, setOpen] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [inputValue, setInputValue] = useState(""); 
-  const socialURL =localStorage.getItem("savedArticle");
-  const handleShare = async () => {
+  const socialURL =localStorage.getItem("savedArticle") || null ;
+  const dynamicContent = localStorage.getItem("payloadData") || "Check out GrowstackAI!";
+  const handleShare = async () => {    
     setIsPending(true);
     setShowPopup(showPopup?false:true)
     const payload = {
@@ -61,10 +62,15 @@ const ResultComponent: React.FC<ResultComponentProps> = ({
       article: articleData,
     };
     try {
+      console.log("payload:::::::::::::::::::",payload);
+      
+      localStorage.setItem("payloadData", payload?.article);
+
       const response = await instance.post(
         API_URL + "/ai/api/v1/wizard/generate/cms",
         payload
       );
+      console.log("response::::::::::::::::::::::::::::::",response.data)
       // toast.success(response.data.message);
       localStorage.setItem("savedArticle", response?.data?.data);
       
@@ -83,6 +89,7 @@ const ResultComponent: React.FC<ResultComponentProps> = ({
     }
   };
 
+  
   const generateArticle = async () => {
     const data = {
       title: articleTitle,
@@ -267,19 +274,17 @@ const ResultComponent: React.FC<ResultComponentProps> = ({
         }}
         >
            <div className="flex flex-row" style={{ gap: "10px" }}>
-          <FacebookShareButton url={socialURL ? socialURL : ""}>
+          <FacebookShareButton url={dynamicContent ? dynamicContent : ""}>
             <FacebookIcon size={40} round />
           </FacebookShareButton>
-          <TwitterShareButton url={socialURL ? socialURL : ""} title={"GrowstackAI"}>
+          <TwitterShareButton url={dynamicContent || ""}>
             <XIcon size={40} round />
           </TwitterShareButton>
-          <LinkedinShareButton url={socialURL ? socialURL : ""} title={"GrowstackAI"}>
-            <LinkedinIcon size={40} round />
-            
-          </LinkedinShareButton>
-          <WhatsappShareButton url={socialURL ? socialURL : ""}title={"GrowstackAI"}>
+          {/* <LinkedinShareButton url={socialURL || "" } >
+              <LinkedinIcon size={40} round />
+            </LinkedinShareButton> */}
+          <WhatsappShareButton url={dynamicContent ? dynamicContent : ""}>
             <WhatsappIcon size={40} round />
-            
           </WhatsappShareButton>
             <CopyToClipboard text={socialURL ? socialURL : ""} onCopy={handleCopy}>
             <img
@@ -440,3 +445,4 @@ const ResultComponent: React.FC<ResultComponentProps> = ({
 };
 
 export default ResultComponent;
+

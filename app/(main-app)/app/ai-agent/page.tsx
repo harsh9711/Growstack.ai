@@ -139,7 +139,7 @@ export default function AiAgent() {
             filteredAgents.map((agent, index) => (
               <div key={index} className="bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
                 <div className="bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100 p-3 flex justify-between items-center relative">
-                  {agent.image ? (
+                {agent.image ? (
                     <img className="w-12 h-12 absolute top-6 left-4 rounded-lg" src={agent.image} alt="Agent" />
                   ) : (
                     <GptIcon className="w-12 h-12 absolute top-6 left-4 rounded-lg" />

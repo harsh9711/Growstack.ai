@@ -12,7 +12,10 @@ import LinkedInUI from "./LinkedInUI";
 import toast from "react-hot-toast";
 
 interface DataItem {
-  variableExtras: (variableValue: string, variableExtras: any) => React.ReactNode;
+  variableExtras: {
+    needToSelect?: boolean;
+    fieldToSelect?: string[];
+  };
   _id: string;
   variableName: string;
   variableType: string;
@@ -22,12 +25,14 @@ interface DataItem {
 interface KeywordInsightsProps {
   runnerAgentId: string;
   setLoader: (loading: boolean) => void;
+  setProgressbar: React.Dispatch<React.SetStateAction<number>>;
+  setProgressbarPercentage: React.Dispatch<React.SetStateAction<number>>;
 }
-const KeywordInsights: React.FC<KeywordInsightsProps> = ({ runnerAgentId, setLoader }) => {
+const KeywordInsights: React.FC<KeywordInsightsProps> = ({ runnerAgentId, setLoader,setProgressbarPercentage }) => {
   const [data, setData] = useState<{ result: DataItem[] } | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [expanded, setExpanded] = useState<string | null>(null); // State to track expanded accordion
+  const [expanded, setExpanded] = useState<string[]>([]); // State to track expanded accordion
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const [progressbar, setProgressbar] = useState<number>(0)
   useEffect(() => {
@@ -46,6 +51,7 @@ const KeywordInsights: React.FC<KeywordInsightsProps> = ({ runnerAgentId, setLoa
 
         const fetchedData = response.data.data;
         setProgressbar(response.data.data.percentageCompletion)
+        setProgressbarPercentage(response.data.data.percentageCompletion)
 
         // Only update the state with new data
         if (fetchedData?.result) {
@@ -223,82 +229,74 @@ const KeywordInsights: React.FC<KeywordInsightsProps> = ({ runnerAgentId, setLoa
   };
 
   const toggleAccordion = (id: string) => {
-    setExpanded(expanded === id ? null : id);
+    setExpanded((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
   };
 
   // if (loading) return <div>Loading...</div>;
   if (error) return <div className="text-red-500">{error}</div>;
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-6">
-      <div className="flex justify-between items-center border-b pb-4">
-        <h1 className="text-xl font-semibold text-nowrap">Output :</h1>
-        <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700 ml-5">
-          <div
-            className="bg-green-600 text-xs font-medium text-blue-100 text-center p-1.5 leading-none rounded-full"
-            style={{ width: `${progressbar}%` }}
-          >
-          </div>
-        </div>
+    <>
+      <div className="bg-white shadow-md rounded-lg p-6">
+        <div className="">
+          {data?.result?.map((item: any) => (
+            <div key={item._id} className="mb-6">
+              <h1 className="font-medium text-gray-900">
+                <b>{item.variableName}</b>
+              </h1>
+              <div>
+                <div key={item._id}>
+                  <button
+                    type="button"
+                    onClick={() => toggleAccordion(item._id)}
+                    className="w-full text-left bg-gray-100 p-2 mt-2 border-b rounded-lg p-2 flex justify-between items-center mb-2"
+                  >
+                 
+                    <span>{expanded.includes(item._id) ? "Hide" : "Show"} Details</span>
+                    {expanded.includes(item._id) ? <FaChevronUp /> : <FaChevronDown />}
+                  </button>
+                  {expanded.includes(item._id) && (
+                    <>
+                      <div className="p-4 overflow-y-auto mt-1 transition-all duration-300 ease-in-out bg-white border border-gray-300 rounded-lg shadow-md">
+                        {item.variableType === "CSV" && item.variableValue && renderCSVTable(item.variableValue, item.variableExtras)}
 
-        <div className="text-nowrap ml-2">
-          <strong>{progressbar}% Completed</strong>
-        </div>
-
-
-      </div>
-      <div className="mt-4">
-        {data?.result?.map((item: any) => (
-          <div key={item._id} className="mb-6">
-            <h1 className="font-medium text-gray-900">
-              <b>{item.variableName}</b>
-            </h1>
-            <div>
-              <button
-                type="button"
-                onClick={() => toggleAccordion(item._id)}
-                className="w-full text-left bg-gray-100 p-2 mt-2 border-b flex justify-between items-center mb-2"
-              >
-                <span>{expanded === item._id ? "Hide" : "Show"} Details</span>
-                {expanded === item._id ? <FaChevronUp /> : <FaChevronDown />}
-              </button>
-              {expanded === item._id && (
-                <>
-                  <div className="p-4  overflow-y-auto mt-1 transition-all duration-300 ease-in-out bg-white border border-gray-300 rounded-lg shadow-md">
-                    {item.variableType === "CSV" && item.variableValue && renderCSVTable(item.variableValue, item.variableExtras)}
-
-                    {(item.variableType === "STRING" || item.variableType === "LONG_TEXT") && item.variableValue && (
-                      <Markdown
-                        remarkPlugins={[remarkGfm]}
-                        rehypePlugins={[rehypeRaw]}
-                      >
-                        {item.variableValue}
-                      </Markdown>
-                    )}
-                    {item.variableType === "LINKEDIN_DATA" && item.variableValue && (
-                      <LinkedInUI profileData={item.variableValue} />
-                    )}
-                  </div>
-                  {item?.variableExtras?.needToSelect && (
-                    <div className="mt-4">
-                      <button type="button"
-                        onClick={handleSubmit}
-                        className="bg-blue-500 text-white py-2 px-4 rounded"
-                      >
-                        Submit
-                      </button>
-                    </div>
+                        {(item.variableType === "STRING" || item.variableType === "LONG_TEXT") && item.variableValue && (
+                          <Markdown
+                            remarkPlugins={[remarkGfm]}
+                            rehypePlugins={[rehypeRaw]}
+                          >
+                            {item.variableValue}
+                          </Markdown>
+                        )}
+                        {item.variableType === "LINKEDIN_DATA" && item.variableValue && (
+                          <LinkedInUI profileData={item.variableValue} />
+                        )}
+                      </div>
+                      {item?.variableExtras?.needToSelect && (
+                        <div className="mt-4">
+                          <button
+                            type="button"
+                            onClick={handleSubmit}
+                            className="bg-blue-500 text-white py-2 px-4 rounded"
+                          >
+                            Submit
+                          </button>
+                        </div>
+                      )}
+                    </>
                   )}
-                </>
-
-              )}
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
-        {/* <LinkedInUI profileData={profileData} /> */}
-        {loading && <>{'Loading Remaning items '}<DotsLoader /></>}
+          ))}
+           
+          {loading && <>{'Loading Remaning items '}<DotsLoader /></>}
+        </div>
       </div>
-    </div>
+    </>
+
   );
 };
 
