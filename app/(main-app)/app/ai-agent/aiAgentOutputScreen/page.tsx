@@ -446,7 +446,7 @@ const uploadDetails = () => {
     try {
       const Paragonresponse = await paragon.connect(integrationType, {});
       getAgentById(agent)
-      fetchAgents(); // Call fetchAgents after the connection is successful
+      fetchAgents();
     } catch (error) {
       console.error(`Failed to connect to ${integrationType}:`, error);
     }
@@ -458,36 +458,37 @@ const uploadDetails = () => {
       {/* Back Button */}
       <div className="flex flex justify-between items-center gap-2 mb-4">
         <div className="flex items-center gap-2">
-        <button
-          type="button"
-          onClick={() => window.history.back()}
-          className="flex items-center border-none mr-1"
-        >
-          <svg width="35" height="35" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M34.0923 4.87836C34.6547 5.44094 34.9707 6.20387 34.9707 6.99936C34.9707 7.79485 34.6547 8.55778 34.0923 9.12036L19.2423 23.9704L34.0923 38.8204C34.6388 39.3862 34.9412 40.144 34.9344 40.9306C34.9275 41.7172 34.612 42.4696 34.0558 43.0258C33.4996 43.582 32.7471 43.8975 31.9605 43.9044C31.1739 43.9112 30.4161 43.6088 29.8503 43.0624L12.8793 26.0914C12.3169 25.5288 12.001 24.7659 12.001 23.9704C12.001 23.1749 12.3169 22.4119 12.8793 21.8494L29.8503 4.87836C30.4129 4.31595 31.1758 4 31.9713 4C32.7668 4 33.5298 4.31595 34.0923 4.87836Z" fill="black" />
-          </svg>
-        </button>
-        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => window.history.back()}
+            className="flex items-center border-none mr-1"
+          >
+            <svg width="35" height="35" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M34.0923 4.87836C34.6547 5.44094 34.9707 6.20387 34.9707 6.99936C34.9707 7.79485 34.6547 8.55778 34.0923 9.12036L19.2423 23.9704L34.0923 38.8204C34.6388 39.3862 34.9412 40.144 34.9344 40.9306C34.9275 41.7172 34.612 42.4696 34.0558 43.0258C33.4996 43.582 32.7471 43.8975 31.9605 43.9044C31.1739 43.9112 30.4161 43.6088 29.8503 43.0624L12.8793 26.0914C12.3169 25.5288 12.001 24.7659 12.001 23.9704C12.001 23.1749 12.3169 22.4119 12.8793 21.8494L29.8503 4.87836C30.4129 4.31595 31.1758 4 31.9713 4C32.7668 4 33.5298 4.31595 34.0923 4.87836Z" fill="black" />
+            </svg>
+          </button>
+          <div className="flex items-center gap-2">
 
-          <img src={agentDetails?.image || '/logo/growstack-mini1.png'} alt="agent" className="rounded-full" style={{ width: "52px", height: "52px" }} />
-          <div className="flex flex-col">
-            <strong><h1 className="text-2xl font-bold">{agentDetails?.name || "Agent not found"}</h1> </strong>
-            <p className="text-xs">
-              {agentDetails?.description || "No description available."}
-            </p>
+            <img src={agentDetails?.image || '/logo/growstack-mini1.png'} alt="agent" className="rounded-full" style={{ width: "52px", height: "52px" }} />
+            <div className="flex flex-col">
+              <strong><h1 className="text-2xl font-bold">{agentDetails?.name || "Agent not found"}</h1> </strong>
+              <p className="text-xs">
+                {agentDetails?.description || "No description available."}
+              </p>
+            </div>
           </div>
         </div>
-        </div>
-       <div></div>
-        <div className="flex mt-3 justify-end" >
+        <div></div>
+        <div className="flex mt-3 justify-end border-[#2DA771] rounded-full" style={{ border: "0.5px solid #2DA771" }}>
+
           {Object.entries(paragonDetails).map(([name, details]) => (
             <>
               {details.enabled ?
-                <div className="bg-pink-100 p-2 rounded-md flex items-center justify-center mr-5 mb-2">
+                <div className="rounded-md flex items-center justify-center p-2">
                   <main className="flex items-center space-x-6">
-                    <div className=" flex flex-col space-x-3">
-                      <div className="flex justify-center items-center mb-1">
-                        <svg width="28" height="22" viewBox="0 0 28 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <div className=" flex  space-x-3">
+                      <div className="flex justify-center items-center mb-1 ml-2">
+                        <svg width="40" height="35" viewBox="0 0 28 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M1.90909 21.5035H6.36366V10.6853L3.44673 5.5918L0 5.91254V19.5944C0 20.6491 0.854328 21.5035 1.90909 21.5035Z" fill="#0085F7" />
                           <path d="M21.6406 21.5035H26.0952C27.15 21.5035 28.0043 20.6491 28.0043 19.5944V5.91254L24.5625 5.5918L21.6407 10.6853V21.5035H21.6406Z" fill="#00A94B" />
                           <path d="M21.6323 2.41422L19.0156 7.40735L21.6323 10.687L27.9959 5.91422V3.36879C27.9959 1.00946 25.3025 -0.33804 23.4141 1.07787L21.6323 2.41422Z" fill="#FFBC00" />
@@ -495,33 +496,41 @@ const uploadDetails = () => {
                           <path d="M0 3.36879V5.91422L6.36366 10.687V2.41422L4.58183 1.07787C2.69341 -0.33804 0 1.00946 0 3.36879Z" fill="#E51C19" />
                         </svg>
                       </div>
-                      <button
-                        onClick={() => {
-                          if (details.enabled) handleConnect(name);
-                        }}
-                        className="border-2 bg-green-600 border-green-600 text-white text-sm pl-2 pr-2 rounded-full hover:bg-blue-600 hover:text-white transition"
-                      >
-                        Connected
-                      </button>
-                      <div className="flex">
-                        <div className="mt-2 mr-2">
-                          <svg width="6" height="7" viewBox="0 0 6 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="3" cy="3.5" r="3" fill="#2DA771" />
-                          </svg>
-                        </div>
+                      <div className="flex flex-col">
 
-                        {details.allCredentials[0].providerId.split('@')[0]}
+                        <div className="flex">
+                          <div className="mt-2 mr-2">
+                          </div>
+                          <span className="text-sm">{details.allCredentials[0].providerId}</span>
+
+                        </div>
+                        <button
+                          onClick={() => {
+                            if (details.enabled) handleConnect(name);
+                          }}
+                          className="flex text-black text-sm pl-2 pr-2 rounded-full transition"
+                        >
+                          <div className="mr-1 mt-1.5">
+                            <svg width="8" height="8" viewBox="0 0 6 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <circle cx="3" cy="3.5" r="3" fill="#2DA771" />
+                            </svg>
+                          </div>
+
+                          <span className="text-sm">Connected</span>
+
+                        </button>
                       </div>
+
 
                     </div>
                   </main>
                 </div>
                 :
-                <div className="bg-pink-100 p-5 rounded-md flex items-center justify-center mr-5">
+                <div className="rounded-md flex items-center justify-center p-1">
                   <main className="flex items-center space-x-6">
                     <div className="flex items-center space-x-3">
-                      <div className="flex justify-center items-center">
-                        <svg width="28" height="22" viewBox="0 0 28 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <div className="flex justify-center items-center ml-2">
+                        <svg width="40" height="35" viewBox="0 0 28 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M1.90909 21.5035H6.36366V10.6853L3.44673 5.5918L0 5.91254V19.5944C0 20.6491 0.854328 21.5035 1.90909 21.5035Z" fill="#0085F7" />
                           <path d="M21.6406 21.5035H26.0952C27.15 21.5035 28.0043 20.6491 28.0043 19.5944V5.91254L24.5625 5.5918L21.6407 10.6853V21.5035H21.6406Z" fill="#00A94B" />
                           <path d="M21.6323 2.41422L19.0156 7.40735L21.6323 10.687L27.9959 5.91422V3.36879C27.9959 1.00946 25.3025 -0.33804 23.4141 1.07787L21.6323 2.41422Z" fill="#FFBC00" />
@@ -613,148 +622,22 @@ const uploadDetails = () => {
         </div>
       </div>
 
-
-
-
-
-
-
-
-      {/* Top Section */}
-      {/* <div className="col-span-1 md:col-span-3">
-          <div className="w-full rounded-2xl border-2 border-l-8 border-l-yellow-500">
-            <div className="flex justify-between gap-6">
-              <div className="flex-1 md:mr-6 text-center md:text-left mt-4">
-                <p className="ml-2 text text-sm text-gray-500">Agent Name & Description</p>
-                <p className="text-lg md:text-lg font-bold m-2" style={{ height: '30px' }}>
-                  {agentDetails?.name || "Agent not found"}
-                </p>
-                <p className="text-base m-2">
-                  {agentDetails?.description || "No description available."}
-
-                </p>
-
-              </div>
-
-              <div>
-                <div className="flex mt-3" >
-                  {Object.entries(paragonDetails).map(([name, details]) => (
-                    <>
-                      {details.enabled ?
-                        <div className="bg-pink-100 p-5 rounded-md flex items-center justify-center mr-5 mb-2">
-                          <main className="flex items-center space-x-6">
-                            <div className=" flex flex-col space-x-3">
-                              <div className="flex justify-center items-center mb-1">
-                                <svg width="28" height="22" viewBox="0 0 28 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                  <path d="M1.90909 21.5035H6.36366V10.6853L3.44673 5.5918L0 5.91254V19.5944C0 20.6491 0.854328 21.5035 1.90909 21.5035Z" fill="#0085F7" />
-                                  <path d="M21.6406 21.5035H26.0952C27.15 21.5035 28.0043 20.6491 28.0043 19.5944V5.91254L24.5625 5.5918L21.6407 10.6853V21.5035H21.6406Z" fill="#00A94B" />
-                                  <path d="M21.6323 2.41422L19.0156 7.40735L21.6323 10.687L27.9959 5.91422V3.36879C27.9959 1.00946 25.3025 -0.33804 23.4141 1.07787L21.6323 2.41422Z" fill="#FFBC00" />
-                                  <path fill-rule="evenodd" clip-rule="evenodd" d="M6.36837 10.6868L3.875 5.41985L6.36837 2.41406L14.0047 8.14132L21.6411 2.41406V10.6868L14.0047 16.4141L6.36837 10.6868Z" fill="#FF4131" />
-                                  <path d="M0 3.36879V5.91422L6.36366 10.687V2.41422L4.58183 1.07787C2.69341 -0.33804 0 1.00946 0 3.36879Z" fill="#E51C19" />
-                                </svg>
-                              </div>
-                              <button onClick={() => {
-                                if (details.enabled) handleConnect(name);
-                              }} className="border-2 bg-green-600 border-green-600 text-white p-1 rounded-full hover:bg-green-600 hover:text-white transition">
-                                connected
-                              </button>
-                              <div className="flex">
-                                <div className="mt-2 mr-2">
-                                  <svg width="6" height="7" viewBox="0 0 6 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <circle cx="3" cy="3.5" r="3" fill="#2DA771" />
-                                  </svg>
-                                </div>
-
-                                {details.allCredentials[0].providerId.split('@')[0]}
-                              </div>
-
-                            </div>
-                          </main>
-                        </div>
-                        :
-                        <div className="bg-pink-100 p-5 rounded-md flex items-center justify-center mr-5">
-                          <main className="flex items-center space-x-6">
-                            <div className="flex items-center space-x-3">
-                              <div className="flex justify-center items-center">
-                                <svg width="28" height="22" viewBox="0 0 28 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                  <path d="M1.90909 21.5035H6.36366V10.6853L3.44673 5.5918L0 5.91254V19.5944C0 20.6491 0.854328 21.5035 1.90909 21.5035Z" fill="#0085F7" />
-                                  <path d="M21.6406 21.5035H26.0952C27.15 21.5035 28.0043 20.6491 28.0043 19.5944V5.91254L24.5625 5.5918L21.6407 10.6853V21.5035H21.6406Z" fill="#00A94B" />
-                                  <path d="M21.6323 2.41422L19.0156 7.40735L21.6323 10.687L27.9959 5.91422V3.36879C27.9959 1.00946 25.3025 -0.33804 23.4141 1.07787L21.6323 2.41422Z" fill="#FFBC00" />
-                                  <path fill-rule="evenodd" clip-rule="evenodd" d="M6.36837 10.6868L3.875 5.41985L6.36837 2.41406L14.0047 8.14132L21.6411 2.41406V10.6868L14.0047 16.4141L6.36837 10.6868Z" fill="#FF4131" />
-                                  <path d="M0 3.36879V5.91422L6.36366 10.687V2.41422L4.58183 1.07787C2.69341 -0.33804 0 1.00946 0 3.36879Z" fill="#E51C19" />
-                                </svg>
-                              </div>
-                              <span className="text-gray-600 text-2xl">&rarr;</span>
-                              <button onClick={() => {
-                                if (!details.enabled) handleConnect(name);
-                              }} className="border-2 border-blue-600 text-blue-600 px-4 py-2 rounded-full hover:bg-blue-600 hover:text-white transition">
-                                Sign In
-                              </button>
-                            </div>
-                          </main>
-                        </div>}
-                    </>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-
-          </div>
-        </div> */}
-
       {/* Input Parameters */}
 
       <div className="w-full mt-3 rounded-2xl flex flex-col h-full">
         <button
           type="button"
           onClick={() => setExpandedOutput((prev) => !prev)}
-          className={`w-full text-left bg-[#121212] p-3 h-15 rounded-t-2xl border-b flex justify-between items-center ${!expandedOutput ? "rounded-b-2xl" : ""}`}
+          className={`w-full text-left bg-[#2DA771] p-3 h-15 rounded-t-2xl border-b flex justify-between items-center ${!expandedOutput ? "rounded-b-2xl" : ""}`}
         >
 
           <span className="text-white text-base ml-7">{expandedOutput ? "Output Details" : "Output Details "}</span>
           <div></div>
           <div className="flex items-center gap-2">
-            <div className="relative w-7 h-7 bg-[#FFFFFF] rounded-full flex items-center justify-end">
-              <svg
-                className="w-full h-full"
-                viewBox="0 0 36 36"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                {/* Full Background Circle */}
-                <circle
-                  cx="18"
-                  cy="18"
-                  r="16"
-                  fill="none"
-                  stroke="#e5e5e5" // Background circle color
-                  strokeWidth="1"
-                ></circle>
 
-                {/* Filled Arc for Progress */}
-                {progressbar === 100 ? (
-                  <circle
-                    cx="18"
-                    cy="18"
-                    r="16"
-                    fill="#2DA771" // Full progress color
-                    strokeWidth="0"
-                  ></circle>
-                ) : (
-                  <path
-                    d={`M18 2 
-        A 16 16 0 ${progressbar > 50 ? 1 : 0} 0 
-        ${18 + 16 * Math.cos((2 * Math.PI * (1 - progressbar / 100)) - Math.PI / 2)} 
-        ${18 + 16 * Math.sin((2 * Math.PI * (1 - progressbar / 100)) - Math.PI / 2)}
-        L 18 18
-      `}
-                    fill="#2DA771" // Progress color
-                  ></path>
-                )}
-              </svg>
-            </div>
 
-            <span>{expandedOutput ? <FaChevronUp className="text-white mr-5" /> : <FaChevronDown className="text-white mr-5" />}</span>
+
+            <span>{expandedOutput ? <FaChevronUp className="text-white mr-8" /> : <FaChevronDown className="text-white mr-8" />}</span>
 
           </div>
         </button>
@@ -765,11 +648,49 @@ const uploadDetails = () => {
                 <h1><strong>No details available</strong></h1>
               </div>
             </>}
+
+
+
             <div className="p-2 ">
               {output && (
-                <div className="px-4">
-                  <KeywordInsights runnerAgentId={output.data.runnerAgentId} setLoader={setIsLoading} setProgressbar={setProgressbar} setProgressbarPercentage={setProgressbar} />
-                </div>
+                <>
+                  <div className="flex justify-end items-center mt-1 mr-3">
+                    <div className="relative w-10 h-10 mb-2">
+                      <svg
+                        className="w-full h-full -rotate-90"
+                        viewBox="0 0 36 36"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        {/* Background Circle */}
+                        <circle
+                          cx="18"
+                          cy="18"
+                          r="16"
+                          fill="none"
+                          className="stroke-current text-gray-200 dark:text-neutral-700"
+                          strokeWidth="4"
+                        ></circle>
+
+                        {/* Dynamic Progress Circle */}
+                        <circle
+                          cx="18"
+                          cy="18"
+                          r="16"
+                          fill="none"
+                          className="stroke-current text-green-600 dark:text-blue-500"
+                          strokeWidth="4"
+                          strokeDasharray="100"
+                          strokeDashoffset={100 - progressbar} // Dynamic Offset
+                          strokeLinecap="round"
+                        ></circle>
+                      </svg>
+                    </div>
+                  </div>
+                  <div className="px-4">
+                    <KeywordInsights runnerAgentId={output.data.runnerAgentId} setLoader={setIsLoading} setProgressbar={setProgressbar} setProgressbarPercentage={setProgressbar} />
+                  </div>
+                </>
+
               )}
 
             </div>
