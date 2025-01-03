@@ -350,7 +350,7 @@ const uploadDetails = () => {
       if (input.variableType === "LONG_TEXT") {
         longTextInput = (
           <div key={index} className="mb-4 flex flex-col w-full">
-            <label className="text-md text-black font-medium">
+            <label className="text-md mb-2 text-black font-medium">
               {input.variableDisplayName} {isRequired && <span className="text-red-500">*</span>}
             </label>
             <textarea
@@ -358,7 +358,7 @@ const uploadDetails = () => {
               placeholder={input.variablePlaceholder || "Enter details..."}
               value={input.value || ""}
               onChange={(e) => handleInputChange(index, e.target.value, null)}
-              className="w-full bg-[#EFEFEF] p-4 h-[120px] rounded-md focus:outline-none resize-none"
+              className="w-full bg-[#EFEFEF] p-4 h-[120px] rounded-xl focus:outline-none resize-none"
               rows={10}
             />
             {errors[input.variableName] && (
@@ -418,7 +418,7 @@ const uploadDetails = () => {
                 placeholder={input.variablePlaceholder || "Enter text..."}
                 value={input.value || ""}
                 onChange={(e) => handleInputChange(index, e.target.value, null)}
-                className="w-full p-3 rounded-md focus:outline-none bg-[#EFEFEF]"
+                className="w-full p-3 rounded-xl focus:outline-none bg-[#EFEFEF]"
               />
             </div>
             {errors[input.variableName] && (
@@ -566,10 +566,10 @@ const uploadDetails = () => {
                         <div className="mt-4 flex justify-center">
                           <button disabled={isLoading}
                             type="submit"
-                            className="py-2 w-full mb-4 px-8 bg-[#2DA771] text-sm text-white rounded-lg hover:bg-gray-800 focus:outline-none transition-colors duration-300"
+                            className="py-2 w-full mb-4 px-8 bg-[#2DA771] text-sm text-white rounded-lg hover:bg-gray-800 focus:outline-none transition-colors duration-300 text-center items-center"
                           >
                             {isLoading ? (
-                              <div className="flex text-center items-center">
+                              <div className="flex justify-center text-center items-center">
                                 {'Analyzing'}
                                 <div role="status">
                                   <svg
