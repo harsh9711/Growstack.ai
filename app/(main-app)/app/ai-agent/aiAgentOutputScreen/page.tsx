@@ -42,7 +42,7 @@ const uploadDetails = () => {
   const [output, setOutput] = useState<OutputData | null>(null);
   const [file, setFile] = useState(null);
   const [agent, setAgent] = useState("")
-  const [expandedInput, setExpandedInput] = useState(false);
+  const [expandedInput, setExpandedInput] = useState(true);
   const [expandedOutput, setExpandedOutput] = useState(false);
   const [paragonDetails, setParagonDetails] = useState<ParagonUserDetails>({});
   const [isLoading, setIsLoading] = useState(false);
@@ -174,6 +174,7 @@ const uploadDetails = () => {
     }
   };
   interface Input {
+    variableValues: any;
     variableName: string;
     variableDisplayName: string;
     value: string;
@@ -390,7 +391,39 @@ const uploadDetails = () => {
             )}
           </div>
         );
-      } else {
+      } else if (input.variableType === "DROPDOWN") {
+          shortTextInputs.push(
+            <div key={index} className="mb-4 flex flex-col w-full relative">
+              <label className="text-md text-black mb-2 flex items-center font-medium">
+                {input.variableDisplayName}
+                {input.isRequired && <span className="text-red-500 ml-1">*</span>}
+              </label>
+              <div className="relative">
+                <select
+                  style={{ fontSize: "12px", paddingLeft: "1rem",paddingRight:"1rem" }}
+                  value={input.value || ""}
+                  onChange={(e) => handleInputChange(index, e.target.value, null)}
+                  className="w-full p-3 rounded-xl focus:outline-none bg-[#EFEFEF]"
+                >
+                  <option value="" disabled>
+                    {input.variablePlaceholder || "Select an option..."}
+                  </option>
+                  {input.variableValues.map((option: string | number | readonly string[] | undefined, optionIndex: React.Key | null | undefined) => (
+                    <option key={optionIndex} value={option}>
+                      {typeof option === 'string' ? option.charAt(0).toUpperCase() + option.slice(1) : option}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {errors[input.variableName] && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors[input.variableName]}
+                </p>
+              )}
+            </div>
+          );
+        }
+      else {
         // For short text inputs
         shortTextInputs.push(
           <div key={index} className="mb-4 flex flex-col w-full relative">
