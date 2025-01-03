@@ -134,7 +134,7 @@ function FuturePlans() {
                       <div className="text-white w-full px-6 p-2 bg-[#00B783]">
                         GTM Marketing
                       </div>
-                      <ul className="grid grid-cols-3 mt-2 gap-x-8 text-black font-bold ">
+                      <ul className="grid sm:grid-cols-2 lg:grid-cols-3 mt-2 gap-x-8 text-black font-bold ">
                         <li>AI Chat</li>
                         <li>AI Content wizard</li>
                         <li>AI Assistants</li>
