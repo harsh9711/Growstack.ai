@@ -37,7 +37,7 @@ export default function AssistantCard({ avatar, name, role, id, summary }: Assis
               </div>
               </div>
             </TooltipTrigger>
-            <TooltipContent side="right" className="bg-white text-black p-4 w-[220px]">
+            <TooltipContent  className="bg-white text-black p-4 ">
               <p className="w-[100%]">{summary}</p>
             </TooltipContent>
           </Tooltip>
