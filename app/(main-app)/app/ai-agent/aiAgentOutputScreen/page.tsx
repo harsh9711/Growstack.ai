@@ -668,7 +668,7 @@ const uploadDetails = () => {
                           r="16"
                           fill="none"
                           className="stroke-current text-gray-200 dark:text-neutral-700"
-                          strokeWidth="4"
+                          strokeWidth="5"
                         ></circle>
 
                         {/* Dynamic Progress Circle */}
@@ -678,19 +678,12 @@ const uploadDetails = () => {
                           r="16"
                           fill="none"
                           className="stroke-current text-green-600 dark:text-blue-500"
-                          strokeWidth="4"
+                          strokeWidth="5"
                           strokeDasharray="100"
                           strokeDashoffset={100 - progressbar} // Dynamic Offset
                           strokeLinecap="round"
                         ></circle>
                       </svg>
-
-                      {/* Centered Percentage Text */}
-                      <div className="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2">
-                        <span className="text-xs  font-bold text-blue-600 dark:text-blue-500">
-                          {progressbar}%
-                        </span>
-                      </div>
                     </div>
                   </div>
                   <div className="px-4">
