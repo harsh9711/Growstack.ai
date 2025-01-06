@@ -1,20 +1,16 @@
 import React from "react";
 import Image from "next/image";
-import Navbar from "@/components/navbar/Navbar";
+
 import { ArrowRight } from "lucide-react";
 import "../../../../styles/myanimation.css";
 import Link from "next/link";
 const HeroSection = ({
-  logoUrl = "/imagelogo.svg",
-  logoAlt = "Custom Logo",
   bgGradient = "bg-[#14171B]",
   title = "Business Operation",
   subtitle = "Streamline your business operations with Growstack",
   description = "Optimize processes and enhance communication with Growstack’s innovative solutions. Empower your team to overcome challenges and drive operational excellence.",
   primaryButtonText = "Free trial",
   secondaryButtonText = "Get a demo",
-  playStoreImage = "/play2.png",
-  appleStoreImage = "/apple2.png",
   heroImage = "/operationshero.svg",
   heroImageAlt = "Center Image",
 }) => {
@@ -22,8 +18,6 @@ const HeroSection = ({
     <section
       className={`${bgGradient}  rounded-b-[60px] sm:rounded-b-[0px]  w-full mb-10 2xl:mb-20 overflow-hidden`}
     >
-      <Navbar logoUrl={logoUrl} logoAlt={logoAlt} backgroundColor="white" />
-
       <div className="relative flex items-center max-w-[1220px] 2xl:max-w-[1350px] 2xl:p-0 p-4 w-full  h-full justify-center mx-auto">
         <div className="w-full flex flex-row justify-between brightness-110 sm:text-start text-center relative items-center sm:mt-10 sm:mb-10 mt-2 mb-2 2xl:mt-32 2xl:mb-20">
           <div className="w-full max-w-[700px] gap-y-4 flex flex-col sm:items-start items-center">

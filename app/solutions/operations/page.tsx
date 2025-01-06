@@ -6,6 +6,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import Footer from "@/components/footer/Footer";
 import HeroSection from "./components/HeroSection";
+import Navbar from "@/components/navbar/Navbar";
 
 const ImageGallerySecond = lazy(() => import("./components/ZoomEffect2"));
 const ImageGalleryResponsiveSecond = lazy(
@@ -32,6 +33,11 @@ const page = () => {
   }, []);
   return (
     <main className="bg-white overflow-hidden max-w-[1920px] w-full mx-auto">
+      <Navbar
+        logoUrl="/imagelogo.svg"
+        logoAlt="Custom Logo"
+        backgroundColor="white"
+      />
       <HeroSection />
       <Suspense fallback={<LoadingSpinner />}>
         <section className=" flex flex-col xl:mt-10 w-full mb-20 2xl:mb-10  items-center justify-center mx-auto">
