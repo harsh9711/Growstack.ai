@@ -8,6 +8,28 @@ const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
   const pathName = usePathname();
   const hasSubmenu = item.submenu && item.submenu.length > 0;
   const navbarRef = useRef(null);
+  const [activeSection, setActiveSection] = useState("");
+
+  // Add click outside handler
+  useEffect(() => {
+    const handleClickOutside = event => {
+      // Check if click is outside the entire navbar component
+      if (navbarRef.current && !navbarRef.current.contains(event.target)) {
+        // Close all menus
+        onToggleSubmenu(null);
+        setActiveSection("");
+      }
+    };
+
+    // Only add listener if any menu is open
+    if (item.isOpen || activeSection) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [onToggleSubmenu, item.isOpen, activeSection]);
 
   const isActive = () => {
     if (pathName === item.path) return true;
@@ -28,26 +50,29 @@ const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
   const handleSubmenuItemClick = () => {
     onCloseMobileMenu();
     onToggleSubmenu(null);
+    setActiveSection("");
   };
-  const [activeSection, setActiveSection] = useState("");
+
+  const handleSectionClick = (section, event) => {
+    // Stop event propagation to prevent closing the main menu
+    event.stopPropagation();
+
+    if (activeSection === section) {
+      setActiveSection("");
+    } else {
+      setActiveSection(section);
+    }
+  };
 
   const renderNestedNav = list => {
-    const handleSectionClick = section => {
-      if (activeSection === section) {
-        setActiveSection(null);
-      } else {
-        setActiveSection(section);
-      }
-    };
-
     return (
       <div className="flex">
         <div className="flex flex-col bg-white rounded-xl shadow-lg">
           {/* Button and Dropdown Container 2 - COMPANY */}
           <div className="flex relative">
             <div
-              onClick={() => handleSectionClick("company")}
-              className={`cursor-pointer bg-gradient-to-r  w-[150px] min-w-[150px] h-12 flex items-center justify-center transition-all duration-300 transform ${
+              onClick={e => handleSectionClick("company", e)}
+              className={`cursor-pointer bg-gradient-to-r w-[150px] min-w-[150px] h-12 flex items-center justify-center transition-all duration-300 transform ${
                 activeSection === "company"
                   ? "scale-110 text-[#2DA771] font-semibold"
                   : "scale-105 text-black font-light"
@@ -66,13 +91,14 @@ const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
               </h3>
             </div>
 
-            {/* Company Dropdown - Positioned to the right */}
+            {/* Company Dropdown */}
             <div
               className={`absolute left-[160px] top-0 transform transition-all duration-300 ease-in-out origin-left ${
                 activeSection === "company"
                   ? "opacity-100 scale-x-100 translate-x-0"
                   : "opacity-0 scale-x-0 -translate-x-1/4 pointer-events-none"
               }`}
+              onClick={e => e.stopPropagation()}
             >
               <div className="bg-white rounded-lg shadow-lg p-4 w-[300px]">
                 <div className="grid grid-cols-3 gap-1">
@@ -119,14 +145,14 @@ const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
           {/* Button and Dropdown Container 3 - INDUSTRY */}
           <div className="flex relative">
             <div
-              onClick={() => handleSectionClick("industry")}
+              onClick={e => handleSectionClick("industry", e)}
               className={`cursor-pointer bg-gradient-to-r w-[150px] min-w-[150px] h-12 flex items-center justify-center transition-all duration-300 transform ${
                 activeSection === "industry"
                   ? "scale-110 text-[#2DA771] font-semibold"
                   : "scale-105 text-black font-light"
               }`}
             >
-              <h3 className=" flex px-4 whitespace-nowrap text-sm w-full text-center">
+              <h3 className="flex px-4 whitespace-nowrap text-sm w-full text-center">
                 <div className="w-full flex items-center justify-between px-2">
                   Industry
                   <Image
@@ -139,13 +165,14 @@ const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
               </h3>
             </div>
 
-            {/* Industry Dropdown - Positioned to the right */}
+            {/* Industry Dropdown */}
             <div
               className={`absolute left-[160px] top-0 transform transition-all duration-300 ease-in-out origin-left ${
                 activeSection === "industry"
                   ? "opacity-100 scale-x-100 translate-x-0"
                   : "opacity-0 scale-x-0 -translate-x-1/4 pointer-events-none"
               }`}
+              onClick={e => e.stopPropagation()}
             >
               <div className="bg-white rounded-lg shadow-lg p-4 w-[300px]">
                 <div className="grid grid-cols-3 gap-1">
@@ -192,7 +219,7 @@ const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
           {/* Button and Dropdown Container 1 - TEAM */}
           <div className="flex relative">
             <div
-              onClick={() => handleSectionClick("team")}
+              onClick={e => handleSectionClick("team", e)}
               className={`cursor-pointer bg-gradient-to-r w-[150px] min-w-[150px] h-12 flex items-center justify-center transition-all duration-300 transform ${
                 activeSection === "team"
                   ? "scale-110 text-[#2DA771] font-semibold"
@@ -212,13 +239,14 @@ const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
               </h3>
             </div>
 
-            {/* Team Dropdown - Positioned to the right */}
+            {/* Team Dropdown */}
             <div
               className={`absolute left-[160px] top-0 transform transition-all duration-300 ease-in-out origin-left ${
                 activeSection === "team"
                   ? "opacity-100 scale-x-100 translate-x-0"
                   : "opacity-0 scale-x-0 -translate-x-1/4 pointer-events-none"
               }`}
+              onClick={e => e.stopPropagation()}
             >
               <div className="bg-white rounded-lg shadow-lg p-4 w-[300px]">
                 <div className="grid grid-cols-3 gap-1">
@@ -270,17 +298,6 @@ const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
     return (
       <div className="flex justify-between rounded-xl">
         <div className="flex flex-row w-[320px]">
-          {/* <div
-            className="border-b rounded-tl-[20px] rounded-bl-[20px] rounded-r-[40px] bg-gradient-to-r from-[#2DA771]/100  to-[#008F50]/100 text-white w-full max-w-[60px] flex items-center justify-center shadow-lg shadow-indigo-500/40 hover:shadow-sm hover:shadow-indigo-500/70 transition-all duration-300 transform scale-105"
-            style={{
-              backdropFilter: "blur(3px)", // Additional blur to enhance the fog effect
-            }}
-          >
-            {" "}
-            <h3 className="font-extrabold whitespace-nowrap text-sm -rotate-90">
-              FEATURES
-            </h3>
-          </div> */}
           <div className="grid grid-cols-3 m-4 border-gray-300">
             {list.slice(0, 9).map(
               (nav, index) =>
@@ -311,7 +328,7 @@ const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
   };
 
   return (
-    <div className="navLink">
+    <div className="navLink" ref={navbarRef}>
       <div className="mainLink">
         <Link
           href={item.path}
