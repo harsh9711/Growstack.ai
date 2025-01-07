@@ -10,12 +10,11 @@ import rehypeRaw from "rehype-raw";
 import instance from "@/config/axios.config";
 import LinkedInUI from "./LinkedInUI";
 import toast from "react-hot-toast";
-
+import ReactMardown from "react-markdown";
+import ReactMarkdown from "react-markdown";
+import remarkBreaks from "remark-breaks";
 interface DataItem {
-  variableExtras: {
-    needToSelect?: boolean;
-    fieldToSelect?: string[];
-  };
+  variableExtras: (variableValue: string, variableExtras: any) => React.ReactNode;
   _id: string;
   variableName: string;
   variableType: string;
@@ -25,14 +24,12 @@ interface DataItem {
 interface KeywordInsightsProps {
   runnerAgentId: string;
   setLoader: (loading: boolean) => void;
-  setProgressbar: React.Dispatch<React.SetStateAction<number>>;
-  setProgressbarPercentage: React.Dispatch<React.SetStateAction<number>>;
 }
-const KeywordInsights: React.FC<KeywordInsightsProps> = ({ runnerAgentId, setLoader,setProgressbarPercentage }) => {
+const KeywordInsights: React.FC<KeywordInsightsProps> = ({ runnerAgentId, setLoader }) => {
   const [data, setData] = useState<{ result: DataItem[] } | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [expanded, setExpanded] = useState<string[]>([]); // State to track expanded accordion
+  const [expanded, setExpanded] = useState<string | null>(null); // State to track expanded accordion
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const [progressbar, setProgressbar] = useState<number>(0)
   useEffect(() => {
@@ -51,7 +48,6 @@ const KeywordInsights: React.FC<KeywordInsightsProps> = ({ runnerAgentId, setLoa
 
         const fetchedData = response.data.data;
         setProgressbar(response.data.data.percentageCompletion)
-        setProgressbarPercentage(response.data.data.percentageCompletion)
 
         // Only update the state with new data
         if (fetchedData?.result) {
@@ -229,9 +225,7 @@ const KeywordInsights: React.FC<KeywordInsightsProps> = ({ runnerAgentId, setLoa
   };
 
   const toggleAccordion = (id: string) => {
-    setExpanded((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-    );
+    setExpanded(expanded === id ? null : id);
   };
 
   // if (loading) return <div>Loading...</div>;
@@ -275,41 +269,42 @@ const KeywordInsights: React.FC<KeywordInsightsProps> = ({ runnerAgentId, setLoa
                   <div className="p-4  overflow-y-auto mt-1 transition-all duration-300 ease-in-out bg-white border border-gray-300 rounded-lg shadow-md">
                     {item.variableType === "CSV" && item.variableValue && renderCSVTable(item.variableValue, item.variableExtras)}
 
-                        {(item.variableType === "STRING" || item.variableType === "LONG_TEXT") && item.variableValue && (
-                          <Markdown
-                            remarkPlugins={[remarkGfm]}
-                            rehypePlugins={[rehypeRaw]}
-                          >
-                            {item.variableValue}
-                          </Markdown>
-                        )}
-                        {item.variableType === "LINKEDIN_DATA" && item.variableValue && (
-                          <LinkedInUI profileData={item.variableValue} />
-                        )}
-                      </div>
-                      {item?.variableExtras?.needToSelect && (
-                        <div className="mt-4">
-                          <button
-                            type="button"
-                            onClick={handleSubmit}
-                            className="bg-blue-500 text-white py-2 px-4 rounded"
-                          >
-                            Submit
-                          </button>
-                        </div>
-                      )}
-                    </>
+                    {(item.variableType === "STRING" || item.variableType === "LONG_TEXT") && item.variableValue && (
+                      <>
+                        <ReactMarkdown
+                          className="prose"
+                          key={item.variableValue}
+                          remarkPlugins={[remarkGfm, remarkBreaks]}
+                          rehypePlugins={[rehypeRaw]}
+                        >
+                          {item.variableValue}
+                        </ReactMarkdown>
+                      </>
+                    )}
+                    {item.variableType === "LINKEDIN_DATA" && item.variableValue && (
+                      <LinkedInUI profileData={item.variableValue} />
+                    )}
+                  </div>
+                  {item?.variableExtras?.needToSelect && (
+                    <div className="mt-4">
+                      <button type="button"
+                        onClick={handleSubmit}
+                        className="bg-blue-500 text-white py-2 px-4 rounded"
+                      >
+                        Submit
+                      </button>
+                    </div>
                   )}
-                </div>
-              </div>
-            </div>
-          ))}
-           
-          {loading && <>{'Loading Remaning items '}<DotsLoader /></>}
-        </div>
-      </div>
-    </>
+                </>
 
+              )}
+            </div>
+          </div>
+        ))}
+        {/* <LinkedInUI profileData={profileData} /> */}
+        {loading && <>{'Loading Remaning items '}<DotsLoader /></>}
+      </div>
+    </div>
   );
 };
 
@@ -317,4 +312,3 @@ export default KeywordInsights;
 function setLoader(arg0: boolean) {
   throw new Error("Function not implemented.");
 }
-
