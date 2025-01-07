@@ -30,7 +30,7 @@ import { authenticateUser } from "@/utils/paraGonAuth";
 import { useSelector } from "react-redux";
 import { setSignInStatus } from "@/lib/features/workflow/nodeAuth.slice";
 import { paragon } from "@useparagon/connect";
-
+import Accordion from "../../../autoComplete";
 
 const ActionData = [
   {
@@ -86,6 +86,7 @@ const LinkedinNode = memo(
     const [dependencies, setDependencies] = useState<
       { key: string; nodeId: string }[]
     >([]);
+    const [previousValue, setPreviousValue] = useState<any>("");
 
     // ON OUTSIDE CLICK CLOSE ACTION MODAL
     const handleOutsideClick = (e: MouseEvent) => {
@@ -182,42 +183,61 @@ const LinkedinNode = memo(
 
     const handleInputChange = useCallback(
       (key: any, type: any, value: any, dependency: any) => {
-        console.log("key-->", key, "type-->", type, "value-->", value);
-        console.log("dependencies-->", dependency);
-
+        setPreviousValue(value)
         dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
 
         if (!isSpecialType(type)) return;
 
-        const singleDollarRegex = /^\$$/;
-        const validSequenceRegex = /.*\$$/;
-        const invalidPatternRegex = /\$(.*?)\$.*\S/;
+        // const singleDollarRegex = /^\$$/;
+        // const validSequenceRegex = /.*\$$/;
+        // const invalidPatternRegex = /\$(.*?)\$.*\S/;
 
-        if (singleDollarRegex.test(value)) {
-          const index = nodes.findIndex(nds => nds.id === id);
-          const variableName = getVariableName(nodes, index);
-          setVariableNames(
-            variableName.filter(
-              (name): name is VariableNameProps => name !== null
-            )
-          );
-        } else if (
-          validSequenceRegex.test(value) &&
-          !invalidPatternRegex.test(value)
-        ) {
-          const index = nodes.findIndex(nds => nds.id === id);
-          const variableName = getVariableName(nodes, index);
+        // if (singleDollarRegex.test(value)) {
+        //   const index = nodes.findIndex(nds => nds.id === id);
+        //   const variableName = getVariableName(nodes, index);
+        //   setVariableNames(
+        //     variableName.filter(
+        //       (name): name is VariableNameProps => name !== null
+        //     )
+        //   );
+        // } else if (
+        //   validSequenceRegex.test(value) &&
+        //   !invalidPatternRegex.test(value)
+        // ) {
+        //   const index = nodes.findIndex(nds => nds.id === id);
+        //   const variableName = getVariableName(nodes, index);
 
-          setVariableNames(
-            variableName.filter(
-              (name): name is VariableNameProps => name !== null
-            )
-          );
+        //   setVariableNames(
+        //     variableName.filter(
+        //       (name): name is VariableNameProps => name !== null
+        //     )
+        //   );
+        // } else {
+        //   // dispatch(removeNodeDependency({ nodeId: id, key }));
+        //   // setDependencies(pre => pre.filter(dep => dep.key !== key));
+        //   setVariableNames([]);
+        // }
+
+        if (value.includes('$')) {
+          // Get the last word being typed (after the last space)
+          const lastWord = value.split(' ').pop() || '';
+          
+          // Show variables only if the last word starts with $ and doesn't contain a closing }
+          if (lastWord.startsWith('$') && !lastWord.includes('}')) {
+            const index = nodes.findIndex(nds => nds.id === id);
+            const variableName = getVariableName(nodes, index);
+            setVariableNames(
+              variableName.filter(
+                (name): name is VariableNameProps => name !== null
+              )
+            );
+          } else {
+            setVariableNames([]);
+          }
         } else {
-          // dispatch(removeNodeDependency({ nodeId: id, key }));
-          // setDependencies(pre => pre.filter(dep => dep.key !== key));
           setVariableNames([]);
         }
+
         // if (dependency) {
         //   // dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
         //   setDependencies(prevDependencies => {
@@ -272,8 +292,8 @@ const LinkedinNode = memo(
         requiredParams.forEach(param => {
           const key = node?.data?.parameters
             ? Object.keys(node.data.parameters).find(
-              k => node.data.parameters?.[k] === param
-            )
+                k => node.data.parameters?.[k] === param
+              )
             : undefined;
           if (key && !param.value) {
             dispatch(
@@ -350,7 +370,7 @@ const LinkedinNode = memo(
           setIsSignedUp(true);
           handleSignIn("linkedIn", result);
         } else {
-          setIsSignedUp(false)
+          setIsSignedUp(false);
         }
       } catch (error) {
         console.log("---error---", error);
@@ -359,18 +379,24 @@ const LinkedinNode = memo(
       }
     };
 
-    const userDetails = async () => {
-      const result = await paragon.getUser();
-      if (result && 'integrations' in result && result.integrations?.linkedin?.enabled) {
+    const userDetails = () => {
+      const result = paragon.getUser();
+      if (
+        result &&
+        "integrations" in result &&
+        result.integrations?.linkedin?.enabled
+      ) {
         setParagonResult(true);
       } else {
-        setParagonResult(false)
+        setParagonResult(false);
       }
-      console.log("user function called")
-    }
+    };
     useEffect(() => {
-      userDetails();
-    }, [isLinkedInSignIn, paragonResult, setIsSignedUp, handleLinkedinSignIn]);
+      setTimeout(()=>
+      {
+        userDetails();
+      }, 4000)
+    }, [isLinkedInSignIn, paragonResult,setParagonResult, isSignedUp, setIsSignedUp, handleLinkedinSignIn]);
 
     const handleActiveAction = (action: string) => {
       setActiveAction(action);
@@ -505,53 +531,55 @@ const LinkedinNode = memo(
 
           {isDropdownOpen && (
             <div className="node-inner-wrapper bg-white p-4 border-2 border-[#2DA771] rounded-[20px] w-[400px] absolute left-1/2 transform -translate-x-1/2">
-              <div className="heading-button-box rounded-[16px] mb-2 p-4 bg-[#FFE6FF] flex justify-between items-center overflow-hidden">
-                <div className="short-text-heading">
-                  <img
-                    src="/assets/node_icon/linkedin-single.svg"
-                    alt="node icon"
-                    className="w-[20px] mb-2"
-                  />
+              
+                <div className="heading-button-box rounded-[16px] mb-2 p-4 bg-[#FFE6FF] flex justify-between items-center overflow-hidden">
+                  <div className="short-text-heading">
+                    <img
+                      src="/assets/node_icon/linkedin-single.svg"
+                      alt="node icon"
+                      className="w-[20px] mb-2"
+                    />
 
-                  <h4 className="text-sm font-medium text-[#14171B]">
-                    Linkedin
-                  </h4>
+                    <h4 className="text-sm font-medium text-[#14171B]">
+                      Linkedin
+                    </h4>
+                  </div>
+
+                  {paragonResult && isSignedUp ? (
+                    <div className="user-connected-info relative">
+                      <span
+                        className="connected-text absolute top-[-17px] right-[-20px] bg-[#2DA771] cursor-pointer p-2 rounded-l-[20px]  w-[100px] inline-block  text-[12px] font-medium text-white"
+                        onClick={() => handleLinkedinSignIn(true)}
+                      >
+                        Connected
+                      </span>
+
+                      <div className="user-mail relative mt-1 translate-y-[20px]">
+                        <div className="online-status-div absolute w-[6px] h-[6px] bg-[#2DA771] rounded-full left-[-14px] top-[5px]"></div>
+                        <p className="text-[11px] text-[#5A5963]">
+                          {connectedLinkedin?.providerId || "NO EMAIL"}
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="signin-button-box">
+                      <button
+                        onClick={() => handleLinkedinSignIn(false)}
+                        className="p-4 text-white text-[16px] bg-[#2DA771] rounded-[20px] w-[100px]"
+                      >
+                        {connectionLoading ? (
+                          <div className="flex justify-center items-center">
+                            <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
+                          </div>
+                        ) : (
+                          "Sign In"
+                        )}
+                      </button>
+                    </div>
+                  )}
                 </div>
 
-                {paragonResult && isSignedUp ? (
-                  <div className="user-connected-info relative">
-                    <span className="connected-text absolute top-[-17px] right-[-20px] bg-[#2DA771] cursor-pointer p-2 rounded-l-[20px]  w-[100px] inline-block  text-[12px] font-medium text-white"
-                      onClick={() => handleLinkedinSignIn(true)}
-                    >
-                      Connected
-                    </span>
-
-                    <div className="user-mail relative mt-1 translate-y-[20px]">
-                      <div className="online-status-div absolute w-[6px] h-[6px] bg-[#2DA771] rounded-full left-[-14px] top-[5px]"></div>
-                      <p className="text-[11px] text-[#5A5963]">
-                        {connectedLinkedin?.providerId || "NO EMAIL"}
-                      </p>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="signin-button-box">
-                    <button
-                      onClick={() => handleLinkedinSignIn(false)}
-                      className="p-4 text-white text-[16px] bg-[#2DA771] rounded-[20px] w-[100px]"
-                    >
-                      {connectionLoading ? (
-                        <div className="flex justify-center items-center">
-                          <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
-                        </div>
-                      ) : (
-                        "Sign In"
-                      )}
-                    </button>
-                  </div>
-                )}
-              </div>
-
-              {/* <div className="mb-2 search-box flex items-center p-2 rounded-lg border border-[#EBEBEB]  bg-[#F7F7F7]">
+                {/* <div className="mb-2 search-box flex items-center p-2 rounded-lg border border-[#EBEBEB]  bg-[#F7F7F7]">
                 <Image
                   src="/images/workflow/search-normal.svg"
                   alt="Search"
@@ -566,108 +594,122 @@ const LinkedinNode = memo(
                 />
               </div> */}
 
-              <div
-                className={`node-content-wrapper relative ${!isSignedUp || !paragonResult
-                    ? "before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-white before:opacity-[45%]"
-                    : ""
+                <div
+                  className={`node-content-wrapper relative ${
+                    !isSignedUp || !paragonResult
+                      ? "before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-white before:opacity-[45%]"
+                      : ""
                   }`}
-              >
-                <div className="action-box">
-                  <h3 className="text-[16px] font-medium text-[#14171B] mb-4">
-                    Actions
-                  </h3>
+                >
+                  <div className="action-box">
+                    <h3 className="text-[16px] font-medium text-[#14171B] mb-4">
+                      Actions
+                    </h3>
 
-                  {!activeAction ? (
-                    <div className="action-data-box">
-                      {ActionData.map((value, index) => {
-                        return (
-                          <div
-                            className="action-info flex items-center gap-4 mb-5 cursor-pointer"
-                            key={index}
-                            onClick={() => handleActiveAction(value.nodeType)}
-                          >
-                            <div className="email-icon w-[50px] h-[50px] bg-[#DDDDDD] flex items-center justify-center rounded-full">
-                              <img
-                                src="/assets/node_icon/linkedin-single.svg"
-                                alt="email icon"
-                                className="w-[25px]"
-                              />
-                            </div>
-
-                            <div className="content-box w-[80%]">
-                              <h3 className="text-[#14171B] text-[14px] ">
-                                {value.title}
-                              </h3>
-                              <p className="text-[12px] text-[#5A5963]">
-                                {value.info}
-                              </p>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  ) : (
-                    <>
-                      {node?.data?.parameters &&
-                        Object.entries(node.data.parameters)
-                          .filter(
-                            ([key, param]: any) =>
-                              param.required || showAdvancedOptions
-                          )
-                          .map(([key, param]) => {
-                            return (
-                              <DynamicInput
-                                key={key}
-                                inputKey={key}
-                                param={param}
-                                handleInputChange={
-                                  isEdit ? handleInputChange : () => { }
-                                }
-                                variableNames={variableNames}
-                                focusedInputKey={focusedInputKey}
-                                setFocusedInputKey={setFocusedInputKey}
-                              />
-                            );
-                          })}
-                      <div className="advance-option-button-box mb-3">
-                        <button
-                          onClick={handleToggleAdvancedOptions}
-                          className="w-full text-center bg-transparent border-0 underline text-[12px] text-[#2DA771]"
-                        >
-                          {showAdvancedOptions
-                            ? "Hide Advanced Options"
-                            : "Show Advanced Options"}
-                        </button>
-                      </div>
-
-                      {isEdit ? (
-                        <div className="submit-button">
-                          <button
-                            onClick={handleNextClick}
-                            className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
-                          >
-                            {isLoading ? (
-                              <div className="flex justify-center items-center">
-                                <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
+                    {!activeAction ? (
+                      <div className="action-data-box">
+                        {ActionData.map((value, index) => {
+                          return (
+                            <div
+                              className="action-info flex items-center gap-4 mb-5 cursor-pointer"
+                              key={index}
+                              onClick={() => handleActiveAction(value.nodeType)}
+                            >
+                              <div className="email-icon w-[50px] h-[50px] bg-[#DDDDDD] flex items-center justify-center rounded-full">
+                                <img
+                                  src="/assets/node_icon/linkedin-single.svg"
+                                  alt="email icon"
+                                  className="w-[25px]"
+                                />
                               </div>
-                            ) : (
-                              "Save"
-                            )}
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="submit-button">
+
+                              <div className="content-box w-[80%]">
+                                <h3 className="text-[#14171B] text-[14px] ">
+                                  {value.title}
+                                </h3>
+                                <p className="text-[12px] text-[#5A5963]">
+                                  {value.info}
+                                </p>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <>
+                        {node?.data?.parameters &&
+                          Object.entries(node.data.parameters)
+                            .filter(
+                              ([key, param]: any) =>
+                                param.required || showAdvancedOptions
+                            )
+                            .map(([key, param]) => {
+                              return (
+                                <DynamicInput
+                                  key={key}
+                                  inputKey={key}
+                                  param={param}
+                                  handleInputChange={
+                                    isEdit ? handleInputChange : () => {}
+                                  }
+                                  variableNames={variableNames}
+                                  focusedInputKey={focusedInputKey}
+                                  setFocusedInputKey={setFocusedInputKey}
+                                />
+                              );
+                            })}
+                        <div className="advance-option-button-box mb-3">
                           <button
-                            onClick={handleEditClick}
-                            className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
+                            onClick={handleToggleAdvancedOptions}
+                            className="w-full text-center bg-transparent border-0 underline text-[12px] text-[#2DA771]"
                           >
-                            Edit
+                            {showAdvancedOptions
+                              ? "Hide Advanced Options"
+                              : "Show Advanced Options"}
                           </button>
                         </div>
-                      )}
-                    </>
-                  )}
+
+                        {isEdit ? (
+                          <div className="submit-button">
+                            <button
+                              onClick={handleNextClick}
+                              className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
+                            >
+                              {isLoading ? (
+                                <div className="flex justify-center items-center">
+                                  <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
+                                </div>
+                              ) : (
+                                "Save"
+                              )}
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="submit-button">
+                            <button
+                              onClick={handleEditClick}
+                              className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
+                            >
+                              Edit
+                            </button>
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </div>
                 </div>
+                <div className="absolute top-0 left-[155%]">
+                <Accordion
+                  onClick={(e: any) => {
+                    handleInputChange(
+                      focusedInputKey,
+                      "textarea",
+                      `${previousValue}${e ? "\${" + e + "}" : ""}`,
+                      undefined
+                    );
+                  }}
+                  nodeId={node?.id ?? ""}
+                />
               </div>
             </div>
           )}

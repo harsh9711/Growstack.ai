@@ -18,6 +18,7 @@ import { VariableNameProps, WorkflowNodeState } from "@/types/workflows";
 import { getVariableName, isSpecialType } from "@/utils/helper";
 import { useSnackbar } from "../snackbar/SnackbarContext";
 import DeleteConfirmationModal from "../modals/deletemodal/DeleteModal";
+import Accordion from "../../autoComplete";
 
 const LlmNodes = memo(
   ({
@@ -45,44 +46,13 @@ const LlmNodes = memo(
     const [dependencies, setDependencies] = useState<
       { key: string; nodeId: string }[]
     >([]);
+    const [previousValue, setPreviousValue] = useState<any>("");
 
     const [focusedInputKey, setFocusedInputKey] = useState<string | null>(null);
     const [isActionModalShow, setIsActionModalShow] = useState(false);
+    const [responseError, setResponseError] = useState("");
+
     const dropdownRef = useRef<HTMLDivElement | null>(null);
-
-    // useEffect(() => {
-    //   setDefaultValue();
-
-    //   return () => { };
-    // }, [node]);
-
-    // const setDefaultValue = () => {
-    //   if (!node) return;
-    //   if (node.data.label === "Generate Image") {
-    //     const { model, numberOfImages, quality, prompt, style, size } =
-    //       node.data.parameters;
-    //     model.value = "dall-e-3";
-    //     numberOfImages.value = 1;
-    //     numberOfImages.disabled = true;
-    //     quality.value = "hd";
-    //     prompt.maxLength = 4000;
-    //     style.value = "vivid";
-    //     size.options = [
-    //       {
-    //         label: "1024x1024",
-    //         value: "1024x1024",
-    //       },
-    //       {
-    //         label: "1792x1024",
-    //         value: "1792x1024",
-    //       },
-    //       {
-    //         label: "1024x1792",
-    //         value: "1024x1792",
-    //       },
-    //     ];
-    //   }
-    // };
 
     const handleToggleAdvancedOptions = () => {
       setShowAdvancedOptions(!showAdvancedOptions);
@@ -92,60 +62,6 @@ const LlmNodes = memo(
       setIsDropdownOpen(!isDropdownOpen);
     };
 
-    // const handleInputChange = useCallback(
-    //   (key: any, type: any, value: any, dependency?: string) => {
-    //     if (!isEdit) {
-    //       setShake(true);
-    //       setTimeout(() => setShake(false), 500);
-    //       return;
-    //     }
-
-    //     console.log("key-->", key, "type-->", type, "value-->", value);
-    //     console.log("dependencies-->", dependency);
-
-    //     dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
-
-    //     if (!isSpecialType(type)) return;
-
-    //     if (value && value.includes("$")) {
-    //       const index = nodes.findIndex(nds => nds.id === id);
-    //       const variableName = getVariableName(nodes, index);
-    //       if (dependency) {
-    //         dispatch(
-    //           updateNodeDependency({
-    //             nodeId: id,
-    //             data: { key, nodeId: dependency },
-    //           })
-    //         );
-    //         // setDependencies(prevDependencies => {
-    //         //   const newDependency = { key, nodeId: dependency };
-    //         //   const uniqueDependencies = new Set([
-    //         //     ...prevDependencies,
-    //         //     newDependency,
-    //         //   ]);
-    //         //   return Array.from(uniqueDependencies);
-    //         // });
-    //       }
-    //       const regex = /\$(?!\s*$).+/;
-    //       if (regex.test(value)) {
-    //         console.log("value-->", value);
-    //         setVariableNames([]);
-    //       } else {
-    //         setVariableNames(
-    //           variableName.filter(
-    //             (name): name is VariableNameProps => name !== null
-    //           )
-    //         );
-    //       }
-    //     } else {
-    //       dispatch(removeNodeDependency({ nodeId: id, key }));
-    //       // setDependencies(pre => pre.filter(dep => dep.key !== key));
-    //       setVariableNames([]);
-    //     }
-    //   },
-    //   [dispatch, id, nodes, dependencies, variableNames, isEdit, shake]
-    // );
-
     const handleInputChange = useCallback(
       (key: any, type: any, value: any, dependency: any) => {
         if (!isEdit) {
@@ -154,37 +70,56 @@ const LlmNodes = memo(
           return;
         }
 
-        console.log("key-->", key, "type-->", type, "value-->", value);
-        console.log("dependencies-->", dependency);
-
+        setPreviousValue(value)
+        
         dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
 
         if (!isSpecialType(type)) return;
 
-        const singleDollarRegex = /^\$$/;
-        const validSequenceRegex = /.*\$$/;
-        const invalidPatternRegex = /\$(.*?)\$.*\S/;
+        // const singleDollarRegex = /^\$$/;
+        // const validSequenceRegex = /.*\$$/;
+        // const invalidPatternRegex = /\$(.*?)\$.*\S/;
 
-        if (singleDollarRegex.test(value)) {
-          const index = nodes.findIndex(nds => nds.id === id);
-          const variableName = getVariableName(nodes, index);
-          setVariableNames(
-            variableName.filter(
-              (name): name is VariableNameProps => name !== null
-            )
-          );
-        } else if (
-          validSequenceRegex.test(value) &&
-          !invalidPatternRegex.test(value)
-        ) {
-          const index = nodes.findIndex(nds => nds.id === id);
-          const variableName = getVariableName(nodes, index);
+        // if (singleDollarRegex.test(value)) {
+        //   const index = nodes.findIndex(nds => nds.id === id);
+        //   const variableName = getVariableName(nodes, index);
+        //   setVariableNames(
+        //     variableName.filter(
+        //       (name): name is VariableNameProps => name !== null
+        //     )
+        //   );
+        // } else if (
+        //   validSequenceRegex.test(value) &&
+        //   !invalidPatternRegex.test(value)
+        // ) {
+        //   const index = nodes.findIndex(nds => nds.id === id);
+        //   const variableName = getVariableName(nodes, index);
 
-          setVariableNames(
-            variableName.filter(
-              (name): name is VariableNameProps => name !== null
-            )
-          );
+        //   setVariableNames(
+        //     variableName.filter(
+        //       (name): name is VariableNameProps => name !== null
+        //     )
+        //   );
+        // } else {
+        //   setVariableNames([]);
+        // }
+
+        if (value.includes('$')) {
+          // Get the last word being typed (after the last space)
+          const lastWord = value.split(' ').pop() || '';
+          
+          // Show variables only if the last word starts with $ and doesn't contain a closing }
+          if (lastWord.startsWith('$') && !lastWord.includes('}')) {
+            const index = nodes.findIndex(nds => nds.id === id);
+            const variableName = getVariableName(nodes, index);
+            setVariableNames(
+              variableName.filter(
+                (name): name is VariableNameProps => name !== null
+              )
+            );
+          } else {
+            setVariableNames([]);
+          }
         } else {
           setVariableNames([]);
         }
@@ -256,6 +191,13 @@ const LlmNodes = memo(
         param => param?.value
       );
 
+      if(node?.data?.label === "Anthropic" && node?.data?.parameters?.responseLength?.value > 4096){
+        setResponseError("Max allowed response length is 4096")
+        return;
+      }else{
+        setResponseError("");
+      }
+
       if (allRequiredParamsFilled) {
         const updatedValue = extractParameterValues(node.data.parameters);
         console.log("updatedValue-->", updatedValue);
@@ -298,8 +240,8 @@ const LlmNodes = memo(
         requiredParams.forEach(param => {
           const key = node?.data?.parameters
             ? Object.keys(node.data.parameters).find(
-              k => node.data.parameters?.[k] === param
-            )
+                k => node.data.parameters?.[k] === param
+              )
             : undefined;
           if (key && !param.value) {
             dispatch(
@@ -323,8 +265,7 @@ const LlmNodes = memo(
       setNodes(nds => nds.filter(nds => nds.id !== id));
       setEdges((edges: any[]) => {
         const updatedEdges = edges.filter(
-          (edge: any) =>
-            edge?.source !== id && edge?.target !== id
+          (edge: any) => edge?.source !== id && edge?.target !== id
         );
         return updatedEdges;
       });
@@ -553,6 +494,12 @@ const LlmNodes = memo(
                   </div>
                 )}
 
+{
+                  responseError && (
+                    <div className="text-red-500">{responseError}</div>
+                  )
+                }
+
                 {isEdit ? (
                   <div className="submit-button">
                     <button
@@ -579,6 +526,20 @@ const LlmNodes = memo(
                     </button>
                   </div>
                 )}
+              </div>
+
+              <div className="absolute top-0 left-[155%]">
+                <Accordion
+                  onClick={(e: any) => {
+                    handleInputChange(
+                      focusedInputKey,
+                      "textarea",
+                      `${previousValue}${e ? "\${" + e + "}" : ""}`,
+                      undefined
+                    );
+                  }}
+                  nodeId={node?.id ?? ""}
+                />
               </div>
             </div>
           )}

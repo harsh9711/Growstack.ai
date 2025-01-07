@@ -455,7 +455,6 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
         return matchingNode ? { ...n, position: matchingNode.position } : n;
       });
 
-
       const bodyPayload = {
         name: workFlowData?.name,
         description: workFlowData?.description || "",
@@ -468,7 +467,6 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
           data: bodyPayload,
         })
       );
-      
     },
     [nodes, edges]
   );
@@ -486,10 +484,9 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
         }}
         timeline={isFromTimeline}
         setIsFromTimeline={setFromTimeline}
-
       />
       {activeTab === 0 && (
-        <div className="reactflow-wrapper h-[calc(100vh-140px)] w-full">
+        <div className="reactflow-wrapper h-[calc(100vh-140px)] w-full relative ">
           <ReactFlow
             nodes={nodes}
             nodeTypes={nodeTypes}
@@ -516,6 +513,7 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
             nodesConnectable={isLockCanvas}
             elementsSelectable={isLockCanvas}
             defaultViewport={{ zoom: 0.9, x: 350, y: 100 }}
+            deleteKeyCode={null}
           >
             <Background
               variant={BackgroundVariant.Lines}

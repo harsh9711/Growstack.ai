@@ -26,6 +26,7 @@ import { authenticateUser } from "@/utils/paraGonAuth";
 import { setSignInStatus } from "@/lib/features/workflow/nodeAuth.slice";
 import { useSelector } from "react-redux";
 import { paragon } from "@useparagon/connect";
+import Accordion from "../../../autoComplete";
 
 // const TriggerData = [
 //   {
@@ -108,6 +109,7 @@ const GmailNode = memo(
     const [dependencies, setDependencies] = useState<
       { key: string; nodeId: string }[]
     >([]);
+    const [previousValue, setPreviousValue] = useState<any>("");
 
     // ON OUTSIDE CLICK CLOSE ACTION MODAL
     const handleOutsideClick = (e: MouseEvent) => {
@@ -198,40 +200,57 @@ const GmailNode = memo(
 
     const handleInputChange = useCallback(
       (key: any, type: any, value: any, dependency: any) => {
-        console.log("key-->", key, "type-->", type, "value-->", value);
-        console.log("dependencies-->", dependency);
-
+        setPreviousValue(value)
         dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
 
         if (!isSpecialType(type)) return;
 
-        const singleDollarRegex = /^\$$/;
-        const validSequenceRegex = /.*\$$/;
-        const invalidPatternRegex = /\$(.*?)\$.*\S/;
+        // const singleDollarRegex = /^\$$/;
+        // const validSequenceRegex = /.*\$$/;
+        // const invalidPatternRegex = /\$(.*?)\$.*\S/;
 
-        if (singleDollarRegex.test(value)) {
-          const index = nodes.findIndex(nds => nds.id === id);
-          const variableName = getVariableName(nodes, index);
-          setVariableNames(
-            variableName.filter(
-              (name): name is VariableNameProps => name !== null
-            )
-          );
-        } else if (
-          validSequenceRegex.test(value) &&
-          !invalidPatternRegex.test(value)
-        ) {
-          const index = nodes.findIndex(nds => nds.id === id);
-          const variableName = getVariableName(nodes, index);
+        // if (singleDollarRegex.test(value)) {
+        //   const index = nodes.findIndex(nds => nds.id === id);
+        //   const variableName = getVariableName(nodes, index);
+        //   setVariableNames(
+        //     variableName.filter(
+        //       (name): name is VariableNameProps => name !== null
+        //     )
+        //   );
+        // } else if (
+        //   validSequenceRegex.test(value) &&
+        //   !invalidPatternRegex.test(value)
+        // ) {
+        //   const index = nodes.findIndex(nds => nds.id === id);
+        //   const variableName = getVariableName(nodes, index);
 
-          setVariableNames(
-            variableName.filter(
-              (name): name is VariableNameProps => name !== null
-            )
-          );
+        //   setVariableNames(
+        //     variableName.filter(
+        //       (name): name is VariableNameProps => name !== null
+        //     )
+        //   );
+        // } else {
+        //   // dispatch(removeNodeDependency({ nodeId: id, key }));
+        //   // setDependencies(pre => pre.filter(dep => dep.key !== key));
+        //   setVariableNames([]);
+        // }
+        if (value.includes('$')) {
+          // Get the last word being typed (after the last space)
+          const lastWord = value.split(' ').pop() || '';
+          
+          // Show variables only if the last word starts with $ and doesn't contain a closing }
+          if (lastWord.startsWith('$') && !lastWord.includes('}')) {
+            const index = nodes.findIndex(nds => nds.id === id);
+            const variableName = getVariableName(nodes, index);
+            setVariableNames(
+              variableName.filter(
+                (name): name is VariableNameProps => name !== null
+              )
+            );
+          } else {
+            setVariableNames([]);
+          }
         } else {
-          // dispatch(removeNodeDependency({ nodeId: id, key }));
-          // setDependencies(pre => pre.filter(dep => dep.key !== key));
           setVariableNames([]);
         }
         // if (dependency) {
@@ -366,9 +385,9 @@ const GmailNode = memo(
         console.log("result", result)
 
         if (result && result.credentialStatus === "VALID" ) {
-          handleSignIn("gmail", result);
           setConnectedEmail(result);
           setIsSignedUp(true);
+          handleSignIn("gmail", result);
           // localStorage.setItem('gmailSignedIn', 'true'); 
         }else{
           setIsSignedUp(false)
@@ -391,8 +410,8 @@ const GmailNode = memo(
       setIsEdit(!isEdit);
     };
 
-    const userDetails = async () => {
-      const result = await paragon.getUser();
+    const userDetails = () => {
+      const result = paragon.getUser();
       if(result && 'integrations' in result && result.integrations?.gmail?.enabled){
         setParagonResult(true); 
       }else{
@@ -400,9 +419,10 @@ const GmailNode = memo(
       }
     }
     useEffect(() => {
-      userDetails();
-  }, [isGmailSignedIn, paragonResult, setIsSignedUp, handleGmailSignIn]);
-
+      setTimeout(() =>{
+        userDetails();
+      }, 4000)
+  }, [isGmailSignedIn, paragonResult, setParagonResult, isSignedUp, setIsSignedUp, handleGmailSignIn]);
     useEffect(() => {
       if (isGmailSignedIn?.status) {
         setConnectedEmail(isGmailSignedIn?.data);
@@ -540,7 +560,7 @@ const GmailNode = memo(
 
                 {paragonResult && isSignedUp ? (
                   <div className="user-connected-info relative">
-                    <span className="connected-text absolute top-[-17px] right-[-20px] bg-[#2DA771] p-2 rounded-l-[20px]  w-[100px] inline-block  text-[12px] font-medium text-white"
+                    <span className="connected-text absolute top-[-17px] right-[-20px] bg-[#2DA771] p-2 rounded-l-[20px]  w-[100px] inline-block  text-[12px] font-medium text-white cursor-pointer"
                       onClick={() => handleGmailSignIn(true)}
                     >
                       Connected
@@ -725,6 +745,20 @@ const GmailNode = memo(
                   )}
                 </div>
               </div>
+              {paragonResult && isSignedUp &&
+              <div className="absolute top-0 left-[155%]">
+                <Accordion
+                  onClick={(e: any) => {
+                    handleInputChange(
+                      focusedInputKey,
+                      "textarea",
+                      `${previousValue}${e ? "\${" + e + "}" : ""}`,
+                      undefined
+                    );
+                  }}
+                  nodeId={node?.id ?? ""}
+                />
+              </div>}
             </div>
           )}
         </section>

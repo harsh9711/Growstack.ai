@@ -1,4 +1,7 @@
-import instance, { automation, CustomAxiosInstance } from "@/config/axios.config";
+import instance, {
+  automation,
+  CustomAxiosInstance,
+} from "@/config/axios.config";
 import {
   NodeDataState,
   NodeState,
@@ -33,6 +36,16 @@ export const updateNodeById = createAsyncThunk(
       //   `node/${id}`,
       //   data
       // );
+      console.log("key, data", data);
+      if (data.parameters && typeof data.parameters === "object") {
+        for (const key in data.parameters) {
+          const paramValue = data.parameters[key];
+          console.log("key, paramValue", key, paramValue);
+          if (typeof paramValue === "string" && paramValue === "") {
+            delete data.parameters[key];
+          }
+        }
+      }
 
       const result = await instance.patch(`${automation}/node/${id}`, data);
       return result.data;
