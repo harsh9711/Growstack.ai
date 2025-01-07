@@ -148,7 +148,7 @@ const KeywordInsights: React.FC<KeywordInsightsProps> = ({ runnerAgentId, setLoa
     return (
       <div className="h-[400px] overflow-visible">
         <div className="max-h-[500px] snap-both overflow-visible">
-          <table className=" w-full border-collapse border border-gray-300 mt-4">
+          <table className=" w-full border-collapse border border-gray-300 mt-4 rounded-lg">
             <thead className="sticky top-0 bg-gray-100 ">
               <tr>
                 {extraItems?.needToSelect && (
@@ -238,29 +238,42 @@ const KeywordInsights: React.FC<KeywordInsightsProps> = ({ runnerAgentId, setLoa
   if (error) return <div className="text-red-500">{error}</div>;
 
   return (
-    <>
-      <div className="bg-white shadow-md rounded-lg p-6">
-        <div className="">
-          {data?.result?.map((item: any) => (
-            <div key={item._id} className="mb-6">
-              <h1 className="font-medium text-gray-900">
-                <b>{item.variableName}</b>
-              </h1>
-              <div>
-                <div key={item._id}>
-                  <button
-                    type="button"
-                    onClick={() => toggleAccordion(item._id)}
-                    className="w-full text-left bg-gray-100 p-2 mt-2 border-b rounded-lg p-2 flex justify-between items-center mb-2"
-                  >
-                 
-                    <span>{expanded.includes(item._id) ? "Hide" : "Show"} Details</span>
-                    {expanded.includes(item._id) ? <FaChevronUp /> : <FaChevronDown />}
-                  </button>
-                  {expanded.includes(item._id) && (
-                    <>
-                      <div className="p-4 overflow-y-auto mt-1 transition-all duration-300 ease-in-out bg-white border border-gray-300 rounded-lg shadow-md">
-                        {item.variableType === "CSV" && item.variableValue && renderCSVTable(item.variableValue, item.variableExtras)}
+    <div className="bg-white shadow-md rounded-lg p-6">
+      <div className="flex justify-between items-center border-b pb-4">
+        <h1 className="text-xl font-semibold text-nowrap">Output :</h1>
+        <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700 ml-5">
+          <div
+            className="bg-green-600 text-xs font-medium text-blue-100 text-center p-1.5 leading-none rounded-full"
+            style={{ width: `${progressbar}%` }}
+          >
+          </div>
+        </div>
+
+        <div className="text-nowrap ml-2">
+          <strong>{progressbar}% Completed</strong>
+        </div>
+
+
+      </div>
+      <div className="mt-4">
+        {data?.result?.map((item: any) => (
+          <div key={item._id} className="mb-6">
+            <h1 className="font-medium text-gray-900">
+              <b>{item.variableName}</b>
+            </h1>
+            <div>
+              <button
+                type="button"
+                onClick={() => toggleAccordion(item._id)}
+                className="w-full text-left bg-gray-200 p-2 mt-2 border-b flex justify-between items-center mb-2 rounded-lg"
+              >
+                <span>{expanded === item._id ? "Hide" : "Show"} Details</span>
+                {expanded === item._id ? <FaChevronUp /> : <FaChevronDown />}
+              </button>
+              {expanded === item._id && (
+                <>
+                  <div className="p-4  overflow-y-auto mt-1 transition-all duration-300 ease-in-out bg-white border border-gray-300 rounded-lg shadow-md">
+                    {item.variableType === "CSV" && item.variableValue && renderCSVTable(item.variableValue, item.variableExtras)}
 
                         {(item.variableType === "STRING" || item.variableType === "LONG_TEXT") && item.variableValue && (
                           <Markdown
