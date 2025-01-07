@@ -3,6 +3,8 @@ import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import ReactMarkdown from "react-markdown";
+import remarkBreaks from "remark-breaks";
 
 interface profileData {
   timestamp: ReactNode;
@@ -139,30 +141,29 @@ const ProfileComponent: React.FC<{ profileData: any }> = ({ profileData }) => {
         </div>
 
         {/* Accordion Sections */}
-        {profileData[0].about && (
-          <div className="border-t border-gray-200">
-            <button type="button"
-              onClick={() => toggleAccordion("summary")}
-              className="w-full text-left py-4 px-6 bg-gray-100 hover:bg-gray-200 flex justify-between items-center"
-            >
-              <span className="font-medium">Summary</span>
-              <span>{expandedSection === "summary" ? "−" : "+"}</span>
-            </button>
-            {expandedSection === "summary" && (
-              <div className="px-6 py-4 bg-white">
-                <p className="text-gray-600 mb-2">
-                  <Markdown
-                    remarkPlugins={[remarkGfm]}
-                    rehypePlugins={[rehypeRaw]}
-                  >
-                    {profileData[0].about}
-                  </Markdown>
-                </p>
-              </div>
-            )}
-          </div>
-        )}
-
+        <div className="border-t border-gray-200">
+          <button type="button"
+            onClick={() => toggleAccordion("summary")}
+            className="w-full text-left py-4 px-6 bg-gray-100 hover:bg-gray-200 flex justify-between items-center"
+          >
+            <span className="font-medium">Summary</span>
+            <span>{expandedSection === "summary" ? "−" : "+"}</span>
+          </button>
+          {expandedSection === "summary" && (
+            <div className="px-6 py-4 bg-white">
+              <p className="text-gray-600 mb-2">
+                <ReactMarkdown
+                  className="prose"
+                  key={profileData[0].about}
+                  remarkPlugins={[remarkGfm, remarkBreaks]}
+                  rehypePlugins={[rehypeRaw]}
+                >
+                  {profileData[0].about}
+                </ReactMarkdown>
+              </p>
+            </div>
+          )}
+        </div>
 
         {/* Experience Section */}
         {profileData[0].experience &&
@@ -211,15 +212,14 @@ const ProfileComponent: React.FC<{ profileData: any }> = ({ profileData }) => {
                                   <p className="text-gray-500 text-sm">{position.meta}</p>
                                   <p className="text-gray-500 text-md mt-2">
                                     {typeof position.description === 'string' && (
-                                      <Markdown
-                                        remarkPlugins={[remarkGfm]}
+                                      <ReactMarkdown
+                                        className="prose"
+                                        key={position.description}
+                                        remarkPlugins={[remarkGfm, remarkBreaks]}
                                         rehypePlugins={[rehypeRaw]}
-                                        components={{
-                                          p: ({ children }) => <p className="text-gray-500 text-sm">{children}</p>,
-                                        }}
                                       >
                                         {position.description}
-                                      </Markdown>
+                                      </ReactMarkdown>
                                     )}
                                   </p>
                                 </div>
@@ -229,15 +229,15 @@ const ProfileComponent: React.FC<{ profileData: any }> = ({ profileData }) => {
 
                         {typeof exp.description_html === 'string' && (
                           <div className="mt-4 pl-10">
-                            <Markdown
-                              remarkPlugins={[remarkGfm]}
+
+                            <ReactMarkdown
+                              className="prose"
+                              key={exp.description_html}
+                              remarkPlugins={[remarkGfm, remarkBreaks]}
                               rehypePlugins={[rehypeRaw]}
-                              components={{
-                                p: ({ children }) => <p className="text-gray-500 text-sm">{children}</p>,
-                              }}
                             >
                               {exp.description_html}
-                            </Markdown>
+                            </ReactMarkdown>
                           </div>
                         )}
                       </div>
@@ -293,12 +293,14 @@ const ProfileComponent: React.FC<{ profileData: any }> = ({ profileData }) => {
               <div className="px-6 py-4 bg-white">
                 {profileData[0].recommendations && profileData[0].recommendations.map((rec: string | null | undefined, index: React.Key | null | undefined) => (
                   <div key={index} className="mb-4">
-                    <Markdown
-                      remarkPlugins={[remarkGfm]}
+                    <ReactMarkdown
+                      className="prose"
+                      key={rec}
+                      remarkPlugins={[remarkGfm, remarkBreaks]}
                       rehypePlugins={[rehypeRaw]}
                     >
                       {rec}
-                    </Markdown>
+                    </ReactMarkdown>
                   </div>
                 ))}
               </div>
@@ -349,12 +351,14 @@ const ProfileComponent: React.FC<{ profileData: any }> = ({ profileData }) => {
                       {/* Education Description */}
                       {edu.description_html && (
                         <div className="mt-4 pl-10">
-                          <Markdown
-                            remarkPlugins={[remarkGfm]}
+                          <ReactMarkdown
+                            className="prose"
+                            key={edu.description_html}
+                            remarkPlugins={[remarkGfm, remarkBreaks]}
                             rehypePlugins={[rehypeRaw]}
                           >
                             {edu.description_html}
-                          </Markdown>
+                          </ReactMarkdown>
                         </div>
                       )}
                     </div>
