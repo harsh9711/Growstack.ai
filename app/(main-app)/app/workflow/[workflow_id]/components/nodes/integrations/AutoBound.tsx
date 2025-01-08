@@ -405,7 +405,11 @@ const AutoBoundNode = memo(
                       </div>
                     )}
                     {node?.data?.parameters &&
-                      Object.entries(node.data.parameters).map(
+                      Object.entries(node.data.parameters)
+                      .filter(
+                        ([key, param]: any) =>
+                          param.required || showAdvancedOptions
+                      ).map(
                         ([key, param]) => {
 
                           return (

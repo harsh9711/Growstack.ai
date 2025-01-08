@@ -1,7 +1,8 @@
-import { useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import { useEffect, useState } from "react";
-
+import { useEffect, useState } from "react"; 
+import { getWorkFlowById } from "@/lib/features/workflow/workflow.slice"; 
+import { useParams } from "next/navigation";
 const Accordion = ({
   onClick,
   nodeId,
@@ -9,12 +10,14 @@ const Accordion = ({
   onClick: (key: string) => void;
   nodeId: string;
 }) => {
+  const params = useParams();
+  const workflowId = params.workflow_id as string;
+  const dispatch = useAppDispatch();
   const [expandedState, setExpandedState] = useState<Record<string, boolean>>(
     {}
   );
   const { nodes } = useAppSelector(state => state.nodes);
   const { masterNode } = useAppSelector(state => state.masterNode);
-
   const [testOne, setTest] = useState<any>({});
 
   function mapAndCreateObject(nodeId: string, nodes: any[], masterNode: any[]) {
@@ -26,8 +29,29 @@ const Accordion = ({
   
       const dependencies = currentNode.data.dependencies || [];
       dependencies.forEach((depId: string) => {
-        const dependentNode = nodes.find(node => node.id === depId);
+        const dependentNode = nodes.find(node => node.id == depId);
         if (!dependentNode) return;
+
+        if (dependentNode.type === 'form') {
+          const formKey = "Form";
+          result[formKey] = {};
+          
+          // Get subNodes from formNodesData or directly from the node
+          const formSubNodes = dependentNode.data.subNodes || [];
+          
+          formSubNodes.forEach((subNode: any) => {
+            // Only add if inputLabel value exists
+            if (subNode.parameters?.inputLabel?.value) {
+              const inputLabel = subNode.parameters.inputLabel.value;
+              result[formKey][inputLabel] = "";
+            }
+          });
+          
+          // Remove Form key if no valid subNodes were found
+          if (Object.keys(result[formKey]).length === 0) {
+            delete result[formKey];
+          }
+        } else {
   
         const nodeMasterId = dependentNode.data.nodeMasterId;
         const masterNodeMatch = masterNode.find(
@@ -45,6 +69,7 @@ const Accordion = ({
               masterNodeMatch?.sampleOutput || "",
           };
         }
+      }
   
         // Recursively collect dependencies of the dependent node
         collectDependencies(depId);
@@ -53,7 +78,6 @@ const Accordion = ({
   
     // Start collecting dependencies for the given node ID
     collectDependencies(nodeId);
-  
     setTest(result); // Final result with only dependent nodes' data
   }
   
@@ -128,7 +152,7 @@ const Accordion = ({
       );
     }
   };
-
+  
   return (
     <div className="node-inner-wrapper bg-white border-2 border-[#2DA771] rounded-[20px] w-[400px] transform -translate-x-1/2">
       <div className="w-96 mx-auto mt-10 p-2">

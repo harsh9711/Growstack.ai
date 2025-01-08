@@ -142,6 +142,49 @@ const ToolsNodes = memo(
           return;
         }
 
+        if (key === "blur" || key === "remove") {
+          const otherField = key === "blur" ? "remove" : "blur";
+          if (value === true) {
+            // When one is activated, deactivate the other
+            dispatch(
+              updateNodeParameter({
+                nodeId: id,
+                key: otherField,
+                type: type,
+                value: false,
+              })
+            );
+          }
+        }
+
+        if (key === "width" && node?.data?.parameters?.height?.value !== "" && node?.data?.parameters?.height?.value !== "auto") {
+          const heightParams = node?.data?.parameters?.height?.value;
+          const endsWithPercent = heightParams.toString().trim().endsWith("%");
+          const valueWithPercent = value.toString().trim().endsWith("%");
+          if (
+            (endsWithPercent && !valueWithPercent && heightParams !== "auto" && value !== "auto") ||
+            (!endsWithPercent && valueWithPercent && heightParams !== "auto" && value !== "auto")
+          ) {
+            setErrorMessage("Cannot allowed different values")
+          }else {
+            setErrorMessage(null)
+
+          }
+        }
+        if (key === "height" && node?.data?.parameters?.width?.value !== "" && node?.data?.parameters?.width?.value !== "auto") {
+          const widthParams = node?.data?.parameters?.width?.value;
+          const endsWithPercent = widthParams.toString().trim().endsWith("%");
+          const valueWithPercent = value.toString().trim().endsWith("%");
+          if (
+            (endsWithPercent && !valueWithPercent && widthParams !== "auto" && value !== "auto") ||
+            (!endsWithPercent && valueWithPercent && widthParams !== "auto" && value !== "auto") 
+          ) {
+            setErrorMessage("Cannot allowed different values")
+          }else{
+            setErrorMessage(null)
+          }
+        }
+
         setPreviousValue(value);
         dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
 
@@ -176,12 +219,12 @@ const ToolsNodes = memo(
         //   // setDependencies(pre => pre.filter(dep => dep.key !== key));
         //   setVariableNames([]);
         // }
-        if (value.includes('$')) {
+        if (value.includes("$")) {
           // Get the last word being typed (after the last space)
-          const lastWord = value.split(' ').pop() || '';
-          
+          const lastWord = value.split(" ").pop() || "";
+
           // Show variables only if the last word starts with $ and doesn't contain a closing }
-          if (lastWord.startsWith('$') && !lastWord.includes('}')) {
+          if (lastWord.startsWith("$") && !lastWord.includes("}")) {
             const index = nodes.findIndex(nds => nds.id === id);
             const variableName = getVariableName(nodes, index);
             setVariableNames(
@@ -212,6 +255,7 @@ const ToolsNodes = memo(
 
     const handleNextClick = async () => {
       if (!node?.data?.parameters) return;
+      if(errorMessage) return;
 
       const blur = node?.data?.parameters?.blur?.value;
       const removeBg = node?.data?.parameters?.remove?.value;
@@ -533,20 +577,26 @@ const ToolsNodes = memo(
                       />
                     );
                   })}
-                  {node?.data?.parameters &&
+                {node?.data?.parameters &&
                   node?.data?.label &&
                   node?.data?.label === "Background Generator" &&
                   Object.entries(node?.data?.parameters)
-                    .filter(
-                      ([key, param]: any) => {
-                        
-                      if (key === "positionX" || key === "positionY" || 
-                        key === "scale" || key === "rotationDegree") {
-                        return showAdvancedOptions && node.data.parameters.placementType.value === "absolute";
+                    .filter(([key, param]: any) => {
+                      if (
+                        key === "positionX" ||
+                        key === "positionY" ||
+                        key === "scale" ||
+                        key === "rotationDegree"
+                      ) {
+                        return (
+                          showAdvancedOptions &&
+                          node.data.parameters.placementType.value ===
+                            "absolute"
+                        );
                       }
                       return param.required || showAdvancedOptions;
                     })
-                    
+
                     .map(([key, param]) => {
                       return (
                         <DynamicInput
@@ -564,7 +614,6 @@ const ToolsNodes = memo(
                   node?.data?.label &&
                   node?.data?.label !== "Image Background Processing" &&
                   node?.data?.label !== "Background Generator" &&
-
                   Object.entries(node?.data?.parameters)
                     .filter(
                       ([key, param]: any) =>
@@ -583,7 +632,7 @@ const ToolsNodes = memo(
                         />
                       );
                     })}
-                
+
                 {/* <div className="advance-option-button-box mb-3">
                   <button
                     onClick={handleToggleAdvancedOptions}
