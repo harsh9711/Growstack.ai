@@ -542,10 +542,9 @@ const ToolsNodes = memo(
                         
                       if (key === "positionX" || key === "positionY" || 
                         key === "scale" || key === "rotationDegree") {
-                        return node.data.parameters.placementType.value === "absolute";
+                        return showAdvancedOptions && node.data.parameters.placementType.value === "absolute";
                       }
-                      // param.required || showAdvancedOptions;
-                      return true; // Include all other parameters
+                      return param.required || showAdvancedOptions;
                     })
                     
                     .map(([key, param]) => {
