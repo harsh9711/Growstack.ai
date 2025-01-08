@@ -14,6 +14,7 @@ import { authenticateUser } from "@/utils/paraGonAuth";
 import { useSelector } from "react-redux";
 import { setSignInStatus } from "@/lib/features/workflow/nodeAuth.slice";
 import { paragon } from "@useparagon/connect";
+import Accordion from "../../../autoComplete";
 // import { getOutputFields } from "@/lib/features/workflow/outputFields.slice";
 
 const CreateRecordNode = memo(
@@ -54,6 +55,7 @@ const CreateRecordNode = memo(
     const [outputFields ,setOutputFields] = useState()
     const [paragonResult, setParagonResult] = useState<any>(false);
     const [outputFieldsOptions, setOutputFieldsOptions] = useState<any[]>([]); 
+    const [previousValue, setPreviousValue] = useState<any>("");
 
     const handleSignIn = (platform: string, data: any) => {
       // Set the user as signed in for a particular platform
@@ -83,35 +85,54 @@ const CreateRecordNode = memo(
     };
 
     const handleInputChange = useCallback(
-      (key: any, type: any, value: any) => {
+      (key: any, type: any, value: any, dependency: any) => {
         dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
 
         if (!isSpecialType(type)) return;
 
-        const singleDollarRegex = /^\$$/;
-        const validSequenceRegex = /.*\$$/;
-        const invalidPatternRegex = /\$(.*?)\$.*\S/;
+        // const singleDollarRegex = /^\$$/;
+        // const validSequenceRegex = /.*\$$/;
+        // const invalidPatternRegex = /\$(.*?)\$.*\S/;
 
-        if (singleDollarRegex.test(value)) {
-          const index = nodes.findIndex(nds => nds.id === id);
-          const variableName = getVariableName(nodes, index);
-          setVariableNames(
-            variableName.filter(
-              (name): name is VariableNameProps => name !== null
-            )
-          );
-        } else if (
-          validSequenceRegex.test(value) &&
-          !invalidPatternRegex.test(value)
-        ) {
-          const index = nodes.findIndex(nds => nds.id === id);
-          const variableName = getVariableName(nodes, index);
+        // if (singleDollarRegex.test(value)) {
+        //   const index = nodes.findIndex(nds => nds.id === id);
+        //   const variableName = getVariableName(nodes, index);
+        //   setVariableNames(
+        //     variableName.filter(
+        //       (name): name is VariableNameProps => name !== null
+        //     )
+        //   );
+        // } else if (
+        //   validSequenceRegex.test(value) &&
+        //   !invalidPatternRegex.test(value)
+        // ) {
+        //   const index = nodes.findIndex(nds => nds.id === id);
+        //   const variableName = getVariableName(nodes, index);
 
-          setVariableNames(
-            variableName.filter(
-              (name): name is VariableNameProps => name !== null
-            )
-          );
+        //   setVariableNames(
+        //     variableName.filter(
+        //       (name): name is VariableNameProps => name !== null
+        //     )
+        //   );
+        // } else {
+        //   setVariableNames([]);
+        // }
+        if (value.includes('$')) {
+          // Get the last word being typed (after the last space)
+          const lastWord = value.split(' ').pop() || '';
+          
+          // Show variables only if the last word starts with $ and doesn't contain a closing }
+          if (lastWord.startsWith('$') && !lastWord.includes('}')) {
+            const index = nodes.findIndex(nds => nds.id === id);
+            const variableName = getVariableName(nodes, index);
+            setVariableNames(
+              variableName.filter(
+                (name): name is VariableNameProps => name !== null
+              )
+            );
+          } else {
+            setVariableNames([]);
+          }
         } else {
           setVariableNames([]);
         }
@@ -224,9 +245,9 @@ const CreateRecordNode = memo(
         const result = await authenticateUser("salesforce", defaultSignIn);
         clearTimeout(timeoutId);
         if (result && result.credentialStatus === "VALID") {
-          handleSignIn("salesforce", result);
           setConnectedEmail(result);
           setIsSignedUp(true);
+          handleSignIn("salesforce", result);
         }
       } catch (error) {
         console.log("---error---", error);
@@ -235,8 +256,8 @@ const CreateRecordNode = memo(
       }
     };
 
-    const userDetails = async () => {
-      const result = await paragon.getUser();
+    const userDetails =  () => {
+      const result =  paragon.getUser();
       console.log("result resultresultresultresult", result)
       if(result && 'integrations' in result && result.integrations?.salesforce?.enabled){
         setParagonResult(true); 
@@ -246,9 +267,10 @@ const CreateRecordNode = memo(
       }
     }
     useEffect(() => {
-      userDetails();
-  }, [isSalesforceSignedIn, paragonResult, setIsSignedUp, handleSalesforceSignIn]);
-
+      setTimeout(() =>{
+        userDetails();
+      }, 4000)
+  }, [isSalesforceSignedIn, paragonResult,setParagonResult, isSignedUp, setIsSignedUp, handleSalesforceSignIn]);
 
     useEffect(() => {
       if (isSalesforceSignedIn?.status) {
@@ -537,6 +559,19 @@ const CreateRecordNode = memo(
                     )}
                   </>
                 </div>
+              </div>
+              <div className="absolute top-0 left-[155%]">
+                <Accordion
+                  onClick={(e: any) => {
+                    handleInputChange(
+                      focusedInputKey,
+                      "textarea",
+                      `${previousValue}${e ? "\${" + e + "}" : ""}`,
+                      undefined
+                    );
+                  }}
+                  nodeId={node?.id ?? ""}
+                />
               </div>
             </div>
           )}

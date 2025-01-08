@@ -19,6 +19,7 @@ import {
 } from "@/types/workflows";
 import DeleteConfirmationModal from "../../modals/deletemodal/DeleteModal";
 import { useSnackbar } from "../../snackbar/SnackbarContext";
+import Accordion from "../../../autoComplete";
 
 const AutoBoundNode = memo(
   ({
@@ -61,6 +62,7 @@ const AutoBoundNode = memo(
     const [dependencies, setDependencies] = useState<
       { key: string; nodeId: string }[]
     >([]);
+    const [previousValue, setPreviousValue] = useState<any>("");
 
     // ON OUTSIDE CLICK CLOSE ACTION MODAL
     const handleOutsideClick = (e: MouseEvent) => {
@@ -84,35 +86,55 @@ const AutoBoundNode = memo(
     };
 
     const handleInputChange = useCallback(
-      (key: any, type: any, value: any) => {
+      (key: any, type: any, value: any, dependency: any) => {
+        setPreviousValue(value)
         dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
 
         if (!isSpecialType(type)) return;
 
-        const singleDollarRegex = /^\$$/;
-        const validSequenceRegex = /.*\$$/;
-        const invalidPatternRegex = /\$(.*?)\$.*\S/;
+        // const singleDollarRegex = /^\$$/;
+        // const validSequenceRegex = /.*\$$/;
+        // const invalidPatternRegex = /\$(.*?)\$.*\S/;
 
-        if (singleDollarRegex.test(value)) {
-          const index = nodes.findIndex(nds => nds.id === id);
-          const variableName = getVariableName(nodes, index);
-          setVariableNames(
-            variableName.filter(
-              (name): name is VariableNameProps => name !== null
-            )
-          );
-        } else if (
-          validSequenceRegex.test(value) &&
-          !invalidPatternRegex.test(value)
-        ) {
-          const index = nodes.findIndex(nds => nds.id === id);
-          const variableName = getVariableName(nodes, index);
+        // if (singleDollarRegex.test(value)) {
+        //   const index = nodes.findIndex(nds => nds.id === id);
+        //   const variableName = getVariableName(nodes, index);
+        //   setVariableNames(
+        //     variableName.filter(
+        //       (name): name is VariableNameProps => name !== null
+        //     )
+        //   );
+        // } else if (
+        //   validSequenceRegex.test(value) &&
+        //   !invalidPatternRegex.test(value)
+        // ) {
+        //   const index = nodes.findIndex(nds => nds.id === id);
+        //   const variableName = getVariableName(nodes, index);
 
-          setVariableNames(
-            variableName.filter(
-              (name): name is VariableNameProps => name !== null
-            )
-          );
+        //   setVariableNames(
+        //     variableName.filter(
+        //       (name): name is VariableNameProps => name !== null
+        //     )
+        //   );
+        // } else {
+        //   setVariableNames([]);
+        // }
+        if (value.includes('$')) {
+          // Get the last word being typed (after the last space)
+          const lastWord = value.split(' ').pop() || '';
+          
+          // Show variables only if the last word starts with $ and doesn't contain a closing }
+          if (lastWord.startsWith('$') && !lastWord.includes('}')) {
+            const index = nodes.findIndex(nds => nds.id === id);
+            const variableName = getVariableName(nodes, index);
+            setVariableNames(
+              variableName.filter(
+                (name): name is VariableNameProps => name !== null
+              )
+            );
+          } else {
+            setVariableNames([]);
+          }
         } else {
           setVariableNames([]);
         }
@@ -383,7 +405,11 @@ const AutoBoundNode = memo(
                       </div>
                     )}
                     {node?.data?.parameters &&
-                      Object.entries(node.data.parameters).map(
+                      Object.entries(node.data.parameters)
+                      .filter(
+                        ([key, param]: any) =>
+                          param.required || showAdvancedOptions
+                      ).map(
                         ([key, param]) => {
 
                           return (
@@ -440,6 +466,19 @@ const AutoBoundNode = memo(
                     )}
                   </>
                 </div>
+              </div>
+              <div className="absolute top-0 left-[155%]">
+                <Accordion
+                  onClick={(e: any) => {
+                    handleInputChange(
+                      focusedInputKey,
+                      "textarea",
+                      `${previousValue}${e ? "\${" + e + "}" : ""}`,
+                      undefined
+                    );
+                  }}
+                  nodeId={node?.id ?? ""}
+                />
               </div>
             </div>
           )}

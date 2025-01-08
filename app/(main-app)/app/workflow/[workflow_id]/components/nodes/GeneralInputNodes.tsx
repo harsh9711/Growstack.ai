@@ -27,8 +27,6 @@ const GeneralInputNodes = memo(
   }: NodeProps<GeneralInputNodeProps>) => {
     // const { parameters, nodeMasterId } = data;
 
-    console.log("id-->", id);
-
     const { setNodes, setEdges } = useReactFlow();
     const dispatch = useAppDispatch();
     const { success } = useSnackbar();
@@ -133,8 +131,8 @@ const GeneralInputNodes = memo(
         requiredParams.forEach(param => {
           const key = node?.data?.parameters
             ? Object.keys(node.data.parameters).find(
-              k => node.data.parameters?.[k] === param
-            )
+                k => node.data.parameters?.[k] === param
+              )
             : undefined;
           if (key && !param.value) {
             dispatch(
@@ -158,8 +156,7 @@ const GeneralInputNodes = memo(
       setNodes(nds => nds.filter(nds => nds.id !== id));
       setEdges((edges: any[]) => {
         const updatedEdges = edges.filter(
-          (edge: any) =>
-            edge?.source !== id && edge?.target !== id
+          (edge: any) => edge?.source !== id && edge?.target !== id
         );
         return updatedEdges;
       });
@@ -167,7 +164,6 @@ const GeneralInputNodes = memo(
       dispatch(deleteNodeById(id));
       success(`The ${data?.label} node has been successfully deleted`);
     };
-
 
     const handleInput = (event: { target: any }) => {
       const textarea = event.target;
@@ -208,7 +204,6 @@ const GeneralInputNodes = memo(
       setIsActionModalShow(false);
     };
 
-
     // console.log("node-->", node);
 
     return (
@@ -217,7 +212,9 @@ const GeneralInputNodes = memo(
           <div className="node-top-box relative">
             <div className="node-name-text-description text-center mb-3">
               <h4 className="text-sm font-medium text-[#2DA771]">
-                {data?.label || ""}
+                {node?.data?.parameters?.inputLabel?.value
+                  ? node?.data?.parameters?.inputLabel?.value
+                  : data?.label || ""}
               </h4>
 
               <textarea
@@ -395,7 +392,7 @@ const GeneralInputNodes = memo(
                       key="nextParameter"
                       inputKey="nextParameter"
                       param={node.data.parameters.nextParameter}
-                      handleInputChange={() => { }}
+                      handleInputChange={() => {}}
                     />
                   )}
 

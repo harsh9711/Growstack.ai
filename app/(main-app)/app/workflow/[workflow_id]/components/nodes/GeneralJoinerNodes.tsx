@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { VariableNameProps, WorkflowNodeState } from "@/types/workflows";
 import { useSnackbar } from "../snackbar/SnackbarContext";
 import { getVariableName, isSpecialType } from "@/utils/helper";
+import Accordion from "../../autoComplete";
 
 const GeneralJoinerNodes = memo(
   ({
@@ -44,6 +45,7 @@ const GeneralJoinerNodes = memo(
     const [isActionModalShow, setIsActionModalShow] = useState(false);
     const [variableNames, setVariableNames] = useState<VariableNameProps[]>([]);
     const [focusedInputKey, setFocusedInputKey] = useState<string | null>(null);
+    const [previousValue, setPreviousValue] = useState<any>("");
 
     const handleOutsideClick = (e: MouseEvent) => {
       const modal = document.getElementById("node-action-modal");
@@ -123,41 +125,57 @@ const GeneralJoinerNodes = memo(
           setTimeout(() => setShake(false), 500);
           return;
         }
-
-        console.log("key-->", key, "type-->", type, "value-->", value);
-        console.log("dependencies-->", dependency);
-
+        setPreviousValue(value);
         dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
 
         if (!isSpecialType(type)) return;
 
-        const singleDollarRegex = /^\$$/;
-        const validSequenceRegex = /.*\$$/;
-        const invalidPatternRegex = /\$(.*?)\$.*\S/;
+        // const singleDollarRegex = /^\$$/;
+        // const validSequenceRegex = /.*\$$/;
+        // const invalidPatternRegex = /\$(.*?)\$.*\S/;
 
-        if (singleDollarRegex.test(value)) {
-          const index = nodes.findIndex(nds => nds.id === id);
-          const variableName = getVariableName(nodes, index);
-          setVariableNames(
-            variableName.filter(
-              (name): name is VariableNameProps => name !== null
-            )
-          );
-        } else if (
-          validSequenceRegex.test(value) &&
-          !invalidPatternRegex.test(value)
-        ) {
-          const index = nodes.findIndex(nds => nds.id === id);
-          const variableName = getVariableName(nodes, index);
+        // if (singleDollarRegex.test(value)) {
+        //   const index = nodes.findIndex(nds => nds.id === id);
+        //   const variableName = getVariableName(nodes, index);
+        //   setVariableNames(
+        //     variableName.filter(
+        //       (name): name is VariableNameProps => name !== null
+        //     )
+        //   );
+        // } else if (
+        //   validSequenceRegex.test(value) &&
+        //   !invalidPatternRegex.test(value)
+        // ) {
+        //   const index = nodes.findIndex(nds => nds.id === id);
+        //   const variableName = getVariableName(nodes, index);
 
-          setVariableNames(
-            variableName.filter(
-              (name): name is VariableNameProps => name !== null
-            )
-          );
+        //   setVariableNames(
+        //     variableName.filter(
+        //       (name): name is VariableNameProps => name !== null
+        //     )
+        //   );
+        // } else {
+        //   // dispatch(removeNodeDependency({ nodeId: id, key }));
+        //   // setDependencies(pre => pre.filter(dep => dep.key !== key));
+        //   setVariableNames([]);
+        // }
+        if (value.includes('$')) {
+          // Get the last word being typed (after the last space)
+          const lastWord = value.split(' ').pop() || '';
+          
+          // Show variables only if the last word starts with $ and doesn't contain a closing }
+          if (lastWord.startsWith('$') && !lastWord.includes('}')) {
+            const index = nodes.findIndex(nds => nds.id === id);
+            const variableName = getVariableName(nodes, index);
+            setVariableNames(
+              variableName.filter(
+                (name): name is VariableNameProps => name !== null
+              )
+            );
+          } else {
+            setVariableNames([]);
+          }
         } else {
-          // dispatch(removeNodeDependency({ nodeId: id, key }));
-          // setDependencies(pre => pre.filter(dep => dep.key !== key));
           setVariableNames([]);
         }
         // if (dependency) {
@@ -481,6 +499,19 @@ const GeneralJoinerNodes = memo(
                     </button>
                   </div>
                 )}
+              </div>
+              <div className="absolute top-0 left-[155%]">
+                <Accordion
+                  onClick={(e: any) => {
+                    handleInputChange(
+                      focusedInputKey,
+                      "textarea",
+                      `${previousValue}${e ? "\${" + e + "}" : ""}`,
+                      undefined
+                    );
+                  }}
+                  nodeId={node?.id ?? ""}
+                />
               </div>
             </div>
           )}

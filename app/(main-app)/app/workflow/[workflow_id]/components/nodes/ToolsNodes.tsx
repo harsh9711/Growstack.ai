@@ -17,6 +17,7 @@ import { VariableNameProps, WorkflowNodeState } from "@/types/workflows";
 import { getVariableName, isSpecialType } from "@/utils/helper";
 import { useSnackbar } from "../snackbar/SnackbarContext";
 import DeleteConfirmationModal from "../modals/deletemodal/DeleteModal";
+import Accordion from "../../autoComplete";
 
 const ToolsNodes = memo(
   ({
@@ -49,6 +50,7 @@ const ToolsNodes = memo(
 
     const [focusedInputKey, setFocusedInputKey] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [previousValue, setPreviousValue] = useState<any>("");
 
     // added a code to add parent node id in dependencies
     // useEffect(() => {
@@ -140,40 +142,100 @@ const ToolsNodes = memo(
           return;
         }
 
-        console.log("key-->", key, "type-->", type, "value-->", value);
-        console.log("dependencies-->", dependency);
+        if (key === "blur" || key === "remove") {
+          const otherField = key === "blur" ? "remove" : "blur";
+          if (value === true) {
+            // When one is activated, deactivate the other
+            dispatch(
+              updateNodeParameter({
+                nodeId: id,
+                key: otherField,
+                type: type,
+                value: false,
+              })
+            );
+          }
+        }
 
+        if (key === "width" && node?.data?.parameters?.height?.value !== "" && node?.data?.parameters?.height?.value !== "auto") {
+          const heightParams = node?.data?.parameters?.height?.value;
+          const endsWithPercent = heightParams.toString().trim().endsWith("%");
+          const valueWithPercent = value.toString().trim().endsWith("%");
+          if (
+            (endsWithPercent && !valueWithPercent && heightParams !== "auto" && value !== "auto") ||
+            (!endsWithPercent && valueWithPercent && heightParams !== "auto" && value !== "auto")
+          ) {
+            setErrorMessage("Cannot allowed different values")
+          }else {
+            setErrorMessage(null)
+
+          }
+        }
+        if (key === "height" && node?.data?.parameters?.width?.value !== "" && node?.data?.parameters?.width?.value !== "auto") {
+          const widthParams = node?.data?.parameters?.width?.value;
+          const endsWithPercent = widthParams.toString().trim().endsWith("%");
+          const valueWithPercent = value.toString().trim().endsWith("%");
+          if (
+            (endsWithPercent && !valueWithPercent && widthParams !== "auto" && value !== "auto") ||
+            (!endsWithPercent && valueWithPercent && widthParams !== "auto" && value !== "auto") 
+          ) {
+            setErrorMessage("Cannot allowed different values")
+          }else{
+            setErrorMessage(null)
+          }
+        }
+
+        setPreviousValue(value);
         dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
 
         if (!isSpecialType(type)) return;
 
-        const singleDollarRegex = /^\$$/;
-        const validSequenceRegex = /.*\$$/;
-        const invalidPatternRegex = /\$(.*?)\$.*\S/;
+        // const singleDollarRegex = /^\$$/;
+        // const validSequenceRegex = /.*\$$/;
+        // const invalidPatternRegex = /\$(.*?)\$.*\S/;
 
-        if (singleDollarRegex.test(value)) {
-          const index = nodes.findIndex(nds => nds.id === id);
-          const variableName = getVariableName(nodes, index);
-          setVariableNames(
-            variableName.filter(
-              (name): name is VariableNameProps => name !== null
-            )
-          );
-        } else if (
-          validSequenceRegex.test(value) &&
-          !invalidPatternRegex.test(value)
-        ) {
-          const index = nodes.findIndex(nds => nds.id === id);
-          const variableName = getVariableName(nodes, index);
+        // if (singleDollarRegex.test(value)) {
+        //   const index = nodes.findIndex(nds => nds.id === id);
+        //   const variableName = getVariableName(nodes, index);
+        //   setVariableNames(
+        //     variableName.filter(
+        //       (name): name is VariableNameProps => name !== null
+        //     )
+        //   );
+        // } else if (
+        //   validSequenceRegex.test(value) &&
+        //   !invalidPatternRegex.test(value)
+        // ) {
+        //   const index = nodes.findIndex(nds => nds.id === id);
+        //   const variableName = getVariableName(nodes, index);
 
-          setVariableNames(
-            variableName.filter(
-              (name): name is VariableNameProps => name !== null
-            )
-          );
+        //   setVariableNames(
+        //     variableName.filter(
+        //       (name): name is VariableNameProps => name !== null
+        //     )
+        //   );
+        // } else {
+        //   // dispatch(removeNodeDependency({ nodeId: id, key }));
+        //   // setDependencies(pre => pre.filter(dep => dep.key !== key));
+        //   setVariableNames([]);
+        // }
+        if (value.includes("$")) {
+          // Get the last word being typed (after the last space)
+          const lastWord = value.split(" ").pop() || "";
+
+          // Show variables only if the last word starts with $ and doesn't contain a closing }
+          if (lastWord.startsWith("$") && !lastWord.includes("}")) {
+            const index = nodes.findIndex(nds => nds.id === id);
+            const variableName = getVariableName(nodes, index);
+            setVariableNames(
+              variableName.filter(
+                (name): name is VariableNameProps => name !== null
+              )
+            );
+          } else {
+            setVariableNames([]);
+          }
         } else {
-          // dispatch(removeNodeDependency({ nodeId: id, key }));
-          // setDependencies(pre => pre.filter(dep => dep.key !== key));
           setVariableNames([]);
         }
         // if (dependency) {
@@ -193,29 +255,30 @@ const ToolsNodes = memo(
 
     const handleNextClick = async () => {
       if (!node?.data?.parameters) return;
-      
-        const blur = node?.data?.parameters?.blur?.value;
-        const removeBg = node?.data?.parameters?.remove?.value;
-        if (
-          !blur &&
-          !removeBg &&
-          node?.data?.label === "Image Background Processing"
-        ) {
-          setErrorMessage("either Blur or removeBg required");
-          return;
-        } else {
-          setErrorMessage(null);
-        }
-        if (
-          blur &&
-          removeBg &&
-          node?.data?.label === "Image Background Processing"
-        ) {
-          setErrorMessage("select only one");
-          return;
-        } else {
-          setErrorMessage(null);
-        }
+      if(errorMessage) return;
+
+      const blur = node?.data?.parameters?.blur?.value;
+      const removeBg = node?.data?.parameters?.remove?.value;
+      if (
+        !blur &&
+        !removeBg &&
+        node?.data?.label === "Image Background Processing"
+      ) {
+        setErrorMessage("either Blur or removeBg required");
+        return;
+      } else {
+        setErrorMessage(null);
+      }
+      if (
+        blur &&
+        removeBg &&
+        node?.data?.label === "Image Background Processing"
+      ) {
+        setErrorMessage("select only one");
+        return;
+      } else {
+        setErrorMessage(null);
+      }
 
       const requiredParams = Object.values(node.data.parameters).filter(
         param => param.required
@@ -516,7 +579,41 @@ const ToolsNodes = memo(
                   })}
                 {node?.data?.parameters &&
                   node?.data?.label &&
+                  node?.data?.label === "Background Generator" &&
+                  Object.entries(node?.data?.parameters)
+                    .filter(([key, param]: any) => {
+                      if (
+                        key === "positionX" ||
+                        key === "positionY" ||
+                        key === "scale" ||
+                        key === "rotationDegree"
+                      ) {
+                        return (
+                          showAdvancedOptions &&
+                          node.data.parameters.placementType.value ===
+                            "absolute"
+                        );
+                      }
+                      return param.required || showAdvancedOptions;
+                    })
+
+                    .map(([key, param]) => {
+                      return (
+                        <DynamicInput
+                          key={key}
+                          inputKey={key}
+                          param={param}
+                          handleInputChange={handleInputChange}
+                          variableNames={variableNames}
+                          focusedInputKey={focusedInputKey}
+                          setFocusedInputKey={setFocusedInputKey}
+                        />
+                      );
+                    })}
+                {node?.data?.parameters &&
+                  node?.data?.label &&
                   node?.data?.label !== "Image Background Processing" &&
+                  node?.data?.label !== "Background Generator" &&
                   Object.entries(node?.data?.parameters)
                     .filter(
                       ([key, param]: any) =>
@@ -535,6 +632,7 @@ const ToolsNodes = memo(
                         />
                       );
                     })}
+
                 {/* <div className="advance-option-button-box mb-3">
                   <button
                     onClick={handleToggleAdvancedOptions}
@@ -587,6 +685,19 @@ const ToolsNodes = memo(
                     </button>
                   </div>
                 )}
+              </div>
+              <div className="absolute top-0 left-[155%]">
+                <Accordion
+                  onClick={(e: any) => {
+                    handleInputChange(
+                      focusedInputKey,
+                      "textarea",
+                      `${previousValue}${e ? "\${" + e + "}" : ""}`,
+                      undefined
+                    );
+                  }}
+                  nodeId={node?.id ?? ""}
+                />
               </div>
             </div>
           )}
