@@ -77,6 +77,8 @@ const GmailNode = memo(
       // Set the user as signed in for a particular platform
       dispatch(setSignInStatus({ platform, data, status: true }));
     };
+    const formRef = useRef<HTMLDivElement>(null);
+
 
     const node = useAppSelector(state =>
       state.nodes.nodes.find(node => node.id === id)
@@ -430,6 +432,19 @@ const GmailNode = memo(
       }
     }, [isGmailSignedIn]);
 
+    useEffect(() => {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (formRef.current && !formRef.current.contains(event.target as Node)) {
+          setFocusedInputKey(null);
+        }
+      };
+  
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, []);
+
     return (
       <div>
         <section className="node-box relative">
@@ -612,6 +627,7 @@ const GmailNode = memo(
                   ? "before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-white before:opacity-[45%]"
                   : ""
                   }`}
+                  ref={formRef}
               >
                 {/* <div className="trigger-box">
                   <h3 className="text-[16px] font-medium text-[#14171B] mb-4">
@@ -745,7 +761,7 @@ const GmailNode = memo(
                   )}
                 </div>
               </div>
-              {paragonResult && isSignedUp &&
+              {paragonResult && isSignedUp && focusedInputKey && focusedInputKey.length > 0 && 
               <div className="absolute top-0 left-[155%]">
                 <Accordion
                   onClick={(e: any) => {

@@ -60,6 +60,20 @@ export const dummyData1 = [
       content: "#69BFFF",
       boxShadow: "0px 9.642px 18.079px 0px rgba(105, 191, 255, 0.25)",
     },
+  }, {
+    title: "AI Assistant",
+    category: "ai-assistant",
+    icon: {
+      src: "/images/workflow/llms.svg",
+      alt: "Integrations",
+      width: 24,
+      height: 24,
+    },
+    color: {
+      bg: "#DAEAF6",
+      content: "#69BFFF",
+      boxShadow: "0px 9.642px 18.079px 0px rgba(105, 191, 255, 0.25)",
+    },
   },
 ];
 

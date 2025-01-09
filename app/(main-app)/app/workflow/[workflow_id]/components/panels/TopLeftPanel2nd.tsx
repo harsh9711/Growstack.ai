@@ -76,9 +76,9 @@ const TopLeftPanel2nd = ({ setNodes }: any): React.ReactElement => {
         <AiTemplatesCategory setNodes={setNodes} />
       )} */}
 
-      {/* {selectedCategory && selectedCategory === "ai-assistant" && (
+      {selectedCategory && selectedCategory === "ai-assistant" && (
         <AiAssistanceCategory setNodes={setNodes} />
-      )} */}
+      )}
 
       {selectedCategory && selectedCategory === "integrations" && (
         <IntegrationCategory setNodes={setNodes} setSelectedCategory={setSelectedCategory} />

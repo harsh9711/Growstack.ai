@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect, useCallback } from "react";
+import React, { memo, useState, useEffect, useCallback, useRef } from "react";
 import { Handle, Position, type NodeProps, useReactFlow } from "@xyflow/react";
 import { GmailNodeProps } from "../types";
 import DynamicInput from "../../DynamicInputs";
@@ -34,6 +34,7 @@ const AutoBoundNode = memo(
     const dispatch = useAppDispatch();
     const { workFlowData } = useAppSelector(state => state.workflows);
     const { nodes, isLoading } = useAppSelector(state => state.nodes);
+    const formRef = useRef<HTMLDivElement>(null);
 
     const node = useAppSelector(state =>
       state.nodes.nodes.find(node => node.id === id)
@@ -255,6 +256,18 @@ const AutoBoundNode = memo(
     const handleEditClick = () => {
       setIsEdit(!isEdit);
     };
+    useEffect(() => {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (formRef.current && !formRef.current.contains(event.target as Node)) {
+          setFocusedInputKey(null);
+        }
+      };
+  
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, []);
 
     return (
       <div>
@@ -391,7 +404,7 @@ const AutoBoundNode = memo(
                 </div>
               </div>
 
-              <div className={`node-content-wrapper relative `}>
+              <div className={`node-content-wrapper relative `} ref={formRef}>
                 <div className="action-box">
                   <>
                     <h3 className="text-[16px] font-medium text-[#14171B] mb-4">
@@ -467,6 +480,7 @@ const AutoBoundNode = memo(
                   </>
                 </div>
               </div>
+              {focusedInputKey && focusedInputKey.length > 0 &&
               <div className="absolute top-0 left-[155%]">
                 <Accordion
                   onClick={(e: any) => {
@@ -479,7 +493,7 @@ const AutoBoundNode = memo(
                   }}
                   nodeId={node?.id ?? ""}
                 />
-              </div>
+              </div>}
             </div>
           )}
         </section>
