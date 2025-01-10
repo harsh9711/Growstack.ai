@@ -28,6 +28,8 @@ import FanOut from "./fanOut";
 import ApolloNodes from "./integrations/ApolloNodes";
 import AutoBoundNode from "./integrations/AutoBound";
 import CreateRecordNode from "./integrations/CreateRecord";
+import googleDocsNodes from "./integrations/GoogleDocsNode";
+import AiAssistantNode from "./AI-Assistant";
 
 export const initialNodes: AppNode[] = [
   {
@@ -72,6 +74,7 @@ export const nodeTypes = {
   fanout: FanOut,
   apollo: ApolloNodes,
   autobound: AutoBoundNode,
-  salesforce: CreateRecordNode
-
+  salesforce: CreateRecordNode,
+  googleDocs: googleDocsNodes,
+  "ai-assistant": AiAssistantNode,
 } satisfies NodeTypes;

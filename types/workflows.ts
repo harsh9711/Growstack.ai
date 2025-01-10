@@ -4,6 +4,7 @@ export type CategoriesTypes =
   | "integrations"
   | "tools"
   | "ai-assistant"
+  | "googleDocs"
   | "llms";
 
 export interface ImageProps {
@@ -34,7 +35,7 @@ export interface PositionState {
 
 export interface NodeDataState {
   [key: string]: unknown;
-  nodeMasterId: string;
+  nodeMasterId?: string;
   label: string;
   functionToExecute?: string;
   dynamicParams?: string[];
@@ -42,7 +43,7 @@ export interface NodeDataState {
   subNodes?: SubNodeProps[];
   description?: string;
   dependencies?: string[];
-  parameters: {
+  parameters?: {
     [key: string]: NodeParameter;
   };
 }

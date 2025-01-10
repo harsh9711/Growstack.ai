@@ -34,6 +34,8 @@ const LlmNodes = memo(
     const { success } = useSnackbar();
     const { workFlowData } = useAppSelector(state => state.workflows);
     const { isLoading, nodes } = useAppSelector(state => state.nodes);
+    const formRef = useRef<HTMLDivElement>(null);
+
     const node = useAppSelector(state =>
       state.nodes.nodes.find(node => node.id === id)
     );
@@ -311,7 +313,18 @@ const LlmNodes = memo(
       textarea.style.height = "auto";
       textarea.style.height = `${textarea.scrollHeight}px`;
     };
-
+    useEffect(() => {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (formRef.current && !formRef.current.contains(event.target as Node)) {
+          setFocusedInputKey(null);
+        }
+      };
+  
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, []);
     return (
       <div>
         <section className="node-box relative">
@@ -451,7 +464,7 @@ const LlmNodes = memo(
                   {data?.label || ""}
                 </h4>
               </div>
-              <div className="form-box">
+              <div className="form-box" ref={formRef}>
                 {node?.data?.parameters &&
                   Object.entries(node.data.parameters)
                     .filter(
@@ -527,7 +540,7 @@ const LlmNodes = memo(
                   </div>
                 )}
               </div>
-
+                {focusedInputKey && focusedInputKey.length > 0 &&
               <div className="absolute top-0 left-[155%]">
                 <Accordion
                   onClick={(e: any) => {
@@ -540,7 +553,7 @@ const LlmNodes = memo(
                   }}
                   nodeId={node?.id ?? ""}
                 />
-              </div>
+              </div>}
             </div>
           )}
         </section>

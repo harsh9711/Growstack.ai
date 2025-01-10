@@ -1,23 +1,42 @@
-import React, { memo, useState, useEffect, useCallback, useRef } from "react";
+import React, { memo, useState, useEffect, useRef, useCallback } from "react";
+import { Handle, Position, type NodeProps, useReactFlow } from "@xyflow/react";
 import { GmailNodeProps } from "../types";
-import { useAppDispatch } from "@/lib/hooks";
-import { useAppSelector } from "@/lib/hooks";
-import { Handle, NodeProps, Position, useReactFlow } from "@xyflow/react";
-import { useSnackbar } from "../../snackbar/SnackbarContext";
 import DynamicInput from "../../DynamicInputs";
-import { deleteNodeById, removeNodeById, updateNodeById, updateNodeDescription, updateNodeParameter } from "@/lib/features/workflow/node.slice";
-import { IntegrationResultProps, NodeParameter, VariableNameProps, WorkflowNodeState } from "@/types/workflows";
 import { extractParameterValues } from "@/utils/dataResolver";
 import { getVariableName, isSpecialType } from "@/utils/helper";
+import Image from "next/image";
+import {
+  deleteNodeById,
+  removeNodeById,
+  removeNodeDependency,
+  updateNodeById,
+  updateNodeDependency,
+  updateNodeDescription,
+  updateNodeParameter,
+} from "@/lib/features/workflow/node.slice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import {
+  IntegrationResultProps,
+  VariableNameProps,
+  WorkflowNodeState,
+} from "@/types/workflows";
 import DeleteConfirmationModal from "../../modals/deletemodal/DeleteModal";
+import { useSnackbar } from "../../snackbar/SnackbarContext";
 import { authenticateUser } from "@/utils/paraGonAuth";
-import { useSelector } from "react-redux";
 import { setSignInStatus } from "@/lib/features/workflow/nodeAuth.slice";
+import { useSelector } from "react-redux";
 import { paragon } from "@useparagon/connect";
 import Accordion from "../../../autoComplete";
-// import { getOutputFields } from "@/lib/features/workflow/outputFields.slice";
 
-const CreateRecordNode = memo(
+const ActionData = [
+  {
+    title: "Document Create",
+    info: "Fires when a new document is created in Google Docs",
+    nodeType: "send_email",
+  },
+];
+
+const googleDocsNodes = memo(
   ({
     data,
     isConnectable,
@@ -25,20 +44,30 @@ const CreateRecordNode = memo(
     positionAbsoluteX,
     positionAbsoluteY,
   }: NodeProps<GmailNodeProps>) => {
+
     const { success } = useSnackbar();
     const { setNodes, setEdges } = useReactFlow();
-
     const dispatch = useAppDispatch();
     const { workFlowData } = useAppSelector(state => state.workflows);
-    const { nodes, isLoading } = useAppSelector(state => state.nodes);
+    const { nodes, variables, isLoading } = useAppSelector(
+      state => state.nodes
+    );
+    const isGmailSignedIn = useSelector((state: any) => state?.nodeAuth["gmail"]);
+
+    const handleSignIn = (platform: string, data: any) => {
+      // Set the user as signed in for a particular platform
+      dispatch(setSignInStatus({ platform, data, status: true }));
+    };
     const formRef = useRef<HTMLDivElement>(null);
+
 
     const node = useAppSelector(state =>
       state.nodes.nodes.find(node => node.id === id)
     );
+
+    const [isSignedUp, setIsSignedUp] = useState(false);
     const [isEdit, setIsEdit] = useState(true);
     const [isActionModalShow, setIsActionModalShow] = useState(false);
-    const [description, setDescription] = useState(data?.descriptions || "");
     const [connectionLoading, setConnectionLoading] = useState(false);
     const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -47,30 +76,18 @@ const CreateRecordNode = memo(
       useState(false);
     const [variableNames, setVariableNames] = useState<VariableNameProps[]>([]);
     const [focusedInputKey, setFocusedInputKey] = useState<string | null>(null);
+    const [paragonResult, setParagonResult] = useState<any>(false);
     const [connectedEmail, setConnectedEmail] =
       useState<IntegrationResultProps>({} as IntegrationResultProps);
-    const [dependencies, setDependencies] = useState<
-      { key: string; nodeId: string }[]
-    >([]);
-    const [isSignedUp, setIsSignedUp] = useState(false);
-    const [outputFields ,setOutputFields] = useState()
-    const [paragonResult, setParagonResult] = useState<any>(false);
-    const [outputFieldsOptions, setOutputFieldsOptions] = useState<any[]>([]); 
     const [previousValue, setPreviousValue] = useState<any>("");
-
-    const handleSignIn = (platform: string, data: any) => {
-      // Set the user as signed in for a particular platform
-      dispatch(setSignInStatus({ platform, data, status: true }));
-    };
-
-
-    const isSalesforceSignedIn = useSelector((state: any) => state?.nodeAuth["salesforce"]);
+    // ON OUTSIDE CLICK CLOSE ACTION MODAL
     const handleOutsideClick = (e: MouseEvent) => {
       const modal = document.getElementById("node-action-modal");
       if (modal && !modal.contains(e.target as Node)) {
         setIsActionModalShow(false);
       }
     };
+
     useEffect(() => {
       if (isActionModalShow) {
         document.addEventListener("click", handleOutsideClick);
@@ -87,37 +104,10 @@ const CreateRecordNode = memo(
 
     const handleInputChange = useCallback(
       (key: any, type: any, value: any, dependency: any) => {
+        setPreviousValue(value)
         dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
-
         if (!isSpecialType(type)) return;
 
-        // const singleDollarRegex = /^\$$/;
-        // const validSequenceRegex = /.*\$$/;
-        // const invalidPatternRegex = /\$(.*?)\$.*\S/;
-
-        // if (singleDollarRegex.test(value)) {
-        //   const index = nodes.findIndex(nds => nds.id === id);
-        //   const variableName = getVariableName(nodes, index);
-        //   setVariableNames(
-        //     variableName.filter(
-        //       (name): name is VariableNameProps => name !== null
-        //     )
-        //   );
-        // } else if (
-        //   validSequenceRegex.test(value) &&
-        //   !invalidPatternRegex.test(value)
-        // ) {
-        //   const index = nodes.findIndex(nds => nds.id === id);
-        //   const variableName = getVariableName(nodes, index);
-
-        //   setVariableNames(
-        //     variableName.filter(
-        //       (name): name is VariableNameProps => name !== null
-        //     )
-        //   );
-        // } else {
-        //   setVariableNames([]);
-        // }
         if (value.includes('$')) {
           // Get the last word being typed (after the last space)
           const lastWord = value.split(' ').pop() || '';
@@ -140,6 +130,7 @@ const CreateRecordNode = memo(
       },
       [dispatch, id, nodes, variableNames, isEdit]
     );
+
     const handleNextClick = async () => {
       if (!node?.data?.parameters) return;
 
@@ -149,10 +140,10 @@ const CreateRecordNode = memo(
       const allRequiredParamsFilled = requiredParams.every(
         param => param?.value
       );
-      
+
       if (allRequiredParamsFilled) {
         const updatedValue = extractParameterValues(node.data.parameters);
-        try {
+       try {
           const bodyPayload = {
             workflowId: workFlowData._id,
             nodeMasterId: node.data.nodeMasterId,
@@ -229,26 +220,22 @@ const CreateRecordNode = memo(
       setIsActionModalShow(false);
     };
 
-    const handleEditClick = () => {
-      setIsEdit(!isEdit);
-    };
 
-    const handleSalesforceSignIn = async (defaultSignIn = false) => {
+    const handleGmailSignIn = async (defaultSignIn = false) => {
       try {
-
-        // if (connectedEmail.enabled) return;
         setConnectionLoading(true);
         const timeoutId = setTimeout(() => {
           setConnectionLoading(false);
-          console.log("Authentication timeout, stopping loading state");
         }, 8000);
 
-        const result = await authenticateUser("salesforce", defaultSignIn);
+        const result = await authenticateUser("gmail", defaultSignIn);
         clearTimeout(timeoutId);
-        if (result && result.credentialStatus === "VALID") {
+        if (result && result.credentialStatus === "VALID" ) {
           setConnectedEmail(result);
           setIsSignedUp(true);
-          handleSignIn("salesforce", result);
+          handleSignIn("gmail", result);
+        }else{
+          setIsSignedUp(false)
         }
       } catch (error) {
         console.log("---error---", error);
@@ -257,12 +244,18 @@ const CreateRecordNode = memo(
       }
     };
 
-    const userDetails =  () => {
-      const result =  paragon.getUser();
-      console.log("result resultresultresultresult", result)
-      if(result && 'integrations' in result && result.integrations?.salesforce?.enabled){
-        setParagonResult(true); 
+    const handleActiveAction = (action: string) => {
+      setActiveAction(action);
+    };
 
+    const handleEditClick = () => {
+      setIsEdit(!isEdit);
+    };
+
+    const userDetails = () => {
+      const result = paragon.getUser();
+      if(result && 'integrations' in result && result.integrations?.gmail?.enabled){
+        setParagonResult(true); 
       }else{
         setParagonResult(false)
       }
@@ -271,90 +264,38 @@ const CreateRecordNode = memo(
       setTimeout(() =>{
         userDetails();
       }, 4000)
-  }, [isSalesforceSignedIn, paragonResult,setParagonResult, isSignedUp, setIsSignedUp, handleSalesforceSignIn]);
-
+  }, [isGmailSignedIn, paragonResult, setParagonResult, isSignedUp, setIsSignedUp, handleGmailSignIn]);
     useEffect(() => {
-      if (isSalesforceSignedIn?.status) {
-        setConnectedEmail(isSalesforceSignedIn?.data);
+      if (isGmailSignedIn?.status) {
+        setConnectedEmail(isGmailSignedIn?.data);
         setIsSignedUp(true);
       }
-    }, [isSalesforceSignedIn]);
+    }, [isGmailSignedIn]);
 
-  const getOutputFields = async () => {
-    try {
-      console.log('paragon', paragon);
-      const response = await paragon.request("salesforce", "/sobjects/Account/describe/", {
-        method: "GET",
-        body: undefined,
-        headers: undefined
-      });
-
-      if (response && typeof response === 'object' && "fields" in response) {
-
-        // Check if the node label is "Search Record by SOQL Query"
-        if (node?.data?.label === "Search Record by SOQL Query") {
-          // const outputOptions = response.fields.map(field => ({
-            const outputOptions = (response.fields as Array<{ name: string }>).map(field => ({
-            label: field.name, 
-            value: field.name  
-          }));
-
-          // Set the outputFieldsOptions state
-          setOutputFieldsOptions(outputOptions);
+    useEffect(() => {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (formRef.current && !formRef.current.contains(event.target as Node)) {
+          setFocusedInputKey(null);
         }
-      }
-    } catch (err) {
-      console.log("error", err);
-    }
-  };
-
-  useEffect(() => {
-    getOutputFields();
-  }, [node?.data?.label]);
-
-  const updatedParameters = Object.fromEntries(
-    Object.entries(node?.data?.parameters || {}).map(([key, param]) => {
-      if (key === 'outputFields' && node?.data?.label === "Search Record by SOQL Query") {
-        return [
-          key,
-          {
-            ...param,
-            options: outputFieldsOptions, 
-          }
-        ];
-      }
-      return [key, param]; 
-    })
-  );
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (formRef.current && !formRef.current.contains(event.target as Node)) {
-        setFocusedInputKey(null);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+      };
+  
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, []);
 
     return (
       <div>
         <section className="node-box relative">
           <div className="node-top-box relative">
             <div className="node-name-text-description text-center mb-3">
-              <h4 className="text-sm font-medium text-[#2DA771]">
-                { "Salesforce"}
-              </h4>
-
+              <h4 className="text-sm font-medium text-[#2DA771]">{node?.data?.label}</h4>
               <textarea
                 value={node?.data?.description || ""}
                 onInput={handleInput}
                 className="resize-none text-xs text-center font-medium text-[#14171B] bg-transparent border-transparent focus:border-transparent focus:ring-0 focus:outline-none"
                 placeholder="Enter description"
-                rows={1}
                 onChange={e => {
                   dispatch(
                     updateNodeDescription({
@@ -374,7 +315,7 @@ const CreateRecordNode = memo(
                   className="w-[140px] mx-auto"
                 />
                 <img
-                  src="/svgs/salesforce.svg"
+                  src={node?.data?.icon}
                   alt="foreground icon"
                   className="w-[40px] mx-auto absolute top-[50px] left-0 right-0"
                 />
@@ -418,7 +359,7 @@ const CreateRecordNode = memo(
                 </div>
               </div>
 
-              <div className="node-edge absolute top-1/2 transform -translate-y-1/2 right-[-68px] flex items-center" ref={formRef}>
+              <div className="node-edge absolute top-1/2 transform -translate-y-1/2 right-[-68px] flex items-center">
                 <div className="h-px border-t-2 border-dashed border-[#2DA771] w-[65px] mr-1" />
                 <Handle
                   id={`${id}-source`}
@@ -463,18 +404,18 @@ const CreateRecordNode = memo(
               <div className="heading-button-box rounded-[16px] mb-2 p-4 bg-[#FFE6FF] flex justify-between items-center overflow-hidden">
                 <div className="short-text-heading">
                   <img
-                    src="/svgs/salesforce.svg"
+                    src={node?.data?.icon}
                     alt="node icon"
                     className="w-[20px] mb-2"
                   />
-
-                  <h4 className="text-sm font-medium text-[#14171B]">
-                    {node?.data?.label ?? "Create Record"}
-                  </h4>
+                  <h4 className="text-sm font-medium text-[#14171B]">{node?.data?.label || "Gmail"}</h4>
                 </div>
+
                 {paragonResult && isSignedUp ? (
                   <div className="user-connected-info relative">
-                    <span onClick={() => handleSalesforceSignIn(true)} className="connected-text absolute top-[-17px] right-[-20px] bg-[#2DA771] cursor-pointer p-2 rounded-l-[20px]  w-[100px] inline-block  text-[12px] font-medium text-white">
+                    <span className="connected-text absolute top-[-17px] right-[-20px] bg-[#2DA771] p-2 rounded-l-[20px]  w-[100px] inline-block  text-[12px] font-medium text-white cursor-pointer"
+                      onClick={() => handleGmailSignIn(true)}
+                    >
                       Connected
                     </span>
 
@@ -488,7 +429,7 @@ const CreateRecordNode = memo(
                 ) : (
                   <div className="signin-button-box">
                     <button
-                      onClick={() => handleSalesforceSignIn(false)}
+                      onClick={() => handleGmailSignIn(false)}
                       className="p-4 text-white text-[16px] bg-[#2DA771] rounded-[20px] w-[100px]"
                     >
                       {connectionLoading ? (
@@ -502,79 +443,112 @@ const CreateRecordNode = memo(
                   </div>
                 )}
               </div>
-
-              
-              <div className={`node-content-wrapper relative ${!isSignedUp || !paragonResult
+              <div
+                className={`node-content-wrapper relative ${!isSignedUp || !paragonResult
                   ? "before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-white before:opacity-[45%]"
                   : ""
-                  }`}>
+                  }`}
+                  ref={formRef}
+              >
                 <div className="action-box">
-                  <>
-                    <h3 className="text-[16px] font-medium text-[#14171B] mb-4">
-                      {node?.data?.label || "Create Record"}
-                    </h3>
-                  </>
-                  <>
-                    {updatedParameters &&
-                      Object.entries(updatedParameters).map(
-                        ([key, param]) => {
+                  {!activeAction ? (
+                    <>
+                      <h3 className="text-[16px] font-medium text-[#14171B] mb-4">
+                        Actions
+                      </h3>
+                      <div className="action-data-box">
+                        {ActionData.map((value, index) => {
                           return (
-                            <DynamicInput
-                              key={key}
-                              inputKey={key}
-                              // param={param}
-                              param={param as NodeParameter}  
-                              handleInputChange={
-                                isEdit ? handleInputChange : () => { }
-                              }
-                              variableNames={variableNames}
-                              focusedInputKey={focusedInputKey}
-                              setFocusedInputKey={setFocusedInputKey}
-                            />
-                          );
-                        }
-                      )}
+                            <div
+                              className="action-info flex items-center gap-4 mb-5 cursor-pointer"
+                              key={index}
+                              onClick={() => handleActiveAction(value.nodeType)}
+                            >
+                              <div className="email-icon w-[50px] h-[50px] bg-[#FCE1E4] flex items-center justify-center rounded-full">
+                                <img
+                                  src={node?.data?.icon}
+                                  alt="email icon"
+                                  className="w-[25px]"
+                                />
+                              </div>
 
-                    <div className="advance-option-button-box mb-3">
-                      <button
-                        onClick={handleToggleAdvancedOptions}
-                        className="w-full text-center bg-transparent border-0 underline text-[12px] text-[#2DA771]"
-                      >
-                        {showAdvancedOptions
-                          ? "Hide Advanced Options"
-                          : "Show Advanced Options"}
-                      </button>
-                    </div>
-
-                    {isEdit ? (
-                      <div className="submit-button">
-                        <button
-                          onClick={handleNextClick}
-                          className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
-                        >
-                          {isLoading ? (
-                            <div className="flex justify-center items-center">
-                              <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
+                              <div className="content-box w-[80%]">
+                                <h3 className="text-[#14171B] text-[14px] ">
+                                  {value.title}
+                                </h3>
+                                <p className="text-[12px] text-[#5A5963]">
+                                  {value.info}
+                                </p>
+                              </div>
                             </div>
-                          ) : (
-                            "Save"
-                          )}
-                        </button>
+                          );
+                        })}
                       </div>
-                    ) : (
-                      <div className="submit-button">
+                    </>
+                  ) : (
+                    <>
+                      {node?.data?.parameters &&
+                        Object.entries(node.data.parameters)
+                          .filter(
+                            ([key, param]: any) =>
+                              param.required || showAdvancedOptions
+                          )
+                          .map(([key, param]) => {
+                            return (
+                              <DynamicInput
+                                key={key}
+                                inputKey={key}
+                                param={param}
+                                handleInputChange={
+                                  isEdit ? handleInputChange : () => { }
+                                }
+                                variableNames={variableNames}
+                                focusedInputKey={focusedInputKey}
+                                setFocusedInputKey={setFocusedInputKey}
+                              />
+                            );
+                          })}
+                      <div className="advance-option-button-box mb-3">
                         <button
-                          onClick={handleEditClick}
-                          className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
+                          onClick={handleToggleAdvancedOptions}
+                          className="w-full text-center bg-transparent border-0 underline text-[12px] text-[#2DA771]"
                         >
-                          Edit
+                          {showAdvancedOptions
+                            ? "Hide Advanced Options"
+                            : "Show Advanced Options"}
                         </button>
                       </div>
-                    )}
-                  </>
+
+                      {isEdit ? (
+                        <div className="submit-button">
+                          <button
+                            onClick={handleNextClick}
+                            className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
+                          >
+                            {isLoading ? (
+                              <div className="flex justify-center items-center">
+                                <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
+                              </div>
+                            ) : (
+                              "Save"
+                            )}
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="submit-button">
+                          <button
+                            onClick={handleEditClick}
+                            className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
+                          >
+                            Edit
+                          </button>
+                        </div>
+                      )}
+                    </>
+                  )}
                 </div>
               </div>
-              {focusedInputKey && focusedInputKey.length > 0 &&
+              {paragonResult && isSignedUp && focusedInputKey && focusedInputKey.length > 0 && 
               <div className="absolute top-0 left-[155%]">
                 <Accordion
                   onClick={(e: any) => {
@@ -591,6 +565,7 @@ const CreateRecordNode = memo(
             </div>
           )}
         </section>
+
         <DeleteConfirmationModal
           openDeleteConfirmationModal={openDeleteConfirmationModal}
           onCloseDeleteConfirmationModal={() =>
@@ -603,4 +578,4 @@ const CreateRecordNode = memo(
   }
 );
 
-export default CreateRecordNode;
+export default googleDocsNodes;

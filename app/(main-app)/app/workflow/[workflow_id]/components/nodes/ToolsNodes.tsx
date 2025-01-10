@@ -35,6 +35,8 @@ const ToolsNodes = memo(
       state.nodes.nodes.find(node => node.id === id)
     );
 
+    const formRef = useRef<HTMLDivElement>(null);
+
     const { setNodes } = useReactFlow();
     const dispatch = useAppDispatch();
     const { isLoading, nodes } = useAppSelector(state => state.nodes);
@@ -67,6 +69,19 @@ const ToolsNodes = memo(
 
     //   return () => { };
     // }, [parentId]);
+
+    useEffect(() => {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (formRef.current && !formRef.current.contains(event.target as Node)) {
+          setFocusedInputKey(null);
+        }
+      };
+  
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, []);
 
     const handleToggleAdvancedOptions = () => {
       setShowAdvancedOptions(!showAdvancedOptions);
@@ -157,31 +172,50 @@ const ToolsNodes = memo(
           }
         }
 
-        if (key === "width" && node?.data?.parameters?.height?.value !== "" && node?.data?.parameters?.height?.value !== "auto") {
+        if (
+          key === "width" &&
+          node?.data?.parameters?.height?.value !== "" &&
+          node?.data?.parameters?.height?.value !== "auto"
+        ) {
           const heightParams = node?.data?.parameters?.height?.value;
           const endsWithPercent = heightParams.toString().trim().endsWith("%");
           const valueWithPercent = value.toString().trim().endsWith("%");
           if (
-            (endsWithPercent && !valueWithPercent && heightParams !== "auto" && value !== "auto") ||
-            (!endsWithPercent && valueWithPercent && heightParams !== "auto" && value !== "auto")
+            (endsWithPercent &&
+              !valueWithPercent &&
+              heightParams !== "auto" &&
+              value !== "auto") ||
+            (!endsWithPercent &&
+              valueWithPercent &&
+              heightParams !== "auto" &&
+              value !== "auto")
           ) {
-            setErrorMessage("Cannot allowed different values")
-          }else {
-            setErrorMessage(null)
-
+            setErrorMessage("Cannot allowed different values");
+          } else {
+            setErrorMessage(null);
           }
         }
-        if (key === "height" && node?.data?.parameters?.width?.value !== "" && node?.data?.parameters?.width?.value !== "auto") {
+        if (
+          key === "height" &&
+          node?.data?.parameters?.width?.value !== "" &&
+          node?.data?.parameters?.width?.value !== "auto"
+        ) {
           const widthParams = node?.data?.parameters?.width?.value;
           const endsWithPercent = widthParams.toString().trim().endsWith("%");
           const valueWithPercent = value.toString().trim().endsWith("%");
           if (
-            (endsWithPercent && !valueWithPercent && widthParams !== "auto" && value !== "auto") ||
-            (!endsWithPercent && valueWithPercent && widthParams !== "auto" && value !== "auto") 
+            (endsWithPercent &&
+              !valueWithPercent &&
+              widthParams !== "auto" &&
+              value !== "auto") ||
+            (!endsWithPercent &&
+              valueWithPercent &&
+              widthParams !== "auto" &&
+              value !== "auto")
           ) {
-            setErrorMessage("Cannot allowed different values")
-          }else{
-            setErrorMessage(null)
+            setErrorMessage("Cannot allowed different values");
+          } else {
+            setErrorMessage(null);
           }
         }
 
@@ -255,7 +289,7 @@ const ToolsNodes = memo(
 
     const handleNextClick = async () => {
       if (!node?.data?.parameters) return;
-      if(errorMessage) return;
+      if (errorMessage) return;
 
       const blur = node?.data?.parameters?.blur?.value;
       const removeBg = node?.data?.parameters?.remove?.value;
@@ -544,7 +578,7 @@ const ToolsNodes = memo(
                 </h4>
               </div>
 
-              <div className="form-box">
+              <div className="form-box" ref={formRef}>
                 {errorMessage && (
                   <div className="error-message text-red-500 text-sm mt-2">
                     {errorMessage}
@@ -589,8 +623,8 @@ const ToolsNodes = memo(
                         key === "rotationDegree"
                       ) {
                         return (
-                          showAdvancedOptions &&
-                          node.data.parameters.placementType.value ===
+                          showAdvancedOptions && node?.data?.parameters &&
+                          node?.data?.parameters.placementType?.value ===
                             "absolute"
                         );
                       }
@@ -686,19 +720,21 @@ const ToolsNodes = memo(
                   </div>
                 )}
               </div>
-              <div className="absolute top-0 left-[155%]">
-                <Accordion
-                  onClick={(e: any) => {
-                    handleInputChange(
-                      focusedInputKey,
-                      "textarea",
-                      `${previousValue}${e ? "\${" + e + "}" : ""}`,
-                      undefined
-                    );
-                  }}
-                  nodeId={node?.id ?? ""}
-                />
-              </div>
+              {focusedInputKey && focusedInputKey.length > 0 && (
+                <div className="absolute top-0 left-[155%]">
+                  <Accordion
+                    onClick={(e: any) => {
+                      handleInputChange(
+                        focusedInputKey,
+                        "textarea",
+                        `${previousValue}${e ? "\${" + e + "}" : ""}`,
+                        undefined
+                      );
+                    }}
+                    nodeId={node?.id ?? ""}
+                  />
+                </div>
+              )}
             </div>
           )}
         </section>
